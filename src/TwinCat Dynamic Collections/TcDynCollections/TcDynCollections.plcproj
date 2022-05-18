@@ -1,0 +1,139 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <FileVersion>1.0.0.0</FileVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1c1cf391-ad49-4301-b41d-3891faa7dc78}</ProjectGuid>
+    <SubObjectsSortedByName>True</SubObjectsSortedByName>
+    <DownloadApplicationInfo>true</DownloadApplicationInfo>
+    <WriteProductVersion>true</WriteProductVersion>
+    <GenerateTpy>false</GenerateTpy>
+    <Name>TcDynCollections</Name>
+    <ProgramVersion>3.1.4023.0</ProgramVersion>
+    <Application>{bdcf6193-423f-4189-a72c-a7a612142285}</Application>
+    <TypeSystem>{f2f53b37-b832-4df1-8cdd-d1c651f5adf8}</TypeSystem>
+    <Implicit_Task_Info>{a7e57aff-d2b2-4bb1-8dde-239fcf0520a3}</Implicit_Task_Info>
+    <Implicit_KindOfTask>{6e55aa4a-8f6c-4b13-9be3-80e58b58cc3e}</Implicit_KindOfTask>
+    <Implicit_Jitter_Distribution>{e63005e3-16a6-4a1c-91bd-4241caf3cc1d}</Implicit_Jitter_Distribution>
+    <LibraryReferences>{0fa4148b-16cc-42bc-9d3d-020a5ca52abf}</LibraryReferences>
+    <Company>FisoThemes</Company>
+    <Released>false</Released>
+    <Title>TwinCat Dynamic Collections</Title>
+    <Author>Goodwill Mzumala</Author>
+    <DefaultNamespace>TcDynCollections</DefaultNamespace>
+    <ProjectVersion>0.1.0.0</ProjectVersion>
+    <DocFormat>reStructuredText</DocFormat>
+    <Description>A library for handling collections of data dynamically.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="DUTs\Interfaces\I_Collections.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Interfaces\I_List.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Interfaces\I_Queue.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Interfaces\I_Stack.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Structs\ST_ERROR.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Structs\ST_NODE.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PlcTask.TcTTO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Examples\P_List_Example.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Examples\P_Queue_Example.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Examples\P_Stack_Example.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Function Blocks\FB_Collections.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Function Blocks\FB_List.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Function Blocks\FB_Queue.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Function Blocks\FB_Stack.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\MAIN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Project Information\F_GetCompany.TcPOU">
+      <SubType>Code</SubType>
+      <SystemCall>true</SystemCall>
+    </Compile>
+    <Compile Include="Project Information\F_GetTitle.TcPOU">
+      <SubType>Code</SubType>
+      <SystemCall>true</SystemCall>
+    </Compile>
+    <Compile Include="Project Information\F_GetVersion.TcPOU">
+      <SubType>Code</SubType>
+      <SystemCall>true</SystemCall>
+    </Compile>
+    <Compile Include="Version\Global_Version.TcGVL">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DUTs" />
+    <Folder Include="DUTs\Interfaces" />
+    <Folder Include="DUTs\Structs" />
+    <Folder Include="GVLs" />
+    <Folder Include="UML" />
+    <Folder Include="POUs\Function Blocks" />
+    <Folder Include="POUs\Examples" />
+    <Folder Include="Project Information" />
+    <Folder Include="Version" />
+    <Folder Include="VISUs" />
+    <Folder Include="POUs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PlaceholderReference Include="Tc2_Standard">
+      <DefaultResolution>Tc2_Standard, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc2_Standard</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc2_System">
+      <DefaultResolution>Tc2_System, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc2_System</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc3_Module">
+      <DefaultResolution>Tc3_Module, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc3_Module</Namespace>
+    </PlaceholderReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TcDynCollections.tmc">
+      <SubType>Content</SubType>
+    </None>
+  </ItemGroup>
+  <ProjectExtensions>
+    <PlcProjectOptions>
+      <XmlArchive>
+        <Data>
+          <o xml:space="preserve" t="OptionKey">
+      <v n="Name">"&lt;ProjectRoot&gt;"</v>
+      <d n="SubKeys" t="Hashtable" />
+      <d n="Values" t="Hashtable" />
+    </o>
+        </Data>
+        <TypeList>
+          <Type n="Hashtable">System.Collections.Hashtable</Type>
+          <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
+          <Type n="String">System.String</Type>
+        </TypeList>
+      </XmlArchive>
+    </PlcProjectOptions>
+  </ProjectExtensions>
+</Project>

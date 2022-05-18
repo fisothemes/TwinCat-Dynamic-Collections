@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="P_List_Example" Id="{a33a4cf6-5cec-400c-8295-07b960a43c21}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P_List_Example
+VAR
+	fbList 		: FB_List;
+	sData 		: STRING;
+	sRTNData	: ARRAY[0..3] OF STRING;
+	nCount 		: DINT;
+	eState 		: (CREATE, REVERSE, REMOVE, COUNT, IDLE);
+	stError 	: ST_ERROR;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[stError := fbList._Error_Status;// (stError => stError);
+CASE eState OF
+	CREATE:
+		sData := 'Cats';fbList.Create(sData);
+		sData := 'Dogs';fbList.Create(sData);
+		sData := 'Birds';fbList.Create(sData);
+		sData := 'Fish';fbList.Insert(sData, 1);
+
+		fbList.Get(sRTNData[0], 0)
+			  .Get(sRTNData[1], 1)
+			  .Get(sRTNData[2], 2)
+			  .Get(sRTNData[3], 3);
+		eState := IDLE;
+	REVERSE:
+		fbList.Reverse();
+		fbList.Get(sRTNData[0], 0)
+			  .Get(sRTNData[1], 1)
+			  .Get(sRTNData[2], 2)
+			  .Get(sRTNData[3], 3);
+		eState := IDLE;
+	REMOVE:
+		fbList.RemoveAt(2)
+			  .Get(sRTNData[0], 0)
+			  .Get(sRTNData[1], 1)
+			  .Get(sRTNData[2], 2)
+			  .Get(sRTNData[3], 3);
+		eState := IDLE;
+	COUNT: 
+		nCount := fbList._Count;
+		eState := IDLE;
+		
+		
+END_CASE]]></ST>
+    </Implementation>
+    <LineIds Name="P_List_Example">
+      <LineId Id="13" Count="6" />
+      <LineId Id="47" Count="3" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="28" Count="1" />
+      <LineId Id="52" Count="3" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="56" Count="2" />
+      <LineId Id="63" Count="0" />
+      <LineId Id="61" Count="1" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="64" Count="1" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="FB_Collections" Id="{8169983e-4d36-41ab-8620-a5d13bfe975a}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK ABSTRACT FB_Collections IMPLEMENTS I_Collections
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	stError : ST_ERROR;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="_Count" Id="{6000edd3-5a9e-4b73-8290-ee5244a090cf}">
+      <Declaration><![CDATA[(* Number of elements in collection*)
+PROPERTY _Count : DINT
+]]></Declaration>
+      <Get Name="Get" Id="{90d08fe7-41c4-4166-8944-ea4694f441f8}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="_Error_Status" Id="{cf5de7bc-ad33-4e64-8887-853375cfc8c8}">
+      <Declaration><![CDATA[(* Gets collection's error status *)
+PROPERTY _Error_Status : ST_ERROR
+]]></Declaration>
+      <Get Name="Get" Id="{8db0a8ee-7feb-438f-be99-f72530da82d2}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_Error_Status := THIS^.stError;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="_Is_Empty" Id="{9745dabf-5a07-43e1-acf4-a7a1da3163d9}">
+      <Declaration><![CDATA[(* Checks if collection is empty.*)
+PROPERTY _Is_Empty : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{a8515034-4356-4e11-aa1b-c1ea197c4dff}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Clear" Id="{cb80021a-e4cc-4394-bdef-8b703b603d7f}">
+      <Declaration><![CDATA[(* Empties/Clears/Deletes every element on the collection*)
+METHOD Clear
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Collections">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collections._Count.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collections._Error_Status.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collections._Is_Empty.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collections.Clear">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

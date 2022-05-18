@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <Itf Name="I_List" Id="{aa13a36e-deb0-4cc7-ad47-2909bad43043}">
+    <Declaration><![CDATA[INTERFACE I_List EXTENDS I_Collections
+]]></Declaration>
+    <Method Name="Add_Front" Id="{8b2ea375-a0ff-44b7-8f8c-c4f094b6f324}">
+      <Declaration><![CDATA[// Creates/Adds an node to the front of the list
+METHOD Add_Front : I_List
+VAR_INPUT
+	Value 	: ANY; // Value to store in node
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Create" Id="{81c71698-0737-4ddf-8dda-7c86a5b4cf1a}">
+      <Declaration><![CDATA[// Creates/Adds an node to the end of the list
+METHOD Create : I_List
+VAR_INPUT
+	Value 	: ANY; // Value to store in node
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="FB_exit" Id="{1c781fd8-c6fe-42d0-a211-a7e9afc18fb6}">
+      <Declaration><![CDATA[METHOD FB_exit : BOOL
+VAR_INPUT
+	bInCopyCode : BOOL; // if TRUE, the exit method is called for exiting an instance that is copied afterwards (online change).
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="FB_init" Id="{14643ed7-fa83-4b95-bd84-9faef0650674}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Get" Id="{3408fde9-c59e-4daa-b1d3-2d315fba1247}">
+      <Declaration><![CDATA[// Gets value from node at specified location;
+METHOD Get : I_List
+VAR_INPUT
+	Return_Value 	: ANY;  // Variable to store requested node value
+	nIndex 			: DINT; // Location of node
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Get_First" Id="{6b62c219-0110-480f-ac77-14ea333b936c}">
+      <Declaration><![CDATA[(* Gets value from first node. *) 
+METHOD Get_First : I_List
+VAR_INPUT
+	Return_Value 	: ANY; // Variable to store returned value
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Insert" Id="{c72aa948-3d8d-418d-a835-9c758c493d3b}">
+      <Declaration><![CDATA[// Adds new node to list at specified location
+METHOD Insert : I_List
+VAR_INPUT
+	Value 	: ANY; // Value to store in node
+	nIndex 	: DINT; // Location of node
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Remove" Id="{2d468d08-7339-425f-acf1-368fbf9e2da3}">
+      <Declaration><![CDATA[(* Removes node at the front of the list and returns nothing. *)
+METHOD Remove : I_List]]></Declaration>
+    </Method>
+    <Method Name="RemoveAt" Id="{49c185ed-edf9-4e4c-9697-d7cc0160f1c4}">
+      <Declaration><![CDATA[(* Remove node at specific loacation and return nothing *)
+METHOD RemoveAt : I_List
+VAR_INPUT
+	nIndex : DINT; // Location of node
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Reverse" Id="{c8b588a0-6952-4667-82bf-7c4a6fefe80f}">
+      <Declaration><![CDATA[// Reverses list
+METHOD Reverse : I_List
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Set" Id="{79c99d5b-b40c-4004-b332-3be0fe381fbb}">
+      <Declaration><![CDATA[// Sets value of node at specified location;
+METHOD Set : I_List
+VAR_INPUT
+	Value 	: ANY; 	// Value to store in node
+	nIndex 	: DINT; // Location of node
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

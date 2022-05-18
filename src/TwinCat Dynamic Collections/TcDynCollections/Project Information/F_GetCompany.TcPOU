@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="F_GetCompany" Id="{4ed4186d-157e-4b27-a31d-9c779bdee218}" SpecialFunc="None">
+    <Declaration><![CDATA[// This function has been automatically generated from the project information.
+{attribute 'signature_flag' := '1073741824'}
+{attribute 'TcGenerated'}
+{attribute 'no-analysis'}
+FUNCTION F_GetCompany : WSTRING
+VAR_INPUT
+	
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[F_GetCompany := "FisoThemes";
+]]></ST>
+    </Implementation>
+    <LineIds Name="F_GetCompany">
+      <LineId Id="10" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
