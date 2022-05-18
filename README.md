@@ -1,7 +1,7 @@
 # TwinCAT Dynamic Collections
 
 A library for handling collections of data dynamically.
-Create python like lists (a list containg multiple data type that can grow or shrink at runtime), true Queue and Stack data structures. Examples are in project.
+Create python like lists (a list containing multiple data type that can grow or shrink at runtime), true Queue and Stack data structures. Examples are in project.
 
 # Function Blocks
 
@@ -12,7 +12,7 @@ Create python like lists (a list containg multiple data type that can grow or sh
 
 # Simple Example 
 
-This example demostrates how a STRING, DINT and STRUCT can be stored on the queue data structure.
+This example demostrates how a STRING, DINT and STRUCT can be stored in the queue data structure.
 
 **Declarations:** 
 ```Pascal
