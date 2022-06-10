@@ -1,36 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
-  <POU Name="FB_Collections" Id="{8169983e-4d36-41ab-8620-a5d13bfe975a}" SpecialFunc="None">
+  <POU Name="FB_Collections" Id="{7e0153eb-1d71-478f-9767-a8d202b4be94}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK ABSTRACT FB_Collections IMPLEMENTS I_Collections
-VAR_INPUT
-END_VAR
-VAR_OUTPUT
-END_VAR
 VAR
 	stError : ST_ERROR;
+	nCount 	: DINT; // Size of Collection
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
-    <Property Name="_Count" Id="{6000edd3-5a9e-4b73-8290-ee5244a090cf}">
-      <Declaration><![CDATA[(* Number of elements in collection*)
+    <Property Name="_Count" Id="{78d04743-c673-4006-9846-92d78266d4b2}">
+      <Declaration><![CDATA[(* Number of items in the collection *)
 PROPERTY _Count : DINT
 ]]></Declaration>
-      <Get Name="Get" Id="{90d08fe7-41c4-4166-8944-ea4694f441f8}">
+      <Get Name="Get" Id="{ae399a3c-7dcf-43a1-8adb-3a201539dc8f}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[]]></ST>
+          <ST><![CDATA[_Count := THIS^.nCount;]]></ST>
         </Implementation>
       </Get>
     </Property>
-    <Property Name="_Error_Status" Id="{cf5de7bc-ad33-4e64-8887-853375cfc8c8}">
+    <Property Name="_Error_Status" Id="{f5c500f3-5fca-40ca-920d-3a5de241efb2}">
       <Declaration><![CDATA[(* Gets collection's error status *)
 PROPERTY _Error_Status : ST_ERROR
 ]]></Declaration>
-      <Get Name="Get" Id="{8db0a8ee-7feb-438f-be99-f72530da82d2}">
+      <Get Name="Get" Id="{fd22dab7-ee66-4cce-994c-2910fa8e58fb}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -39,11 +36,11 @@ END_VAR
         </Implementation>
       </Get>
     </Property>
-    <Property Name="_Is_Empty" Id="{9745dabf-5a07-43e1-acf4-a7a1da3163d9}">
+    <Property Name="_Is_Empty" Id="{bda19a5b-6eae-4b14-8f4f-ed4cf062299f}">
       <Declaration><![CDATA[(* Checks if collection is empty.*)
 PROPERTY _Is_Empty : BOOL
 ]]></Declaration>
-      <Get Name="Get" Id="{a8515034-4356-4e11-aa1b-c1ea197c4dff}">
+      <Get Name="Get" Id="{bdf3428d-3c6e-416d-9454-b5bf770d84a5}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -52,7 +49,7 @@ END_VAR
         </Implementation>
       </Get>
     </Property>
-    <Method Name="Clear" Id="{cb80021a-e4cc-4394-bdef-8b703b603d7f}">
+    <Method Name="Clear" Id="{0584369c-c17b-4cbe-8e4d-6d1d31ac2e96}">
       <Declaration><![CDATA[(* Empties/Clears/Deletes every element on the collection*)
 METHOD Clear
 ]]></Declaration>

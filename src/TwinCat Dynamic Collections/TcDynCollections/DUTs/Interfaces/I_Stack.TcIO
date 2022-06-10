@@ -35,6 +35,13 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
+    <Method Name="Reverse" Id="{40df7f3e-8e4e-45b5-ac17-8a620c9a23e9}">
+      <Declaration><![CDATA[(* Reverses order of items on stack *)
+METHOD Reverse : I_Stack
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
     <Method Name="Top" Id="{90510f03-ae76-443f-90c7-d276be0836b6}">
       <Declaration><![CDATA[(* Get item at the top of the stack without removing it. *)
 METHOD Top : I_Stack

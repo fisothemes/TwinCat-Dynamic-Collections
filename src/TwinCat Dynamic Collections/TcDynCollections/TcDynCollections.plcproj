@@ -20,21 +20,30 @@
     <Title>TwinCat Dynamic Collections</Title>
     <Author>Goodwill Mzumala</Author>
     <DefaultNamespace>TcDynCollections</DefaultNamespace>
-    <ProjectVersion>0.1.0.0</ProjectVersion>
+    <ProjectVersion>0.2.0.0</ProjectVersion>
     <DocFormat>reStructuredText</DocFormat>
     <Description>A library for handling collections of data dynamically.</Description>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DUTs\Interfaces\I_Queue.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\Interfaces\I_Collections.TcIO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\Interfaces\I_List.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\Interfaces\I_Queue.TcIO">
+    <Compile Include="DUTs\Interfaces\I_List_ReadOnly.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Interfaces\I_List_WriteOnly.TcIO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\Interfaces\I_Stack.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Structs\ST_GENERIC.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\Structs\ST_ERROR.TcDUT">
@@ -46,6 +55,9 @@
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\Examples\P_Array_List_Example.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\Examples\P_List_Example.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -55,6 +67,12 @@
     <Compile Include="POUs\Examples\P_Stack_Example.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\Function Blocks\FB_Stack.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Function Blocks\FB_Array_List.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\Function Blocks\FB_Collections.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -62,9 +80,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\Function Blocks\FB_Queue.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\Function Blocks\FB_Stack.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MAIN.TcPOU">
@@ -81,6 +96,21 @@
     <Compile Include="Project Information\F_GetVersion.TcPOU">
       <SubType>Code</SubType>
       <SystemCall>true</SystemCall>
+    </Compile>
+    <Compile Include="UML\Array List UML.TcCD">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UML\Collections UML.TcCD">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UML\List UML.TcCD">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UML\Queue UML.TcCD">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UML\Stack UML.TcCD">
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Version\Global_Version.TcGVL">
       <SubType>Code</SubType>
@@ -117,6 +147,11 @@
     <None Include="TcDynCollections.tmc">
       <SubType>Content</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <LibraryReference Include="Tc2_Utilities,3.3.38.0,Beckhoff Automation GmbH">
+      <Namespace>Tc2_Utilities</Namespace>
+    </LibraryReference>
   </ItemGroup>
   <ProjectExtensions>
     <PlcProjectOptions>

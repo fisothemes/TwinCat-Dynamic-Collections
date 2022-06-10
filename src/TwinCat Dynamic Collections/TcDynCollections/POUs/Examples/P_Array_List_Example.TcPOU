@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="P_Array_List_Example" Id="{969256da-a7e7-43a9-8f8a-e825c77e7067}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P_Array_List_Example
+VAR
+	eState 		: (IDLE, INSERT, REVERSE, RESIZE, GET, SET, FIND, CLEAR, ADD_FRONT, ADD_BACK, REMOVE, REMOVE_AT);
+	fbArray_List: FB_Array_List(0);
+	nFind 		: DINT;
+	sData 		: WSTRING;
+	sRTNData	: ARRAY[0..6] OF WSTRING;
+	nCount 		: DINT;
+	stError 	: ST_ERROR;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[stError := fbArray_List._Error_Status;
+CASE eState OF
+	INSERT:
+		sData := "Cats";	fbArray_List.Insert(sData, 0);
+		sData := "Dogs";	fbArray_List.Insert(sData, 1);
+		sData := "Ravens";	fbArray_List.Insert(sData, 2);
+		sData := "Mollies";	fbArray_List.Insert(sData, 3);
+	REVERSE:
+		fbArray_List.Reverse();
+	RESIZE:
+		fbArray_List.Resize(3);
+	GET: 
+		fbArray_List
+			.Get(sRTNData[0], 0)
+			.Get(sRTNData[1], 1)
+			.Get(sRTNData[2], 2)
+			.Get(sRTNData[3], 3)
+			.Get(sRTNData[4], 4)
+			.Get(sRTNData[5], 5)
+			.Get(sRTNData[6], 6);
+	SET:
+		sData := "Ravens";	fbArray_List.Set(sData, 0);
+		sData := "Mollies";	fbArray_List.Set(sData, 1);
+		sData := "Dogs";	fbArray_List.Set(sData, 2);
+		sData := "Cats";	fbArray_List.Set(sData, 3);
+	FIND:
+		sData := "Dogs"; fbArray_List.Find(sData, nIndex => nFind);
+	CLEAR:
+		fbArray_List.Clear();
+	ADD_FRONT:
+		sData := "Pythons";fbArray_List.Add_Front(sData);
+	ADD_BACK:
+		sData := "Anacondas"; fbArray_List.Add_Back(sData);
+	REMOVE:
+		fbArray_List.Remove();
+	REMOVE_AT:
+		fbArray_List.RemoveAt(2);
+END_CASE
+nCount := fbArray_List._Count;
+eState := IDLE;]]></ST>
+    </Implementation>
+    <LineIds Name="P_Array_List_Example">
+      <LineId Id="40" Count="6" />
+      <LineId Id="67" Count="1" />
+      <LineId Id="70" Count="1" />
+      <LineId Id="80" Count="0" />
+      <LineId Id="84" Count="0" />
+      <LineId Id="81" Count="2" />
+      <LineId Id="78" Count="0" />
+      <LineId Id="142" Count="2" />
+      <LineId Id="79" Count="0" />
+      <LineId Id="87" Count="2" />
+      <LineId Id="86" Count="0" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="100" Count="0" />
+      <LineId Id="106" Count="1" />
+      <LineId Id="122" Count="0" />
+      <LineId Id="134" Count="0" />
+      <LineId Id="123" Count="0" />
+      <LineId Id="136" Count="0" />
+      <LineId Id="124" Count="0" />
+      <LineId Id="138" Count="0" />
+      <LineId Id="125" Count="0" />
+      <LineId Id="140" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="147" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

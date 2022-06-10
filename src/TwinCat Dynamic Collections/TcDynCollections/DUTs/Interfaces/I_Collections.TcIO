@@ -1,31 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
-  <Itf Name="I_Collections" Id="{b40166ad-f1ab-4d22-a4d0-84895557404c}">
+  <Itf Name="I_Collections" Id="{adf72a11-6ecb-4752-89f4-04a965e5d9fa}">
     <Declaration><![CDATA[INTERFACE I_Collections
 ]]></Declaration>
-    <Property Name="_Count" Id="{23a45eae-6557-42b2-bda5-f817dab9f3d2}">
-      <Declaration><![CDATA[(* Number of elements in collection*)
+    <Property Name="_Count" Id="{1cf2cead-b5a8-443b-a052-758fa683a902}">
+      <Declaration><![CDATA[// Number of items in the collection
 PROPERTY _Count : DINT]]></Declaration>
-      <Get Name="Get" Id="{d366bad5-7796-4b69-a3d6-af0e937b23f0}">
+      <Get Name="Get" Id="{548be187-7b16-407f-9ef2-53f73638ecd9}">
         <Declaration><![CDATA[]]></Declaration>
       </Get>
     </Property>
-    <Property Name="_Error_Status" Id="{be04b552-3c2b-4c54-a9e7-651f0a9a158f}">
+    <Property Name="_Error_Status" Id="{1ae29173-3ea6-4862-9d1a-f4ed590effb7}">
       <Declaration><![CDATA[(* Gets collection's error status *)
-PROPERTY _Error_Status : ST_ERROR]]></Declaration>
-      <Get Name="Get" Id="{eb2c4aed-dd87-4022-92be-3d474ee64a5e}">
+PROPERTY _Error_Status : ST_ERROR
+]]></Declaration>
+      <Get Name="Get" Id="{f615c966-7172-4050-acfc-c4997b0fbb2e}">
         <Declaration><![CDATA[]]></Declaration>
       </Get>
     </Property>
-    <Property Name="_Is_Empty" Id="{c45feb15-34b8-4188-816f-e2c0fc511e8c}">
-      <Declaration><![CDATA[(* Checks if collection is empty.*)
+    <Property Name="_Is_Empty" Id="{3f116d02-fa17-4440-a370-ee21150eb415}">
+      <Declaration><![CDATA[// Checks if collection is empty
 PROPERTY _Is_Empty : BOOL]]></Declaration>
-      <Get Name="Get" Id="{66385950-96ba-40cb-ae27-099814d052ba}">
+      <Get Name="Get" Id="{9a94c5a5-5818-4e72-8c01-59e21f6ada4e}">
         <Declaration><![CDATA[]]></Declaration>
       </Get>
     </Property>
-    <Method Name="Clear" Id="{3f8ee2bf-80ec-4210-a30e-6f79f6fe68c0}">
-      <Declaration><![CDATA[(* Empties/Clears/Deletes every element on the collection*)
+    <Method Name="Clear" Id="{ab9ec278-a4f4-4624-a841-faa6acd85767}">
+      <Declaration><![CDATA[// Empties/Clears/Deletes every item in the collection
 METHOD Clear
 ]]></Declaration>
     </Method>

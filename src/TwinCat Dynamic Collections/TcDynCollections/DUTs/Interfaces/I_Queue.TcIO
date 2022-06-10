@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
-  <Itf Name="I_Queue" Id="{4eed3d95-b896-4b64-bd88-ac8bba53121e}">
+  <Itf Name="I_Queue" Id="{5eca38a4-af18-452e-98c7-116fe1b8dc4e}">
     <Declaration><![CDATA[INTERFACE I_Queue EXTENDS I_Collections
 ]]></Declaration>
-    <Method Name="Dequeue" Id="{fb46ed3c-fa34-4930-b5f9-e6941295352c}">
+    <Method Name="Dequeue" Id="{b06981d9-3fdf-4dfb-a8d8-485ccab012a3}">
       <Declaration><![CDATA[(* Gets and remove item at the front of the queue *)
 METHOD Dequeue : I_Queue
 VAR_INPUT
@@ -11,14 +11,14 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
-    <Method Name="Dequeue_Void" Id="{c228b725-f3fc-4d64-8603-59b0dbe64ff5}">
+    <Method Name="Dequeue_Void" Id="{2f8ca4fe-622e-443d-bad7-53a24f4bc7a7}">
       <Declaration><![CDATA[(* Removes item at the front of the queue without returning anything *)
 METHOD Dequeue_Void : I_Queue
 VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
-    <Method Name="Enqueue" Id="{be9c9437-6d55-43f8-9c73-1f440f4d6bdb}">
+    <Method Name="Enqueue" Id="{87452ada-e25b-4a9c-8c31-bd98b99a6454}">
       <Declaration><![CDATA[(* Adds item at the back of the queue *)
 METHOD Enqueue : I_Queue
 VAR_INPUT
@@ -26,14 +26,14 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
     </Method>
-    <Method Name="Enqueue_At_Front" Id="{64f76513-52e3-4f9f-8994-8006a245f9a9}">
+    <Method Name="Enqueue_At_Front" Id="{f235ce6c-4248-4a01-b6fb-bf895d3e7338}">
       <Declaration><![CDATA[(* Adds item at the front of the queue *)
 METHOD Enqueue_At_Front : I_Queue
 VAR_INPUT
 	Item : ANY; (* Variable containg data to store on the queue *)
 END_VAR]]></Declaration>
     </Method>
-    <Method Name="Peek" Id="{b611f957-687f-4533-a433-958b59ee48a2}">
+    <Method Name="Peek" Id="{7e38d30d-df2c-4d7c-a878-4461100da845}">
       <Declaration><![CDATA[(* Get item from the queue without removing it. *)
 METHOD Peek : I_Queue
 VAR_INPUT
@@ -41,7 +41,7 @@ VAR_INPUT
 	nIndex 	: DINT; (* Location of item*)
 END_VAR]]></Declaration>
     </Method>
-    <Method Name="Reverse" Id="{7f066baf-31b2-4ef5-9b2d-af3474545861}">
+    <Method Name="Reverse" Id="{4dbd5cf9-a804-47b3-9e9f-634968b64348}">
       <Declaration><![CDATA[METHOD Reverse : I_Queue
 VAR_INPUT
 END_VAR

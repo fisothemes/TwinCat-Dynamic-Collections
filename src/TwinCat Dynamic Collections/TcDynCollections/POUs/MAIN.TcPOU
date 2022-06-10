@@ -6,11 +6,13 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[P_List_Example();
+      <ST><![CDATA[P_Array_List_Example();
+P_List_Example();
 P_Queue_Example();
 P_Stack_Example();]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
+      <LineId Id="11" Count="0" />
       <LineId Id="2" Count="0" />
       <LineId Id="6" Count="1" />
     </LineIds>
