@@ -6,15 +6,17 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[P_Array_List_Example();
-P_List_Example();
-P_Queue_Example();
-P_Stack_Example();]]></ST>
+      <ST><![CDATA[P_Example_Array_List();
+P_Example_Binary_Search_Tree();
+P_Example_Tree_Map();
+P_Example_List();
+P_Example_Queue();
+P_Example_Stack();]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
-      <LineId Id="11" Count="0" />
-      <LineId Id="2" Count="0" />
-      <LineId Id="6" Count="1" />
+      <LineId Id="15" Count="1" />
+      <LineId Id="18" Count="2" />
+      <LineId Id="7" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

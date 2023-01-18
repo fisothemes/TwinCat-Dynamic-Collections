@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <Itf Name="I_Map" Id="{e4ff8b91-025d-4c3f-bba0-a6ee9cb8e2ed}">
+    <Declaration><![CDATA[// An interface for a collection that holds key/value pairs  
+INTERFACE I_Map EXTENDS I_Collection
+]]></Declaration>
+    <Property Name="_Keys" Id="{b3056b97-4a93-4dae-aee0-27fbd330901b}">
+      <Declaration><![CDATA[// Gets a read-only list of the keys
+PROPERTY _Keys : I_Read_Only_List]]></Declaration>
+      <Get Name="Get" Id="{9b2e1404-38f3-4981-8cd6-6ad60e6da557}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="_Values" Id="{3203241e-29b5-4f87-b828-3eb03dfb8aa7}">
+      <Declaration><![CDATA[// Gets a read-only list of the values
+PROPERTY _Values : I_Read_Only_List]]></Declaration>
+      <Get Name="Get" Id="{540dda42-794d-44a6-bc60-193147ed08ee}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Method Name="Get" Id="{0d344fce-cd27-4f42-b33b-79e9a8301be8}">
+      <Declaration><![CDATA[// Gets the value associated with the specified key without remocing it from the dictionary
+METHOD Get : I_Map
+VAR_INPUT
+	Key 			: ANY; // Key used to identify stored value
+	Return_Value 	: ANY; // Variable to store requested data 
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Insert" Id="{7f77bde8-a78a-4a82-99b7-76e07fe09a1c}">
+      <Declaration><![CDATA[// Insert an element with the provided key and value to the map
+METHOD Insert : I_Map
+VAR_INPUT
+	Key 	: ANY; // Key used to identify stored value
+	Value 	: ANY; // Value to store in map with key
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Remove" Id="{a9b08b65-9bd8-4769-9f3b-ed7288710451}">
+      <Declaration><![CDATA[// Removes value with the specified key from the map
+METHOD Remove : I_Map
+VAR_INPUT
+	Key : ANY; // Key used to identify stored value
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Update" Id="{dbee5792-09fb-4af0-a208-2351f9acc26e}">
+      <Declaration><![CDATA[// Updates the value an element with the provided key and value in the map
+METHOD Update : I_Map
+VAR_INPUT
+	Key 	: ANY; // Key used to identify stored value
+	Value 	: ANY; // Value to store in map with key
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

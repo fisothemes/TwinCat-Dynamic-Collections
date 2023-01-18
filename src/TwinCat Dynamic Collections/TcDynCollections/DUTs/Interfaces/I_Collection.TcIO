@@ -1,20 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
-  <Itf Name="I_Collections" Id="{adf72a11-6ecb-4752-89f4-04a965e5d9fa}">
-    <Declaration><![CDATA[INTERFACE I_Collections
+  <Itf Name="I_Collection" Id="{b40166ad-f1ab-4d22-a4d0-84895557404c}">
+    <Declaration><![CDATA[INTERFACE I_Collection EXTENDS __SYSTEM.IQueryInterface 
 ]]></Declaration>
     <Property Name="_Count" Id="{1cf2cead-b5a8-443b-a052-758fa683a902}">
       <Declaration><![CDATA[// Number of items in the collection
-PROPERTY _Count : DINT]]></Declaration>
+PROPERTY _Count : T_Capacity]]></Declaration>
       <Get Name="Get" Id="{548be187-7b16-407f-9ef2-53f73638ecd9}">
         <Declaration><![CDATA[]]></Declaration>
       </Get>
     </Property>
-    <Property Name="_Error_Status" Id="{1ae29173-3ea6-4862-9d1a-f4ed590effb7}">
-      <Declaration><![CDATA[(* Gets collection's error status *)
-PROPERTY _Error_Status : ST_ERROR
-]]></Declaration>
-      <Get Name="Get" Id="{f615c966-7172-4050-acfc-c4997b0fbb2e}">
+    <Property Name="_Error_Status" Id="{3d63d2ec-a7f3-4f16-8425-10a114aafb37}">
+      <Declaration><![CDATA[(* Gets Function Block's error status *)
+PROPERTY _Error_Status : T_Error]]></Declaration>
+      <Get Name="Get" Id="{ae53bfe5-400e-4bc9-a7f7-d7a0400d3ef5}">
         <Declaration><![CDATA[]]></Declaration>
       </Get>
     </Property>

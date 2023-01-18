@@ -20,66 +20,160 @@
     <Title>TwinCat Dynamic Collections</Title>
     <Author>Goodwill Mzumala</Author>
     <DefaultNamespace>TcDynCollections</DefaultNamespace>
-    <ProjectVersion>0.2.0.0</ProjectVersion>
+    <ProjectVersion>0.3.0.0</ProjectVersion>
     <DocFormat>reStructuredText</DocFormat>
     <Description>A library for handling collections of data dynamically.</Description>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DUTs\Interfaces\I_Queue.TcIO">
+    <Compile Include="DUTs\Aliases\T_Hash_Code.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\Interfaces\I_Collections.TcIO">
+    <Compile Include="DUTs\Aliases\T_BST_Node.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Aliases\T_BST_Traversal.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Aliases\T_Capacity.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Aliases\T_Error.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Aliases\T_Generic.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Aliases\T_Generic_Ex.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Aliases\T_Query_Interface.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Aliases\T_Type.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Enums\E_BINARY_SEARCH_TREE_TRAVERSAL.TcTLEO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Interfaces\I_Binary_Search_Tree.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Interfaces\I_Collection.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Interfaces\I_Deque.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Interfaces\I_Generic_Binary_Search_Tree.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Interfaces\I_Generic_Collection.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Interfaces\I_Generic_List.TcIO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\Interfaces\I_List.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\Interfaces\I_List_ReadOnly.TcIO">
+    <Compile Include="DUTs\Interfaces\I_Map.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\Interfaces\I_List_WriteOnly.TcIO">
+    <Compile Include="DUTs\Interfaces\I_Queue.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Interfaces\I_Read_Only_List.TcIO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\Interfaces\I_Stack.TcIO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\Structs\ST_GENERIC.TcDUT">
+    <Compile Include="DUTs\Interfaces\I_Tree_Map.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Interfaces\I_Write_Only_List.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Structs\ST_BINARY_SEARCH_TREE_NODE.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\Structs\ST_ERROR.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\Structs\ST_NODE.TcDUT">
+    <Compile Include="DUTs\Structs\ST_GENERIC.TcDUT">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Structs\ST_HASH_MAP_ENTRY.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Structs\ST_LIST_NODE.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Structs\ST_TREE_MAP_ENTRY_NODE.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GVLs\GVL_CmpErrors.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
     </Compile>
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Examples\P_Array_List_Example.TcPOU">
+    <Compile Include="POUs\Examples\P_Example_Array_List.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Examples\P_List_Example.TcPOU">
+    <Compile Include="POUs\Examples\P_Example_Binary_Search_Tree.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Examples\P_Queue_Example.TcPOU">
+    <Compile Include="POUs\Examples\P_Example_List.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Examples\P_Stack_Example.TcPOU">
+    <Compile Include="POUs\Examples\P_Example_Queue.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Function Blocks\FB_Stack.TcPOU">
+    <Compile Include="POUs\Examples\P_Example_Stack.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Examples\P_Example_Tree_Map.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Function Blocks\Helpers\FB_Helper_BST_Balancer.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Function Blocks\Helpers\FB_Helper_Tree_Map_Balancer.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\Function Blocks\FB_Array_List.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Function Blocks\FB_Collections.TcPOU">
+    <Compile Include="POUs\Function Blocks\FB_Binary_Search_Tree.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Function Blocks\FB_Collection.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Function Blocks\FB_Hash_Map.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\Function Blocks\FB_List.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\Function Blocks\FB_Queue.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Function Blocks\FB_Read_Only_List.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Function Blocks\FB_Stack.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Function Blocks\FB_Tree_Map.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Function Blocks\FB_Write_Only_List.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Functions\F_Error.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MAIN.TcPOU">
@@ -100,7 +194,7 @@
     <Compile Include="UML\Array List UML.TcCD">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UML\Collections UML.TcCD">
+    <Compile Include="UML\TwinCAT Dynamic Collections Interface UML.TcCD">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UML\List UML.TcCD">
@@ -118,9 +212,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DUTs" />
+    <Folder Include="DUTs\Aliases" />
+    <Folder Include="DUTs\Enums" />
     <Folder Include="DUTs\Interfaces" />
     <Folder Include="DUTs\Structs" />
     <Folder Include="GVLs" />
+    <Folder Include="POUs\Function Blocks\Helpers" />
+    <Folder Include="POUs\Functions" />
     <Folder Include="UML" />
     <Folder Include="POUs\Function Blocks" />
     <Folder Include="POUs\Examples" />

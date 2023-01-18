@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <DUT Name="ST_TREE_MAP_ENTRY_NODE" Id="{276b70e5-0e8a-4815-995a-b1501688fbf1}">
+    <Declaration><![CDATA[// Node for a tree map
+{attribute 'enable_dynamic_creation'}
+TYPE INTERNAL ST_TREE_MAP_ENTRY_NODE :
+STRUCT
+	Key 	: T_Generic; 					// Key used to identify stored value
+	Value 	: T_Generic; 					// Value to store in dictionary with key
+	pLeft 	: POINTER TO ST_TREE_MAP_ENTRY_NODE;
+	pRight 	: POINTER TO ST_TREE_MAP_ENTRY_NODE;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

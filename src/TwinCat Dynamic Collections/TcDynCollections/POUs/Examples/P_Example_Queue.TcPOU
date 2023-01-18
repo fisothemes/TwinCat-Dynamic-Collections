@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
-  <POU Name="P_Queue_Example" Id="{d99f5c23-ee23-466a-b3fc-6816045fe8e0}" SpecialFunc="None">
+  <POU Name="P_Example_Queue" Id="{d99f5c23-ee23-466a-b3fc-6816045fe8e0}" SpecialFunc="None">
     <Declaration><![CDATA[// Login into PLC and live write eState. Try nData and nRTNData once your done. eState Initialises at IDLE
-PROGRAM P_Queue_Example
+PROGRAM INTERNAL P_Example_Queue
 VAR
-	fbList 		: FB_LIST;
+	fbList 		: FB_List;
 	fbQueue 	: FB_Queue;
 	sData 		: STRING;
 	sRTNData	: ARRAY[0..3] OF STRING; //returned data
@@ -56,7 +56,7 @@ CASE eState OF
 		eState := IDLE;	
 END_CASE]]></ST>
     </Implementation>
-    <LineIds Name="P_Queue_Example">
+    <LineIds Name="P_Example_Queue">
       <LineId Id="55" Count="3" />
       <LineId Id="104" Count="2" />
       <LineId Id="62" Count="17" />

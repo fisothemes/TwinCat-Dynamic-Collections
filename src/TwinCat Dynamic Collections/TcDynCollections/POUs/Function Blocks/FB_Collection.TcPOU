@@ -1,0 +1,251 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="FB_Collection" Id="{8169983e-4d36-41ab-8620-a5d13bfe975a}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK ABSTRACT FB_Collection IMPLEMENTS I_Collection
+VAR
+	nCount 	: T_Capacity; // Size of Collection
+	stError : T_Error := F_Error(FALSE, GVL_CmpErrors.ERR_OK,'');
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="Exception Handling" Id="{e863efaf-051a-44d3-96d3-01058ddc780e}" />
+    <Folder Name="Protected" Id="{8019ce0d-62b9-4c90-857c-02dfeaf35f02}" />
+    <Property Name="_Count" Id="{6000edd3-5a9e-4b73-8290-ee5244a090cf}">
+      <Declaration><![CDATA[(* Number of elements in collection*)
+PROPERTY _Count : T_Capacity
+]]></Declaration>
+      <Get Name="Get" Id="{90d08fe7-41c4-4166-8944-ea4694f441f8}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_Count := THIS^.nCount;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="_Error_Status" Id="{cf5de7bc-ad33-4e64-8887-853375cfc8c8}">
+      <Declaration><![CDATA[(* Gets collection's error status *)
+PROPERTY _Error_Status : T_Error
+]]></Declaration>
+      <Get Name="Get" Id="{8db0a8ee-7feb-438f-be99-f72530da82d2}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_Error_Status := THIS^.stError;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{fa4af9d6-43ec-4e3e-bdcd-c88b0dd4815e}">
+        <Declaration><![CDATA[PROTECTED 
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.stError := THIS^.stError;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="_Is_Empty" Id="{9745dabf-5a07-43e1-acf4-a7a1da3163d9}">
+      <Declaration><![CDATA[(* Checks if collection is empty.*)
+PROPERTY _Is_Empty : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{a8515034-4356-4e11-aa1b-c1ea197c4dff}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_Is_Empty := THIS^._Count = 0; ]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Clear" Id="{cb80021a-e4cc-4394-bdef-8b703b603d7f}">
+      <Declaration><![CDATA[(* Empties/Clears/Deletes every element on the collection*)
+METHOD Clear
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ClearException" Id="{fa6fc6d6-d879-49f9-9bc2-01521bc9012c}" FolderPath="Exception Handling\">
+      <Declaration><![CDATA[METHOD PROTECTED ClearException : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.stError := F_Error(FALSE, 0, '');]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ClearValue" Id="{c5c5bce6-4d81-43ca-9908-7dd2ab56be33}" FolderPath="Protected\">
+      <Declaration><![CDATA[// Clears value by setting it's entire memory space to NULL
+METHOD PROTECTED ClearValue
+VAR_INPUT
+	Value : __SYSTEM.AnyType;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[MEMSET(Value.pValue, 16#0, TO_UDINT(Value.diSize));]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="CopyValueTo" Id="{56538ce5-958a-4337-bfb7-cab401b0c3a6}" FolderPath="Protected\">
+      <Declaration><![CDATA[// Copy data from source memory space to desination memory space
+METHOD PROTECTED CopyValueTo
+VAR_INPUT
+	Dest, Src : __SYSTEM.AnyType;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.ClearValue(Dest);
+MEMMOVE(Dest.pValue, Src.pValue, TO_UDINT(MIN(Dest.diSize, Src.diSize)));
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="DecrementCount" Id="{cbc4706b-c46f-41a4-a1a1-d47131fab88c}" FolderPath="Protected\">
+      <Declaration><![CDATA[// Decrement list size by 1.
+METHOD PROTECTED DecrementCount
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.nCount := THIS^.nCount - 1;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="EmptyListException" Id="{e5e86fcd-94fa-4e43-bc44-9673d72b84e8}" FolderPath="Exception Handling\">
+      <Declaration><![CDATA[// Raises an expection if list is empty
+METHOD PROTECTED EmptyListException : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF THIS^._Is_Empty THEN THIS^.RaiseException(2936, 'Collection is empty'); EmptyListException := TRUE; END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FailedInsertionException" Id="{e5949954-ed95-4829-b875-1dc2e716e1f9}" FolderPath="Exception Handling\">
+      <Declaration><![CDATA[METHOD PROTECTED FailedInsertionException : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.RaiseException(2667, 'Failed to insert item into collection');]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="IncrementCount" Id="{88677d6e-fe73-41cf-a02d-1dd614bad8d5}" FolderPath="Protected\">
+      <Declaration><![CDATA[// Increments list size by 1
+METHOD PROTECTED IncrementCount
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.nCount := THIS^.nCount + 1;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="NullReferenceException" Id="{6929719b-42b1-49b7-b2d4-2fdc2342d4cc}" FolderPath="Exception Handling\">
+      <Declaration><![CDATA[METHOD PROTECTED NullReferenceException : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.RaiseException(2000+GVL_CmpErrors.ERR_INVALID_REFERENCE, 'Null or Invalid Reference');]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="OutOfBoundsException" Id="{29cc68fc-ef87-48b1-a4ed-8dcabf95dcfe}" FolderPath="Exception Handling\">
+      <Declaration><![CDATA[METHOD PROTECTED OutOfBoundsException : BOOL
+VAR_INPUT
+	nIndex : T_Capacity;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF (nIndex < 0) OR (nIndex >= THIS^._Count) THEN
+	THIS^.RaiseException(2374,'Out of bounds. You tried to access data outside the range of this collection.');
+	OutOfBoundsException := TRUE;
+	END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RaiseException" Id="{a53dccc9-6cca-4cc6-96bd-709718fb0e6a}" FolderPath="Exception Handling\">
+      <Declaration><![CDATA[METHOD PROTECTED RaiseException : BOOL
+VAR_INPUT
+	nCode 	: DINT;
+	sSource : T_MaxString;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.stError := F_Error(TRUE, nCode, sSource);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ValueFoundException" Id="{f14aa7ba-deb7-4a2e-9f77-7c1a41907382}" FolderPath="Exception Handling\">
+      <Declaration><![CDATA[METHOD PROTECTED ValueFoundException : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.RaiseException(2748, 'Value is contained in collection');]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ValueNotFoundException" Id="{55c2a48e-7f84-4826-b079-cdf74763177e}" FolderPath="Exception Handling\">
+      <Declaration><![CDATA[METHOD PROTECTED ValueNotFoundException : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.RaiseException(2923, 'Value is not contain in collection');]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Collection">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collection._Count.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collection._Error_Status.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collection._Error_Status.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collection._Is_Empty.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collection.Clear">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collection.ClearException">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collection.ClearValue">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collection.CopyValueTo">
+      <LineId Id="13" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="15" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collection.DecrementCount">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collection.EmptyListException">
+      <LineId Id="13" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collection.FailedInsertionException">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collection.IncrementCount">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collection.NullReferenceException">
+      <LineId Id="12" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collection.OutOfBoundsException">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="19" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collection.RaiseException">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collection.ValueFoundException">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collection.ValueNotFoundException">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

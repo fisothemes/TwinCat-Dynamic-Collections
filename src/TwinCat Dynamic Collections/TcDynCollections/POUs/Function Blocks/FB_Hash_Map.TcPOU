@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="FB_Hash_Map" Id="{a1c8122a-0064-4e5f-8288-29a01c1073f4}" SpecialFunc="None">
+    <Declaration><![CDATA[(*WARNING WORK-IN-PROGRESS*)
+{warning 'DO NOT USE!'}
+FUNCTION_BLOCK INTERNAL FB_Hash_Map EXTENDS FB_Collection IMPLEMENTS I_Map
+VAR
+END_VAR
+VAR CONSTANT
+	fbBucket_List : FB_Array_List(16) := ();
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="Protected" Id="{3ad05770-7717-4b4c-b69b-af5fadbddb33}" />
+    <Method Name="FB_init" Id="{c7f11323-ddb4-4746-878e-87028c2b9970}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains 	: BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode 	: BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get" Id="{0a90a1cc-3b89-49b7-969d-f758f548bac2}">
+      <Declaration><![CDATA[// Gets the value associated with the specified key without remocing it from the dictionary
+METHOD Get : I_Map
+VAR_INPUT
+	Key 			: ANY; // Key used to identify stored value
+	Return_Value 	: ANY; // Variable to store requested data 
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get := THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Insert" Id="{31a4f2f8-93f1-4335-b798-a871e3f75b17}">
+      <Declaration><![CDATA[// Insert an element with the provided key and value to the dictionary
+METHOD Insert : I_Map
+VAR_INPUT
+	Key 	: ANY; // Key used to identify stored value
+	Value 	: ANY; // Value to store in dictionary with key
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Insert := THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Populate_Bucket_List" Id="{a807a92c-85da-4cef-bd90-412928e9bfc0}" FolderPath="Protected\">
+      <Declaration><![CDATA[METHOD PROTECTED Populate_Bucket_List : BOOL
+VAR_INPUT
+	ipList : I_List;
+	nCount : T_Capacity;
+END_VAR
+VAR
+	
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Remove" Id="{a60eb9c7-b3ba-473a-be46-bcdac9062fc6}">
+      <Declaration><![CDATA[// Removes value with the specified key from the dictionary and return that value
+METHOD Remove : I_Map
+VAR_INPUT
+	Key 			: ANY; // Key used to identify stored value
+	Return_Value 	: ANY; // Value to store in dictionary with key
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Remove := THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Remove_Void" Id="{faacbc1a-16ad-41ac-a21d-1499c72918fc}">
+      <Declaration><![CDATA[// Removes the value with the specified key from the dictionary and returns nothing
+METHOD Remove_Void : I_Map
+VAR_INPUT
+	Key 	: ANY; // Key used to identify stored value
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Remove_Void := THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Update" Id="{6be44c51-6793-4119-9cdf-ae4e4aeb5234}">
+      <Declaration><![CDATA[// Updates the value an element with the provided key and value in the dictionary
+METHOD Update : I_Map
+VAR_INPUT
+	Key 	: ANY; // Key used to identify stored value
+	Value 	: ANY; // Value to store in dictionary with key
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Update := THIS^;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Hash_Map">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Hash_Map.FB_init">
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Hash_Map.Get">
+      <LineId Id="8" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Hash_Map.Insert">
+      <LineId Id="8" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Hash_Map.Populate_Bucket_List">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Hash_Map.Remove">
+      <LineId Id="8" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Hash_Map.Remove_Void">
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Hash_Map.Update">
+      <LineId Id="8" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

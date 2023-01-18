@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <Itf Name="I_Generic_List" Id="{ecd4176d-64e9-4322-ac51-5cf4079a10c2}">
+    <Declaration><![CDATA[// Interface operating with generic data contained in a list.
+INTERFACE I_Generic_List EXTENDS I_Generic_Collection]]></Declaration>
+    <Method Name="Get_Generic" Id="{b27c059b-bbb1-43a3-9d29-130208c69b86}">
+      <Declaration><![CDATA[// Gets a value from a list in it's generic form.
+// (* Use carefully as this contains the pointer of the actual value in the collection. *)
+// If you wish to use this it is recommeded you create a copy of the returned value using MEMMOVE or MEMCPY
+METHOD Get_Generic : I_Generic_List
+VAR_INPUT
+	nIndex 		: T_Capacity; 			// Location of item
+END_VAR
+VAR_OUTPUT
+	Return_Item : T_Generic;  	// Variable to store returned item
+	bSuccess 	: BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Insert_Generic" Id="{1b2ec97e-8871-4f20-bdf9-d39d0fb2eb5a}">
+      <Declaration><![CDATA[// Adds new item to list at specified location using the generic form. 
+// If index = 0, item will be added at the front, if index = count, item will be added at the back
+METHOD Insert_Generic : I_Generic_List
+VAR_INPUT
+	Item 	 : T_Generic;  	// Item to store in list
+	nIndex 	 : T_Capacity; 			// Location of item
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

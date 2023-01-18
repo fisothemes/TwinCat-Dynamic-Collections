@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="P_Example_Tree_Map" Id="{425e8493-72f3-40ab-a30a-2e8b530e7cae}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM INTERNAL P_Example_Tree_Map
+VAR
+	sz 			: UDINT;
+	eState 		: (IDLE, TRAVERSE, INSERT, GET, UPDATE, REMOVE, CLEAR, BALANCE);
+	eTrav 		: T_BST_Traversal;
+	fbTree_Map	: FB_Tree_Map;
+	arUpdate 	: ARRAY[0..1] OF WSTRING := ["Python", ""];
+	arKeys		: ARRAY[0..6] OF WSTRING := ["qwerty","play","thomas","jerry",   "perry",    "sarah"];
+	arValues	: ARRAY[0..6] OF WSTRING := ["Cats",  "Dogs","Ravens","Mollies", "Anaconda", "cow"];
+	arRTNData	: ARRAY[0..6] OF WSTRING;
+	arTravData 	: ARRAY[0..1] OF ARRAY[0..9] OF STRING;
+	rmvdVal,
+	Key, 
+	Value		: WSTRING;
+	nCount,i 	: DINT;
+	stError 	: ST_ERROR;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[stError := fbTree_Map._Error_Status;
+sz := SIZEOF(fbTree_Map);
+nCount := fbTree_Map._Count;
+CASE eState OF
+	INSERT:
+		fbTree_Map
+			.Insert(arKeys[0], arValues[0])
+			.Insert(arKeys[1], arValues[1])
+			.Insert(arKeys[2], arValues[2])
+			.Insert(arKeys[3], arValues[3])
+			.Insert(arKeys[4], arValues[4])
+			.Insert(arKeys[5], arValues[5]);
+	GET:
+		Scrub();
+		fbTree_Map
+			.Get(arKeys[0], arRTNData[0])
+			.Get(arKeys[1], arRTNData[1])
+			.Get(arKeys[2], arRTNData[2])
+			.Get(arKeys[3], arRTNData[3])
+			.Get(arKeys[4], arRTNData[4])
+			.Get(arKeys[5], arRTNData[5]);
+			
+	TRAVERSE:
+		fbTree_Map._Traversal := eTrav;
+		FOR i := 0 TO fbTree_Map._Keys._Count-1 DO 
+			arTravData[0][i] := ''; // Key
+			arTravData[1][i] := ''; // Value
+			fbTree_Map._Keys.Get_Value_As_String(i, sItem => arTravData[0][i]);
+			fbTree_Map._Values.Get_Value_As_String(i, sItem => arTravData[1][i]); 
+			END_FOR
+			
+	UPDATE:
+		fbTree_Map.Update(arKeys[1], arUpdate[0]);
+		
+	REMOVE:
+		fbTree_Map.Get(arKeys[3],rmvdVal).Remove(arKeys[3]);
+ 
+	CLEAR:
+		fbTree_Map.Clear();
+		
+	BALANCE:
+		fbTree_Map.Balance();
+END_CASE
+eState := IDLE;]]></ST>
+    </Implementation>
+    <Method Name="Scrub" Id="{ac7e66e4-abbf-4534-8dc2-ce1ee5e744f8}">
+      <Declaration><![CDATA[METHOD PRIVATE Scrub
+VAR
+	i 			: T_Capacity;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[FOR i := 0 TO SIZEOF(arRTNData)/SIZEOF(arRTNData[0])-1 DO arRTNData[i] := ""; END_FOR]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="P_Example_Tree_Map">
+      <LineId Id="129" Count="0" />
+      <LineId Id="187" Count="0" />
+      <LineId Id="202" Count="0" />
+      <LineId Id="130" Count="9" />
+      <LineId Id="203" Count="0" />
+      <LineId Id="140" Count="6" />
+      <LineId Id="168" Count="1" />
+      <LineId Id="215" Count="0" />
+      <LineId Id="206" Count="1" />
+      <LineId Id="209" Count="0" />
+      <LineId Id="208" Count="0" />
+      <LineId Id="211" Count="0" />
+      <LineId Id="210" Count="0" />
+      <LineId Id="212" Count="0" />
+      <LineId Id="147" Count="1" />
+      <LineId Id="233" Count="0" />
+      <LineId Id="149" Count="1" />
+      <LineId Id="234" Count="0" />
+      <LineId Id="153" Count="1" />
+      <LineId Id="235" Count="1" />
+      <LineId Id="232" Count="0" />
+      <LineId Id="155" Count="0" />
+      <LineId Id="16" Count="0" />
+    </LineIds>
+    <LineIds Name="P_Example_Tree_Map.Scrub">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

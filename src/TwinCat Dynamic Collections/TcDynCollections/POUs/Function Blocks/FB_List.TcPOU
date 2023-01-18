@@ -2,9 +2,11 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
   <POU Name="FB_List" Id="{3608d5e7-b8e3-45a4-86d3-4cab6fa05db7}" SpecialFunc="None">
     <Declaration><![CDATA[// Dyanamic List that can store a collection of any types. Similiar to python lists.
-FUNCTION_BLOCK FB_List EXTENDS FB_Collections IMPLEMENTS I_List, I_List_ReadOnly, I_List_WriteOnly
+{attribute 'enable_dynamic_creation'}
+{attribute 'no_assign'}
+FUNCTION_BLOCK FB_List EXTENDS FB_Collection IMPLEMENTS I_List, I_Generic_List
 VAR
-	pHead	: POINTER TO ST_NODE;
+	pHead, pTail	: POINTER TO ST_LIST_NODE;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
@@ -20,7 +22,7 @@ PROPERTY _Is_Empty : BOOL
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[_Is_Empty := (THIS^._Count = 0) AND (THIS^.pHead = 0);]]></ST>
+          <ST><![CDATA[_Is_Empty := (THIS^._Count = 0);]]></ST>
         </Implementation>
       </Get>
     </Property>
@@ -30,19 +32,19 @@ METHOD Add_Back : I_List
 VAR_INPUT
 	Item 	: ANY; // Value to store in list
 END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
 VAR
-	pTemp 	: POINTER TO ST_NODE;
+	pTemp 	: POINTER TO ST_LIST_NODE;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Add_Back := THIS^;
+IF THIS^._Is_Empty THEN THIS^.Add_Front(Item, bSuccess => bSuccess); RETURN; END_IF
 pTemp := THIS^.Malloc_Node(Item);
 THIS^.CopyValueTo(pTemp^.Data, Item);
-
-IF THIS^._Is_Empty THEN THIS^.pHead := pTemp;
-ELSE Iterate(THIS^._Count - 1)^.pNext := pTemp; END_IF
-
-THIS^.IncrementCount();
-]]></ST>
+THIS^.pTail := THIS^.pTail^.pNext := pTemp;
+THIS^.IncrementCount();]]></ST>
       </Implementation>
     </Method>
     <Method Name="Add_Front" Id="{2fd04b95-a74a-46ef-bd79-7cec09f4df87}">
@@ -51,25 +53,28 @@ METHOD Add_Front : I_List
 VAR_INPUT
 	Item 	: ANY; // Item to store in list
 END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
 VAR
-	pTemp 	: POINTER TO ST_NODE;
+	pTemp 	: POINTER TO ST_LIST_NODE;
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[Add_Front := THIS^;
 pTemp := THIS^.Malloc_Node(Item);
 THIS^.CopyValueTo(pTemp^.Data, Item);
-
 pTemp^.pNext := THIS^.pHead; THIS^.pHead := pTemp;
+IF THIS^._Is_Empty THEN THIS^.pTail := THIS^.pHead; END_IF
 THIS^.IncrementCount();
-]]></ST>
+bSuccess := TRUE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Clear" Id="{bec97762-7b5e-424f-a529-90fba084e540}">
       <Declaration><![CDATA[(* Empties/Clears/Deletes every item in the list *)
 METHOD Clear
 VAR
-	pTemp : POINTER TO ST_NODE;
+	pTemp : POINTER TO ST_LIST_NODE;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[pTemp := THIS^.pHead;
@@ -78,15 +83,17 @@ WHILE pTemp <> 0 DO
 END_WHILE]]></ST>
       </Implementation>
     </Method>
-    <Method Name="ClearException" Id="{3da2b71b-81dd-404e-9c00-1c1512e86024}" FolderPath="Exceptions\">
-      <Declaration><![CDATA[METHOD PROTECTED ClearException : BOOL;
-VAR
+    <Method Name="Contains" Id="{5490eaca-91a3-44f9-8fc8-9197bc0b23ae}">
+      <Declaration><![CDATA[(* Checks if item is contained in list *)
+METHOD Contains : BOOL
+VAR_INPUT
+	Item : ANY; // Item to find in list
 END_VAR
-]]></Declaration>
+VAR
+	nIndex : DINT := -1;
+END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[ClearException 	:= stError.bSTATUS := FALSE;
-stError.nCODE 	:= 0;
-stError.sSOURCE := 'No error.';]]></ST>
+        <ST><![CDATA[THIS^.Find(Item, nIndex => nIndex, bSuccess => Contains);]]></ST>
       </Implementation>
     </Method>
     <Method Name="CopyValueTo" Id="{f1256ee2-117e-44ff-a280-45c5f906c678}" FolderPath="Protected\">
@@ -147,22 +154,23 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[THIS^.Clear();
-THIS^.pHead := Tc3_Module.GVL.NULL;]]></ST>
+THIS^.pHead := THIS^.pTail := Tc3_Module.GVL.NULL;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="Find" Id="{3da2f09a-a1ac-4d8a-9315-e204777dedef}">
+    <Method Name="Find" Id="{013937d5-c139-43db-b0da-bb96e2ed152e}">
       <Declaration><![CDATA[// Find the location of an item in list.
 METHOD Find : I_List
 VAR_INPUT
-	Item 	: ANY; // Item to find in list
+	Item 	 : ANY; // Item to find in list
 END_VAR
 VAR_OUTPUT
-	nIndex	: DINT; //Location of item in list 
+	nIndex	 : T_Capacity; //Location of item in list 
+	bSuccess : BOOL;
 END_VAR
 VAR
-	pTemp 	: POINTER TO ST_NODE;
-	i 		: DINT;
-	n 		: DINT := -1;
+	pTemp 	 : POINTER TO ST_LIST_NODE;
+	i 		 : DINT;
+	n 		 : DINT := -1;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Find := THIS^;
@@ -186,7 +194,7 @@ FOR i := 0 TO THIS^._Count-1 DO
 		IF (Item.diSize <> pTemp^.Data.diSize) THEN pTemp := pTemp^.pNext; CONTINUE; END_IF	
 		n := MEMCMP(Item.pValue, pTemp^.Data.pValue, TO_UDINT(Item.diSize));
 	END_CASE
-	IF n = 0 THEN nIndex := i; RETURN; END_IF
+	IF n = 0 THEN nIndex := i; bSuccess := TRUE; RETURN; END_IF
 	pTemp := pTemp^.pNext;
 	END_FOR
 nIndex := -1;]]></ST>
@@ -196,12 +204,12 @@ nIndex := -1;]]></ST>
       <Declaration><![CDATA[// Deletes/frees node and it's value from memory
 METHOD PROTECTED Free_Node
 VAR_INPUT
-	pNode : POINTER TO ST_NODE; 
+	pNode : POINTER TO ST_LIST_NODE; 
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[__DELETE(pNode^.Data.pValue);
-__DELETE(pNode);]]></ST>
+        <ST><![CDATA[IF pNode^.Data.pValue <> 0 THEN  __DELETE(pNode^.Data.pValue); END_IF
+IF pNode <> 0 THEN __DELETE(pNode); END_IF]]></ST>
       </Implementation>
     </Method>
     <Method Name="Get" Id="{f217126c-fbc8-4b16-bc91-0165668ad767}">
@@ -209,17 +217,24 @@ __DELETE(pNode);]]></ST>
 METHOD Get : I_List
 VAR_INPUT
 	Return_Item 	: ANY;  // Variable to store returned item
-	nIndex 			: DINT; // Location of item
+	nIndex 			: T_Capacity; // Location of item
+END_VAR
+VAR_OUTPUT
+	bSuccess 		: BOOL;
 END_VAR
 VAR
-	pTemp : POINTER TO ST_NODE;
+	pTemp : POINTER TO ST_LIST_NODE;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Get := THIS^;
-IF THIS^.EmptyListException() OR THIS^.OutOfBoundsException(nIndex) THEN THIS^.SetValue(Return_Item, 16#0); RETURN; END_IF
+IF THIS^.EmptyListException() THEN RETURN; END_IF
+IF THIS^.OutOfBoundsException(nIndex) THEN RETURN; END_IF
+IF nIndex = 0 THEN THIS^.Get_First(Return_Item, bSuccess => bSuccess); RETURN; END_IF
+IF nIndex = THIS^._Count - 1 THEN THIS^.Get_Last(Return_Item, bSuccess => bSuccess); RETURN; END_IF
 pTemp := Iterate(nIndex);
-IF THIS^.TypeMismatchException(Return_Item, pTemp^.Data) THEN THIS^.SetValue(Return_Item, 16#0); RETURN; END_IF
-THIS^.CopyValueTo(Return_Item, pTemp^.Data);]]></ST>
+IF THIS^.TypeMismatchException(Return_Item, pTemp^.Data) THEN RETURN; END_IF
+THIS^.CopyValueTo(Return_Item, pTemp^.Data);
+bSuccess := TRUE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Get_First" Id="{1bebd03d-aee6-473c-bace-1df90cf223c2}">
@@ -228,31 +243,72 @@ METHOD Get_First : I_List
 VAR_INPUT
 	Return_Item 	: ANY; // Variable to store returned item
 END_VAR
-VAR
-	pTemp 	: POINTER TO ST_NODE;
-END_VAR
-]]></Declaration>
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Get_First := THIS^;
-IF THIS^.TypeMismatchException(Return_Item, pHead^.Data) OR THIS^.EmptyListException() THEN THIS^.SetValue(Return_Item, 16#0); RETURN; END_IF
+IF THIS^.EmptyListException() THEN RETURN; END_IF
+IF THIS^.TypeMismatchException(Return_Item, pHead^.Data) THEN RETURN; END_IF
 THIS^.CopyValueTo(Return_Item, pHead^.Data);
-Get_First := THIS^;
-
-
-]]></ST>
+bSuccess := TRUE;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="Get_Value_As_String" Id="{07c9157b-496b-4f34-ad7b-276524ff724c}">
+    <Method Name="Get_Generic" Id="{77fc5034-a533-428d-be68-e432cdd8fc67}">
+      <Declaration><![CDATA[// Gets a value from a collection in it's generic form (* Use carefully as this contains the pointer of the action value in the collection. *)
+METHOD Get_Generic : I_Generic_List
+VAR_INPUT
+	nIndex 		: T_Capacity; 			// Location of item
+END_VAR
+VAR_OUTPUT
+	Return_Item : T_Generic;  	// Variable to store returned item
+	bSuccess 	: BOOL;
+END_VAR
+VAR
+	pTemp : POINTER TO ST_LIST_NODE;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get_Generic := THIS^;
+IF THIS^.EmptyListException() THEN RETURN; END_IF
+IF THIS^.OutOfBoundsException(nIndex) THEN RETURN; END_IF
+
+IF nIndex = THIS^._Count - 1 THEN pTemp := pTail; ELSE pTemp := THIS^.Iterate(nIndex); END_IF
+
+IF THIS^.TypeMismatchException(Return_Item, pTemp^.Data) THEN RETURN; END_IF
+Return_Item.diSize 		:= pTemp^.Data.diSize;
+Return_Item.pValue 		:= pTemp^.Data.pValue;
+Return_Item.TypeClass 	:= pTemp^.Data.TypeClass;
+bSuccess := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_Last" Id="{ced58a10-a606-40e3-aa00-f1704417ee24}">
+      <Declaration><![CDATA[// Gets item at the back of the list 
+METHOD Get_Last : I_List
+VAR_INPUT
+	Return_Item 	: ANY; // Variable to store returned item
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get_Last := THIS^;
+IF THIS^.EmptyListException() THEN RETURN; END_IF
+IF THIS^.TypeMismatchException(Return_Item, pTail^.Data) THEN RETURN; END_IF
+THIS^.CopyValueTo(Return_Item, pTail^.Data);
+bSuccess := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_Value_As_String" Id="{e01b4928-39b5-4c75-aed6-44a39cc9bded}">
       <Declaration><![CDATA[// Returns item as a string, if type to string conversion is supported
 METHOD Get_Value_As_String : I_List
 VAR_INPUT
-	nIndex	: DINT; // Location of item
+	nIndex	: T_Capacity; // Location of item
 END_VAR
 VAR_OUTPUT
 	sItem 	: T_MaxString; // Variable to store returned item
 END_VAR
 VAR
-	pTemp : POINTER TO ST_NODE;
+	pTemp : POINTER TO ST_LIST_NODE;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Get_Value_As_String := THIS^;
@@ -261,7 +317,7 @@ pTemp := Iterate(nIndex);
 sItem := pTemp^.Data.sValue;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="GetValueAsString" Id="{6472dc14-a2d6-41d6-88c5-7ff32e565031}" FolderPath="Protected\">
+    <Method Name="GetValueAsString" Id="{32c6d94d-c5d0-4b29-a13c-82fe6372151f}" FolderPath="Protected\">
       <Declaration><![CDATA[METHOD PROTECTED GetValueAsString : T_MaxString
 VAR_INPUT
 	 Value : __SYSTEM.AnyType;
@@ -406,18 +462,20 @@ END_VAR
 METHOD Insert : I_List
 VAR_INPUT
 	Item 	: ANY;  // Item to store in list
-	nIndex 	: DINT; // Location of item
+	nIndex 	: T_Capacity; // Location of item
 END_VAR
-
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
 VAR
-	pPrevious 	: POINTER TO ST_NODE;
-	pCurrent 	: POINTER TO ST_NODE;
-	pTemp 		: POINTER TO ST_NODE;
+	pPrevious 	: POINTER TO ST_LIST_NODE;
+	pCurrent 	: POINTER TO ST_LIST_NODE;
+	pTemp 		: POINTER TO ST_LIST_NODE;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Insert := THIS^;
-IF nIndex = 0 THEN THIS^.Add_Front(Item); RETURN; END_IF
-IF nIndex = THIS^._Count THEN THIS^.Add_Back(Item); RETURN; END_IF
+IF nIndex = 0 THEN THIS^.Add_Front(Item, bSuccess => bSuccess); RETURN; END_IF
+IF nIndex = THIS^._Count THEN THIS^.Add_Back(Item, bSuccess => bSuccess); RETURN; END_IF
 IF THIS^.OutOfBoundsException(nIndex) THEN RETURN; END_IF
 
 pTemp := THIS^.Malloc_Node(Item);
@@ -428,42 +486,97 @@ pCurrent := pPrevious^.pNext;
 pPrevious^.pNext := pTemp;
 pTemp^.pNext := pCurrent;
 
-THIS^.IncrementCount();]]></ST>
+THIS^.IncrementCount();
+bSuccess := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Insert_Generic" Id="{a354250d-c73a-45e6-90c3-e3c39cedc072}">
+      <Declaration><![CDATA[// Adds new item to list at specified location using the generic form. If index = 0, item will be added at the front, if index = count, item will be added at the back
+// To void race condition and memory leaks, a copy of the data/item in the generic form will be inserted. The original generic remains safe.
+METHOD Insert_Generic : I_Generic_List
+VAR_INPUT
+	Item 	: T_Generic;  	// Item to store in list
+	nIndex 	: T_Capacity; 			// Location of item
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+VAR
+	pPrevious, pCurrent, pTemp : POINTER TO ST_LIST_NODE;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Insert_Generic := THIS^;
+
+pTemp := THIS^.Malloc_Node(Item);
+THIS^.CopyValueTo(pTemp^.Data, Item);
+
+// Add to front if nIndex = 0
+IF nIndex = 0 THEN
+	pTemp^.pNext := THIS^.pHead; THIS^.pHead := pTemp;
+	IF THIS^._Is_Empty THEN THIS^.pTail := THIS^.pHead; END_IF
+	THIS^.IncrementCount();
+	bSuccess := TRUE;
+	RETURN; 
+	END_IF
+	
+// Add to back if nIndex = Count
+IF nIndex = THIS^._Count THEN 
+	THIS^.pTail := THIS^.pTail^.pNext := pTemp;
+	THIS^.IncrementCount();
+	bSuccess := TRUE;
+	RETURN;
+	END_IF
+
+// Free temp node and return if the node is out of bounds
+IF THIS^.OutOfBoundsException(nIndex) THEN THIS^.Free_Node(pTemp); RETURN; END_IF
+
+// Insert value at specified position position if all checks are passed
+pPrevious := THIS^.Iterate(nIndex-1);
+pCurrent := pPrevious^.pNext;
+pPrevious^.pNext := pTemp;
+pTemp^.pNext := pCurrent;
+
+THIS^.IncrementCount();
+bSuccess := TRUE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Iterate" Id="{eba4f8b4-8859-4d38-978a-6ba6dc0efca0}" FolderPath="Protected\">
       <Declaration><![CDATA[// Returns pointer to node at specificied location;
-METHOD PROTECTED Iterate : POINTER TO ST_NODE
+METHOD PROTECTED Iterate : POINTER TO ST_LIST_NODE
 VAR_INPUT
-	nIndex : DINT;
+	nIndex : T_Capacity;
+END_VAR
+VAR_INST
+	nState : BYTE;
+	ii : T_Capacity;
+	pT : POINTER TO ST_LIST_NODE;
 END_VAR
 VAR 
 	i 		: DINT;
-	pTemp 	: POINTER TO ST_NODE;
+	pTemp 	: POINTER TO ST_LIST_NODE;
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF THIS^.OutOfBoundsException(nIndex) THEN RETURN; END_IF
 IF nIndex = 0 THEN Iterate := THIS^.pHead; RETURN; END_IF
-//IF nIndex = THIS^._Count-1 THEN Iterate := pTail; RETURN; END_IF
+//IF nIndex = THIS^._Count - 1 THEN Iterate := pTail; RETURN; END_IF {warning 'changes made here'}
 pTemp := pHead;
 FOR i := 1 TO nIndex DO pTemp := pTemp^.pNext; END_FOR
-Iterate := pTemp;
-]]></ST>
+Iterate := pTemp;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Malloc_Node" Id="{2be6d349-c79d-45cd-88c5-8f4aba8a5d0f}" FolderPath="Protected\">
       <Declaration><![CDATA[// Allocate memory space for node and the value for it's data on the heap, returns pointer to node;
 // WARNING!!! Always have a place to store the node pointer otherwise a memory leak will occur.
-METHOD PROTECTED Malloc_Node : POINTER TO ST_NODE
+METHOD PROTECTED Malloc_Node : POINTER TO ST_LIST_NODE
 VAR_INPUT
 	Variable : __SYSTEM.AnyType;
 END_VAR
 VAR
-	pTemp 	: POINTER TO ST_NODE;
+	pTemp 	: POINTER TO ST_LIST_NODE;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[pTemp 					:= __NEW(ST_NODE); // Allocate space in memory for a node.
+        <ST><![CDATA[pTemp 					:= __NEW(ST_LIST_NODE); // Allocate space in memory for a node.
 pTemp^.Data.sValue 		:= THIS^.GetValueAsString(Variable);
 pTemp^.Data.pValue 		:= __NEW(BYTE, TO_UDINT(Variable.diSize)); // Allocate space in memory to store data value.
 pTemp^.Data.diSize 		:= Variable.diSize;
@@ -528,8 +641,11 @@ OutOfBoundsException := stError.bSTATUS;]]></ST>
     <Method Name="Remove" Id="{639458b4-b7c4-411d-8093-94e347b03982}">
       <Declaration><![CDATA[// Removes item at the front of the list and returns nothing
 METHOD Remove : I_List
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
 VAR
-	pTemp 	: POINTER TO ST_NODE;
+	pTemp 	: POINTER TO ST_LIST_NODE;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Remove := THIS^;
@@ -539,23 +655,29 @@ pTemp := THIS^.pHead^.pNext;
 THIS^.Free_Node(pHead);
 THIS^.pHead := pTemp;
 
+IF THIS^._Count = 1 THEN pTail := 0; END_IF
+
 THIS^.DecrementCount();
-]]></ST>
+bSuccess := TRUE;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="RemoveAt" Id="{4211da5c-082b-418f-831f-636ce2ace62d}">
+    <Method Name="Remove_At" Id="{4211da5c-082b-418f-831f-636ce2ace62d}">
       <Declaration><![CDATA[// Remove item at specified location and return nothing
-METHOD RemoveAt : I_List
+METHOD Remove_At : I_List
 VAR_INPUT
-	nIndex : DINT; // Location of item
+	nIndex : T_Capacity; // Location of item
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
 END_VAR
 VAR
-	pTemp : ARRAY[1..2] OF POINTER TO ST_NODE;
+	pTemp : ARRAY[1..2] OF POINTER TO ST_LIST_NODE;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[RemoveAt := THIS^;
-IF THIS^.EmptyListException() OR THIS^.OutOfBoundsException(nIndex)  THEN RETURN; END_IF
-IF nIndex = 0 THEN THIS^.Remove(); RETURN; END_IF
+        <ST><![CDATA[Remove_At := THIS^;
+IF THIS^.EmptyListException() OR THIS^.OutOfBoundsException(nIndex) THEN RETURN; END_IF
+IF nIndex = 0 THEN THIS^.Remove(bSuccess => bSuccess); RETURN; END_IF
+IF nIndex = THIS^._Count - 1 THEN THIS^.Remove_Last(bSuccess => bSuccess); RETURN; END_IF
 
 pTemp[1] := THIS^.Iterate(nIndex-1);
 pTemp[2] := pTemp[1]^.pNext^.pNext;
@@ -563,15 +685,40 @@ THIS^.Free_Node(pTemp[1]^.pNext);
 pTemp[1]^.pNext := pTemp[2];
 
 THIS^.DecrementCount();
+bSuccess := TRUE;
 
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="Resize" Id="{2a1488bc-99b8-4166-9c13-4bd32926e727}">
+    <Method Name="Remove_Last" Id="{2f32c52b-f92b-439a-b828-14c100304a5e}">
+      <Declaration><![CDATA[// Removes item at the back of the list and returns nothing
+METHOD Remove_Last : I_List
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+VAR
+	pTemp : POINTER TO ST_LIST_NODE;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Remove_Last := THIS^;
+IF THIS^.EmptyListException() THEN RETURN; END_IF
+IF THIS^._Count = 1 THEN THIS^.Remove(bSuccess => bSuccess); RETURN; END_IF
+pTemp := THIS^.Iterate(THIS^._Count - 2);
+THIS^.Free_Node(pTemp^.pNext);
+pTail := pTemp;
+THIS^.DecrementCount();
+bSuccess := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Resize" Id="{18b979ce-2bc0-4748-9e2c-63a64e88a96e}">
       <Declaration><![CDATA[// Manually resize list. If list becomes smaller, items on higher locations will be deleted.
 METHOD Resize : I_List
 VAR_INPUT
-	nSize : DINT; // New size of list.
+	nSize : T_Capacity; // New size of list.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
 END_VAR
 VAR 
 	Data 		: __SYSTEM.AnyType;
@@ -579,20 +726,21 @@ VAR
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Resize := THIS^;
-IF nSize <= 0 THEN THIS^.Clear(); RETURN; END_IF
-IF nSize = THIS^._Count THEN RETURN; END_IF
+IF (nSize = THIS^._Count) OR (nSize < 0) THEN RETURN; END_IF 
+IF nSize = 0 THEN THIS^.Clear(); bSuccess := TRUE; END_IF
+
+nCount := THIS^._Count;
+
 IF nSize < THIS^._Count THEN
-	nCount := THIS^._Count;
 	FOR i := 0 TO nCount - 1 DO
-		THIS^.RemoveAt(nCount - 1 - i);
+		THIS^.Remove_At(nCount - 1 - i, bSuccess => bSuccess);
 		IF THIS^._Count = nSize THEN RETURN; END_IF
 		END_FOR
 	END_IF
 	
 IF nSize > THIS^._Count THEN
-	nCount := THIS^._Count;
 	FOR i := nCount TO nSize - 1 DO
-		THIS^.Add_Back(Data);
+		THIS^.Add_Back(Data, bSuccess => bSuccess);
 		END_FOR
 	END_IF]]></ST>
       </Implementation>
@@ -600,21 +748,26 @@ IF nSize > THIS^._Count THEN
     <Method Name="Reverse" Id="{163b036d-4e69-4b74-8841-8d30b26b2230}">
       <Declaration><![CDATA[// Reverses the order of items in the list
 METHOD Reverse : I_List
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
 VAR
-	pPrevious 	: POINTER TO ST_NODE;
-	pCurrent 	: POINTER TO ST_NODE;
-	pNext	 	: POINTER TO ST_NODE;
+	pPrevious 	: POINTER TO ST_LIST_NODE;
+	pCurrent 	: POINTER TO ST_LIST_NODE;
+	pNext	 	: POINTER TO ST_LIST_NODE;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Reverse := THIS^;
-pCurrent := pHead;
+IF THIS^._Count = 1 OR THIS^.EmptyListException() THEN RETURN; END_IF
+pCurrent := THIS^.pTail := THIS^.pHead;
 WHILE pCurrent <> 0 DO
 	pNext := pCurrent^.pNext;
 	pCurrent^.pNext := pPrevious;
 	pPrevious := pCurrent;
 	pCurrent := pNext;
-END_WHILE
+	END_WHILE
 THIS^.pHead := pPrevious;
+bSuccess := TRUE;
 ]]></ST>
       </Implementation>
     </Method>
@@ -623,18 +776,28 @@ THIS^.pHead := pPrevious;
 METHOD Set : I_List
 VAR_INPUT
 	Item 	: ANY; 	// Item to store in list
-	nIndex 	: DINT; // Location of item
+	nIndex 	: T_Capacity; // Location of item
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
 END_VAR
 VAR
-	pTemp : POINTER TO ST_NODE;
+	pTemp : POINTER TO ST_LIST_NODE;
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[Set := THIS^;
 IF THIS^.OutOfBoundsException(nIndex) THEN RETURN; END_IF
-pTemp := Iterate(nIndex);
+
+IF nIndex = THIS^._Count - 1 THEN 
+	pTemp := THIS^.pTail;
+ELSE 
+	pTemp := Iterate(nIndex);
+	END_IF
+
 IF THIS^.TypeMismatchException(pTemp^.Data, Item) THEN RETURN; END_IF
 THIS^.CopyValueTo(pTemp^.Data, Item);
+bSuccess := TRUE;
 
 ]]></ST>
       </Implementation>
@@ -680,19 +843,24 @@ TypeMismatchException := stError.bSTATUS;]]></ST>
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_List.Add_Back">
-      <LineId Id="223" Count="7" />
-      <LineId Id="170" Count="0" />
+      <LineId Id="219" Count="0" />
+      <LineId Id="234" Count="0" />
+      <LineId Id="220" Count="1" />
+      <LineId Id="240" Count="0" />
+      <LineId Id="226" Count="0" />
     </LineIds>
     <LineIds Name="FB_List.Add_Front">
-      <LineId Id="39" Count="5" />
-      <LineId Id="7" Count="0" />
+      <LineId Id="35" Count="2" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="61" Count="0" />
     </LineIds>
     <LineIds Name="FB_List.Clear">
       <LineId Id="9" Count="2" />
       <LineId Id="5" Count="0" />
     </LineIds>
-    <LineIds Name="FB_List.ClearException">
-      <LineId Id="6" Count="1" />
+    <LineIds Name="FB_List.Contains">
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_List.CopyValueTo">
@@ -714,7 +882,7 @@ TypeMismatchException := stError.bSTATUS;]]></ST>
       <LineId Id="8" Count="0" />
     </LineIds>
     <LineIds Name="FB_List.Find">
-      <LineId Id="107" Count="23" />
+      <LineId Id="100" Count="23" />
       <LineId Id="38" Count="0" />
     </LineIds>
     <LineIds Name="FB_List.Free_Node">
@@ -722,15 +890,41 @@ TypeMismatchException := stError.bSTATUS;]]></ST>
       <LineId Id="8" Count="0" />
     </LineIds>
     <LineIds Name="FB_List.Get">
-      <LineId Id="78" Count="3" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="82" Count="0" />
+      <LineId Id="81" Count="0" />
+      <LineId Id="80" Count="0" />
+      <LineId Id="83" Count="0" />
+      <LineId Id="70" Count="1" />
       <LineId Id="24" Count="0" />
+      <LineId Id="95" Count="0" />
     </LineIds>
     <LineIds Name="FB_List.Get_First">
-      <LineId Id="160" Count="5" />
-      <LineId Id="12" Count="0" />
+      <LineId Id="156" Count="0" />
+      <LineId Id="167" Count="0" />
+      <LineId Id="157" Count="1" />
+      <LineId Id="175" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_List.Get_Generic">
+      <LineId Id="8" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="18" Count="1" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="35" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_List.Get_Last">
+      <LineId Id="156" Count="0" />
+      <LineId Id="178" Count="0" />
+      <LineId Id="157" Count="1" />
+      <LineId Id="186" Count="0" />
     </LineIds>
     <LineIds Name="FB_List.Get_Value_As_String">
-      <LineId Id="44" Count="2" />
+      <LineId Id="38" Count="2" />
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_List.GetValueAsString">
@@ -742,15 +936,25 @@ TypeMismatchException := stError.bSTATUS;]]></ST>
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_List.Insert">
-      <LineId Id="113" Count="12" />
+      <LineId Id="108" Count="12" />
       <LineId Id="58" Count="0" />
+      <LineId Id="134" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_List.Insert_Generic">
+      <LineId Id="8" Count="0" />
+      <LineId Id="80" Count="8" />
+      <LineId Id="108" Count="0" />
+      <LineId Id="89" Count="6" />
+      <LineId Id="109" Count="0" />
+      <LineId Id="96" Count="11" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="110" Count="0" />
     </LineIds>
     <LineIds Name="FB_List.Iterate">
       <LineId Id="5" Count="0" />
       <LineId Id="27" Count="1" />
       <LineId Id="24" Count="1" />
       <LineId Id="23" Count="0" />
-      <LineId Id="13" Count="0" />
     </LineIds>
     <LineIds Name="FB_List.Malloc_Node">
       <LineId Id="5" Count="0" />
@@ -771,45 +975,69 @@ TypeMismatchException := stError.bSTATUS;]]></ST>
     </LineIds>
     <LineIds Name="FB_List.Remove">
       <LineId Id="30" Count="0" />
-      <LineId Id="9" Count="1" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="35" Count="0" />
       <LineId Id="12" Count="0" />
       <LineId Id="24" Count="0" />
-      <LineId Id="15" Count="2" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="16" Count="1" />
       <LineId Id="5" Count="0" />
     </LineIds>
-    <LineIds Name="FB_List.RemoveAt">
+    <LineIds Name="FB_List.Remove_At">
       <LineId Id="37" Count="0" />
       <LineId Id="9" Count="0" />
       <LineId Id="16" Count="0" />
+      <LineId Id="46" Count="0" />
       <LineId Id="38" Count="0" />
       <LineId Id="17" Count="0" />
       <LineId Id="22" Count="0" />
       <LineId Id="18" Count="0" />
       <LineId Id="24" Count="0" />
       <LineId Id="27" Count="1" />
+      <LineId Id="57" Count="0" />
       <LineId Id="25" Count="0" />
       <LineId Id="15" Count="0" />
     </LineIds>
+    <LineIds Name="FB_List.Remove_Last">
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="1" />
+      <LineId Id="10" Count="3" />
+      <LineId Id="22" Count="0" />
+    </LineIds>
     <LineIds Name="FB_List.Resize">
-      <LineId Id="7" Count="3" />
-      <LineId Id="18" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="43" Count="1" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="10" Count="0" />
       <LineId Id="14" Count="0" />
       <LineId Id="16" Count="0" />
       <LineId Id="19" Count="0" />
       <LineId Id="17" Count="0" />
       <LineId Id="15" Count="0" />
-      <LineId Id="23" Count="2" />
+      <LineId Id="23" Count="1" />
       <LineId Id="27" Count="2" />
       <LineId Id="26" Count="0" />
     </LineIds>
     <LineIds Name="FB_List.Reverse">
       <LineId Id="21" Count="0" />
+      <LineId Id="31" Count="0" />
       <LineId Id="6" Count="0" />
       <LineId Id="8" Count="6" />
+      <LineId Id="32" Count="0" />
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_List.Set">
-      <LineId Id="78" Count="5" />
+      <LineId Id="73" Count="1" />
+      <LineId Id="90" Count="0" />
+      <LineId Id="89" Count="0" />
+      <LineId Id="91" Count="4" />
+      <LineId Id="76" Count="1" />
+      <LineId Id="108" Count="0" />
+      <LineId Id="78" Count="0" />
       <LineId Id="43" Count="0" />
     </LineIds>
     <LineIds Name="FB_List.SetValue">

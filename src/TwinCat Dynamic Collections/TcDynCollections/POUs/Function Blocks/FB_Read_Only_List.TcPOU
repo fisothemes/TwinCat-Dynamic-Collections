@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="FB_Read_Only_List" Id="{6efe7c5c-a96b-4f7e-b188-16fc6ad6b70d}" SpecialFunc="None">
+    <Declaration><![CDATA[// Read Only Decorator for function blocks that impliment I_List interface
+{attribute 'enable_dynamic_creation'}
+FUNCTION_BLOCK FB_Read_Only_List EXTENDS FB_Collection IMPLEMENTS I_Read_Only_List
+VAR_INPUT
+	ipList : I_List;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="Exceptions" Id="{acef49db-890d-409b-af55-d7f93b2291cb}" />
+    <Property Name="_Count" Id="{85c50e3d-78af-4a56-ab1f-bccf81c7a75a}">
+      <Declaration><![CDATA[(* Number of items in the collection*)
+PROPERTY _Count : T_Capacity
+]]></Declaration>
+      <Get Name="Get" Id="{6c8f504c-85ce-4ed9-aef0-83d5b593c0a2}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF THIS^.NullReferenceException() THEN _Count := -1; RETURN; END_IF
+_Count := THIS^.ipList._Count;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="_Error_Status" Id="{f6286b31-d8e1-4195-bb1d-ab1cd49c0d81}">
+      <Declaration><![CDATA[PROPERTY _Error_Status : ST_ERROR]]></Declaration>
+      <Get Name="Get" Id="{a423cc1c-e241-4c5e-ac4a-5100b06f7459}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF THIS^.NullReferenceException() THEN _Error_Status := THIS^.stError; RETURN; END_IF
+THIS^.stError := THIS^.ipList._Error_Status;
+_Error_Status := F_Error(THIS^.stError.bSTATUS, THIS^.stError.nCODE, THIS^.stError.sSOURCE);]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="_Is_Empty" Id="{869a8107-32c9-4105-8aad-4c8aa73ae31a}">
+      <Declaration><![CDATA[(* Checks if collection is empty*)
+PROPERTY _Is_Empty : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{cb3d1913-9d84-4879-a42e-6f522139cf44}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF THIS^.NullReferenceException() THEN _Is_Empty := TRUE; RETURN; END_IF
+_Is_Empty := THIS^.ipList._Is_Empty;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Clear" Id="{2d45307b-96ae-48e1-9b09-0f3dbe829bcc}">
+      <Declaration><![CDATA[(* DOES NOTHING - This is a read-only list *)
+METHOD FINAL Clear
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Contains" Id="{e5307dbf-b3b8-4998-b7a1-40f259c9f3e4}">
+      <Declaration><![CDATA[(* Checks if item is contained in list *)
+METHOD Contains : BOOL
+VAR_INPUT
+	Item : ANY; // Item to find in list
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF THIS^.NullReferenceException() THEN RETURN; END_IF
+Contains := THIS^.ipList.Contains(Item);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Find" Id="{1440e5e6-ce20-46be-9150-fc7b20521a33}">
+      <Declaration><![CDATA[// Find the location of an item in list.
+METHOD Find : I_Read_Only_List
+VAR_INPUT
+	Item 	: ANY; // Item to find in list
+END_VAR
+VAR_OUTPUT
+	nIndex	: DINT; //Location of item in list 
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Find := THIS^;
+IF THIS^.NullReferenceException() THEN nIndex := -1; RETURN; END_IF
+THIS^.ipList.Find(Item, nIndex => nIndex, bSuccess => bSuccess);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get" Id="{1d1eb80f-9dd8-4fbb-94f4-eae741a81e0d}">
+      <Declaration><![CDATA[// Gets item from list at specified location without removing it
+METHOD Get : I_Read_Only_List
+VAR_INPUT
+	Return_Item 	: ANY;  // Variable to store returned item
+	nIndex 			: DINT; // Location of item
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get := THIS^;
+IF THIS^.NullReferenceException() THEN RETURN; END_IF
+THIS^.ipList.Get(Return_Item, nIndex, bSuccess => bSuccess);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_First" Id="{626d40cd-4db1-4a6c-ba1a-fb37ae9e92c7}">
+      <Declaration><![CDATA[// Gets item at the front of the list 
+METHOD Get_First : I_Read_Only_List
+VAR_INPUT
+	Return_Item 	: ANY; // Variable to store returned item
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get_First := THIS^;
+IF THIS^.NullReferenceException() THEN RETURN; END_IF
+THIS^.ipList.Get_First(Return_Item, bSuccess => bSuccess);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_Last" Id="{3ee5f152-70c1-4cc0-92a8-24b33d586fc3}">
+      <Declaration><![CDATA[// Gets item at the back of the list 
+METHOD Get_Last : I_Read_Only_List
+VAR_INPUT
+	Return_Item 	: ANY; // Variable to store returned item
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get_Last := THIS^;
+IF THIS^.NullReferenceException() THEN RETURN; END_IF
+THIS^.ipList.Get_Last(Return_Item, bSuccess => bSuccess);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_Value_As_String" Id="{698a4137-32d6-46eb-a34d-20a3b17fe57e}">
+      <Declaration><![CDATA[// Returns item as a string, if type to string conversion is supported
+METHOD Get_Value_As_String : I_Read_Only_List
+VAR_INPUT
+	nIndex	: DINT; // Location of item
+END_VAR
+VAR_OUTPUT
+	sItem 	: T_MaxString; // Variable to store returned item
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get_Value_As_String := THIS^;
+IF THIS^.NullReferenceException() THEN RETURN; END_IF
+THIS^.ipList.Get_Value_As_String(nIndex, sItem => sItem);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="NullReferenceException" Id="{75bd21d4-b795-41b2-bbbf-ed32d85d8aa0}" FolderPath="Exceptions\">
+      <Declaration><![CDATA[METHOD PROTECTED NullReferenceException : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[NullReferenceException := THIS^.ipList = 0;
+IF NOT NullReferenceException THEN RETURN; END_IF
+THIS^.RaiseException(2000+GVL_CmpErrors.ERR_INVALID_REFERENCE, 'Null or Invalid Reference');]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Read_Only_List">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Read_Only_List._Count.Get">
+      <LineId Id="2" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Read_Only_List._Error_Status.Get">
+      <LineId Id="2" Count="0" />
+      <LineId Id="5" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_Read_Only_List._Is_Empty.Get">
+      <LineId Id="2" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Read_Only_List.Clear">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Read_Only_List.Contains">
+      <LineId Id="7" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Read_Only_List.Find">
+      <LineId Id="12" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Read_Only_List.Get">
+      <LineId Id="11" Count="1" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Read_Only_List.Get_First">
+      <LineId Id="10" Count="1" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Read_Only_List.Get_Last">
+      <LineId Id="10" Count="1" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Read_Only_List.Get_Value_As_String">
+      <LineId Id="10" Count="1" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Read_Only_List.NullReferenceException">
+      <LineId Id="14" Count="1" />
+      <LineId Id="12" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

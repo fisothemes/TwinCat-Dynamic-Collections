@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="P_Example_Binary_Search_Tree" Id="{753b7b3e-3784-43dd-aa27-d5686330e7d3}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM INTERNAL P_Example_Binary_Search_Tree
+VAR
+	eState 		: (IDLE, INSERT, FIND, REMOVE, TRAVERSE, CLEAR, CLEAR_LIST, BALANCE);
+	fbBST 		: FB_Binary_Search_Tree(T_Type.TYPE_DINT);
+	eTrav 		: T_BST_Traversal;
+	fbList 		: FB_List;
+	arsVal 		: ARRAY[0..20] OF T_MaxString;
+	nFind 		: DINT; // Value to find
+	bFound 		: BOOL; 
+	nRemove 	: DINT; // Value to remove
+	bRemoved 	: BOOL;
+	arValues	: ARRAY[0..7] OF DINT := [1,2,3,4,5,6,7,8];
+	nCount,i 	: DINT;
+	stError 	: ST_ERROR;
+	sz 			: UDINT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[stError := fbBST._Error_Status;
+sz := SIZEOF(fbBST);
+nCount := fbBST._Count;
+CASE eState OF
+	INSERT:
+		FOR i := 0 TO (SIZEOF(arValues)/SIZEOF(DINT))-1 DO fbBST.Insert(arValues[i]);END_FOR
+				
+	FIND:
+		fbBST.Find(nFind, bFound => bFound);
+		
+	REMOVE:
+		fbBST.Remove(nRemove, bSuccess => bRemoved);
+		
+	TRAVERSE:
+		fbBST.Traverse(eTrav, fbList);
+		FOR i := 0 TO (SIZEOF(arsVal)/SIZEOF(arsVal[0]))-1 DO arsVal[i] := ''; END_FOR
+		FOR i := 0 TO fbList._Count-1 DO fbList.Get_Value_As_String(i, sItem => arsVal[i]); END_FOR
+					
+	CLEAR:
+		fbBST.Clear();
+		
+	CLEAR_LIST:
+		fbList.Clear();
+		
+	BALANCE:
+		fbBST.Balance();
+END_CASE
+eState := IDLE;]]></ST>
+    </Implementation>
+    <LineIds Name="P_Example_Binary_Search_Tree">
+      <LineId Id="223" Count="3" />
+      <LineId Id="362" Count="0" />
+      <LineId Id="228" Count="0" />
+      <LineId Id="231" Count="8" />
+      <LineId Id="298" Count="0" />
+      <LineId Id="248" Count="0" />
+      <LineId Id="270" Count="0" />
+      <LineId Id="272" Count="0" />
+      <LineId Id="242" Count="0" />
+      <LineId Id="273" Count="0" />
+      <LineId Id="271" Count="0" />
+      <LineId Id="274" Count="0" />
+      <LineId Id="299" Count="2" />
+      <LineId Id="243" Count="0" />
+      <LineId Id="16" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

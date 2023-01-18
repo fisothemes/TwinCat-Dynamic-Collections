@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="F_Error" Id="{0fdd4f1b-65e9-4681-a653-14b8b72ef155}" SpecialFunc="None">
+    <Declaration><![CDATA[// Error Function: Passes error code and message to type ST_ERROR when bStatus = TRUE.  
+FUNCTION F_Error : T_Error
+VAR_INPUT
+	bStatus : BOOL; 		// Trigger to pass code and message | Note: Default is FALSE
+	nCode 	: DINT; 		// Code to pass to error struct | Note: code is 0 if there is no error
+	sSource : T_MaxString; 	// Message to pass to error struct | Note: message is 'No Error.'  if there is no error
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[F_Error.bSTATUS := bStatus; 
+IF bStatus THEN F_Error.nCODE := nCode; F_Error.sSOURCE := sSource;
+ELSE F_Error.nCODE := GVL_CmpErrors.ERR_OK; F_Error.sSOURCE := 'No Error'; END_IF
+]]></ST>
+    </Implementation>
+    <LineIds Name="F_Error">
+      <LineId Id="14" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="27" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,27 +1,40 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
   <POU Name="FB_Queue" Id="{c0a25d3b-3294-43fd-9bd2-3bf3486c2d23}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_Queue EXTENDS FB_Collections  IMPLEMENTS I_Queue
+    <Declaration><![CDATA[// Queue Decorator for function blocks that impliment I_List interface
+{attribute 'enable_dynamic_creation'}
+FUNCTION_BLOCK FB_Queue EXTENDS FB_Collection  IMPLEMENTS I_Queue
 VAR_INPUT
 	ipList : I_List; // List to perform operations on.
-END_VAR
-VAR
-	//ipItems_List : I_List; // List holding items on the queue
-END_VAR
-]]></Declaration>
+END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
+    <Folder Name="Exceptions" Id="{32400bd4-b7e2-4496-a434-64275e7e67c6}" />
     <Property Name="_Count" Id="{4980f9f4-e529-4835-9d02-e0820fac350a}">
       <Declaration><![CDATA[(* Number of items in queue*)
-PROPERTY _Count : DINT
+PROPERTY _Count : T_Capacity
 ]]></Declaration>
       <Get Name="Get" Id="{699f6c1f-1997-44e0-9196-f27626bb4a8b}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[_Count := THIS^.ipList._Count;]]></ST>
+          <ST><![CDATA[IF THIS^.NullReferenceException() THEN _Count := -1;RETURN; END_IF
+_Count := THIS^.ipList._Count;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="_Error_Status" Id="{72a39777-456e-4c2e-85d6-936041c24d4c}">
+      <Declaration><![CDATA[PROPERTY _Error_Status : ST_ERROR]]></Declaration>
+      <Get Name="Get" Id="{66fdd621-1599-41ea-8e13-ba87dc445cb1}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF THIS^.NullReferenceException() THEN _Error_Status := THIS^.stError; RETURN; END_IF
+THIS^.stError := THIS^.ipList._Error_Status;
+_Error_Status := F_Error(THIS^.stError.bSTATUS, THIS^.stError.nCODE, THIS^.stError.sSOURCE);]]></ST>
         </Implementation>
       </Get>
     </Property>
@@ -34,7 +47,8 @@ PROPERTY _Is_Empty : BOOL
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[_Is_Empty := THIS^.ipList._Is_Empty;]]></ST>
+          <ST><![CDATA[IF THIS^.NullReferenceException() THEN _Is_Empty := TRUE; RETURN; END_IF
+_Is_Empty := THIS^.ipList._Is_Empty;]]></ST>
         </Implementation>
       </Get>
     </Property>
@@ -44,7 +58,7 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[//THIS^.ipItems_List(stError => THIS^.stError);
+        <ST><![CDATA[IF THIS^.NullReferenceException() THEN RETURN; END_IF
 THIS^.stError := ipList._Error_Status;
 CatchError := stError.bSTATUS;]]></ST>
       </Implementation>
@@ -54,7 +68,8 @@ CatchError := stError.bSTATUS;]]></ST>
 METHOD Clear
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[THIS^.ipList.Clear();]]></ST>
+        <ST><![CDATA[IF THIS^.NullReferenceException() THEN RETURN; END_IF
+THIS^.ipList.Clear();]]></ST>
       </Implementation>
     </Method>
     <Method Name="Dequeue" Id="{e93db59e-1376-4260-b5d7-9c96340c297e}">
@@ -63,24 +78,31 @@ METHOD Dequeue : I_Queue
 VAR_INPUT
 	Item : ANY; (* Variable to store returned item value *)
 END_VAR
-]]></Declaration>
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+VAR 
+	bA, bB 	 : BOOL;
+END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Dequeue := THIS^;
-THIS^.ipList.Get_First(Item);
-IF THIS^.CatchError() THEN RETURN; END_IF;
-THIS^.ipList.Remove();
-THIS^.CatchError();]]></ST>
+IF THIS^.NullReferenceException() THEN RETURN; END_IF
+THIS^.ipList.Get_First(Item, bSuccess => bA);
+THIS^.ipList.Remove(bSuccess => bB);
+bSuccess := bA AND bB;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Dequeue_Void" Id="{fb75845f-f99c-4e28-94cd-b00a8977d52c}">
       <Declaration><![CDATA[(* Removes item at the front of the queue without returning anything *)
 METHOD Dequeue_Void : I_Queue
-VAR_INPUT
+VAR_OUTPUT
+	bSuccess : BOOL;
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[Dequeue_Void := THIS^;
-THIS^.ipList.Remove();
+IF THIS^.NullReferenceException() THEN RETURN; END_IF
+THIS^.ipList.Remove(bSuccess => bSuccess);
 THIS^.CatchError();]]></ST>
       </Implementation>
     </Method>
@@ -90,10 +112,13 @@ METHOD Enqueue : I_Queue
 VAR_INPUT
 	Item : ANY; (* Variable containg data to store on the queue *)
 END_VAR
-]]></Declaration>
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Enqueue := THIS^;
-THIS^.ipList.Add_Back(Item);
+IF THIS^.NullReferenceException() THEN RETURN; END_IF
+THIS^.ipList.Add_Back(Item, bSuccess => bSuccess);
 THIS^.CatchError();]]></ST>
       </Implementation>
     </Method>
@@ -102,11 +127,24 @@ THIS^.CatchError();]]></ST>
 METHOD Enqueue_At_Front : I_Queue
 VAR_INPUT
 	Item : ANY; (* Variable containg data to store on the queue *)
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Enqueue_At_Front := THIS^;
-THIS^.ipList.Add_Front(Item);
+IF THIS^.NullReferenceException() THEN RETURN; END_IF
+THIS^.ipList.Add_Front(Item, bSuccess => bSuccess);
 THIS^.CatchError();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="NullReferenceException" Id="{2f7bb67e-e1e1-4b51-b486-f5636567eb0e}" FolderPath="Exceptions\">
+      <Declaration><![CDATA[METHOD PROTECTED NullReferenceException : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[NullReferenceException := THIS^.ipList = 0;
+IF NOT NullReferenceException THEN RETURN; END_IF
+THIS^.RaiseException(2000+GVL_CmpErrors.ERR_INVALID_REFERENCE, 'Null or Invalid Reference');]]></ST>
       </Implementation>
     </Method>
     <Method Name="Peek" Id="{bd5b0349-051a-47b0-b681-deca70a87271}">
@@ -115,21 +153,27 @@ METHOD Peek : I_Queue
 VAR_INPUT
 	Item 	: ANY; (* Variable to store returned item value *)
 	nIndex 	: DINT; (* Location of item*)
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Peek := THIS^;
-THIS^.ipList.Get(Item, nIndex);
+IF THIS^.NullReferenceException() THEN RETURN; END_IF
+THIS^.ipList.Get(Item, nIndex, bSuccess => bSuccess);
 THIS^.CatchError();]]></ST>
       </Implementation>
     </Method>
     <Method Name="Reverse" Id="{379b4de2-5f3c-405e-9591-f9fd46fb229d}">
       <Declaration><![CDATA[METHOD Reverse : I_Queue
-VAR_INPUT
+VAR_OUTPUT
+	bSuccess : BOOL;
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[Reverse := THIS^;
-THIS^.ipList.Reverse();
+IF THIS^.NullReferenceException() THEN RETURN; END_IF
+THIS^.ipList.Reverse(bSuccess => bSuccess);
 THIS^.CatchError();]]></ST>
       </Implementation>
     </Method>
@@ -137,46 +181,65 @@ THIS^.CatchError();]]></ST>
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_Queue._Count.Get">
+      <LineId Id="5" Count="0" />
       <LineId Id="2" Count="0" />
     </LineIds>
+    <LineIds Name="FB_Queue._Error_Status.Get">
+      <LineId Id="2" Count="0" />
+      <LineId Id="5" Count="1" />
+    </LineIds>
     <LineIds Name="FB_Queue._Is_Empty.Get">
+      <LineId Id="5" Count="0" />
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_Queue.CatchError">
-      <LineId Id="5" Count="0" />
+      <LineId Id="14" Count="0" />
       <LineId Id="10" Count="0" />
       <LineId Id="6" Count="0" />
     </LineIds>
     <LineIds Name="FB_Queue.Clear">
+      <LineId Id="8" Count="0" />
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_Queue.Dequeue">
       <LineId Id="5" Count="0" />
-      <LineId Id="10" Count="1" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="10" Count="0" />
       <LineId Id="9" Count="0" />
-      <LineId Id="17" Count="0" />
+      <LineId Id="34" Count="0" />
     </LineIds>
     <LineIds Name="FB_Queue.Dequeue_Void">
       <LineId Id="5" Count="0" />
+      <LineId Id="13" Count="0" />
       <LineId Id="8" Count="0" />
       <LineId Id="7" Count="0" />
     </LineIds>
     <LineIds Name="FB_Queue.Enqueue">
       <LineId Id="5" Count="0" />
+      <LineId Id="17" Count="0" />
       <LineId Id="11" Count="0" />
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_Queue.Enqueue_At_Front">
       <LineId Id="5" Count="0" />
+      <LineId Id="18" Count="0" />
       <LineId Id="13" Count="0" />
       <LineId Id="11" Count="0" />
     </LineIds>
+    <LineIds Name="FB_Queue.NullReferenceException">
+      <LineId Id="14" Count="1" />
+      <LineId Id="12" Count="0" />
+    </LineIds>
     <LineIds Name="FB_Queue.Peek">
-      <LineId Id="11" Count="1" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="12" Count="0" />
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_Queue.Reverse">
-      <LineId Id="6" Count="1" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="7" Count="0" />
       <LineId Id="5" Count="0" />
     </LineIds>
   </POU>

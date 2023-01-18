@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <DUT Name="ST_BINARY_SEARCH_TREE_NODE" Id="{844ac3dc-7a79-47ac-ad21-088f3b6a740c}">
+    <Declaration><![CDATA[(* Node for Binary Search Tree *)
+{attribute 'enable_dynamic_creation'}
+TYPE INTERNAL ST_BINARY_SEARCH_TREE_NODE :
+STRUCT
+	Data 		: T_Generic;
+	pLeft 		: POINTER TO ST_BINARY_SEARCH_TREE_NODE;
+	pRight 		: POINTER TO ST_BINARY_SEARCH_TREE_NODE;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

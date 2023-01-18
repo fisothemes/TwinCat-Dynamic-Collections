@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
   <POU Name="FB_Stack" Id="{33f13e36-9900-42f1-bbaa-06171dd380dc}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_Stack EXTENDS FB_Collections IMPLEMENTS I_Stack
+    <Declaration><![CDATA[{attribute 'enable_dynamic_creation'}
+{attribute 'no_assign'}
+FUNCTION_BLOCK FB_Stack EXTENDS FB_Collection IMPLEMENTS I_Stack
 VAR_INPUT
 	ipList : I_List; // List to perform operations on.
 END_VAR
@@ -12,15 +14,31 @@ END_VAR
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
+    <Folder Name="Exceptions" Id="{8c4d617d-497b-4248-a944-b3a41ba5f0be}" />
+    <Folder Name="Protected" Id="{3208e573-a6ba-4628-ba51-def5ab5ae266}" />
     <Property Name="_Count" Id="{6c6d10a0-21f3-4bac-8a60-85e10ab31bd4}">
       <Declaration><![CDATA[(* Number of elements in the stack *)
-PROPERTY _Count : DINT]]></Declaration>
+PROPERTY _Count : T_Capacity]]></Declaration>
       <Get Name="Get" Id="{2f584baf-f990-4f7f-93aa-d61bdaaaa2a6}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[_Count := THIS^.ipList._Count;]]></ST>
+          <ST><![CDATA[IF THIS^.NullReferenceException() THEN _Count := -1; RETURN; END_IF
+_Count := THIS^.ipList._Count;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="_Error_Status" Id="{ce73d1ee-533c-4d6a-b316-67764598fa80}">
+      <Declaration><![CDATA[PROPERTY _Error_Status : ST_ERROR]]></Declaration>
+      <Get Name="Get" Id="{239acf3b-26c5-40d6-ae06-2c38dc30313c}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF THIS^.NullReferenceException() THEN _Error_Status := THIS^.stError; RETURN; END_IF
+THIS^.stError := THIS^.ipList._Error_Status;
+_Error_Status := F_Error(THIS^.stError.bSTATUS, THIS^.stError.nCODE, THIS^.stError.sSOURCE);]]></ST>
         </Implementation>
       </Get>
     </Property>
@@ -32,11 +50,12 @@ PROPERTY _Is_Empty : BOOL]]></Declaration>
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[_Is_Empty := THIS^.ipList._Is_Empty;]]></ST>
+          <ST><![CDATA[IF THIS^.NullReferenceException() THEN _Is_Empty := TRUE; RETURN; END_IF
+_Is_Empty := THIS^.ipList._Is_Empty;]]></ST>
         </Implementation>
       </Get>
     </Property>
-    <Method Name="CatchError" Id="{0532b148-4715-4b7e-8183-5316fd5e6f33}">
+    <Method Name="CatchError" Id="{0532b148-4715-4b7e-8183-5316fd5e6f33}" FolderPath="Protected\">
       <Declaration><![CDATA[METHOD PROTECTED CatchError : BOOL
 VAR_INPUT
 END_VAR
@@ -53,7 +72,17 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[THIS^.ipList.Clear();]]></ST>
+        <ST><![CDATA[IF THIS^.NullReferenceException() THEN RETURN; END_IF
+THIS^.ipList.Clear();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="NullReferenceException" Id="{19bf9596-ce9c-46ad-8ef8-f87cfba22c2c}" FolderPath="Exceptions\">
+      <Declaration><![CDATA[METHOD PROTECTED NullReferenceException : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[NullReferenceException := THIS^.ipList = 0;
+IF NOT NullReferenceException THEN RETURN; END_IF
+THIS^.RaiseException(2000+GVL_CmpErrors.ERR_INVALID_REFERENCE, 'Null or Invalid Reference');]]></ST>
       </Implementation>
     </Method>
     <Method Name="Peek" Id="{1f724740-b293-42b6-af19-3d12e5260d01}">
@@ -63,12 +92,13 @@ VAR_INPUT
 	Item 	: ANY; (* Variable to store returned item value *)
 	nIndex 	: DINT; (* Location of item*)
 END_VAR
-]]></Declaration>
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Peek := THIS^;
-THIS^.ipList.Get(Item, nIndex);
-THIS^.CatchError();
-]]></ST>
+IF THIS^.NullReferenceException() THEN RETURN; END_IF
+THIS^.ipList.Get(Item, nIndex, bSuccess => bSuccess);]]></ST>
       </Implementation>
     </Method>
     <Method Name="Pop" Id="{7d2c9231-7418-4d01-a950-6dddff60807b}">
@@ -77,27 +107,30 @@ METHOD Pop : I_Stack
 VAR_INPUT
 	Item : ANY; (* Variable to store returned item value *)
 END_VAR
-]]></Declaration>
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+VAR
+	bA, bB 	 : BOOL;
+END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Pop := THIS^;
-THIS^.ipList.Get_First(Item);
-IF THIS^.CatchError() THEN RETURN; END_IF;
-THIS^.ipList.Remove();
-THIS^.CatchError();
-
-]]></ST>
+IF THIS^.NullReferenceException() THEN RETURN; END_IF
+THIS^.ipList.Get_First(Item, bSuccess => bA).Remove( bSuccess => bB);
+bSuccess := bA AND bB;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Pop_Void" Id="{c9348d36-9274-4a3a-ab38-d78573b18931}">
       <Declaration><![CDATA[(* Removes item at the top of the stack without returning anything *)
 METHOD Pop_Void : I_Stack
-VAR_INPUT
+VAR_OUTPUT
+	bSuccess : BOOL;
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[Pop_Void := THIS^;
-THIS^.ipList.Remove();
-THIS^.CatchError();]]></ST>
+IF THIS^.NullReferenceException() THEN RETURN; END_IF
+THIS^.ipList.Remove(bSuccess => bSuccess);]]></ST>
       </Implementation>
     </Method>
     <Method Name="Push" Id="{cb7bde85-03c7-45e8-8fe5-d7ebdc1b671d}">
@@ -106,23 +139,26 @@ METHOD Push : I_Stack
 VAR_INPUT
 	Item : ANY; (* Variable containg data to store on the stack *)
 END_VAR
-]]></Declaration>
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Push := THIS^;
-THIS^.ipList.Add_Front(Item);
-THIS^.CatchError();]]></ST>
+IF THIS^.NullReferenceException() THEN RETURN; END_IF
+THIS^.ipList.Add_Front(Item, bSuccess => bSuccess);]]></ST>
       </Implementation>
     </Method>
     <Method Name="Reverse" Id="{ba9ac5a5-fcd7-4b04-b30f-42da8bbcce9b}">
       <Declaration><![CDATA[(* Reverses order of items on stack *)
 METHOD Reverse : I_Stack
-VAR_INPUT
+VAR_OUTPUT
+	bSuccess : BOOL;
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[Reverse := THIS^;
-THIS^.ipList.Reverse();
-THIS^.CatchError();]]></ST>
+IF THIS^.NullReferenceException() THEN RETURN; END_IF
+THIS^.ipList.Reverse(bSuccess => bSuccess);]]></ST>
       </Implementation>
     </Method>
     <Method Name="Top" Id="{7d111dc0-613d-4f39-bd9f-26a418db706e}">
@@ -131,58 +167,71 @@ METHOD Top : I_Stack
 VAR_INPUT
 	Item 	: ANY; (* Variable to store returned item value *)
 END_VAR
-]]></Declaration>
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Top := THIS^;
-THIS^.ipList.Get_First(Item);
-IF THIS^.CatchError() THEN RETURN; END_IF;]]></ST>
+IF THIS^.NullReferenceException() THEN RETURN; END_IF
+THIS^.ipList.Get_First(Item, bSuccess => bSuccess);]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_Stack">
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_Stack._Count.Get">
+      <LineId Id="5" Count="0" />
       <LineId Id="2" Count="0" />
     </LineIds>
+    <LineIds Name="FB_Stack._Error_Status.Get">
+      <LineId Id="2" Count="0" />
+      <LineId Id="5" Count="1" />
+    </LineIds>
     <LineIds Name="FB_Stack._Is_Empty.Get">
+      <LineId Id="5" Count="0" />
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_Stack.CatchError">
       <LineId Id="5" Count="1" />
     </LineIds>
     <LineIds Name="FB_Stack.Clear">
+      <LineId Id="10" Count="0" />
       <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Stack.NullReferenceException">
+      <LineId Id="14" Count="1" />
+      <LineId Id="12" Count="0" />
     </LineIds>
     <LineIds Name="FB_Stack.Peek">
       <LineId Id="5" Count="0" />
-      <LineId Id="9" Count="2" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_Stack.Pop">
       <LineId Id="5" Count="0" />
+      <LineId Id="24" Count="0" />
       <LineId Id="9" Count="0" />
-      <LineId Id="12" Count="0" />
-      <LineId Id="18" Count="0" />
-      <LineId Id="11" Count="0" />
-      <LineId Id="10" Count="0" />
-      <LineId Id="8" Count="0" />
+      <LineId Id="35" Count="0" />
     </LineIds>
     <LineIds Name="FB_Stack.Pop_Void">
       <LineId Id="5" Count="0" />
+      <LineId Id="13" Count="0" />
       <LineId Id="8" Count="0" />
-      <LineId Id="7" Count="0" />
     </LineIds>
     <LineIds Name="FB_Stack.Push">
       <LineId Id="5" Count="0" />
-      <LineId Id="9" Count="1" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_Stack.Reverse">
       <LineId Id="5" Count="0" />
-      <LineId Id="7" Count="1" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="7" Count="0" />
     </LineIds>
     <LineIds Name="FB_Stack.Top">
       <LineId Id="5" Count="0" />
+      <LineId Id="16" Count="0" />
       <LineId Id="10" Count="0" />
-      <LineId Id="9" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

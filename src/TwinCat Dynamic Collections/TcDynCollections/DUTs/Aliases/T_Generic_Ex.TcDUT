@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <DUT Name="T_Generic_Ex" Id="{aa5d3600-3cb5-485d-8937-65a2f746eac5}">
+    <Declaration><![CDATA[// Type ANY in struct format extended with value of type STRING(255)
+TYPE T_Generic_Ex : ST_GENERIC; END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

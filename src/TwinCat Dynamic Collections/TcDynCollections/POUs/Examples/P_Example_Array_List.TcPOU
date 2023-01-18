@@ -1,15 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
-  <POU Name="P_Array_List_Example" Id="{969256da-a7e7-43a9-8f8a-e825c77e7067}" SpecialFunc="None">
-    <Declaration><![CDATA[PROGRAM P_Array_List_Example
+  <POU Name="P_Example_Array_List" Id="{969256da-a7e7-43a9-8f8a-e825c77e7067}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM INTERNAL P_Example_Array_List
 VAR
 	eState 		: (IDLE, INSERT, REVERSE, RESIZE, GET, SET, FIND, CLEAR, ADD_FRONT, ADD_BACK, REMOVE, REMOVE_AT);
-	fbArray_List: FB_Array_List(0);
-	nFind 		: DINT;
+	fbArray_List: FB_Array_List(2);
+	nFind 		: T_Capacity;
 	sData 		: WSTRING;
 	sRTNData	: ARRAY[0..6] OF WSTRING;
-	nCount 		: DINT;
+	nCount 		: T_Capacity;
 	stError 	: ST_ERROR;
+	bSuccess 	: BOOL;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -25,6 +26,7 @@ CASE eState OF
 	RESIZE:
 		fbArray_List.Resize(3);
 	GET: 
+		Scrub();
 		fbArray_List
 			.Get(sRTNData[0], 0)
 			.Get(sRTNData[1], 1)
@@ -47,18 +49,29 @@ CASE eState OF
 	ADD_BACK:
 		sData := "Anacondas"; fbArray_List.Add_Back(sData);
 	REMOVE:
-		fbArray_List.Remove();
+		fbArray_List.Remove(bSuccess => bSuccess);
 	REMOVE_AT:
-		fbArray_List.RemoveAt(2);
+		fbArray_List.Remove_At(2);
+		
 END_CASE
 nCount := fbArray_List._Count;
 eState := IDLE;]]></ST>
     </Implementation>
-    <LineIds Name="P_Array_List_Example">
+    <Method Name="Scrub" Id="{082a4892-891e-4a52-937b-41fb028c15e4}">
+      <Declaration><![CDATA[METHOD PRIVATE Scrub
+VAR
+	i 			: T_Capacity;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[FOR i := 0 TO SIZEOF(sRTNData)/SIZEOF(sRTNData[0])-1 DO sRTNData[i] := ""; END_FOR]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="P_Example_Array_List">
       <LineId Id="40" Count="6" />
       <LineId Id="67" Count="1" />
       <LineId Id="70" Count="1" />
       <LineId Id="80" Count="0" />
+      <LineId Id="163" Count="0" />
       <LineId Id="84" Count="0" />
       <LineId Id="81" Count="2" />
       <LineId Id="78" Count="0" />
@@ -77,9 +90,13 @@ eState := IDLE;]]></ST>
       <LineId Id="138" Count="0" />
       <LineId Id="125" Count="0" />
       <LineId Id="140" Count="0" />
+      <LineId Id="161" Count="0" />
       <LineId Id="52" Count="0" />
       <LineId Id="5" Count="0" />
       <LineId Id="147" Count="0" />
+    </LineIds>
+    <LineIds Name="P_Example_Array_List.Scrub">
+      <LineId Id="5" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <Itf Name="I_Write_Only_List" Id="{60a7621b-af8a-46d3-9b7c-3f9658f1c148}">
+    <Declaration><![CDATA[INTERFACE I_Write_Only_List EXTENDS I_Collection
+
+]]></Declaration>
+    <Property Name="_Count" Id="{e9add150-130c-479e-86b3-2d3f0b70bb8e}">
+      <Declaration><![CDATA[(* Returns -1, this is a write-only list*)
+PROPERTY _Count : DINT]]></Declaration>
+      <Get Name="Get" Id="{26309165-c432-423f-b5bb-c6a7fbc62587}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="_Is_Empty" Id="{0cab2a69-0f0c-41f3-90c8-8e655d9e1e34}">
+      <Declaration><![CDATA[(* Returns FALSE as this is a write-only list *)
+PROPERTY _Is_Empty : BOOL
+]]></Declaration>
+      <Get Name="Get" Id="{fef140a4-e6ba-4f41-b1c2-98dffb2bdffd}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Method Name="Add_Back" Id="{797ba45b-345d-4d2e-bf30-3378a683b40b}">
+      <Declaration><![CDATA[// Adds an item to the end of the list
+METHOD Add_Back : I_Write_Only_List
+VAR_INPUT
+	Item 	: ANY; // Value to store in list
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Add_Front" Id="{25bf3427-bc11-45a5-a3df-20ed0f492f98}">
+      <Declaration><![CDATA[// Adds an item at the front of the list
+METHOD Add_Front : I_Write_Only_List
+VAR_INPUT
+	Item 	: ANY; // Value to store in list
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Clear" Id="{3cc3eea5-a1dd-4aee-b181-7e605173613c}">
+      <Declaration><![CDATA[// Empties/Clears/Deletes every item in the collection
+METHOD Clear
+]]></Declaration>
+    </Method>
+    <Method Name="Insert" Id="{db597c29-ad99-4037-8606-9ecac1984b5f}">
+      <Declaration><![CDATA[// Adds new item to list at specified location, if index = 0, item will be added at the front, if index = count, item will be added at the back
+METHOD Insert : I_Write_Only_List
+VAR_INPUT
+	Item 	: ANY;  // Item to store in list
+	nIndex 	: DINT; // Location of item
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Remove" Id="{0a1092ca-e3bc-45d2-824c-536a195f53a4}">
+      <Declaration><![CDATA[// Removes item at the front of the list and returns nothing
+METHOD Remove : I_Write_Only_List
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Remove_At" Id="{922068fc-32db-4be4-9ccf-46a0c52a1844}">
+      <Declaration><![CDATA[// Remove item at specified location and return nothing
+METHOD Remove_At : I_Write_Only_List
+VAR_INPUT
+	nIndex : DINT; // Location of item
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Remove_Last" Id="{2f246447-73fe-4880-a0ec-22c7b9267933}">
+      <Declaration><![CDATA[// Removes item at the back of the list and returns nothing
+METHOD Remove_Last : I_Write_Only_List
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Resize" Id="{de63ce09-7d0b-4038-8d41-178a309f55b8}">
+      <Declaration><![CDATA[// Manually resize list. If list becomes smaller, item on higher locations will be deleted.
+METHOD Resize : I_Write_Only_List
+VAR_INPUT
+	nSize : DINT; // New size of list.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Reverse" Id="{218fb475-c2a9-4692-bbd2-ec4c76eee637}">
+      <Declaration><![CDATA[// Reverses the order of items in the list
+METHOD Reverse : I_Write_Only_List
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Set" Id="{f519de17-4792-4e8f-b8d7-38b663a222c8}">
+      <Declaration><![CDATA[// Adds new item to list in the specified location without resizing list
+METHOD Set : I_Write_Only_List
+VAR_INPUT
+	Item 	: ANY; 	// Item to store in list
+	nIndex 	: DINT; // Location of item
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

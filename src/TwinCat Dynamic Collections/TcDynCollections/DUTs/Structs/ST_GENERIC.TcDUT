@@ -5,7 +5,7 @@
 {attribute 'enable_dynamic_creation'}
 TYPE ST_GENERIC EXTENDS __SYSTEM.AnyType :
 STRUCT
-	sValue : T_MaxString; 	// Data of parameter as a string for easy convertion.
+	sValue 	: T_MaxString; 	// Data of parameter as a string for easy convertion.
 END_STRUCT
 END_TYPE
 ]]></Declaration>

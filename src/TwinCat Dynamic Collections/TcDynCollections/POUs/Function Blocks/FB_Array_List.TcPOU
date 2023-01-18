@@ -1,25 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
-  <POU Name="FB_Array_List" Id="{3398cc05-41ff-4913-b370-09ed9360d50e}" SpecialFunc="None">
+  <POU Name="FB_Array_List" Id="{a252c2ec-d0f6-4cde-8a10-64c6a5e5d19c}" SpecialFunc="None">
     <Declaration><![CDATA[(* A dynamic array that holds data of multiple types and can grow or shrink at run time. *)
-FUNCTION_BLOCK FB_Array_List EXTENDS FB_Collections IMPLEMENTS I_List, I_List_ReadOnly, I_List_WriteOnly
+{attribute 'enable_dynamic_creation'}
+{attribute 'no_assign'}
+FUNCTION_BLOCK FB_Array_List EXTENDS FB_Collection IMPLEMENTS I_List, I_Generic_List
 VAR
 	pData 		: POINTER TO ST_GENERIC;
 END_VAR
 VAR CONSTANT
-	{warning disable C0228}
+	//{warning disable C0228}
 	stData 		: ST_GENERIC := (TypeClass := __SYSTEM.TYPE_CLASS.TYPE_NONE);
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
-    <Folder Name="Exceptions" Id="{e734c857-e916-4d79-8501-5a7d89fc83f9}" />
-    <Folder Name="Protected" Id="{f785d1e7-3af7-4c08-9480-c601a70827ef}" />
-    <Property Name="_Is_Empty" Id="{b351982a-f8a1-415d-9a5a-644537b434ce}">
+    <Folder Name="Exceptions" Id="{b026e345-1815-4332-aa85-b3b8117ca159}" />
+    <Folder Name="Protected" Id="{0ff05d1a-aac3-45fd-92b2-4aecc5c60331}" />
+    <Property Name="_Is_Empty" Id="{1f35d022-a163-4ed1-81df-d65862dc4a55}">
       <Declaration><![CDATA[(* Checks of list is empty.*)
 PROPERTY _Is_Empty : BOOL]]></Declaration>
-      <Get Name="Get" Id="{e85b6b93-361c-4dbe-a8c2-9f94e7dedbb7}">
+      <Get Name="Get" Id="{1e27ff54-0d40-488d-bd53-aed4e6cf41e4}">
         <Declaration><![CDATA[VAR
 END_VAR
 ]]></Declaration>
@@ -28,26 +30,33 @@ END_VAR
         </Implementation>
       </Get>
     </Property>
-    <Method Name="Add_Back" Id="{0dcfcc17-f884-4372-9d9d-f7c7855969d9}">
+    <Method Name="Add_Back" Id="{ef4b505f-7aac-4528-b0bf-586d99faa3ff}">
       <Declaration><![CDATA[// Adds an item to the end of the list
 METHOD Add_Back : I_List
 VAR_INPUT
 	Item 	: ANY; // Item to store in list
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Add_Back := THIS^;
-IF THIS^._Is_Empty THEN THIS^.FB_init(FALSE,FALSE, 1); THIS^.Set(Item, 0); RETURN; END_IF
+IF THIS^._Is_Empty THEN THIS^.FB_init(FALSE,FALSE, 1); THIS^.Set(Item, 0, bSuccess => bSuccess); RETURN; END_IF
 THIS^.Resize(THIS^._Count+1);
 THIS^.Free_Value(THIS^.pData[THIS^._Count-1]);
 THIS^.pData[THIS^._Count-1] := THIS^.Malloc_Value(Item);
-THIS^.CopyValueTo(THIS^.pData[THIS^._Count-1], Item);]]></ST>
+THIS^.CopyValueTo(THIS^.pData[THIS^._Count-1], Item);
+bSuccess := TRUE;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="Add_Front" Id="{0f7f2cfd-3435-4a27-a0df-bc7fcb94e712}">
+    <Method Name="Add_Front" Id="{0bc84416-1488-4eef-8214-d1f6167807cf}">
       <Declaration><![CDATA[// Adds an item at the front of the list
 METHOD Add_Front : I_List
 VAR_INPUT
-	Item 	: ANY; // Item to store in list
+	Item 	 : ANY; // Item to store in list
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
 END_VAR
 VAR
 	pOld_Data : POINTER TO ST_GENERIC;
@@ -55,7 +64,7 @@ VAR
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Add_Front := THIS^;
-IF THIS^._Is_Empty THEN THIS^.FB_init(FALSE,FALSE, 1); THIS^.Set(Item, 0); RETURN; END_IF
+IF THIS^._Is_Empty THEN THIS^.FB_init(FALSE,FALSE, 1); THIS^.Set(Item, 0, bSuccess => bSuccess); RETURN; END_IF
 
 pOld_Data := THIS^.pData;
 THIS^.pData := THIS^.Malloc_Array(THIS^._Count+1);
@@ -67,10 +76,11 @@ FOR i := 1 TO THIS^._Count DO
 	END_FOR
 __DELETE(pOld_Data);
 THIS^.Set(Item, 0);
-THIS^.IncrementCount();]]></ST>
+THIS^.IncrementCount();
+bSuccess := TRUE;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="Clear" Id="{037c4338-bc5a-4989-bc9a-2ac5dcbbc7e3}">
+    <Method Name="Clear" Id="{782ff445-bf94-4cab-a432-24264a332ea0}">
       <Declaration><![CDATA[// Empties/Clears/Deletes every item in the list
 METHOD Clear
 VAR
@@ -84,39 +94,36 @@ END_VAR]]></Declaration>
 	END_IF]]></ST>
       </Implementation>
     </Method>
-    <Method Name="ClearException" Id="{1f624312-52cc-4dd6-abeb-d26a86d9e069}" FolderPath="Exceptions\">
-      <Declaration><![CDATA[METHOD PROTECTED ClearException : BOOL;
-VAR
-END_VAR
-]]></Declaration>
+    <Method Name="Contains" Id="{e09b857a-be50-4588-9fc9-80fa1ed32c65}">
+      <Declaration><![CDATA[(* Checks if item is contained in list *)
+METHOD Contains : BOOL
+VAR_INPUT
+	Item : ANY; // Item to find in list
+END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[ClearException 	:= stError.bSTATUS := FALSE;
-stError.nCODE 	:= 0;
-stError.sSOURCE := 'No error.';]]></ST>
+        <ST><![CDATA[THIS^.Find(Item, bSuccess => Contains);]]></ST>
       </Implementation>
     </Method>
-    <Method Name="CopyValueTo" Id="{930ed18d-7aa0-479e-bf7e-a1fb05ee0f8f}" FolderPath="Protected\">
+    <Method Name="CopyValueTo" Id="{3eb59317-2002-4c87-860f-e39da026ce34}" FolderPath="Protected\">
       <Declaration><![CDATA[// Copy data from source memory space to desination memory space
 METHOD PROTECTED CopyValueTo
 VAR_INPUT
-	Dest, Src 	: __SYSTEM.AnyType;
+	Dest, Src 	: T_Generic;
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[MEMMOVE(Dest.pValue, Src.pValue, TO_UDINT(Src.diSize));]]></ST>
       </Implementation>
     </Method>
-    <Method Name="DecrementCount" Id="{ead82939-1a86-4d74-a184-5abfb27cd92a}" FolderPath="Protected\">
+    <Method Name="DecrementCount" Id="{7c4a392c-f27f-4d14-9f0c-613244e78171}" FolderPath="Protected\">
       <Declaration><![CDATA[// Decrement list size by 1.
 METHOD PROTECTED DecrementCount
-VAR_INPUT
-END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[THIS^.nCount := THIS^.nCount - 1;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="EmptyListException" Id="{32a3a647-32a8-4f7a-83f4-2f5352d89f36}" FolderPath="Exceptions\">
+    <Method Name="EmptyListException" Id="{204a931b-5eac-4f15-a45e-b95440a28a67}" FolderPath="Exceptions\">
       <Declaration><![CDATA[// Raises an expection if list is empty
 METHOD PROTECTED EmptyListException : BOOL
 VAR_INPUT
@@ -133,7 +140,7 @@ ELSE
 EmptyListException := stError.bSTATUS;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="FB_exit" Id="{69cc1df2-fe01-475e-a429-641abfcc4977}">
+    <Method Name="FB_exit" Id="{5d9f1864-fee5-4a4c-83b5-9eb706c524ef}">
       <Declaration><![CDATA[METHOD FB_exit : BOOL
 VAR_INPUT
 	bInCopyCode : BOOL; // if TRUE, the exit method is called for exiting an instance that is copied afterwards (online change).
@@ -143,12 +150,12 @@ END_VAR
         <ST><![CDATA[THIS^.Clear();]]></ST>
       </Implementation>
     </Method>
-    <Method Name="FB_init" Id="{29c8a4d3-d2c7-4973-a7b4-e7bf44d3146c}">
+    <Method Name="FB_init" Id="{ca4a4ec6-058d-46a3-b64e-292b088adb51}">
       <Declaration><![CDATA[METHOD FB_init : BOOL
 VAR_INPUT
-	bInitRetains 	: BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
-	bInCopyCode 	: BOOL; // if TRUE, the instance afterwards gets moved into the copy code (online change)
-	nLength 		: DINT; // Length to initialise array with.
+	bInitRetains 	: BOOL; 		// if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode 	: BOOL; 		// if TRUE, the instance afterwards gets moved into the copy code (online change)
+	nLength 		: T_Capacity;	// Length to initialise array with.
 END_VAR
 VAR
 	i, nByte_Size 	: DINT;
@@ -160,14 +167,15 @@ THIS^.nCount := nLength;
 THIS^.pData := THIS^.Malloc_Array(nLength);]]></ST>
       </Implementation>
     </Method>
-    <Method Name="Find" Id="{1a5a68ff-6d3b-49a7-839e-50cc056dc26c}">
+    <Method Name="Find" Id="{a97433ff-54cd-4691-9512-79e419276055}">
       <Declaration><![CDATA[// Find the location of an item in list.
 METHOD Find : I_List
 VAR_INPUT
-	Item 	: ANY; // Item to find in list
+	Item 		: ANY; // Item to find in list
 END_VAR
 VAR_OUTPUT
-	nIndex	: DINT; //Location of item in list 
+	nIndex		: T_Capacity; //Location of item in list 
+	bSuccess 	: BOOL;
 END_VAR
 VAR
 	i : DINT;
@@ -193,16 +201,16 @@ FOR i := 0 TO THIS^._Count-1 DO
 		IF (Item.diSize <> THIS^.pData[i].diSize) THEN CONTINUE; END_IF	
 		n := MEMCMP(Item.pValue, THIS^.pData[i].pValue, TO_UDINT(Item.diSize));
 		END_CASE
-		IF n = 0 THEN nIndex := i; RETURN; END_IF
+		IF n = 0 THEN nIndex := i; bSuccess := TRUE; RETURN; END_IF
 	END_FOR
 nIndex := -1;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="Free_Value" Id="{9f71f167-bfad-4dcd-86c0-bb97ee5d1fcc}" FolderPath="Protected\">
+    <Method Name="Free_Value" Id="{05279f32-d0ee-41c0-9cc7-71b95982b7dc}" FolderPath="Protected\">
       <Declaration><![CDATA[// Deletes/frees Generic value's value from memory
 METHOD PROTECTED Free_Value
 VAR_INPUT
-	Variable : __SYSTEM.AnyType;
+	Variable : T_Generic;
 END_VAR
 ]]></Declaration>
       <Implementation>
@@ -210,41 +218,79 @@ END_VAR
 __DELETE(Variable.pValue);]]></ST>
       </Implementation>
     </Method>
-    <Method Name="Get" Id="{4014cfee-43c7-449c-8614-f18500666b2d}">
+    <Method Name="Get" Id="{25fd987c-dee3-4583-86b8-248b2ab2bf61}">
       <Declaration><![CDATA[// Gets item at specified location;
 METHOD Get : I_List
 VAR_INPUT
 	Return_Item 	: ANY;  // Variable to store requested node value
-	nIndex 			: DINT; // Location of node
+	nIndex 			: T_Capacity; // Location of node
 END_VAR
-VAR_INST
-	data : ST_GENERIC;
+VAR_OUTPUT
+	bSuccess 		: BOOL;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Get := THIS^;
-IF THIS^.EmptyListException() OR THIS^.OutOfBoundsException(nIndex) THEN THIS^.SetValue(Return_Item, 16#0); RETURN; END_IF
-IF THIS^.TypeMismatchException(Return_Item, THIS^.pData[nIndex]) THEN THIS^.SetValue(Return_Item, 16#0); RETURN; END_IF
+IF THIS^.EmptyListException() OR THIS^.OutOfBoundsException(nIndex) THEN RETURN; END_IF
+IF THIS^.TypeMismatchException(Return_Item, THIS^.pData[nIndex]) THEN RETURN; END_IF
 THIS^.CopyValueTo(Return_Item, THIS^.pData[nIndex]);
+bSuccess := TRUE;
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="Get_First" Id="{1fef9e41-e429-4f69-b1a8-c18b18a4a82e}">
+    <Method Name="Get_First" Id="{12998406-1d18-4d2c-877f-c1f8eecd69bd}">
       <Declaration><![CDATA[// Gets item at the front of the list 
 METHOD Get_First : I_List
 VAR_INPUT
 	Return_Item 	: ANY; // Variable to store returned item
 END_VAR
-]]></Declaration>
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Get_First := THIS^;
-THIS^.Get(Return_Item, 0);]]></ST>
+THIS^.Get(Return_Item, 0, bSuccess => bSuccess);]]></ST>
       </Implementation>
     </Method>
-    <Method Name="Get_Value_As_String" Id="{3b246761-be37-4cc8-80b6-a822f2065792}">
+    <Method Name="Get_Generic" Id="{f1887775-34bc-4273-94a3-243ef6085010}">
+      <Declaration><![CDATA[// Gets a value from a list in it's generic form.
+// (* Use carefully as this contains the pointer of the actual value in the collection. *)
+// If you wish to use this it is recommeded you create a copy of the returned value using MEMMOVE or MEMCPY
+METHOD Get_Generic : I_Generic_List
+VAR_INPUT
+	nIndex 		: T_Capacity; 	// Location of item
+END_VAR
+VAR_OUTPUT
+	Return_Item : T_Generic;  	// Variable to store returned item
+	bSuccess 	: BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get_Generic := THIS^;
+IF THIS^.EmptyListException() OR THIS^.OutOfBoundsException(nIndex) THEN RETURN; END_IF
+IF THIS^.TypeMismatchException(Return_Item, THIS^.pData[nIndex]) THEN RETURN; END_IF
+Return_Item := THIS^.pData[nIndex];
+bSuccess := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_Last" Id="{6f54537d-2632-4a8b-8be1-1b8ac39476b1}">
+      <Declaration><![CDATA[// Gets item at the back of the list 
+METHOD Get_Last : I_List
+VAR_INPUT
+	Return_Item 	: ANY; // Variable to store returned item
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get_Last := THIS^;
+THIS^.Get(Return_Item, THIS^._Count - 1, bSuccess => bSuccess);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_Value_As_String" Id="{cde62b5e-c798-40ce-bc7c-7963b1e8ded9}">
       <Declaration><![CDATA[// Returns item as a string, if type to string conversion is supported
 METHOD Get_Value_As_String : I_List
 VAR_INPUT
-	nIndex	: DINT; // Location of item
+	nIndex	: T_Capacity; // Location of item
 END_VAR
 VAR_OUTPUT
 	sItem 	: T_MaxString; // Variable to store returned item
@@ -255,10 +301,10 @@ IF THIS^.EmptyListException() OR THIS^.OutOfBoundsException(nIndex) THEN sItem :
 sItem := THIS^.pData[nIndex].sValue;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="GetValueAsString" Id="{780fd6c6-55a3-4565-9cee-434004075cc7}" FolderPath="Protected\">
+    <Method Name="GetValueAsString" Id="{f6f987c3-de6b-4f4b-97da-c183d60ec391}" FolderPath="Protected\">
       <Declaration><![CDATA[METHOD PROTECTED GetValueAsString : T_MaxString
 VAR_INPUT
-	 Value : __SYSTEM.AnyType;
+	 Value : T_Generic;
 END_VAR
 VAR	
 	pBool			: POINTER TO BOOL;
@@ -385,7 +431,7 @@ ELSE
 END_CASE]]></ST>
       </Implementation>
     </Method>
-    <Method Name="IncrementCount" Id="{a9db66a7-53d7-42c7-9976-512a55b7dba0}" FolderPath="Protected\">
+    <Method Name="IncrementCount" Id="{5ff55ca3-134c-45a2-b380-8afc2eb26ad5}" FolderPath="Protected\">
       <Declaration><![CDATA[// Increments list size by 1
 METHOD PROTECTED IncrementCount
 VAR_INPUT
@@ -395,21 +441,24 @@ END_VAR
         <ST><![CDATA[THIS^.nCount := THIS^.nCount + 1;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="Insert" Id="{db43b154-8e54-4ca2-8744-cc4fbfa5556a}">
+    <Method Name="Insert" Id="{98b1b92c-0e96-4d1b-a639-11be5f9adfe9}">
       <Declaration><![CDATA[// Adds new item to list at specified location, if index = 0, item will be added at the front, if index = count, item will be added at the back
 METHOD Insert : I_List
 VAR_INPUT
-	Item 	: ANY;  // Item to store in list
-	nIndex 	: DINT; // Location of item
+	Item 	: ANY;  		// Item to store in list
+	nIndex 	: T_Capacity; // Location of item
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
 END_VAR
 VAR
-	pOld_Data : POINTER TO ST_GENERIC;
-	i : DINT;
+	pOld_Data 	: POINTER TO T_Generic;
+	i 			: T_Capacity;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Insert := THIS^;
-IF nIndex = 0 THEN THIS^.Add_Front(Item); RETURN; END_IF
-IF nIndex = THIS^._Count THEN THIS^.Add_Back(Item); RETURN; END_IF
+IF nIndex = 0 THEN THIS^.Add_Front(Item, bSuccess => bSuccess); RETURN; END_IF
+IF nIndex = THIS^._Count THEN THIS^.Add_Back(Item, bSuccess => bSuccess); RETURN; END_IF
 IF THIS^.OutOfBoundsException(nIndex) THEN RETURN; END_IF
 
 pOld_Data := THIS^.pData;
@@ -422,18 +471,130 @@ FOR i := 0 TO nIndex-1 DO
 	THIS^.Free_Value(pOld_Data[i]);
 	END_FOR
 	
-THIS^.Set(Item, nIndex);
+THIS^.Set(Item, nIndex, bSuccess => bSuccess);
 	
 FOR i := nIndex+1 TO THIS^._Count-1 DO
 	THIS^.pData[i] := THIS^.Malloc_Value(pOld_Data[i-1]);
 	THIS^.CopyValueTo(THIS^.pData[i], pOld_Data[i-1]);
 	THIS^.Free_Value(pOld_Data[i-1]);
 	END_FOR
-__DELETE(pOld_Data);
-]]></ST>
+__DELETE(pOld_Data);]]></ST>
       </Implementation>
     </Method>
-    <Method Name="LessThanZeroException" Id="{f039637d-30e1-4498-81c0-274a05cceec0}" FolderPath="Exceptions\">
+    <Method Name="Insert_Generic" Id="{7b0855f3-dfce-4e11-8911-c0e1111a2cde}">
+      <Declaration><![CDATA[// Adds new item to list at specified location using the generic form. 
+// If index = 0, item will be added at the front, if index = count, item will be added at the back
+METHOD Insert_Generic : I_Generic_List
+VAR_INPUT
+	Item 	: T_Generic;  	// Item to store in list
+	nIndex 	: T_Capacity; 			// Location of item
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+VAR
+	pOld_Data 	: POINTER TO T_Generic;
+	i 			: T_Capacity;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Insert_Generic := THIS^;
+
+// Add to front
+IF nIndex = 0 THEN THIS^.Internal_Add_Front(Item, bSuccess => bSuccess); RETURN; END_IF
+
+// Add to back
+IF nIndex = THIS^._Count THEN Internal_Add_Back(Item, bSuccess => bSuccess); RETURN; END_IF
+
+IF THIS^.OutOfBoundsException(nIndex) THEN RETURN; END_IF
+
+pOld_Data := THIS^.pData;
+THIS^.pData := THIS^.Malloc_Array(THIS^._Count+1);
+THIS^.IncrementCount();
+
+FOR i := 0 TO nIndex-1 DO
+	THIS^.pData[i] := THIS^.Malloc_Value(pOld_Data[i]);
+	THIS^.CopyValueTo(THIS^.pData[i], pOld_Data[i]);
+	THIS^.Free_Value(pOld_Data[i]);
+	END_FOR
+
+// Set value
+Internal_Set(Item, nIndex, bSuccess => bSuccess);
+	
+FOR i := nIndex+1 TO THIS^._Count-1 DO
+	THIS^.pData[i] := THIS^.Malloc_Value(pOld_Data[i-1]);
+	THIS^.CopyValueTo(THIS^.pData[i], pOld_Data[i-1]);
+	THIS^.Free_Value(pOld_Data[i-1]);
+	END_FOR
+__DELETE(pOld_Data);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Internal_Add_Back" Id="{1c3cbd70-0918-4952-a44a-0cb09816860d}" FolderPath="Protected\">
+      <Declaration><![CDATA[// Adds an item to the end of the list
+METHOD PROTECTED Internal_Add_Back
+VAR_INPUT
+	Item 		: T_Generic; // Item to store in list
+END_VAR
+VAR_OUTPUT
+	bSuccess 	: BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF THIS^._Is_Empty THEN THIS^.FB_init(FALSE,FALSE, 1); THIS^.Internal_Set(Item, 0, bSuccess => bSuccess); RETURN; END_IF
+THIS^.Resize(THIS^._Count+1);
+THIS^.Free_Value(THIS^.pData[THIS^._Count-1]);
+THIS^.pData[THIS^._Count-1] := THIS^.Malloc_Value(Item);
+THIS^.CopyValueTo(THIS^.pData[THIS^._Count-1], Item);
+bSuccess := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Internal_Add_Front" Id="{5514d0a2-358f-4871-ad7d-9328c28b1bb1}" FolderPath="Protected\">
+      <Declaration><![CDATA[// Adds an item at the front of the list
+METHOD PROTECTED Internal_Add_Front
+VAR_INPUT
+	Item 	 : ANY; // Item to store in list
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+VAR
+	pOld_Data : POINTER TO ST_GENERIC;
+	i : DINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF THIS^._Is_Empty THEN THIS^.FB_init(FALSE,FALSE, 1); THIS^.Internal_Set(Item, 0, bSuccess => bSuccess); RETURN; END_IF
+
+pOld_Data := THIS^.pData;
+THIS^.pData := THIS^.Malloc_Array(THIS^._Count+1);
+
+FOR i := 1 TO THIS^._Count DO
+	THIS^.pData[i] := THIS^.Malloc_Value(pOld_Data[i-1]);
+	THIS^.CopyValueTo(THIS^.pData[i], pOld_Data[i-1]);
+	THIS^.Free_Value(pOld_Data[i-1]);
+	END_FOR
+__DELETE(pOld_Data);
+THIS^.Internal_Set(Item, 0);
+THIS^.IncrementCount();
+bSuccess := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Internal_Set" Id="{7303e032-dbd4-4be1-915f-58ce898b3c75}" FolderPath="Protected\">
+      <Declaration><![CDATA[// Adds new item to list in the specified location without resizing list
+METHOD PROTECTED Internal_Set
+VAR_INPUT
+	Item 	: T_Generic; 	// Item to store in list
+	nIndex 	: T_Capacity; // Location of item
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF THIS^.OutOfBoundsException(nIndex) OR THIS^.EmptyListException() THEN RETURN; END_IF
+THIS^.Free_Value(THIS^.pData[nIndex]);
+THIS^.pData[nIndex] := THIS^.Malloc_Value(Item);
+THIS^.CopyValueTo(THIS^.pData[nIndex], Item);
+bSuccess := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="LessThanZeroException" Id="{046b4e97-9c09-48a2-b949-b080669b924e}" FolderPath="Exceptions\">
       <Declaration><![CDATA[METHOD PROTECTED LessThanZeroException : BOOL
 VAR_INPUT
 	nIndex : DINT;
@@ -450,31 +611,30 @@ ELSE
 LessThanZeroException := stError.bSTATUS;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="Malloc_Array" Id="{6833d68d-5fb5-48db-80e2-ff5020b03ac9}" FolderPath="Protected\">
+    <Method Name="Malloc_Array" Id="{3a8df518-1cde-4a08-a734-3e969895273b}" FolderPath="Protected\">
       <Declaration><![CDATA[// Allocate memory space for Array of Generics on the heap, returns Pointer to start of Generic Array;
 // WARNING!!! Always have a place to store the return otherwise a memory leak will occur.
 METHOD PROTECTED Malloc_Array : POINTER TO ST_GENERIC
 VAR_INPUT
-	nSize : DINT; // Array Size
+	nSize : T_Capacity; // Array Size
 END_VAR
 VAR
-	i, nByte_Size: DINT;
+	i, nByte_Size: T_Capacity;
 END_VAR
 VAR CONSTANT
-	{warning disable C0228}
-	stData 		: ST_GENERIC;
+	stData 		: T_Generic_Ex := ();
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[nByte_Size := SIZEOF(ST_GENERIC)*nSize;
+        <ST><![CDATA[nByte_Size := SIZEOF(T_Generic_Ex)*nSize;
 Malloc_Array := __NEW(BYTE, TO_UDINT(nByte_Size));]]></ST>
       </Implementation>
     </Method>
-    <Method Name="Malloc_Value" Id="{d4fc3706-841e-4d2c-a297-ce7edce50b78}" FolderPath="Protected\">
+    <Method Name="Malloc_Value" Id="{a266aa76-ae8a-49dc-9b16-aebbf468ae2f}" FolderPath="Protected\">
       <Declaration><![CDATA[// Allocate memory space for the Generic value's data on the heap, returns Generic;
 // WARNING!!! Always have a place to store the return otherwise a memory leak will occur.
 METHOD PROTECTED Malloc_Value : ST_GENERIC
 VAR_INPUT
-	Variable : __SYSTEM.AnyType;
+	Variable : T_Generic;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Malloc_Value.sValue 	:= THIS^.GetValueAsString(Variable);
@@ -483,7 +643,7 @@ Malloc_Value.diSize 	:= Variable.diSize;
 Malloc_Value.TypeClass 	:= Variable.TypeClass;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="MemCmpErrExpection" Id="{5270d2ae-4ea6-4e97-bc47-c89f510d8acf}" FolderPath="Exceptions\">
+    <Method Name="MemCmpErrExpection" Id="{ac667bb1-a17d-4ac2-9976-a489765a9841}" FolderPath="Exceptions\">
       <Declaration><![CDATA[// Compares memory sizes of 2 addresses. Returns TRUE  and raises error flag if theyre not same size.
 METHOD PROTECTED MemCmpErrExpection : BOOL
 VAR_INPUT
@@ -519,7 +679,7 @@ MemCmpErrExpection := stError.bSTATUS;
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="OutOfBoundsException" Id="{d1f00778-4bda-479e-acb6-1b055b01bf01}" FolderPath="Exceptions\">
+    <Method Name="OutOfBoundsException" Id="{5d8b7f07-d3ff-46eb-9596-48b1d35f67fa}" FolderPath="Exceptions\">
       <Declaration><![CDATA[METHOD PROTECTED OutOfBoundsException : BOOL
 VAR_INPUT
 	nIndex : DINT;
@@ -536,49 +696,79 @@ ELSE
 OutOfBoundsException := stError.bSTATUS;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="Remove" Id="{4e1b5bf9-f368-49b8-a717-3e5f099b41d6}">
+    <Method Name="Remove" Id="{ef5542aa-ad88-4010-9958-dfc7d8f994e0}">
       <Declaration><![CDATA[// Removes item at the front of the list and returns nothing
 METHOD Remove : I_List
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
 VAR
 	i : DINT;
+	pOld_Data 	: POINTER TO ST_GENERIC;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[Remove := THIS^;
+        <ST><![CDATA[//// New ///
+Remove := THIS^;
 IF THIS^.EmptyListException() THEN RETURN; END_IF
-IF THIS^._Count = 1 THEN THIS^.Clear(); RETURN; END_IF;
+IF THIS^._Count = 1 THEN THIS^.Clear(); bSuccess := TRUE; RETURN; END_IF;
+
 THIS^.Free_Value(THIS^.pData[0]);
-FOR i := 0 TO THIS^._Count-2 DO THIS^.pData[i] := THIS^.pData[i+1]; END_FOR
-THIS^.Resize(THIS^._Count-1);]]></ST>
+pOld_Data := pData;
+pData := THIS^.Malloc_Array(THIS^._Count - 1);
+FOR i := 1 TO THIS^._Count - 1 DO
+	pData[i-1] := pOld_Data[i];
+	END_FOR
+
+__DELETE(pOld_Data);
+THIS^.DecrementCount();
+bSuccess := TRUE;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="RemoveAt" Id="{9ca86d02-6b94-4c36-839e-e70bc6a3c02e}">
+    <Method Name="Remove_At" Id="{69309f49-923b-4eee-9ed3-911b01ac9825}">
       <Declaration><![CDATA[// Remove item at specified location and return nothing
-METHOD RemoveAt : I_List
+METHOD Remove_At : I_List
 VAR_INPUT
-	nIndex : DINT; // Location of item
+	nIndex : T_Capacity; // Location of item
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
 END_VAR
 VAR
 	i : DINT;
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[RemoveAt := THIS^;
+        <ST><![CDATA[Remove_At := THIS^;
 IF THIS^.EmptyListException() THEN RETURN; END_IF
 IF THIS^.OutOfBoundsException(nIndex) THEN RETURN; END_IF
-IF nIndex = 0 THEN THIS^.Remove(); RETURN; END_IF
-IF nIndex = THIS^._Count - 1 THEN THIS^.Resize(THIS^._Count - 1); RETURN; END_IF
+IF nIndex = 0 THEN THIS^.Remove(bSuccess => bSuccess); RETURN; END_IF
+IF nIndex = THIS^._Count - 1 THEN THIS^.Resize(THIS^._Count - 1, bSuccess => bSuccess); RETURN; END_IF
 THIS^.Free_Value(THIS^.pData[nIndex]);
 FOR i := nIndex TO THIS^._Count-1 DO THIS^.pData[i] := THIS^.pData[i+1]; END_FOR
-THIS^.Resize(THIS^._Count-1);
+THIS^.Resize(THIS^._Count-1, bSuccess => bSuccess);
 
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="Resize" Id="{469d389a-1b12-4e2e-9bd9-9bf1498b5d95}">
+    <Method Name="Remove_Last" Id="{a5284481-503c-4df6-8ca8-53af4dfc0568}">
+      <Declaration><![CDATA[// Removes item at the back of the list and returns nothing
+METHOD Remove_Last : I_List
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Remove_Last := THIS^;
+THIS^.Remove_At(THIS^._Count-1, bSuccess => bSuccess);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Resize" Id="{7f19a3c8-ac71-4ec2-925a-410d4a5ab311}">
       <Declaration><![CDATA[// Manually resize list. If list becomes smaller, items on higher locations will be deleted.
 METHOD Resize : I_List
 VAR_INPUT
-	nSize : DINT; // New size of list.
+	nSize : T_Capacity; // New size of list.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
 END_VAR
 VAR
 	pOld_Data 		: POINTER TO ST_GENERIC;
@@ -591,6 +781,9 @@ END_VAR]]></Declaration>
 IF THIS^.LessThanZeroException(nSize) THEN RETURN; END_IF
 IF (nSize = 0) THEN THIS^.Clear(); RETURN; END_IF
 IF nSize = THIS^._Count THEN RETURN; END_IF
+
+bSuccess := TRUE;
+
 IF THIS^._Is_Empty THEN THIS^.FB_init(FALSE,FALSE, nSize); RETURN; END_IF
 
 pOld_Data 		:= THIS^.pData;
@@ -608,9 +801,12 @@ __DELETE(pOld_Data);
 THIS^.nCount := nSize;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="Reverse" Id="{1f2d66c0-fa85-4cf7-9c54-2b7bc26f5b50}">
+    <Method Name="Reverse" Id="{c7bb1663-8a1d-412d-ac93-00cfb818cee8}">
       <Declaration><![CDATA[// Reverses the order of items in the list
 METHOD Reverse : I_List
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
 VAR
 	pOld_Data 	: POINTER TO ST_GENERIC;
 	nByte_Size 	: DINT;
@@ -631,30 +827,35 @@ FOR i:= 0 TO THIS^._Count - 1 DO
 	THIS^.CopyValueTo(THIS^.pData[i], pOld_Data[(THIS^._Count-1)-i]);
 	THIS^.Free_Value(pOld_Data[(THIS^._Count-1)-i]);
 	END_FOR
-__DELETE(pOld_Data);]]></ST>
+__DELETE(pOld_Data);
+
+bSuccess := TRUE;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="Set" Id="{b6a02544-884f-43b8-b6ab-cf3ddf1cdc6f}">
+    <Method Name="Set" Id="{d97a48c2-c0c8-43e0-aaa4-302f9b0b411c}">
       <Declaration><![CDATA[// Adds new item to list in the specified location without resizing list
 METHOD Set : I_List
 VAR_INPUT
 	Item 	: ANY; 	// Item to store in list
-	nIndex 	: DINT; // Location of item
+	nIndex 	: T_Capacity; // Location of item
 END_VAR
-]]></Declaration>
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Set := THIS^;
 IF THIS^.OutOfBoundsException(nIndex) OR THIS^.EmptyListException() THEN RETURN; END_IF
 THIS^.Free_Value(THIS^.pData[nIndex]);
 THIS^.pData[nIndex] := THIS^.Malloc_Value(Item);
-THIS^.CopyValueTo(THIS^.pData[nIndex], Item);]]></ST>
+THIS^.CopyValueTo(THIS^.pData[nIndex], Item);
+bSuccess := TRUE;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="SetValue" Id="{bc44b6d1-9f86-424b-94f8-c98542845f75}" FolderPath="Protected\">
+    <Method Name="SetValue" Id="{b4066bb1-e012-4222-860e-fe69e5d3f8c2}" FolderPath="Protected\">
       <Declaration><![CDATA[(* Set value of __SYSTEM.Anytype variable *)
 METHOD PROTECTED SetValue
 VAR_INPUT
-	Variable	: __SYSTEM.Anytype;
+	Variable	: T_Generic;
 	Value 		: USINT; // Character/byte to set.
 END_VAR
 ]]></Declaration>
@@ -662,7 +863,7 @@ END_VAR
         <ST><![CDATA[MEMSET(Variable.pValue, Value, TO_UDINT(Variable.diSize));]]></ST>
       </Implementation>
     </Method>
-    <Method Name="TypeMismatchException" Id="{6aeaaea9-9da8-4a22-9e0d-167bc99d17b1}" FolderPath="Exceptions\">
+    <Method Name="TypeMismatchException" Id="{66bfd727-608e-4d36-aa02-41ebf1a85296}" FolderPath="Exceptions\">
       <Declaration><![CDATA[METHOD TypeMismatchException : BOOL
 VAR_INPUT
 	Dest,
@@ -691,20 +892,21 @@ TypeMismatchException := stError.bSTATUS;]]></ST>
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_Array_List.Add_Back">
-      <LineId Id="30" Count="4" />
+      <LineId Id="26" Count="4" />
       <LineId Id="14" Count="0" />
+      <LineId Id="38" Count="0" />
     </LineIds>
     <LineIds Name="FB_Array_List.Add_Front">
-      <LineId Id="53" Count="12" />
+      <LineId Id="49" Count="12" />
       <LineId Id="31" Count="0" />
+      <LineId Id="73" Count="0" />
     </LineIds>
     <LineIds Name="FB_Array_List.Clear">
       <LineId Id="4" Count="0" />
       <LineId Id="10" Count="0" />
       <LineId Id="7" Count="2" />
     </LineIds>
-    <LineIds Name="FB_Array_List.ClearException">
-      <LineId Id="6" Count="1" />
+    <LineIds Name="FB_Array_List.Contains">
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_Array_List.CopyValueTo">
@@ -728,7 +930,7 @@ TypeMismatchException := stError.bSTATUS;]]></ST>
       <LineId Id="38" Count="0" />
     </LineIds>
     <LineIds Name="FB_Array_List.Find">
-      <LineId Id="147" Count="20" />
+      <LineId Id="140" Count="20" />
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_Array_List.Free_Value">
@@ -736,15 +938,24 @@ TypeMismatchException := stError.bSTATUS;]]></ST>
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_Array_List.Get">
-      <LineId Id="65" Count="3" />
+      <LineId Id="60" Count="3" />
+      <LineId Id="72" Count="0" />
       <LineId Id="38" Count="0" />
     </LineIds>
     <LineIds Name="FB_Array_List.Get_First">
       <LineId Id="8" Count="0" />
       <LineId Id="7" Count="0" />
     </LineIds>
+    <LineIds Name="FB_Array_List.Get_Generic">
+      <LineId Id="12" Count="0" />
+      <LineId Id="14" Count="2" />
+      <LineId Id="13" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Array_List.Get_Last">
+      <LineId Id="6" Count="1" />
+    </LineIds>
     <LineIds Name="FB_Array_List.Get_Value_As_String">
-      <LineId Id="31" Count="1" />
+      <LineId Id="25" Count="1" />
       <LineId Id="8" Count="0" />
     </LineIds>
     <LineIds Name="FB_Array_List.GetValueAsString">
@@ -757,8 +968,36 @@ TypeMismatchException := stError.bSTATUS;]]></ST>
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="FB_Array_List.Insert">
-      <LineId Id="124" Count="22" />
-      <LineId Id="67" Count="0" />
+      <LineId Id="119" Count="22" />
+    </LineIds>
+    <LineIds Name="FB_Array_List.Insert_Generic">
+      <LineId Id="9" Count="0" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="13" Count="10" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="24" Count="7" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Array_List.Internal_Add_Back">
+      <LineId Id="27" Count="3" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="38" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Array_List.Internal_Add_Front">
+      <LineId Id="50" Count="11" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="73" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Array_List.Internal_Set">
+      <LineId Id="39" Count="2" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="50" Count="0" />
     </LineIds>
     <LineIds Name="FB_Array_List.LessThanZeroException">
       <LineId Id="5" Count="0" />
@@ -785,29 +1024,35 @@ TypeMismatchException := stError.bSTATUS;]]></ST>
       <LineId Id="14" Count="0" />
     </LineIds>
     <LineIds Name="FB_Array_List.Remove">
-      <LineId Id="3" Count="0" />
-      <LineId Id="5" Count="1" />
-      <LineId Id="15" Count="0" />
-      <LineId Id="10" Count="0" />
-      <LineId Id="4" Count="0" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="34" Count="1" />
+      <LineId Id="37" Count="1" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="24" Count="0" />
     </LineIds>
-    <LineIds Name="FB_Array_List.RemoveAt">
-      <LineId Id="7" Count="0" />
-      <LineId Id="15" Count="0" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="10" Count="0" />
-      <LineId Id="20" Count="0" />
-      <LineId Id="16" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="12" Count="0" />
+    <LineIds Name="FB_Array_List.Remove_At">
+      <LineId Id="37" Count="8" />
       <LineId Id="11" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Array_List.Remove_Last">
+      <LineId Id="4" Count="1" />
     </LineIds>
     <LineIds Name="FB_Array_List.Resize">
       <LineId Id="63" Count="0" />
       <LineId Id="102" Count="0" />
       <LineId Id="64" Count="0" />
       <LineId Id="103" Count="0" />
+      <LineId Id="174" Count="0" />
+      <LineId Id="173" Count="0" />
+      <LineId Id="172" Count="0" />
       <LineId Id="65" Count="0" />
       <LineId Id="67" Count="2" />
       <LineId Id="158" Count="0" />
@@ -829,10 +1074,13 @@ TypeMismatchException := stError.bSTATUS;]]></ST>
       <LineId Id="35" Count="0" />
       <LineId Id="14" Count="0" />
       <LineId Id="17" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="46" Count="0" />
     </LineIds>
     <LineIds Name="FB_Array_List.Set">
-      <LineId Id="43" Count="3" />
+      <LineId Id="38" Count="3" />
       <LineId Id="23" Count="0" />
+      <LineId Id="50" Count="0" />
     </LineIds>
     <LineIds Name="FB_Array_List.SetValue">
       <LineId Id="5" Count="0" />
