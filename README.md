@@ -1,29 +1,29 @@
 # TwinCAT Dynamic Collections
 
 A library for handling collections of data dynamically.
-Create python like maps and lists (a collections that can hold multiple-type data and that can grow or shrink at runtime). True Queue and Stack data structures, in the form of list decorators, are also contained here. Examples are in project.
+Create python like maps and lists (a collections that can hold multiple-type data and can grow or shrink at runtime). True Queue and Stack data structures, in the form of list adaptors, are also contained here. Examples are in project.
 
 # Function Blocks
 
 * 👍 **FB_Collection** - Abstract class/Function Block that all collections inherit, handles contains many helper methods and properties for creating a collection. Implements `I_Collection`.
 
-* 👍 **FB_List** - Python like List. Can store and operate lists of any size and type at runtime. The base is a singly-linked-list with a tail. Multi-type lists are supported. Implements `I_List`.
+* 👍 **FB_List** - Python like List. Can store and operate on data of any size and type at runtime. The base is a singly-linked-list with a tail. Multi-type lists are supported. Implements `I_List`.
 
-* 👍 **FB_Array_List** - Same as FB_List except it's implementation uses a Dynamic Array instead of a Linked List, similar to vectors in C++. Can store and operate lists of any size and type at runtime. Multi-type lists are supported. Implements `I_List`.
+* 👍 **FB_Array_List** - Same as FB_List except it's implementation uses a Dynamic Array instead of a Linked List, similar to vectors in C++. Can store and operate on data of any size and type at runtime. Multi-type lists are supported. Implements `I_List`.
 
-* 👍 **FB_Tree_Map** - Key-Value pair collection often referred to as a Dictionary or Map in other programming languages such as Python, C#, C++ etc. It's a called a Tree Map because it's base is a binary search tree. Multi-type lists are supported.Implements `I_Tree_Map` which inherits `I_Map`.
+* 👍 **FB_Tree_Map** - Key-Value pair collection often referred to as a Dictionary or Map in other programming languages such as Python, C#, C++ etc. It's a called a Tree Map because its base is a binary search tree. Multi-type lists are supported. Implements `I_Tree_Map` which inherits from `I_Map`.
 
-* ⚡ **FB_Hash_Map (W-I-P)** - Key-Value pair collection often referred to as a Dictionary or Map in other programming languages such as Python, C#, C++ etc. It's a called a Hash Map because it used a hash function to compute an index that is associated to the bucket the Key-Value pair is stored. Multi-types are supported.Implements `I_Map`.
+* ⚡ **FB_Hash_Map (W-I-P)** - Key-Value pair collection often referred to as a Dictionary or Map in other programming languages such as Python, C#, C++ etc. It's a called a Hash Map because it used a hash function to compute an index that is associated to the bucket the Key-Value pair is to be stored in a bucket list. Multi-types are supported. Implements `I_Map`.
 
-* 👍 **FB_Binary_Search_Tree** - A regular Binary Search Tree. The tree can be traversed using the 4 main traversal methods, Inorder, Preorder, Postorder and Level Order. Strict and Multi-types are supported. Implements `I_Binary_Search_Tree`.
+* 👍 **FB_Binary_Search_Tree** - A regular Binary Search Tree. The tree can be traversed using the 4 main traversal methods; Inorder, Preorder, Postorder and Level Order. Strict and Multi-types are supported. Implements `I_Binary_Search_Tree`.
 
-* 👍 **FB_Queue** - Standard Queue Data Struture. This is a decorator for Function Blocks/Classes that implement `I_List`. Implements `I_Queue`.
+* 👍 **FB_Queue** - Standard Queue Data Struture. This is an adapter for Function Blocks/Classes that implement `I_List`. Implements `I_Queue`.
 
-* 👍 **FB_Stack** - Standard Stack Data Struture. This is a decorator for Function Blocks/Classes that implement `I_List`. Implements `I_Stack`.
+* 👍 **FB_Stack** - Standard Stack Data Struture. This is an adapter for Function Blocks/Classes that implement `I_List`. Implements `I_Stack`.
 
-* 👍 **FB_Read_Only_List** - This is a decorator for Function Blocks/Classes that implement `I_List`. This will restrict operation to an implementor of `I_List` to read-only methods/properties. Implements `I_Read_Only_List`.
+* 👍 **FB_Read_Only_List** - This is an adapter for Function Blocks/Classes that implement `I_List`. This will restrict operation to an implementor of `I_List` to read-only methods/properties. Implements `I_Read_Only_List`.
 
-* 👍 **FB_Write_Only_List** - This is a decorator for Function Blocks/Classes that implement `I_List`. This will restrict operation to an implementor of I_List to write-only methods/properties. Implements `I_Write_Only_List`.
+* 👍 **FB_Write_Only_List** - This is an adapter for Function Blocks/Classes that implement `I_List`. This will restrict operation to an implementor of I_List to write-only methods/properties. Implements `I_Write_Only_List`.
 
 # Interface UML
 
@@ -185,4 +185,4 @@ fbBST
 As aways feel free to contribute or report issues.
 
 # ⚠ Important ⚠ 
-Be careful when storing `STRUCT`s or `FUNCTION BLOCKS` that contain `STRING`s or `WSTRING`s. You may not be able to retrieve them with a `find` method nor be able to retrieve them as keys. This is because strings are null terminated and any junk after is retained. Equality is checked using `MEMCMP`. For `FUNCTION BLOCK`s I recommend you store them as interfaces or pointers. For `STRUCT`s, clear any strings using `MEMSET` and set it to your chosen value before you store it.
+Be careful when storing `STRUCT`s or `FUNCTION BLOCK`s that contain `STRING`s or `WSTRING`s. You may not be able to retrieve them with a `find` method nor be able to use the as keys to retrieve a value in a map. This is because strings are null delimited so any junk characters after the null character are retained. Equality of `STRUCT`s and `FUNCTION BLOCK`s are checked using `MEMCMP`. For `FUNCTION BLOCK`s I recommend you store them using interfaces or pointers. For `STRUCT`s, clear any strings inside using `MEMSET` and set it to your chosen value before you store it. If you have questions I'm happy to answer them.
