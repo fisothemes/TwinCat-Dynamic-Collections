@@ -267,7 +267,6 @@ END_VAR
       <Implementation>
         <ST><![CDATA[Get_Generic := THIS^;
 IF THIS^.EmptyListException() OR THIS^.OutOfBoundsException(nIndex) THEN RETURN; END_IF
-IF THIS^.TypeMismatchException(Return_Item, THIS^.pData[nIndex]) THEN RETURN; END_IF
 Return_Item := THIS^.pData[nIndex];
 bSuccess := TRUE;]]></ST>
       </Implementation>
@@ -798,7 +797,9 @@ FOR i := 0 TO nSize - 1 DO
 	THIS^.Free_Value(pOld_Data[i]);
 	END_FOR
 __DELETE(pOld_Data);
-THIS^.nCount := nSize;]]></ST>
+THIS^.nCount := nSize;
+
+bSuccess := TRUE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Reverse" Id="{c7bb1663-8a1d-412d-ac93-00cfb818cee8}">
@@ -948,7 +949,8 @@ TypeMismatchException := stError.bSTATUS;]]></ST>
     </LineIds>
     <LineIds Name="FB_Array_List.Get_Generic">
       <LineId Id="12" Count="0" />
-      <LineId Id="14" Count="2" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="16" Count="0" />
       <LineId Id="13" Count="0" />
     </LineIds>
     <LineIds Name="FB_Array_List.Get_Last">
@@ -1060,6 +1062,8 @@ TypeMismatchException := stError.bSTATUS;]]></ST>
       <LineId Id="136" Count="6" />
       <LineId Id="135" Count="0" />
       <LineId Id="144" Count="0" />
+      <LineId Id="189" Count="0" />
+      <LineId Id="188" Count="0" />
     </LineIds>
     <LineIds Name="FB_Array_List.Reverse">
       <LineId Id="5" Count="0" />

@@ -273,11 +273,7 @@ IF THIS^.EmptyListException() THEN RETURN; END_IF
 IF THIS^.OutOfBoundsException(nIndex) THEN RETURN; END_IF
 
 IF nIndex = THIS^._Count - 1 THEN pTemp := pTail; ELSE pTemp := THIS^.Iterate(nIndex); END_IF
-
-IF THIS^.TypeMismatchException(Return_Item, pTemp^.Data) THEN RETURN; END_IF
-Return_Item.diSize 		:= pTemp^.Data.diSize;
-Return_Item.pValue 		:= pTemp^.Data.pValue;
-Return_Item.TypeClass 	:= pTemp^.Data.TypeClass;
+Return_Item := pTemp^.Data;
 bSuccess := TRUE;]]></ST>
       </Implementation>
     </Method>
@@ -742,7 +738,9 @@ IF nSize > THIS^._Count THEN
 	FOR i := nCount TO nSize - 1 DO
 		THIS^.Add_Back(Data, bSuccess => bSuccess);
 		END_FOR
-	END_IF]]></ST>
+	END_IF
+	
+bSuccess := TRUE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Reverse" Id="{163b036d-4e69-4b74-8841-8d30b26b2230}">
@@ -795,7 +793,13 @@ ELSE
 	pTemp := Iterate(nIndex);
 	END_IF
 
-IF THIS^.TypeMismatchException(pTemp^.Data, Item) THEN RETURN; END_IF
+__DELETE(pTemp^.Data.pValue); 
+
+pTemp^.Data.sValue 		:= THIS^.GetValueAsString(Item);
+pTemp^.Data.pValue 		:= __NEW(BYTE, TO_UDINT(Item.diSize)); // Allocate space in memory to store data value.
+pTemp^.Data.diSize 		:= Item.diSize;
+pTemp^.Data.TypeClass 	:= Item.TypeClass;
+
 THIS^.CopyValueTo(pTemp^.Data, Item);
 bSuccess := TRUE;
 
@@ -910,11 +914,7 @@ TypeMismatchException := stError.bSTATUS;]]></ST>
       <LineId Id="10" Count="0" />
       <LineId Id="16" Count="0" />
       <LineId Id="23" Count="0" />
-      <LineId Id="22" Count="0" />
-      <LineId Id="15" Count="0" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="18" Count="1" />
-      <LineId Id="21" Count="0" />
+      <LineId Id="47" Count="1" />
       <LineId Id="35" Count="0" />
     </LineIds>
     <LineIds Name="FB_List.Get_Last">
@@ -1021,6 +1021,7 @@ TypeMismatchException := stError.bSTATUS;]]></ST>
       <LineId Id="23" Count="1" />
       <LineId Id="27" Count="2" />
       <LineId Id="26" Count="0" />
+      <LineId Id="57" Count="1" />
     </LineIds>
     <LineIds Name="FB_List.Reverse">
       <LineId Id="21" Count="0" />
@@ -1034,8 +1035,15 @@ TypeMismatchException := stError.bSTATUS;]]></ST>
       <LineId Id="73" Count="1" />
       <LineId Id="90" Count="0" />
       <LineId Id="89" Count="0" />
-      <LineId Id="91" Count="4" />
-      <LineId Id="76" Count="1" />
+      <LineId Id="91" Count="3" />
+      <LineId Id="129" Count="1" />
+      <LineId Id="122" Count="0" />
+      <LineId Id="125" Count="0" />
+      <LineId Id="128" Count="0" />
+      <LineId Id="127" Count="0" />
+      <LineId Id="123" Count="0" />
+      <LineId Id="121" Count="0" />
+      <LineId Id="77" Count="0" />
       <LineId Id="108" Count="0" />
       <LineId Id="78" Count="0" />
       <LineId Id="43" Count="0" />
