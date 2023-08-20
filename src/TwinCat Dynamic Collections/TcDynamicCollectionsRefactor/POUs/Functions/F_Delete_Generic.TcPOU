@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="F_Delete_Generic" Id="{2e94c887-93d9-4991-ba1f-79e7387d4e62}" SpecialFunc="None">
+    <Declaration><![CDATA[// Deletes a generic's value.
+FUNCTION F_Delete_Generic : BOOL
+VAR_INPUT
+	Source : REFERENCE TO T_Generic;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF (NOT __ISVALIDREF(Source)) THEN RETURN; END_IF
+
+CASE Tc2_System.F_CheckMemoryArea(Source.pValue, 1) OF
+	Tc2_System.E_TcMemoryArea.Dynamic: __DELETE(Source.pValue);
+ELSE
+	Source.pValue := 0;
+	END_CASE
+
+Source.diSize := 0;
+Source.TypeClass := T_Type.TYPE_NONE;
+
+F_Delete_Generic := TRUE;]]></ST>
+    </Implementation>
+    <LineIds Name="F_Delete_Generic">
+      <LineId Id="10" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="31" Count="1" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="11" Count="2" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

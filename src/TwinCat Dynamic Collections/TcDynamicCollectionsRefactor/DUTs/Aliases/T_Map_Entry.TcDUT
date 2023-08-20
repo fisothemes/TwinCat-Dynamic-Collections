@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <DUT Name="T_Map_Entry" Id="{a93d3904-e0b5-4d11-96e4-b0b8f7288243}">
+    <Declaration><![CDATA[TYPE T_Map_Entry : ST_MAP_ENTRY; END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

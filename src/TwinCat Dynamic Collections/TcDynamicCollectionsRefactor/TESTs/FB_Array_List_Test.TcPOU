@@ -1,0 +1,471 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="FB_Array_List_Test" Id="{5c6ffcb9-bcec-4b60-8c84-a0147fec5797}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Array_List_Test EXTENDS TcUnit.FB_TestSuite
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[THIS^.Size_And_Is_Empty();
+THIS^.Append_And_Get();
+THIS^.Prepend_And_Get();
+THIS^.Append_And_Reverse();
+THIS^.Append_Find_And_Get();
+THIS^.Remove_Tests();
+THIS^.Set_And_Get();]]></ST>
+    </Implementation>
+    <Method Name="Append_And_Get" Id="{3564b600-e0b4-47d5-94b3-835b3423917a}">
+      <Declaration><![CDATA[// Test appending multiple elements and verify their order and values using the get method.
+METHOD Append_And_Get
+VAR_INST
+	fbList 		: FB_Array_List(0);
+	
+	arbValue 	: ARRAY[0..2] OF BOOL := [TRUE, TRUE];
+	arnValue 	: ARRAY[0..2] OF INT := [33, 33];
+	arsValue 	: ARRAY[0..2] OF STRING := ['I love cats.', 'I love cats.'];
+	arwsValue 	: ARRAY[0..2] OF WSTRING := ["I love dogs.", "I love dogs."];
+	arfValue 	: ARRAY[0..2] OF LREAL := [21.3, 21.3];
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Append_And_Get');
+
+	fbList
+		.Append(arbValue[0])
+		.Append(arnValue[0])
+		.Append(arsValue[0])
+		.Append(arwsValue[0])
+		.Append(arfValue[0]);
+		
+	fbList
+		.Get(0, arbValue[2])
+		.Get(1, arnValue[2])
+		.Get(2, arsValue[2])
+		.Get(3, arwsValue[2])
+		.Get(4, arfValue[2]);
+		
+	THIS^.AssertEquals_DINT(5, fbList._Count, 'List item count must be 5 after after appending items to list.');
+	THIS^.AssertEquals_BOOL(arbValue[1], arbValue[2], 'Appended BOOL item is not what is expected after the get operation.');
+	THIS^.AssertEquals_INT(arnValue[1], arnValue[2], 'Appended INT item is not what is expected after the get operation.');
+	THIS^.AssertEquals_STRING(arsValue[1], arsValue[2], 'Appended STRING item is not what is expected after the get operation.');
+	THIS^.AssertEquals_WSTRING(arwsValue[1], arwsValue[2], 'Appended STRING item is not what is expected after the get operation.');
+	THIS^.AssertEquals_LREAL(arfValue[1], arfValue[2],0.01, 'Appended LREAL item is not what is expected after the get operation.');
+
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Append_And_Reverse" Id="{a24a48cb-ac38-4b5c-9ea9-e5e78615f59f}">
+      <Declaration><![CDATA[// Test appending multiple elements, reversing their order and verifiying their order and values using the get method.
+METHOD Append_And_Reverse
+VAR_INST
+	fbList 		: FB_Array_List(0);
+	
+	arbValue 	: ARRAY[0..2] OF BOOL := [TRUE, TRUE];
+	arnValue 	: ARRAY[0..2] OF INT := [33, 33];
+	arsValue 	: ARRAY[0..2] OF STRING := ['I love cats.', 'I love cats.'];
+	arwsValue 	: ARRAY[0..2] OF WSTRING := ["I love dogs.", "I love dogs."];
+	arfValue 	: ARRAY[0..2] OF LREAL := [21.3, 21.3];
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Append_And_Reverse');
+
+	fbList
+		.Append(arbValue[0])
+		.Append(arnValue[0])
+		.Append(arsValue[0])
+		.Append(arwsValue[0])
+		.Append(arfValue[0])
+		.Reverse();
+		
+	fbList
+		.Get(4, arbValue[2])
+		.Get(3, arnValue[2])
+		.Get(2, arsValue[2])
+		.Get(1, arwsValue[2])
+		.Get(0, arfValue[2]);
+		
+	THIS^.AssertEquals_DINT(5, fbList._Count, 'List item count must be 5 after after appending items to list.');
+	THIS^.AssertEquals_BOOL(arbValue[1], arbValue[2], 'Appended BOOL item is not what is expected after the get operation.');
+	THIS^.AssertEquals_INT(arnValue[1], arnValue[2], 'Appended INT item is not what is expected after the get operation.');
+	THIS^.AssertEquals_STRING(arsValue[1], arsValue[2], 'Appended STRING item is not what is expected after the get operation.');
+	THIS^.AssertEquals_WSTRING(arwsValue[1], arwsValue[2], 'Appended STRING item is not what is expected after the get operation.');
+	THIS^.AssertEquals_LREAL(arfValue[1], arfValue[2],0.01, 'Appended LREAL item is not what is expected after the get operation.');
+
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Append_Find_And_Get" Id="{5b613212-944f-40cb-92e6-997522bbc80a}">
+      <Declaration><![CDATA[// Test appending multiple elements, finds them and verify values using the get method.
+METHOD Append_Find_And_Get
+VAR_INST
+	fbList 		: FB_Array_List(0);
+	Idx 		: ARRAY[0..4] OF T_Position;
+	arbValue 	: ARRAY[0..2] OF BOOL := [TRUE, TRUE];
+	arnValue 	: ARRAY[0..2] OF INT := [33, 33];
+	arsValue 	: ARRAY[0..2] OF STRING := ['I love cats.', 'I love cats.'];
+	arwsValue 	: ARRAY[0..2] OF WSTRING := ["I love dogs.", "I love dogs."];
+	arfValue 	: ARRAY[0..2] OF LREAL := [21.3, 21.3];
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Append_Find_And_Get');
+
+	fbList
+		.Append(arbValue[0])
+		.Append(arnValue[0])
+		.Append(arsValue[0])
+		.Append(arwsValue[0])
+		.Append(arfValue[0]);
+
+	// Make the strings dirty. 	
+	arsValue[0] 	:= 'kjhsadkfjvhbkjhdfbkvsjhbfkvjhsbkfv';
+	arwsValue[0] 	:= "kjhsadkfjvhbkjhdfbkvsjhbfkvjhsbkfv";
+	arsValue[0] 	:= 'I love cats.';
+	arwsValue[0] 	:= "I love dogs.";
+		
+	fbList
+		.Search(arbValue[0], Index => Idx[0])
+		.Search(arnValue[0], Index => Idx[1])
+		.Search(arsValue[0], Index => Idx[2])
+		.Search(arwsValue[0],Index => Idx[3])
+		.Search(arfValue[0], Index => Idx[4]);
+		
+	fbList
+		.Get(Idx[0], arbValue[2])
+		.Get(Idx[1], arnValue[2])
+		.Get(Idx[2], arsValue[2])
+		.Get(Idx[3], arwsValue[2])
+		.Get(Idx[4], arfValue[2]);
+		
+	THIS^.AssertEquals_DINT(5, fbList._Count, 'List item count must be 5 after after appending items to list.');
+	THIS^.AssertEquals_BOOL(arbValue[1], arbValue[2], 'Appended BOOL item is not what is expected after the get operation.');
+	THIS^.AssertEquals_INT(arnValue[1], arnValue[2], 'Appended INT item is not what is expected after the get operation.');
+	THIS^.AssertEquals_STRING(arsValue[1], arsValue[2], 'Appended STRING item is not what is expected after the get operation.');
+	THIS^.AssertEquals_WSTRING(arwsValue[1], arwsValue[2], 'Appended STRING item is not what is expected after the get operation.');
+	THIS^.AssertEquals_LREAL(arfValue[1], arfValue[2],0.01, 'Appended LREAL item is not what is expected after the get operation.');
+
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Prepend_And_Get" Id="{4f797a0a-9fa4-40fb-97fb-f3ae65e3c0fb}">
+      <Declaration><![CDATA[// Test prepending multiple elements and verify their order and values using the get method.
+METHOD Prepend_And_Get
+VAR_INST
+	fbList 		: FB_Array_List(0);
+	
+	arbValue 	: ARRAY[0..2] OF BOOL := [TRUE, TRUE];
+	arnValue 	: ARRAY[0..2] OF INT := [33, 33];
+	arsValue 	: ARRAY[0..2] OF STRING := ['I love cats.', 'I love cats.'];
+	arwsValue 	: ARRAY[0..2] OF WSTRING := ["I love dogs.", "I love dogs."];
+	arfValue 	: ARRAY[0..2] OF LREAL := [21.3, 21.3];
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Prepend_And_Get');
+
+	fbList
+		.Prepend(arbValue[0])
+		.Prepend(arnValue[0])
+		.Prepend(arsValue[0])
+		.Prepend(arwsValue[0])
+		.Prepend(arfValue[0]);
+		
+	fbList
+		.Get(4, arbValue[2])
+		.Get(3, arnValue[2])
+		.Get(2, arsValue[2])
+		.Get(1, arwsValue[2])
+		.Get(0, arfValue[2]);
+		
+	THIS^.AssertEquals_DINT(5, fbList._Count, 'List item count must be 5 after after appending items to list.');
+	THIS^.AssertEquals_BOOL(arbValue[1], arbValue[2], 'Appended BOOL item is not what is expected after the get operation.');
+	THIS^.AssertEquals_INT(arnValue[1], arnValue[2], 'Appended INT item is not what is expected after the get operation.');
+	THIS^.AssertEquals_STRING(arsValue[1], arsValue[2], 'Appended STRING item is not what is expected after the get operation.');
+	THIS^.AssertEquals_WSTRING(arwsValue[1], arwsValue[2], 'Appended STRING item is not what is expected after the get operation.');
+	THIS^.AssertEquals_LREAL(arfValue[1], arfValue[2],0.01, 'Appended LREAL item is not what is expected after the get operation.');
+
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Remove_Tests" Id="{f8a0a6eb-4c83-433c-9136-1f908b4db9e5}">
+      <Declaration><![CDATA[// Test appending multiple elements, removing first item, verifying the size and values.
+// 
+METHOD Remove_Tests
+VAR_INST
+	fbList 		: FB_Array_List(0);
+	i 			: T_Position;
+	n 			: T_Capacity;
+	arbValue 	: ARRAY[0..2] OF BOOL := [TRUE, TRUE];
+	arnValue 	: ARRAY[0..2] OF INT := [33, 33];
+	arsValue 	: ARRAY[0..2] OF STRING := ['I love cats.', 'I love cats.'];
+	arwsValue 	: ARRAY[0..2] OF WSTRING := ["I love dogs.", "I love dogs."];
+	arfValue 	: ARRAY[0..2] OF LREAL := [21.3, 21.3];
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Remove_Tests');
+
+	fbList
+		.Append(arbValue[0])
+		.Append(arnValue[0])
+		.Append(arsValue[0])
+		.Append(arwsValue[0])
+		.Append(arfValue[0]);
+		
+	fbList
+		.Remove(arbValue[0])
+		.Get(0, arnValue[2]);
+		
+	THIS^.AssertEquals_DINT(4, fbList._Count, 'List item count must be 4 after appending and removing fisrt item at from the list.');
+	THIS^.AssertEquals_INT(arnValue[1], arnValue[2],'');
+	
+	fbList
+		.Prepend(arbValue[0])
+		.Remove_At(2)
+		.Get(2, arwsValue[2]);
+		
+	THIS^.AssertEquals_DINT(4, fbList._Count, 'List item count must be 4 after prepending removed item and removing item in index 2 of the list.');
+	THIS^.AssertEquals_WSTRING(arwsValue[1], arwsValue[2], '');
+	
+	fbList
+		.Insert(2, arsValue[0])
+		.Remove_At(fbList._Count - 1)
+		.Get(3, arwsValue[2]);
+		
+	THIS^.AssertEquals_DINT(4, fbList._Count, 'List item count must be 4 after inserting removed from index 2 item and removing the last item in the list.');
+	THIS^.AssertEquals_WSTRING(arwsValue[1], arwsValue[2], '');
+	
+	n := fbList._Count;
+	FOR i := 0 TO n - 1 DO
+		fbList.Remove_At(fbList._Count - 1);
+		END_FOR
+		
+	THIS^.AssertEquals_DINT(0, fbList._Count, 'List item count must be zero after removing all items from the back.');
+	THIS^.AssertEquals_BOOL(TRUE, fbList._Is_Empty, 'List Is_Empty property must be zero TRUE removing all items from the back.');
+	
+	FOR i := 0 TO 4 DO fbList.Prepend(arwsValue); END_FOR
+	
+	THIS^.AssertEquals_DINT(5, fbList._Count, 'Failed to prepend items to list for checking removing all items from the front.');
+	
+	n := fbList._Count;
+	FOR i := 0 TO n - 1 DO
+		fbList.Remove_At(0);
+		END_FOR
+		
+	THIS^.AssertEquals_DINT(0, fbList._Count, 'List item count must be zero after removing all items from the front.');
+	THIS^.AssertEquals_BOOL(TRUE, fbList._Is_Empty, 'List Is_Empty property must be zero TRUE removing all items from the front.');
+
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Set_And_Get" Id="{ab0db535-356a-42bb-9368-2cba1056d6c8}">
+      <Declaration><![CDATA[// Test appending multiple elements and verify their order and values using the get method.
+METHOD Set_And_Get
+VAR_INST
+	fbList 		: FB_Array_List(5);
+	
+	arbValue 	: ARRAY[0..2] OF BOOL := [TRUE, TRUE];
+	arnValue 	: ARRAY[0..2] OF INT := [33, 33];
+	arsValue 	: ARRAY[0..2] OF STRING := ['I love cats.', 'I love cats.'];
+	arwsValue 	: ARRAY[0..2] OF WSTRING := ["I love dogs.", "I love dogs."];
+	arfValue 	: ARRAY[0..2] OF LREAL := [21.3, 21.3];
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Set_And_Get');
+
+	fbList
+		.Set(0, arbValue[0])
+		.Set(1, arnValue[0])
+		.Set(2, arsValue[0])
+		.Set(3, arwsValue[0])
+		.Set(4, arfValue[0]);
+		
+	fbList
+		.Get(0, arbValue[2])
+		.Get(1, arnValue[2])
+		.Get(2, arsValue[2])
+		.Get(3, arwsValue[2])
+		.Get(4, arfValue[2]);
+		
+	THIS^.AssertEquals_DINT(5, fbList._Count, 'List item count must be 5 after after appending items to list.');
+	THIS^.AssertEquals_BOOL(arbValue[1], arbValue[2], 'Appended BOOL item is not what is expected after the get operation.');
+	THIS^.AssertEquals_INT(arnValue[1], arnValue[2], 'Appended INT item is not what is expected after the get operation.');
+	THIS^.AssertEquals_STRING(arsValue[1], arsValue[2], 'Appended STRING item is not what is expected after the get operation.');
+	THIS^.AssertEquals_WSTRING(arwsValue[1], arwsValue[2], 'Appended STRING item is not what is expected after the get operation.');
+	THIS^.AssertEquals_LREAL(arfValue[1], arfValue[2],0.01, 'Appended LREAL item is not what is expected after the get operation.');
+
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Size_And_Is_Empty" Id="{edd66986-b9b7-4800-940f-220bb0ac0019}">
+      <Declaration><![CDATA[// 1) Test that a newly created FB_Array_List has an item count of 0 and is empty.
+// 2) Test that after appending elements, the size increases accordingly and is no longer empty.
+// 3) Test that after removing all elements, the size becomes 0 again and the list is empty.
+METHOD Size_And_Is_Empty
+VAR_INST
+	fbList : FB_Array_List(0);
+	nValue : INT := 33;
+	sValue : STRING := 'I love cats.';
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Size_And_Is_Empty');
+
+	THIS^.AssertEquals_DINT(0, fbList._Count, 'List item count must be 0.');
+	THIS^.AssertEquals_BOOL(TRUE, fbList._Is_Empty, 'Is_Empty property didnt return TRUE.');
+	
+	fbList
+		.Append(nValue)
+		.Append(sValue);
+	
+	THIS^.AssertEquals_DINT(2, fbList._Count, 'List item count must be 2 after appending values.');
+	THIS^.AssertEquals_BOOL(FALSE, fbList._Is_Empty, 'Is_Empty property didnt return FALSE after appending value.');
+	
+	fbList.Clear();
+	
+	THIS^.AssertEquals_DINT(0, fbList._Count, 'List item count must be 0 after clearing list.');
+	THIS^.AssertEquals_BOOL(TRUE, fbList._Is_Empty, 'Is_Empty property didnt return TRUE after clearing list.');
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Array_List_Test">
+      <LineId Id="31" Count="4" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="36" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Array_List_Test.Append_And_Get">
+      <LineId Id="36" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="53" Count="1" />
+      <LineId Id="63" Count="1" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="68" Count="2" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="73" Count="3" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Array_List_Test.Append_And_Reverse">
+      <LineId Id="36" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="53" Count="1" />
+      <LineId Id="63" Count="1" />
+      <LineId Id="88" Count="0" />
+      <LineId Id="111" Count="0" />
+      <LineId Id="106" Count="4" />
+      <LineId Id="105" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="73" Count="3" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Array_List_Test.Append_Find_And_Get">
+      <LineId Id="106" Count="7" />
+      <LineId Id="138" Count="0" />
+      <LineId Id="136" Count="1" />
+      <LineId Id="139" Count="0" />
+      <LineId Id="141" Count="1" />
+      <LineId Id="114" Count="21" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Array_List_Test.Prepend_And_Get">
+      <LineId Id="36" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="53" Count="1" />
+      <LineId Id="63" Count="1" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="88" Count="4" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="73" Count="3" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Array_List_Test.Remove_Tests">
+      <LineId Id="36" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="53" Count="1" />
+      <LineId Id="63" Count="1" />
+      <LineId Id="111" Count="0" />
+      <LineId Id="106" Count="0" />
+      <LineId Id="123" Count="0" />
+      <LineId Id="139" Count="0" />
+      <LineId Id="124" Count="1" />
+      <LineId Id="144" Count="0" />
+      <LineId Id="127" Count="3" />
+      <LineId Id="140" Count="0" />
+      <LineId Id="131" Count="1" />
+      <LineId Id="142" Count="0" />
+      <LineId Id="133" Count="3" />
+      <LineId Id="141" Count="0" />
+      <LineId Id="137" Count="1" />
+      <LineId Id="143" Count="0" />
+      <LineId Id="157" Count="0" />
+      <LineId Id="165" Count="0" />
+      <LineId Id="158" Count="2" />
+      <LineId Id="162" Count="2" />
+      <LineId Id="166" Count="0" />
+      <LineId Id="168" Count="0" />
+      <LineId Id="174" Count="0" />
+      <LineId Id="169" Count="0" />
+      <LineId Id="171" Count="0" />
+      <LineId Id="175" Count="0" />
+      <LineId Id="172" Count="1" />
+      <LineId Id="170" Count="0" />
+      <LineId Id="176" Count="2" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Array_List_Test.Set_And_Get">
+      <LineId Id="36" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="53" Count="1" />
+      <LineId Id="63" Count="1" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="68" Count="2" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="73" Count="3" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Array_List_Test.Size_And_Is_Empty">
+      <LineId Id="35" Count="0" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="49" Count="1" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="71" Count="1" />
+      <LineId Id="56" Count="4" />
+      <LineId Id="63" Count="1" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

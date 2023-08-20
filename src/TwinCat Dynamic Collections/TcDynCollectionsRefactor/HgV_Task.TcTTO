@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+  <Task Name="HgV_Task" Id="{63104925-11e2-47ad-b337-780895fab31b}">
+    <!--CycleTime in micro seconds.-->
+    <CycleTime>10000</CycleTime>
+    <Priority>1</Priority>
+    <PouCall>
+      <Name>HgV_Engine</Name>
+    </PouCall>
+    <TaskFBGuid>{0427c0a7-f0a8-44c1-ad4c-e8bc26078fe8}</TaskFBGuid>
+    <Fb_init>{3a6482f1-ba44-4e8d-939b-a4b0912591ea}</Fb_init>
+    <Fb_exit>{da044454-c42c-4860-80f1-8fb446f36ce0}</Fb_exit>
+    <CycleUpdate>{9d816671-ee33-4f57-93e1-6347237cae77}</CycleUpdate>
+    <PostCycleUpdate>{c9ddd2ca-6b66-45c1-a382-1c501d09f233}</PostCycleUpdate>
+  </Task>
+</TcPlcObject>

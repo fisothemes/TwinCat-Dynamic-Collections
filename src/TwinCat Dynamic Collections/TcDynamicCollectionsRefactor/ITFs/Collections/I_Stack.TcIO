@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <Itf Name="I_Stack" Id="{1831c942-4d94-45ea-b6b1-d9af610d4987}">
+    <Declaration><![CDATA[INTERFACE I_Stack EXTENDS I_Collection
+]]></Declaration>
+    <Property Name="_Values" Id="{f875ff2d-cee6-4bd7-b34a-3815f399744c}">
+      <Declaration><![CDATA[// Gets an immutable list of the items in the stack.
+PROPERTY _Values : I_Immutable_List]]></Declaration>
+      <Get Name="Get" Id="{656e15b1-9a75-4299-bc7e-3390725a39b7}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Method Name="Clear" Id="{93f1588e-4a3f-4411-be93-15691f6083cc}">
+      <Declaration><![CDATA[// Empties/Clears/Deletes every item in the stack.
+METHOD Clear : I_Stack
+]]></Declaration>
+    </Method>
+    <Method Name="Get" Id="{0cf26584-cbf7-4baa-bb82-2e850ba995d3}">
+      <Declaration><![CDATA[// Gets item at the top of the stack.
+METHOD Get : I_Stack
+VAR_INPUT
+	Item : ANY; // Variable to store returned item value. 
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Get_Generic" Id="{be3e7b6a-8f27-4dac-81c2-8d756cfc448d}">
+      <Declaration><![CDATA[// Gets item at the top of the stack as a generic.
+METHOD Get_Generic : I_Stack
+VAR_OUTPUT
+	Item : T_Generic; // Variable to store returned item value
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Pop" Id="{6c839552-40ac-4bc4-9488-9cef2adb42ab}">
+      <Declaration><![CDATA[// Removes item at the top of the stack without returning anything.
+METHOD Pop : I_Stack
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Push" Id="{1af20f18-a451-47d0-95f9-7ca673f11d1b}">
+      <Declaration><![CDATA[// Add item to the top of the stack.
+METHOD Push : I_Stack
+VAR_INPUT
+	Item : ANY; // Item to store.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Push_Generic" Id="{9d8666c7-087f-49c1-99ad-397c02119636}">
+      <Declaration><![CDATA[// Add generic item to the top of the stack.
+METHOD Push_Generic : I_Stack
+VAR_INPUT
+	Item : T_Generic; // Item to store.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Reverse" Id="{47c816c6-237d-43ed-b241-e998ca696ac5}">
+      <Declaration><![CDATA[// Reverses order of items on stack.
+METHOD Reverse : I_Stack
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

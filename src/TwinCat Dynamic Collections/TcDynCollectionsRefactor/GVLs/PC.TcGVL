@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+  <GVL Name="PC" Id="{384e0a86-f692-4694-a993-0166314ad626}">
+    <Declaration><![CDATA[// Variables to be accessed by Labview or PC.
+VAR_GLOBAL
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

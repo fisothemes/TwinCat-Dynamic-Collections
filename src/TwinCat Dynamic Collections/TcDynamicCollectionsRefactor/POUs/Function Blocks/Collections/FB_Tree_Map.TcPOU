@@ -1,0 +1,1018 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="FB_Tree_Map" Id="{910ff366-561b-46e3-b0af-0efa5ba32249}" SpecialFunc="None">
+    <Declaration><![CDATA[// A collection of key value pairs items implemented using an iterative AVL Tree.
+// This data structure was implemented with the help of Max Goren's iterative AVL tree in C++. See Fucntion Block's body for more details.
+{attribute 'enable_dynamic_creation'}
+{attribute 'no_assign'}
+{attribute 'no_explicit_call' := 'direct call for this function block is not allowed'}
+FUNCTION_BLOCK FB_Tree_Map EXTENDS FB_Collection IMPLEMENTS I_Tree_Map //, I_Enumerable, I_Copyable
+VAR
+	pRoot : POINTER TO T_AVL_Map_Node;
+	Traversal : T_BST_Traversal := T_BST_Traversal.In_Order; 
+	pKeys, pValues : POINTER TO FB_Array_List;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*
+	https://github.com/maxgoren
+	https://github.com/maxgoren/Algorithms/
+	http://www.maxgcoding.com/iterative-avl-trees-insertion/
+	http://www.maxgcoding.com/iterative-avl-trees-deletion/
+
+	MIT License
+	
+	Copyright (c) 2021 Max Goren
+	
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
+	
+	The above copyright notice and this permission notice shall be included in all
+	copies or substantial portions of the Software.
+	
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+	SOFTWARE.
+*)]]></ST>
+    </Implementation>
+    <Folder Name="Internal" Id="{201d8958-1f28-4adf-9583-a41825184fbb}" />
+    <Property Name="_Traversal" Id="{793f1c1e-651e-4701-9331-6fa81088c262}">
+      <Declaration><![CDATA[// Traversal method for retrieving keys and values in the tree map set.
+PROPERTY _Traversal : T_BST_Traversal]]></Declaration>
+      <Get Name="Get" Id="{13ca6df9-f3a1-48b2-b498-e24608aa8a32}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_Traversal := THIS^.Traversal;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{2aaa3b2b-b497-45d3-8423-e4fc44abf90d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.Traversal := _Traversal;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Balance" Id="{f8a47166-72d7-4a08-a8da-c0fef94596ed}" FolderPath="Internal\">
+      <Declaration><![CDATA[// Performs rotation and updates heights until tree is balanced.
+METHOD PROTECTED Balance
+VAR_INPUT
+    pNode : POINTER TO T_AVL_Map_Node;
+END_VAR
+VAR 
+	pTmp : POINTER TO T_AVL_Map_Node;
+    Balance_Factor : T_Position;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[WHILE pNode <> 0 AND_THEN pNode^.pParent <> 0 DO
+	pTmp := pNode^.pParent;
+	
+	THIS^.Update_Height(pTmp);
+	
+	IF THIS^.Get_Balance(pTmp) < -1 THEN
+		IF THIS^.Get_Balance(pTmp^.pRight) > 0 THEN THIS^.Rotate_Right(pTmp^.pRight); END_IF
+		THIS^.Rotate_Left(pTmp);
+		
+	ELSIF THIS^.Get_Balance(pTmp) > 1 THEN
+		IF THIS^.Get_Balance(pTmp^.pLeft) < 0 THEN THIS^.Rotate_Left(pTmp^.pLeft); END_IF
+		THIS^.Rotate_Right(pTmp);
+		END_IF
+	
+	pNode := pNode^.pParent;
+	END_WHILE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Clear" Id="{3e4ab18b-47f2-446c-b24b-627b1d7607e0}">
+      <Declaration><![CDATA[// Empties/Clears/Deletes every item in the map.
+METHOD Clear : I_Map
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Clear := THIS^;
+
+THIS^.Clear_Node(THIS^.pRoot);
+
+IF THIS^.pKeys <> 0 THEN  __DELETE(THIS^.pKeys); END_IF
+IF THIS^.pValues <> 0 THEN  __DELETE(THIS^.pValues); END_IF
+
+THIS^.pRoot := 0;
+THIS^._Count := 0;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Clear_Node" Id="{5b8299cb-55d8-4940-b289-cbee3cea4936}" FolderPath="Internal\">
+      <Declaration><![CDATA[// Deletes the node and its tree/sub-trees.
+{warning disable C0394}
+METHOD PROTECTED Clear_Node
+VAR_INPUT
+	pRoot : POINTER TO T_AVL_Map_Node;
+END_VAR
+VAR
+	fbNode_Stack : FB_Stack;
+	pTmp : POINTER TO T_AVL_Map_Node;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF pRoot = 0 THEN RETURN; END_IF
+
+fbNode_Stack.Push(pRoot);
+
+WHILE NOT fbNode_Stack._Is_Empty DO
+	fbNode_Stack.Get(pTmp);
+	fbNode_Stack.Pop();
+	
+	IF pTmp^.pRight <> 0 THEN fbNode_Stack.Push(pTmp^.pRight); END_IF
+	IF pTmp^.pLeft <> 0 THEN fbNode_Stack.Push(pTmp^.pLeft); END_IF
+	
+	THIS^.Delete_Node(pTmp);
+	END_WHILE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Contains" Id="{e80f5b80-fc64-4313-bd8b-70129e291583}">
+      <Declaration><![CDATA[// Checks if key is contained in the map.
+METHOD Contains : BOOL
+VAR_INPUT
+	Key : ANY; // Key to find.
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Contains := THIS^.Search_Node(THIS^.pRoot, Key) <> 0;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Create_Node" Id="{6482f20f-1b32-4d6a-b495-ab12ed090604}" FolderPath="Internal\">
+      <Declaration><![CDATA[// Creates a new node in dynamic memory with a clone of the generic item as it data.
+METHOD PROTECTED Create_Node : POINTER TO ST_AVL_MAP_NODE
+VAR_INPUT
+	Key, Value : T_Generic;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Create_Node := __NEW(ST_AVL_MAP_NODE);
+Create_Node^.Key := F_Clone_Generic(Key);
+Create_Node^.Value := F_Clone_Generic(Value);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Delete_Node" Id="{7eda55a8-1eb9-4c96-8abd-43df6f6b1571}" FolderPath="Internal\">
+      <Declaration><![CDATA[// Safety deletes node.
+// If the node and/or it's value/data is in dynamic memory it/they will be deleted.
+METHOD PROTECTED Delete_Node
+VAR_INPUT
+	pNode : REFERENCE TO POINTER TO T_AVL_Map_Node;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF (pNode = 0) THEN RETURN; END_IF 
+
+F_Delete_Generic(pNode^.Key);
+F_Delete_Generic(pNode^.Value);
+
+CASE Tc2_System.F_CheckMemoryArea(pNode, 1) OF
+	Tc2_System.E_TcMemoryArea.Dynamic: __DELETE(pNode);
+ELSE
+	pNode := 0;
+	END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FB_exit" Id="{3c9b3365-9e06-40df-abb4-5edfffa2fb7b}">
+      <Declaration><![CDATA[{attribute 'hide'}
+METHOD FB_exit : BOOL
+VAR_INPUT
+	bInCopyCode : BOOL; // if TRUE, the exit method is called for exiting an instance that is copied afterwards (online change).
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// If this is an online change or this collection is empty then ignore. 
+IF bInCopyCode THEN RETURN; END_IF
+
+THIS^.Clear();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Find_Minimum_Node" Id="{88dc675e-51fe-451b-b69d-a098730b05f7}" FolderPath="Internal\">
+      <Declaration><![CDATA[// Finds the node with the smallest item in a tree or sub-tree.
+METHOD PROTECTED Find_Minimum_Node : POINTER TO T_AVL_Node
+VAR_INPUT
+	pNode : POINTER TO T_AVL_Map_Node;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF pNode = 0 THEN RETURN; END_IF
+
+WHILE pNode^.pLeft <> 0 DO
+	pNode := pNode^.pLeft;
+	END_WHILE
+	
+Find_Minimum_Node := pNode;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get" Id="{2ea1550e-b107-463b-b81e-a9913f2c8356}">
+      <Declaration><![CDATA[// Gets the value associated with the specified key without removing it from the map.
+METHOD Get : I_Map
+VAR_INPUT
+	Key : ANY; // Key used to identify stored value
+	Value : ANY; // Variable to store requested data 
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+VAR
+	Tmp : T_Generic;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get := THIS^;
+
+THIS^.Get_Generic(Key, Value => Tmp, bSuccess => bSuccess);
+
+IF NOT bSuccess THEN RETURN; END_IF
+
+IF NOT F_Matching_Generics(Value, Tmp) THEN
+	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_TYPE_MISMATCH, 'Type mismatch.');
+	RETURN;
+	END_IF
+	
+F_Copy_Generic_Value(Tmp, Value);
+bSuccess := TRUE;
+THIS^.Clear_Error();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_As_String" Id="{24592141-e641-44f9-b10b-7740dfddb5eb}">
+      <Declaration><![CDATA[// Returns value as a string, if type to string conversion is supported.
+METHOD Get_As_String : I_Map
+VAR_INPUT
+	Key : ANY; // Key used to identify stored value
+	sValue : REFERENCE TO STRING; // Variable to store returned item.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+VAR
+	Tmp : T_Generic;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get_As_String := THIS^;
+
+IF NOT __ISVALIDREF(sValue) THEN 
+	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_INVALID_REFERENCE, 'Invalid reference.');
+	RETURN;
+	END_IF
+	
+THIS^.Get_Generic(Key, Value => Tmp, bSuccess => bSuccess);
+
+IF NOT bSuccess THEN RETURN; END_IF
+
+IF NOT F_String_Convertable_Generic(Tmp) THEN 
+	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_NOT_SUPPORTED, 'No support for converting item at index to string.');
+	RETURN;
+	END_IF
+	
+CASE Tmp.TypeClass OF
+	T_Type.TYPE_STRING:
+		Tc2_Utilities.STRNCPY(ADR(sValue), Tmp.pValue, MIN(Tc2_Utilities.LEN2(ADR(sValue))+1, TO_UDINT(Tmp.diSize)));
+
+	T_Type.TYPE_WSTRING:
+		Tc2_Utilities.WSTRING_TO_STRING2(ADR(sValue), Tmp.pValue, MIN(Tc2_Utilities.LEN2(ADR(sValue))+1, TO_UDINT(Tmp.diSize)));
+ELSE
+	sValue := F_Generic_To_String(Tmp);
+	END_CASE
+	
+bSuccess := TRUE;
+THIS^.Clear_Error();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_Balance" Id="{78ee23ac-64d7-4aa9-a2ef-9fd5be437cce}" FolderPath="Internal\">
+      <Declaration><![CDATA[// Gets the difference between the left and right sub-trees.
+METHOD PROTECTED Get_Balance : T_Position
+VAR_INPUT
+	pNode : POINTER TO T_AVL_Map_Node;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get_Balance :=  THIS^.Get_Height(pNode^.pLeft) - THIS^.Get_Height(pNode^.pRight);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_Generic" Id="{6b1dcc33-60fe-4df1-8b46-995dffd957ef}">
+      <Declaration><![CDATA[// Gets the value in its generic form associated with the specified key in its generic form without removing it from the map.
+// (** Use carefully as this contains the pointer of the actual value in the collection. **)
+// If you wish to use this it is recommeded you create a copy of the returned value using MEMMOVE or MEMCPY
+METHOD Get_Generic : I_Map
+VAR_INPUT
+	Key : T_Generic; // Key used to identify stored value
+END_VAR
+VAR_OUTPUT
+	Value : T_Generic := (TypeClass := T_Type.TYPE_NONE); // Variable to store requested data 
+	bSuccess : BOOL;
+END_VAR
+VAR
+	pTmp : POINTER TO T_AVL_Map_Node;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get_Generic := THIS^;
+
+pTmp := THIS^.Search_Node(THIS^.pRoot, Key);
+bSuccess := pTmp <> 0;
+
+IF bSuccess THEN RETURN; END_IF
+
+Value := pTmp^.Value;
+THIS^.Clear_Error();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_Height" Id="{e060f299-f231-4bcc-90b4-794dd55fbc0d}" FolderPath="Internal\">
+      <Declaration><![CDATA[// Safely gets the height of a sub-tree.
+METHOD PROTECTED Get_Height : T_Position
+VAR_INPUT
+	pNode : POINTER TO T_AVL_Map_Node;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get_Height := SEL(pNode <> 0, -1, pNode^.Height);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_Keys" Id="{f937ee47-45d1-41f6-919d-1f09549abd20}">
+      <Declaration><![CDATA[// Gets an immutable list of the keys.
+{warning disable C0394}
+METHOD Get_Keys : I_Immutable_List
+VAR_INST
+	fbImmutable_List : FB_Immutable_List;
+END_VAR
+VAR
+	pCurrent : POINTER TO T_AVL_Map_Node;
+	fbNode_Buffer : FB_Queue;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF THIS^.pKeys = 0 THEN THIS^.pKeys := __NEW(FB_Array_List(Initial_Capacity := 0)); END_IF
+fbImmutable_List(ipList := THIS^.pKeys^);
+Get_Keys := fbImmutable_List;
+
+THIS^.pKeys^.Clear();
+
+IF THIS^.pRoot = 0 THEN RETURN; END_IF
+
+fbNode_Buffer.Enqueue(THIS^.pRoot);
+
+WHILE NOT fbNode_Buffer._Is_Empty DO
+	fbNode_Buffer.Get(pCurrent).Dequeue();
+	
+	CASE THIS^._Traversal OF
+		T_BST_Traversal.In_Order:
+			IF pCurrent^.pLeft <> 0 THEN fbNode_Buffer.Enqueue_At_Front(pCurrent^.pLeft); END_IF
+			THIS^.pKeys^.Insert_Generic(THIS^.pKeys^._Count, pCurrent^.Value);
+			IF pCurrent^.pRight <> 0 THEN fbNode_Buffer.Enqueue_At_Front(pCurrent^.pRight); END_IF
+			
+		T_BST_Traversal.Pre_Order:
+			THIS^.pKeys^.Insert_Generic(THIS^.pKeys^._Count, pCurrent^.Value);
+			IF pCurrent^.pLeft <> 0 THEN fbNode_Buffer.Enqueue_At_Front(pCurrent^.pLeft); END_IF
+			IF pCurrent^.pRight <> 0 THEN fbNode_Buffer.Enqueue_At_Front(pCurrent^.pRight); END_IF
+			
+		T_BST_Traversal.Post_Order:
+			IF pCurrent^.pLeft <> 0 THEN fbNode_Buffer.Enqueue_At_Front(pCurrent^.pLeft); END_IF
+			IF pCurrent^.pRight <> 0 THEN fbNode_Buffer.Enqueue_At_Front(pCurrent^.pRight); END_IF
+			THIS^.pKeys^.Insert_Generic(THIS^.pKeys^._Count, pCurrent^.Value);
+			
+		T_BST_Traversal.Level_Order:
+			THIS^.pKeys^.Insert_Generic(THIS^.pKeys^._Count, pCurrent^.Value);
+			IF pCurrent^.pLeft <> 0 THEN fbNode_Buffer.Enqueue(pCurrent^.pLeft); END_IF
+			IF pCurrent^.pRight <> 0 THEN fbNode_Buffer.Enqueue(pCurrent^.pRight); END_IF
+	ELSE
+		RETURN;
+		END_CASE
+	END_WHILE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_Values" Id="{f54c5c7a-476c-4d51-a3f0-d2fb9cb341e3}">
+      <Declaration><![CDATA[// Gets an immutable list of the values.
+{warning disable C0394}
+METHOD Get_Values : I_Immutable_List
+VAR_INST
+	fbImmutable_List : FB_Immutable_List;
+END_VAR
+VAR
+	pCurrent : POINTER TO T_AVL_Map_Node;
+	fbNode_Buffer : FB_Queue;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF THIS^.pValues = 0 THEN THIS^.pValues := __NEW(FB_Array_List(Initial_Capacity := 0)); END_IF
+fbImmutable_List(ipList := THIS^.pValues^);
+Get_Values := fbImmutable_List;
+
+THIS^.pValues^.Clear();
+
+IF THIS^.pRoot = 0 THEN RETURN; END_IF
+
+fbNode_Buffer.Enqueue(THIS^.pRoot);
+
+WHILE NOT fbNode_Buffer._Is_Empty DO
+	fbNode_Buffer.Get(pCurrent).Dequeue();
+	
+	CASE THIS^._Traversal OF
+		T_BST_Traversal.In_Order:
+			IF pCurrent^.pLeft <> 0 THEN fbNode_Buffer.Enqueue_At_Front(pCurrent^.pLeft); END_IF
+			THIS^.pValues^.Insert_Generic(THIS^.pValues^._Count, pCurrent^.Value);
+			IF pCurrent^.pRight <> 0 THEN fbNode_Buffer.Enqueue_At_Front(pCurrent^.pRight); END_IF
+			
+		T_BST_Traversal.Pre_Order:
+			THIS^.pValues^.Insert_Generic(THIS^.pValues^._Count, pCurrent^.Value);
+			IF pCurrent^.pLeft <> 0 THEN fbNode_Buffer.Enqueue_At_Front(pCurrent^.pLeft); END_IF
+			IF pCurrent^.pRight <> 0 THEN fbNode_Buffer.Enqueue_At_Front(pCurrent^.pRight); END_IF
+			
+		T_BST_Traversal.Post_Order:
+			IF pCurrent^.pLeft <> 0 THEN fbNode_Buffer.Enqueue_At_Front(pCurrent^.pLeft); END_IF
+			IF pCurrent^.pRight <> 0 THEN fbNode_Buffer.Enqueue_At_Front(pCurrent^.pRight); END_IF
+			THIS^.pValues^.Insert_Generic(THIS^.pValues^._Count, pCurrent^.Value);
+			
+		T_BST_Traversal.Level_Order:
+			THIS^.pValues^.Insert_Generic(THIS^.pValues^._Count, pCurrent^.Value);
+			IF pCurrent^.pLeft <> 0 THEN fbNode_Buffer.Enqueue(pCurrent^.pLeft); END_IF
+			IF pCurrent^.pRight <> 0 THEN fbNode_Buffer.Enqueue(pCurrent^.pRight); END_IF
+	ELSE
+		RETURN;
+		END_CASE
+	END_WHILE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Insert" Id="{83cffcc2-5986-44aa-9ed7-0b0ded2676a3}">
+      <Declaration><![CDATA[// Insert an element with the provided key and value to the map.
+METHOD Insert : I_Map
+VAR_INPUT
+	Key : ANY; // Key used to identify stored value
+	Value : ANY; // Value to store in map with key
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Insert := THIS^.Insert_Generic(Key, Value, FALSE, bSuccess => bSuccess);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Insert_Generic" Id="{0d7af989-b20e-488e-b7ff-efe48e8a1ab5}">
+      <Declaration><![CDATA[// Insert an element with the provided key and value in their generic forms to the map.
+METHOD Insert_Generic : I_Map
+VAR_INPUT
+	Key : T_Generic; // Key used to identify stored value
+	Value : T_Generic; // Value to store in map with key
+	bUpdate : BOOL; // If this is true the value will be updated if the key already exists.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+VAR
+	pCurrent, pPrevious : POINTER TO T_AVL_Map_Node;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Insert_Generic := THIS^;
+
+pCurrent := THIS^.pRoot;
+pPrevious := pCurrent;
+
+WHILE pCurrent <> 0 DO
+	pPrevious := pCurrent;
+	CASE F_Compare_Generics(Key, pCurrent^.Key) OF
+		T_Comparison.Less 	 : pCurrent := pCurrent^.pLeft;
+		T_Comparison.Greater : pCurrent := pCurrent^.pRight;
+		T_Comparison.Equal 	 : 
+			IF bUpdate THEN
+				F_Delete_Generic(pCurrent^.Value);
+				pCurrent^.Value := F_Clone_Generic(Value);
+				bSuccess := TRUE;
+				THIS^.Clear_Error();
+			ELSE
+				THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_DUPLICATE, 'Duplicate key.');
+				END_IF
+			RETURN;
+	ELSE
+		THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_NOT_SUPPORTED, 'Invalid comparison.');
+		RETURN;
+		END_CASE
+	END_WHILE
+	
+pCurrent := THIS^.Create_Node(Key, Value);
+
+IF pPrevious = 0 THEN
+	THIS^.pRoot := pCurrent;
+ELSE
+	CASE F_Compare_Generics(Key, pPrevious^.Key) OF
+		T_Comparison.Less: pPrevious^.pLeft := pCurrent;
+	ELSE
+		pPrevious^.pRight := pCurrent;
+		END_CASE
+	END_IF
+	
+pCurrent^.pParent := pPrevious;
+	
+THIS^.Balance(pCurrent);
+
+bSuccess := TRUE;
+THIS^.Increment_Count();
+THIS^.Clear_Error();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Move_Node" Id="{73edb3c4-996e-4eb8-840e-a3fc56dab5d2}" FolderPath="Internal\">
+      <Declaration><![CDATA[// Moves from node at source into the position of the destination.
+METHOD PROTECTED Move_Node
+VAR_INPUT
+	pDestination, pSource : POINTER TO T_AVL_Map_Node;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF pDestination^.pParent = 0 THEN
+	THIS^.pRoot := pSource;
+ELSIF pDestination = pDestination^.pParent^.pLeft THEN
+	pDestination^.pParent^.pLeft := pSource;
+ELSE
+	pDestination^.pParent^.pRight := pSource;
+	END_IF
+	
+IF pSource <> 0 THEN
+	pSource^.pParent := pDestination^.pParent;
+	END_IF
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Remove" Id="{054376d2-7bae-4087-90e7-2df2fb793bf1}">
+      <Declaration><![CDATA[// Removes value with the specified key from the map.
+METHOD Remove : I_Map
+VAR_INPUT
+	Key : ANY; // Key used to identify stored value
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Remove := THIS^.Remove_Generic(Key, bSuccess => bSuccess);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Remove_Generic" Id="{84dde4a6-3d85-44c6-990d-d06f56675ca2}">
+      <Declaration><![CDATA[// Removes value with the specified key in its generic form from the map.
+METHOD Remove_Generic : I_Map
+VAR_INPUT
+	Key : T_Generic; // Key used to identify stored value
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+VAR
+	pTmp : POINTER TO T_AVL_Map_Node;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Remove_Generic := THIS^;
+
+pTmp := THIS^.Search_Node(THIS^.pRoot, Key);
+
+bSuccess := pTmp <> 0;
+
+IF NOT bSuccess THEN
+	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_NO_OBJECT, 'Key not found.');
+	RETURN;
+	END_IF
+
+THIS^.Remove_Node(pTmp);
+THIS^.Balance(pTmp);
+
+THIS^.Decrement_Count();
+THIS^.Clear_Error();
+
+IF THIS^._Is_Empty THEN THIS^.pRoot := 0; END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Remove_Node" Id="{12502c7f-66a4-47a6-8449-23f31ca15ec8}" FolderPath="Internal\">
+      <Declaration><![CDATA[// Finds and removes a node from a tree/sub-tree.
+METHOD PROTECTED Remove_Node
+VAR_INPUT
+	pNode : POINTER TO T_AVL_Map_Node;
+END_VAR
+VAR
+	pTmp, pSuccessor : POINTER TO T_AVL_Map_Node;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[pTmp := pNode;
+
+IF pNode^.pLeft = 0 THEN
+	THIS^.Move_Node(pNode, pNode^.pRight);
+ELSIF pNode^.pRight = 0 THEN 
+	THIS^.Move_Node(pNode, pNode^.pLeft);
+ELSE
+	pSuccessor := THIS^.Find_Minimum_Node(pNode^.pRight);
+	IF pSuccessor^.pParent <> pNode THEN 
+		THIS^.Move_Node(pSuccessor, pSuccessor^.pRight);
+		pSuccessor^.pRight := pNode^.pRight;
+		pSuccessor^.pRight^.pParent := pSuccessor;
+		END_IF
+	THIS^.Move_Node(pNode, pSuccessor);
+	pSuccessor^.pLeft := pNode^.pLeft;
+	pSuccessor^.pLeft^.pParent := pSuccessor;
+	END_IF
+
+THIS^.Delete_Node(pTmp);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Rotate_Left" Id="{43b62857-59e0-4db9-ae94-fa283d0fcccc}" FolderPath="Internal\">
+      <Declaration><![CDATA[// Rotates a tree/sub-tree left.
+METHOD PROTECTED Rotate_Left
+VAR_INPUT
+    pX : POINTER TO T_AVL_Map_Node;
+END_VAR
+VAR
+    pY : POINTER TO T_AVL_Map_Node := pX^.pRight;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF pY <> 0 THEN
+	pX^.pRight := pY^.pLeft;
+	IF pY^.pLeft <> 0 THEN pY^.pLeft^.pParent := pX; END_IF
+	pY^.pParent := pX^.pParent;
+	END_IF
+	
+IF pX^.pParent = 0 THEN
+	THIS^.pRoot := pY;
+ELSIF pX = pX^.pParent^.pLeft THEN
+	pX^.pParent^.pLeft := pY;
+ELSE
+	pX^.pParent^.pRight := pY;
+	END_IF
+	
+IF pY <> 0 THEN pY^.pLeft := pX; END_IF
+	
+pX^.pParent := pY;
+THIS^.Update_Height(pX);
+THIS^.Update_Height(pY);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Rotate_Right" Id="{b0314ba4-e48f-4534-9faf-8bef5054c398}" FolderPath="Internal\">
+      <Declaration><![CDATA[// Rotates a tree/sub-tree right.
+METHOD PROTECTED Rotate_Right
+VAR_INPUT
+    pX : POINTER TO T_AVL_Map_Node;
+END_VAR
+VAR
+    pY : POINTER TO T_AVL_Map_Node := pX^.pLeft;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF pY <> 0 THEN
+	pX^.pLeft := pY^.pRight;
+	IF pY^.pRight <> 0 THEN pY^.pRight^.pParent := pX; END_IF
+	pY^.pParent := pX^.pParent;
+	END_IF
+	
+IF pX^.pParent = 0 THEN
+	THIS^.pRoot := pY;
+ELSIF pX = pX^.pParent^.pLeft THEN
+	pX^.pParent^.pLeft := pY;
+ELSE
+	pX^.pParent^.pRight := pY;
+	END_IF
+	
+IF pY <> 0 THEN pY^.pRight := pX; END_IF
+	
+pX^.pParent := pY;
+THIS^.Update_Height(pX);
+THIS^.Update_Height(pY);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Search_Node" Id="{687a60a3-1cdf-4c56-9c7e-4fb9a13d46a8}" FolderPath="Internal\">
+      <Declaration><![CDATA[// Checks if an item is in a tree/ sub-tree.
+METHOD PROTECTED Search_Node : POINTER TO T_AVL_Map_Node
+VAR_INPUT
+	pNode : POINTER TO T_AVL_Map_Node;
+	Key : T_Generic;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[WHILE pNode <> 0 DO
+	CASE F_Compare_Generics(Key, pNode^.Key) OF
+		T_Comparison.Less	: pNode := pNode^.pLeft;
+		T_Comparison.Greater: pNode := pNode^.pRight; 
+		T_Comparison.Equal	: 
+			Search_Node := pNode;
+			RETURN;
+		END_CASE
+	END_WHILE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Update" Id="{5e6d16fd-f7c2-4472-a7c5-5f972ade0df4}">
+      <Declaration><![CDATA[// Updates the value an element with the provided key and value in the map.
+METHOD Update : I_Map
+VAR_INPUT
+	Key 	: ANY; // Key used to identify stored value
+	Value 	: ANY; // Value to store in map with key
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+VAR
+	pTmp : POINTER TO T_AVL_Map_Node;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Update := THIS^;
+
+pTmp := THIS^.Search_Node(THIS^.pRoot, Key);
+
+bSuccess := pTmp <> 0;
+
+IF NOT bSuccess THEN 
+	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_NO_OBJECT, 'Key not found.');
+	RETURN;
+	END_IF
+	
+F_Delete_Generic(pTmp^.Value);
+pTmp^.Value := F_Clone_Generic(Value);
+THIS^.Clear_Error();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Update_Height" Id="{8234fcca-b288-4124-a4af-5399d9e71322}" FolderPath="Internal\">
+      <Declaration><![CDATA[METHOD PROTECTED Update_Height
+VAR_INPUT
+	pNode : POINTER TO T_AVL_Map_Node;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[pNode^.Height := 1 + MAX(THIS^.Get_Height(pNode^.pLeft), THIS^.Get_Height(pNode^.pRight));]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Upsert" Id="{d392359f-8f43-4507-96e4-d39ad69afb92}">
+      <Declaration><![CDATA[// Updates a value in the map for a given key. If the key doesnt exist, it will be inserted.
+METHOD Upsert : I_Map
+VAR_INPUT
+	Key 	: ANY; // Key used to identify stored value
+	Value 	: ANY; // Value to store in map with key
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Upsert := THIS^.Insert_Generic(Key, Value, TRUE, bSuccess => bSuccess);]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Tree_Map">
+      <LineId Id="21" Count="1" />
+      <LineId Id="106" Count="0" />
+      <LineId Id="23" Count="2" />
+      <LineId Id="86" Count="19" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map._Traversal.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map._Traversal.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map.Balance">
+      <LineId Id="335" Count="14" />
+      <LineId Id="283" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map.Clear">
+      <LineId Id="5" Count="4" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="10" Count="1" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map.Clear_Node">
+      <LineId Id="5" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="20" Count="1" />
+      <LineId Id="23" Count="1" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="18" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map.Contains">
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map.Create_Node">
+      <LineId Id="8" Count="1" />
+      <LineId Id="17" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map.Delete_Node">
+      <LineId Id="5" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="18" Count="1" />
+      <LineId Id="15" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map.FB_exit">
+      <LineId Id="11" Count="0" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map.Find_Minimum_Node">
+      <LineId Id="12" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="9" Count="1" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="11" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map.Get">
+      <LineId Id="11" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="16" Count="10" />
+      <LineId Id="12" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map.Get_As_String">
+      <LineId Id="11" Count="4" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="18" Count="1" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="24" Count="3" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="30" Count="7" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="39" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map.Get_Balance">
+      <LineId Id="16" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map.Get_Generic">
+      <LineId Id="13" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="24" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map.Get_Height">
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map.Get_Keys">
+      <LineId Id="15" Count="2" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="18" Count="2" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="39" Count="1" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="33" Count="1" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="42" Count="3" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="46" Count="2" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="30" Count="2" />
+      <LineId Id="24" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map.Get_Values">
+      <LineId Id="15" Count="2" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="18" Count="2" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="39" Count="1" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="33" Count="1" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="42" Count="3" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="46" Count="2" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="30" Count="2" />
+      <LineId Id="24" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map.Insert">
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map.Insert_Generic">
+      <LineId Id="11" Count="0" />
+      <LineId Id="19" Count="1" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="22" Count="6" />
+      <LineId Id="55" Count="1" />
+      <LineId Id="60" Count="2" />
+      <LineId Id="58" Count="1" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="29" Count="3" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="33" Count="1" />
+      <LineId Id="36" Count="8" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="47" Count="5" />
+      <LineId Id="46" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map.Move_Node">
+      <LineId Id="5" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="12" Count="1" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="15" Count="3" />
+      <LineId Id="14" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map.Remove">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map.Remove_Generic">
+      <LineId Id="9" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="29" Count="1" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="25" Count="2" />
+      <LineId Id="23" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map.Remove_Node">
+      <LineId Id="129" Count="0" />
+      <LineId Id="155" Count="0" />
+      <LineId Id="154" Count="0" />
+      <LineId Id="156" Count="0" />
+      <LineId Id="158" Count="2" />
+      <LineId Id="164" Count="2" />
+      <LineId Id="173" Count="1" />
+      <LineId Id="167" Count="3" />
+      <LineId Id="157" Count="0" />
+      <LineId Id="163" Count="0" />
+      <LineId Id="162" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map.Rotate_Left">
+      <LineId Id="153" Count="0" />
+      <LineId Id="204" Count="2" />
+      <LineId Id="194" Count="2" />
+      <LineId Id="207" Count="0" />
+      <LineId Id="199" Count="3" />
+      <LineId Id="198" Count="0" />
+      <LineId Id="208" Count="1" />
+      <LineId Id="203" Count="0" />
+      <LineId Id="192" Count="0" />
+      <LineId Id="184" Count="0" />
+      <LineId Id="167" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map.Rotate_Right">
+      <LineId Id="129" Count="12" />
+      <LineId Id="145" Count="1" />
+      <LineId Id="142" Count="2" />
+      <LineId Id="74" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map.Search_Node">
+      <LineId Id="45" Count="7" />
+      <LineId Id="17" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map.Update">
+      <LineId Id="10" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="28" Count="1" />
+      <LineId Id="27" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map.Update_Height">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Map.Upsert">
+      <LineId Id="10" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

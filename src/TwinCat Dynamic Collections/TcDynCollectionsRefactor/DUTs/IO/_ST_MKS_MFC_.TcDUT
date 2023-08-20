@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+  <DUT Name="_ST_MKS_MFC_" Id="{fff6c883-fb53-4e30-ad49-fbcd5229d631}">
+    <Declaration><![CDATA[TYPE _ST_MKS_MFC_ :
+STRUCT
+	iEXCEPTION_STATUS	AT %I*	: USINT;
+	fFLOW_READING		AT %I*	: REAL;
+	fACTUATOR_CURRENT	AT %I*	: REAL;
+	
+	fFLOW_SP 			AT %Q*	: REAL;
+	iACTUATOR_CONTROL	AT %Q*	: USINT;
+	iRAMP_TIME			AT %Q*	: UDINT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

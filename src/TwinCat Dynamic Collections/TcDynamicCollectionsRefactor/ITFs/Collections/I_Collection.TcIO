@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <Itf Name="I_Collection" Id="{ce70535c-2bf2-4c10-9046-d2b66e8d9459}">
+    <Declaration><![CDATA[// Base interface for collections.
+INTERFACE I_Collection EXTENDS __SYSTEM.IQueryInterface 
+]]></Declaration>
+    <Property Name="_Count" Id="{92e3448f-dd29-4067-861a-68ba7e939361}">
+      <Declaration><![CDATA[// Number of items in the collection.
+PROPERTY _Count : T_Capacity]]></Declaration>
+      <Get Name="Get" Id="{6f58dff5-60a8-4589-9d7d-c5076f6bfbe0}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="_Error_Status" Id="{bd91ff0e-d15c-4ad1-b073-198193e3840e}">
+      <Declaration><![CDATA[// Error status of the collection.
+PROPERTY _Error_Status : T_Error]]></Declaration>
+      <Get Name="Get" Id="{e13de780-6bb5-4ec7-bb4b-0feac3578ac4}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="_Is_Empty" Id="{67ecff73-9498-44b6-bfd0-7e226f4d192c}">
+      <Declaration><![CDATA[// Checks if collection is empty.
+PROPERTY _Is_Empty : BOOL]]></Declaration>
+      <Get Name="Get" Id="{3e5db94c-d80b-41b0-be48-32e7ebdc9de5}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+  </Itf>
+</TcPlcObject>

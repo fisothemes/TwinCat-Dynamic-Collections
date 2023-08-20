@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <Itf Name="I_Set" Id="{bc24b945-d63e-446d-a22c-da41dbdeabd5}">
+    <Declaration><![CDATA[// Interface for a set collection.
+INTERFACE I_Set EXTENDS I_Collection
+]]></Declaration>
+    <Method Name="Clear" Id="{a8b47f7e-53a4-406d-8a72-10e4236ce6aa}">
+      <Declaration><![CDATA[// Empties/Clears/Deletes every item in the set.
+METHOD Clear : I_Set
+]]></Declaration>
+    </Method>
+    <Method Name="Contains" Id="{0ebba497-3b88-4b9f-b44a-273fa8f5a393}">
+      <Declaration><![CDATA[// Checks if item is contained in set.
+METHOD Contains : BOOL
+VAR_INPUT
+	Item : ANY; // Item to find.
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Get_Values" Id="{bf6aa31a-c2d1-4c88-8978-9536e4d0dbca}">
+      <Declaration><![CDATA[// Gets an immutable list of the values in the set.
+METHOD Get_Values : I_Immutable_List]]></Declaration>
+    </Method>
+    <Method Name="Insert" Id="{b5025145-a4f3-4d24-93a4-7c3b441c0845}">
+      <Declaration><![CDATA[// Insert item into set.
+METHOD Insert 	: I_Set
+VAR_INPUT
+	Item : ANY; // Data to insert
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL; // Indicates whether operation was successful. Success = TRUE, Failure = FALSE
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Insert_Generic" Id="{da7d2441-6a4a-4b6c-ae9c-0be41e1c530d}">
+      <Declaration><![CDATA[// Adds new generic item at into set.
+// The set will store a copy of the generic item so as to not modify the original value outside it's scope.
+METHOD Insert_Generic : I_Set
+VAR_INPUT
+	Item : T_Generic; // Item to store
+END_VAR
+VAR_OUTPUT
+	bSuccess 	: BOOL; // Indicates whether operation was successful. Success = TRUE, Failure = FALSE
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Remove" Id="{69f3621a-ae1a-4d81-9046-bd99ca523f7e}">
+      <Declaration><![CDATA[// Removes item from the set.
+METHOD Remove : I_Set
+VAR_INPUT
+	Item : ANY; // Data to remove
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL; // Indicates whether operation was successful. Success = TRUE, Failure = FALSE
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Remove_Generic" Id="{7ce1266c-944f-488b-8c7b-b6620f540c7f}">
+      <Declaration><![CDATA[// Removes generic item from the set.
+METHOD Remove_Generic : I_Set
+VAR_INPUT
+	Item : T_Generic; // Data to remove
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL; // Indicates whether operation was successful. Success = TRUE, Failure = FALSE
+END_VAR]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

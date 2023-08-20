@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+  <POU Name="FB_Beckhoff_Electric_Propulsion" Id="{9f04e0f5-c54a-4859-9054-ec608ef5bcd0}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Beckhoff_Electric_Propulsion
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="Methods" Id="{8299307b-9357-4dde-9856-1c6805361a49}" />
+    <Folder Name="Properties" Id="{4757f73c-1496-43dc-b278-681d63ed0c6f}" />
+    <LineIds Name="FB_Beckhoff_Electric_Propulsion">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

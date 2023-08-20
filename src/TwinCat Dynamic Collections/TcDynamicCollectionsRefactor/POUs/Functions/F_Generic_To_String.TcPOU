@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="F_Generic_To_String" Id="{b655043b-4871-45d9-91b0-c51845ce0093}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_Generic_To_String : T_MaxString
+VAR_INPUT
+	 Value : T_Generic;
+END_VAR
+VAR	
+	pBool			: POINTER TO BOOL;
+    pByte			: POINTER TO BYTE;
+    pWord			: POINTER TO WORD;
+    pDWord			: POINTER TO DWORD;
+    pLWord			: POINTER TO LWORD;
+    pSint			: POINTER TO SINT;
+    pInt			: POINTER TO INT;
+    pDint			: POINTER TO DINT;
+    pLint			: POINTER TO LINT;
+    pUSint			: POINTER TO USINT;
+    pUInt			: POINTER TO UINT;
+    pUDint			: POINTER TO UDINT;
+    pULint			: POINTER TO ULINT;
+    pReal			: POINTER TO REAL;
+    pLReal			: POINTER TO LREAL;
+    pString			: POINTER TO STRING(255);
+    pWString		: POINTER TO WSTRING;
+    pTime			: POINTER TO TIME;
+    pDate			: POINTER TO DATE;
+    pDate_And_Time	: POINTER TO DATE_AND_TIME;
+    pTime_Of_Day	: POINTER TO TIME_OF_DAY;
+    pPointer		: PVOID;
+	pLTime 			: POINTER TO LTIME;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF Value.pValue = 0 THEN RETURN; END_IF;
+
+CASE Value.TypeClass OF 
+	__SYSTEM.TYPE_CLASS.TYPE_BOOL:
+		pBool := Value.pValue;
+		F_Generic_To_String := TO_STRING(pBool^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_BYTE:
+		pByte := Value.pValue;
+		F_Generic_To_String := TO_STRING(pByte^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_WORD:
+		pWord := Value.pValue;
+		F_Generic_To_String := TO_STRING(pWord^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_DWORD:
+		pDWord := Value.pValue;
+		F_Generic_To_String := TO_STRING(pDWord^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_LWORD:
+		pLWord := Value.pValue;
+		F_Generic_To_String := TO_STRING(pLWord^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_SINT:
+		pSint := Value.pValue;
+		F_Generic_To_String := TO_STRING(pSint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_INT:
+		pInt := Value.pValue;
+		F_Generic_To_String := TO_STRING(pInt^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_DINT:
+		pDint := Value.pValue;
+		F_Generic_To_String := TO_STRING(pDint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_LINT:
+		pLint := Value.pValue;
+		F_Generic_To_String := TO_STRING(pLint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_USINT:
+		pUSint := Value.pValue;
+		F_Generic_To_String := TO_STRING(pUSint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_UINT:
+		pUInt := Value.pValue;
+		F_Generic_To_String := TO_STRING(pUInt^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_UDINT:
+		pUDint := Value.pValue;
+		F_Generic_To_String := TO_STRING(pUDint^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_ULINT:
+		pULint := Value.pValue;
+		F_Generic_To_String := TO_STRING(pULint^);
+		
+   __SYSTEM.TYPE_CLASS.TYPE_REAL:
+		pReal := Value.pValue;
+		F_Generic_To_String := TO_STRING(pReal^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_LREAL:
+		pLReal := Value.pValue;
+		F_Generic_To_String := TO_STRING(pLReal^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_STRING:
+		pString := Value.pValue;
+		F_Generic_To_String := TO_STRING(pString^);
+		
+   __SYSTEM.TYPE_CLASS.TYPE_WSTRING:
+		pWString := Value.pValue;
+		F_Generic_To_String := TO_STRING(pWString^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_TIME:
+		pTime := Value.pValue;
+		F_Generic_To_String := TO_STRING(pTime^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_DATE:
+		pDate := Value.pValue;
+		F_Generic_To_String := TO_STRING(pDate^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_DATEANDTIME:
+		pDate_And_Time := Value.pValue;
+		F_Generic_To_String := TO_STRING(pDate_And_Time^);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_TIMEOFDAY:
+		pTime_Of_Day := Value.pValue;
+		F_Generic_To_String := TO_STRING(pTime_Of_Day^);
+	
+	__SYSTEM.TYPE_CLASS.TYPE_POINTER:
+		F_Generic_To_String := TO_STRING(Value.pValue);
+		
+	__SYSTEM.TYPE_CLASS.TYPE_LTIME:
+		pLTime := Value.pValue;
+		F_Generic_To_String := TO_STRING(pLTime^);
+END_CASE]]></ST>
+    </Implementation>
+    <LineIds Name="F_Generic_To_String">
+      <LineId Id="34" Count="92" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="FB_Immutable_List" Id="{8676a675-052f-4d49-9add-c30fb776bd90}" SpecialFunc="None">
+    <Declaration><![CDATA[// Collection that exposes only immutable methods and properties of a collection that implements I_List.
+{attribute 'enable_dynamic_creation'}
+FUNCTION_BLOCK FB_Immutable_List EXTENDS FB_Collection IMPLEMENTS I_Immutable_List
+VAR_INPUT
+	ipList : I_List;
+END_VAR
+VAR
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF THIS^.ipList = 0 THEN RETURN; END_IF
+THIS^._Count := THIS^.ipList._Count;]]></ST>
+    </Implementation>
+    <Property Name="_Count" Id="{ecd596e6-02b2-492c-8874-eec6ff2c044f}">
+      <Declaration><![CDATA[// Number of items in the collection.
+PROPERTY _Count : T_Capacity]]></Declaration>
+      <Get Name="Get" Id="{6b277808-0593-417b-84e4-dc49db7591fc}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF THIS^.ipList = 0 THEN 
+	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipList is null.');
+	RETURN; 
+	END_IF
+	
+_Count := THIS^.Count := THIS^.ipList._Count;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="_Error_Status" Id="{f588a9ab-8fb3-4ee2-80e8-59a61b485ba6}">
+      <Declaration><![CDATA[// Error status of the collection.
+PROPERTY _Error_Status : T_Error]]></Declaration>
+      <Get Name="Get" Id="{5048253e-c290-4779-b5c3-7e40456c76ff}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF THIS^.ipList = 0 THEN 
+	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipList is null.');
+	RETURN; 
+	END_IF
+	
+_Error_Status := THIS^.Error := THIS^.ipList._Error_Status;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="_Is_Empty" Id="{a7435534-88d6-4c26-acab-c953f180f917}">
+      <Declaration><![CDATA[// Checks if collection is empty.
+PROPERTY _Is_Empty : BOOL]]></Declaration>
+      <Get Name="Get" Id="{f5d3ad0e-0daf-4f57-9f5e-7f5c6302fd21}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF THIS^.ipList = 0 THEN 
+	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipList is null.');
+	RETURN; 
+	END_IF
+	
+_Is_Empty := THIS^.ipList._Is_Empty;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Contains" Id="{b22d102d-e721-430f-b69f-7856576ddcb3}">
+      <Declaration><![CDATA[// Checks if item is contained in list.
+METHOD Contains : BOOL
+VAR_INPUT
+	Item : ANY; // Item to find in list
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF THIS^.ipList = 0 THEN 
+	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipList is null.');
+	RETURN; 
+	END_IF
+
+Contains := THIS^.ipList.Contains(Item);
+THIS^._Error_Status := THIS^.ipList._Error_Status;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get" Id="{9c4a82ab-9750-4b5a-88de-01ab5ed0b146}">
+      <Declaration><![CDATA[// Gets item from list at specified location without removing it.
+METHOD Get : I_Immutable_List
+VAR_INPUT
+	Index : T_Position; // Location of item
+	Item : ANY;  // Variable to store returned item
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get := THIS^;
+
+IF THIS^.ipList = 0 THEN 
+	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipList is null.');
+	RETURN; 
+	END_IF
+
+THIS^.ipList.Get(Index, Item, bSuccess => bSuccess);
+THIS^._Error_Status := THIS^.ipList._Error_Status;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_As_String" Id="{27a04cc2-74fb-4504-9cce-c3b3e8490ce2}">
+      <Declaration><![CDATA[// Returns item as a string, if type to string conversion is supported.
+METHOD Get_As_String : I_Immutable_List
+VAR_INPUT
+	Index : T_Position; // Location of item
+	sItem : REFERENCE TO STRING; // Variable to store returned item.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get_As_String := THIS^;
+
+IF THIS^.ipList = 0 THEN 
+	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipList is null.');
+	RETURN; 
+	END_IF
+
+THIS^.ipList.Get_As_String(Index, sItem, bSuccess => bSuccess);
+THIS^._Error_Status := THIS^.ipList._Error_Status;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_Type_At" Id="{e605bec7-ed3b-4462-a876-72fc9b4652f4}">
+      <Declaration><![CDATA[// Gets the type of the item at specified location.
+METHOD Get_Type_At : I_Immutable_List
+VAR_INPUT
+	Index : T_Position;
+END_VAR
+VAR_OUTPUT
+	Item_Type : T_Type := T_Type.TYPE_NONE;
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get_Type_At := THIS^;
+
+IF THIS^.ipList = 0 THEN 
+	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipList is null.');
+	RETURN; 
+	END_IF
+
+THIS^.ipList.Get_Type_At(Index, Item_Type => Item_Type, bSuccess => bSuccess);
+
+THIS^._Error_Status := THIS^.ipList._Error_Status;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Search" Id="{000f6dda-511e-4a98-b134-13aeb348dd71}">
+      <Declaration><![CDATA[// Find the location of an item in list.
+METHOD Search : I_Immutable_List
+VAR_INPUT
+	Item : ANY; // Item to find in list
+END_VAR
+VAR_OUTPUT
+	Index : T_Position := -1; //Location of item in list 
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Search := THIS^;
+
+IF THIS^.ipList = 0 THEN 
+	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipList is null.');
+	RETURN; 
+	END_IF
+
+THIS^.ipList.Search(Item, Index => Index, bSuccess => bSuccess);
+THIS^._Error_Status := THIS^.ipList._Error_Status;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Immutable_List">
+      <LineId Id="9" Count="0" />
+      <LineId Id="14" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Immutable_List._Count.Get">
+      <LineId Id="8" Count="2" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Immutable_List._Error_Status.Get">
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Immutable_List._Is_Empty.Get">
+      <LineId Id="8" Count="2" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Immutable_List.Contains">
+      <LineId Id="14" Count="2" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Immutable_List.Get">
+      <LineId Id="11" Count="1" />
+      <LineId Id="24" Count="2" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="15" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Immutable_List.Get_As_String">
+      <LineId Id="12" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="24" Count="2" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="15" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Immutable_List.Get_Type_At">
+      <LineId Id="11" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="18" Count="2" />
+      <LineId Id="14" Count="3" />
+      <LineId Id="12" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Immutable_List.Search">
+      <LineId Id="11" Count="1" />
+      <LineId Id="24" Count="2" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="15" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

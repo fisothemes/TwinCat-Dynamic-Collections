@@ -5,7 +5,7 @@
 INTERFACE I_Generic_List EXTENDS I_Generic_Collection]]></Declaration>
     <Method Name="Get_Generic" Id="{b27c059b-bbb1-43a3-9d29-130208c69b86}">
       <Declaration><![CDATA[// Gets a value from a list in it's generic form.
-// (* Use carefully as this contains the pointer of the actual value in the collection. *)
+// (** Use carefully as this contains the pointer of the actual value in the collection. **)
 // If you wish to use this it is recommeded you create a copy of the returned value using MEMMOVE or MEMCPY
 METHOD Get_Generic : I_Generic_List
 VAR_INPUT

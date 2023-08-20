@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="_TEST" Id="{f065fa88-51a5-4809-bdaf-7c31c9d27428}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM _TEST
+VAR
+	fbArray_List_Test : FB_Array_List_Test;
+	fbList_Test : FB_List_Test;
+	// Add test for Array
+	// Add test for Immutable list and array
+	// Add test for Set
+	// Add test for Immutable Set
+	// Add test for Tree Map
+	// Add test for Hash Map
+	// Add test for Immutable Map
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//TcUnit.RUN();]]></ST>
+    </Implementation>
+    <LineIds Name="_TEST">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

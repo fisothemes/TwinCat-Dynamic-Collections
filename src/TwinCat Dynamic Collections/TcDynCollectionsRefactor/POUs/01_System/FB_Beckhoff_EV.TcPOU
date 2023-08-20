@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+  <POU Name="FB_Beckhoff_EV" Id="{69dbe703-9850-4bab-81b1-cfc01666d710}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Beckhoff_EV
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="Methods" Id="{af25a40f-1b5d-4bc9-8db3-3f78b5c85bc1}" />
+    <Folder Name="Properties" Id="{6d8ca68e-0701-4328-a268-f2b5024f45d0}" />
+    <Folder Name="Run" Id="{7e75d962-8844-47ae-8e12-11d1abe14ec8}" />
+    <LineIds Name="FB_Beckhoff_EV">
+      <LineId Id="1531" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

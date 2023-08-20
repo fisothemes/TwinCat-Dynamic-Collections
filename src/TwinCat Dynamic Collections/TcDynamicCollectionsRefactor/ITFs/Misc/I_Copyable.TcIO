@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <Itf Name="I_Copyable" Id="{d50e64e0-3397-4d9f-be3a-ed90a8eb103a}">
+    <Declaration><![CDATA[// Interface to apply a copyable attribute to a collection.
+INTERFACE I_Copyable EXTENDS __SYSTEM.IQueryInterface
+]]></Declaration>
+    <Method Name="Copy_To" Id="{eff632f5-6830-4423-9d0c-81143da0719d}">
+      <Declaration><![CDATA[// Copies item in current collection to another collection.
+METHOD Copy_To : I_Copyable
+VAR_INPUT
+	ipCollection : I_Collection;
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

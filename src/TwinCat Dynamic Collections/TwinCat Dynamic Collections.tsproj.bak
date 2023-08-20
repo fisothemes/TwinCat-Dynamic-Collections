@@ -5,9 +5,23 @@
 			<Settings MaxCpus="12" NonWinCpus="1">
 				<Cpu CpuId="11"/>
 			</Settings>
+			<Licenses>
+				<Target>
+					<ManualSelect>{3EBB9639-5FF3-42B6-8847-35C70DC013C8}</ManualSelect>
+				</Target>
+			</Licenses>
 			<Tasks>
 				<Task Id="3" Priority="20" CycleTime="100000" AmsPort="350" AdtTasks="true">
 					<Name>PlcTask</Name>
+				</Task>
+				<Task Id="4" Priority="1" CycleTime="100000" AmsPort="351" AdtTasks="true">
+					<Name>HgV_Task</Name>
+				</Task>
+				<Task Id="5" Priority="30" CycleTime="2000000" AmsPort="352" AdtTasks="true">
+					<Name>VISU_TASK</Name>
+				</Task>
+				<Task Id="6" Priority="21" CycleTime="100000" AmsPort="353" AdtTasks="true">
+					<Name>PlcTask1</Name>
 				</Task>
 			</Tasks>
 		</System>
@@ -29,6 +43,26 @@
 					</Contexts>
 					<TaskPouOids>
 						<TaskPouOid Prio="20" OTCID="#x08502001"/>
+					</TaskPouOids>
+				</Instance>
+			</Project>
+			<Project GUID="{B9F9D0EB-C791-4800-B43F-0927762498E9}" Name="TcDynamicCollectionsRefactor" PrjFilePath="TcDynamicCollectionsRefactor\TcDynamicCollectionsRefactor.plcproj" TmcFilePath="TcDynamicCollectionsRefactor\TcDynamicCollectionsRefactor.tmc" ReloadTmc="true" AmsPort="852" FileArchiveSettings="#x000e" SymbolicMapping="true">
+				<Instance Id="#x08502040" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="TcDynamicCollectionsRefactor\TcDynamicCollectionsRefactor.tmc">
+					<Name>TcDynamicCollectionsRefactor Instance</Name>
+					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+					<Contexts>
+						<Context>
+							<Id NeedCalleeCall="true">0</Id>
+							<Name>PlcTask</Name>
+							<ManualConfig>
+								<OTCID>#x02010060</OTCID>
+							</ManualConfig>
+							<Priority>21</Priority>
+							<CycleTime>10000000</CycleTime>
+						</Context>
+					</Contexts>
+					<TaskPouOids>
+						<TaskPouOid Prio="21" OTCID="#x08502041"/>
 					</TaskPouOids>
 				</Instance>
 			</Project>

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="F_Malloc_Generic" Id="{6a89990d-bcd1-47f2-9965-d722a1d363db}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION INTERNAL F_Malloc_Generic : POINTER TO T_Generic
+VAR_INPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <LineIds Name="F_Malloc_Generic">
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

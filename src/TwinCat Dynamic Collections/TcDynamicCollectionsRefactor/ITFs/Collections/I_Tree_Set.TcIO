@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <Itf Name="I_Tree_Set" Id="{739807ce-51a7-4ce0-ac23-8daf90e0493e}">
+    <Declaration><![CDATA[// Interface for a set implemented using a binary search tree.
+INTERFACE I_Tree_Set EXTENDS I_Set
+]]></Declaration>
+    <Property Name="_Traversal" Id="{d0dfd916-95e1-4892-9669-f9e9a8eb5bde}">
+      <Declaration><![CDATA[// Traversal method for retrieving values in the tree set.
+PROPERTY _Traversal : T_BST_Traversal]]></Declaration>
+      <Get Name="Get" Id="{cff8a45c-267c-4474-b931-926165560000}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{59afb95d-dec8-4e13-b330-2cf4ec4792e8}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+  </Itf>
+</TcPlcObject>

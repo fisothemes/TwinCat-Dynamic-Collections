@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <Itf Name="I_Immutable_Collection" Id="{9a347c09-c63c-4dfc-ad14-10e9d52d139b}">
+    <Declaration><![CDATA[// Base interface for immutable collections
+INTERFACE I_Immutable_Collection EXTENDS I_Collection]]></Declaration>
+  </Itf>
+</TcPlcObject>

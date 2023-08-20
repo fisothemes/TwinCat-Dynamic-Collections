@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <DUT Name="T_Generic" Id="{f3a06048-16d3-4fa8-98a9-33dafd9dba28}">
+    <Declaration><![CDATA[TYPE T_Generic : __SYSTEM.AnyType; END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

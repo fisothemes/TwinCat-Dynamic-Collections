@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+  <GVL Name="CONSTANTS" Id="{0be9f049-f985-4e9c-82c1-d5485d664aa3}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL CONSTANT
+	iNUMBER_OF_MFC : INT := 2; // Maximum number of MFC's in system
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

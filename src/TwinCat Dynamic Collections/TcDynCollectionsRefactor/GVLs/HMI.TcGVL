@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+  <GVL Name="HMI" Id="{fa6d5080-0a0b-4629-a41a-67d61f4d992b}">
+    <Declaration><![CDATA[//HMI Pages/Variables here. RETAIN PERSISTANT variables must be declares at the top.
+VAR_GLOBAL RETAIN PERSISTENT
+	SETTINGS	: _ST_SETTINGS_;
+END_VAR
+VAR_GLOBAL
+	HOME 		: _ST_HOME_;
+	BLANK_1 	: _ST_BLANK_1_;
+	BLANK_2 	: _ST_BLANK_2_;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

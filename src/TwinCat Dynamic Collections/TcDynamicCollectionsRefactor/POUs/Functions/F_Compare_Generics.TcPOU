@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="F_Compare_Generics" Id="{48e27fcc-34ea-48dc-816a-7bd4d0df61a1}" SpecialFunc="None">
+    <Declaration><![CDATA[// Compares generic value A to generic value B and returns the evaluation.
+FUNCTION F_Compare_Generics : T_Comparison
+VAR_INPUT
+	A, B : T_Generic;
+END_VAR
+VAR_OUTPUT
+	bUndefined : BOOL; // If TRUE, values were compared but truthfulness of comparison cannot be verified. 
+END_VAR
+VAR
+	fA, fB : LREAL;
+	tA, tB : LTIME;
+	dtA, dtB : DT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF F_Is_Numeric_Generic(A) AND_THEN F_Is_Numeric_Generic(B) THEN
+	fA := F_Generic_To_LREAL(A);
+	fB := F_Generic_To_LREAL(B);
+	F_Compare_Generics := SEL(fA = fB, SEL(fA > fB, T_Comparison.Less, T_Comparison.Greater), T_Comparison.Equal);
+	RETURN;
+	END_IF
+	
+IF F_Is_Time_Generic(A) AND_THEN F_Is_Time_Generic(B) THEN
+	tA := F_Generic_To_LTIME(A);
+	tB := F_Generic_To_LTIME(B);
+	F_Compare_Generics := SEL(tA = tB, SEL(tA > tB, T_Comparison.Less, T_Comparison.Greater), T_Comparison.Equal);
+	RETURN;
+	END_IF
+
+IF F_Is_Date_Generic(A) AND_THEN F_Is_Date_Generic(B) THEN
+	dtA := F_Generic_To_DT(A);
+	dtB := F_Generic_To_DT(B);
+	F_Compare_Generics := SEL(dtA = dtB, SEL(dtA > dtB, T_Comparison.Less, T_Comparison.Greater), T_Comparison.Equal);
+	RETURN;
+	END_IF
+
+IF F_Matching_Generics(A, B) THEN
+	bUndefined := A.TypeClass = T_Type.TYPE_USERDEF;
+	A.diSize := SEL(A.TypeClass = T_Type.TYPE_STRING, SEL(A.TypeClass = T_Type.TYPE_WSTRING, A.diSize, TO_DINT(Tc2_Utilities.WLEN2(A.pValue))) , TO_DINT(Tc2_Utilities.LEN2(A.pValue)));
+	B.diSize := SEL(B.TypeClass = T_Type.TYPE_STRING, SEL(B.TypeClass = T_Type.TYPE_WSTRING, B.diSize, TO_DINT(Tc2_Utilities.WLEN2(B.pValue))) , TO_DINT(Tc2_Utilities.LEN2(B.pValue)));
+	CASE Tc2_System.MEMCMP(A.pValue, B.pValue, TO_UDINT(MIN(A.diSize, B.diSize))) OF
+		-1		: F_Compare_Generics := T_Comparison.Less;
+		0		: F_Compare_Generics := T_Comparison.Equal;
+		1		: F_Compare_Generics := T_Comparison.Greater;
+		16#FF	:
+			bUndefined := TRUE; 
+			F_Compare_Generics := SEL(A.diSize = B.diSize, SEL(A.diSize > B.diSize, T_Comparison.Less, T_Comparison.Greater), T_Comparison.Equal);
+		END_CASE
+	RETURN;
+	END_IF
+	
+bUndefined := TRUE;
+F_Compare_Generics := SEL(A.TypeClass > B.TypeClass, T_Comparison.Less, T_Comparison.Greater);]]></ST>
+    </Implementation>
+    <LineIds Name="F_Compare_Generics">
+      <LineId Id="503" Count="19" />
+      <LineId Id="560" Count="1" />
+      <LineId Id="599" Count="0" />
+      <LineId Id="601" Count="0" />
+      <LineId Id="603" Count="0" />
+      <LineId Id="588" Count="6" />
+      <LineId Id="586" Count="1" />
+      <LineId Id="563" Count="0" />
+      <LineId Id="598" Count="0" />
+      <LineId Id="595" Count="0" />
+      <LineId Id="531" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
