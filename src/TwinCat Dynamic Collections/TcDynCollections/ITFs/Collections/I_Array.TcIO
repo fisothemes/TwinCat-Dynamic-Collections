@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <Itf Name="I_Array" Id="{cebbe4d3-2548-0b22-1054-33f17f006b05}">
+    <Declaration><![CDATA[// Interface for a static array.
+INTERFACE I_Array EXTENDS I_Collection
+]]></Declaration>
+    <Method Name="Contains" Id="{b8832831-361b-0743-2d41-3ef7680718ad}">
+      <Declaration><![CDATA[// Checks if item is contained in array.
+METHOD Contains : BOOL
+VAR_INPUT
+	Item : ANY; // Item to find.
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Get" Id="{dfe316f4-edfd-017e-1d5f-7167c8657590}">
+      <Declaration><![CDATA[// Gets item from array at specified location.
+METHOD Get : I_Array
+VAR_INPUT
+	Index : T_Position; // Location of item.
+	Item : ANY;  // Variable to store returned item.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Get_As_String" Id="{6f56e240-4d04-0b13-2ab8-415f1c9e6042}">
+      <Declaration><![CDATA[// Returns item as a string, if type to string conversion is supported.
+METHOD Get_As_String : I_Array
+VAR_INPUT
+	Index : T_Position; // Location of item.
+	sItem : REFERENCE TO STRING; // Variable to store returned item.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Get_Generic" Id="{b2066341-f267-0f53-25a3-8e3b4781ac68}">
+      <Declaration><![CDATA[// Gets an item from the array in it's generic form.
+// (** Use carefully as this contains the pointer of the actual value in the collection. **)
+// If you wish to use this it is recommeded you create a copy of the returned value using MEMMOVE or MEMCPY
+METHOD Get_Generic : I_Array
+VAR_INPUT
+	Index : T_Position; // Location of item.
+END_VAR
+VAR_OUTPUT
+	Item : T_Generic;
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Get_Type_At" Id="{6886d4ee-a63e-0129-269f-87b5d256725a}">
+      <Declaration><![CDATA[// Gets the type of the item at specified location.
+METHOD Get_Type_At : I_Array
+VAR_INPUT
+	Index : T_Position;
+END_VAR
+VAR_OUTPUT
+	Item_Type : T_Type;
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Reverse" Id="{e7e2ad57-72cd-092b-3b11-2083008bc3bf}">
+      <Declaration><![CDATA[// Reverses the order of items in the array.
+METHOD Reverse : I_Array
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Search" Id="{15f8d3fd-c8e3-05df-392a-bd18d16d346b}">
+      <Declaration><![CDATA[// Find the location of an item in the array.
+METHOD Search : I_Array
+VAR_INPUT
+	Item : ANY; // Item to find.
+END_VAR
+VAR_OUTPUT
+	Index : T_Position; //Location of item.
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Set" Id="{e1fac662-3174-0035-0843-147e7684c946}">
+      <Declaration><![CDATA[// Changes the item at the specified location in the array.
+METHOD Set : I_Array
+VAR_INPUT
+	Index 	: T_Position; // Location of item.
+	Item 	: ANY; 	// Item to store.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Set_Generic" Id="{c3ee4ccd-dad8-00fa-1792-30d1b4751c2b}">
+      <Declaration><![CDATA[// Changes the item at the specified location in the array in it's generic form.
+METHOD Set_Generic : I_Array
+VAR_INPUT
+	Index : T_Position; // Location of item.
+	Item : T_Generic; // Item to store.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Swap" Id="{6fc6f4e4-7692-0d35-3f50-eef987c8f65d}">
+      <Declaration><![CDATA[// Swaps item at index with item at index B.
+METHOD Swap : I_Array
+VAR_INPUT
+	Index_A, Index_B : T_Position;
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="FB_Free" Id="{2ad0b77a-f9a3-0b43-0aea-e6d8cc66dd56}" SpecialFunc="None">
+    <Declaration><![CDATA[// Frees pointer when this instance of the FB leaves the scope;
+{attribute 'no_explicit_call' := 'direct call for this function block is not allowed'}
+FUNCTION_BLOCK INTERNAL FINAL FB_Free
+VAR
+	_pValue : REFERENCE TO POINTER TO BYTE;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="FB_exit" Id="{315cdd7f-61bb-028d-0595-c65f62417556}">
+      <Declaration><![CDATA[{attribute 'hide'} 
+METHOD FB_exit : BOOL
+VAR_INPUT
+	bInCopyCode : BOOL; // if TRUE, the exit method is called for exiting an instance that is copied afterwards (online change).
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF bInCopyCode THEN RETURN; END_IF
+IF NOT __ISVALIDREF(THIS^._pValue) THEN RETURN; END_IF
+IF THIS^._pValue <> 0 THEN __DELETE(THIS^._pValue); END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FB_init" Id="{9965be14-b4bb-0fe6-2067-ff017052d9de}">
+      <Declaration><![CDATA[{attribute 'hide'} 
+{attribute 'no_explicit_call' := 'do not call this POU directly'}
+METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains 	: BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode 	: BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	pValue 			: REFERENCE TO POINTER TO BYTE; // Pointer to be freed on exit
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^._pValue REF= pValue;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Free">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Free.FB_exit">
+      <LineId Id="17" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Free.FB_init">
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

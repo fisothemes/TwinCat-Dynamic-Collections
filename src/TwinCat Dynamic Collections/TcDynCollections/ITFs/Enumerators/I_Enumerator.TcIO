@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <Itf Name="I_Enumerator" Id="{a65c5349-dfe5-0d69-378a-c0cbf28cab83}">
+    <Declaration><![CDATA[INTERFACE I_Enumerator EXTENDS __SYSTEM.IQueryInterface
+]]></Declaration>
+    <Method Name="Current" Id="{250f9020-9d82-0b8b-15e1-26e02378b56a}">
+      <Declaration><![CDATA[// Gets an item in the collection at current positon of the enumerator.
+METHOD Current : I_Enumerator
+VAR_INPUT
+	Item : ANY;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Current_As_String" Id="{a8ff4bf3-e198-0177-1405-e9bdfab25837}">
+      <Declaration><![CDATA[// Gets an item in the collection at current positon of the enumerator as a string.
+METHOD Current_As_String : I_Enumerable
+VAR_INPUT
+	sItem : REFERENCE TO STRING;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Dispose" Id="{dc20f7c7-7c9d-0e1f-0fa1-2b9cc45712f7}">
+      <Declaration><![CDATA[// Releases resources allocated to the enumerator. Returns TRUE if successful.
+METHOD Dispose : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Next" Id="{4e96be85-59b1-043e-1dcf-bc0ac23018f0}">
+      <Declaration><![CDATA[// Advances the enumerator to the next item of the collection.
+METHOD Next : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Reset" Id="{01e8f251-faba-035a-0ecd-a225a9150b1f}">
+      <Declaration><![CDATA[// Sets the enumerator to its initial position, which is before the first element in the collection.
+METHOD Reset : I_Enumerator]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

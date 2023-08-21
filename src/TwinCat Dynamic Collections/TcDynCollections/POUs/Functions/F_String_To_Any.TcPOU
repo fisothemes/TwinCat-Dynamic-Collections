@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="F_String_To_Any" Id="{30e6e8a2-5dce-0a4c-3a52-18efe047163e}" SpecialFunc="None">
+    <Declaration><![CDATA[// Converts string to generic, returns TRUE if successful.
+FUNCTION F_String_To_Any : BOOL
+VAR_INPUT
+	sValue : REFERENCE TO STRING;
+	Value : ANY;
+END_VAR
+VAR
+	pBool			: POINTER TO BOOL;
+    pByte			: POINTER TO BYTE;
+    pWord			: POINTER TO WORD;
+    pDWord			: POINTER TO DWORD;
+    pLWord			: POINTER TO LWORD;
+    pSint			: POINTER TO SINT;
+    pInt			: POINTER TO INT;
+    pDint			: POINTER TO DINT;
+    pLint			: POINTER TO LINT;
+    pUSint			: POINTER TO USINT;
+    pUInt			: POINTER TO UINT;
+    pUDint			: POINTER TO UDINT;
+    pULint			: POINTER TO ULINT;
+    pReal			: POINTER TO REAL;
+    pLReal			: POINTER TO LREAL;
+    pString			: POINTER TO STRING(255);
+    pWString		: POINTER TO WSTRING;
+    pTime			: POINTER TO TIME;
+    pDate			: POINTER TO DATE;
+    pDate_And_Time	: POINTER TO DATE_AND_TIME;
+    pTime_Of_Day	: POINTER TO TIME_OF_DAY;
+    pPointer		: POINTER TO PVOID;
+	pLTime 			: POINTER TO LTIME;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF (Value.pValue = 0) OR_ELSE (NOT F_String_Convertable_Generic(Value)) OR_ELSE (NOT __ISVALIDREF(sValue)) THEN RETURN; END_IF;
+
+F_String_To_Any := TRUE;
+
+CASE Value.TypeClass OF 
+	__SYSTEM.TYPE_CLASS.TYPE_BOOL:
+		pBool := Value.pValue;
+		pBool^ := TO_BOOL(sValue);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_BYTE:
+		pByte := Value.pValue;
+		pByte^ := TO_BYTE(sValue);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_WORD:
+		pWord := Value.pValue;
+		pWord^ := TO_WORD(sValue);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_DWORD:
+		pDWord := Value.pValue;
+		pDWord^ := TO_DWORD(sValue);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_LWORD:
+		pLWord := Value.pValue;
+		pLWord^ := TO_LWORD(sValue);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_SINT:
+		pSint := Value.pValue;
+		pSint^ := TO_SINT(sValue);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_INT:
+		pInt := Value.pValue;
+		pInt^ := TO_INT(sValue);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_DINT:
+		pDint := Value.pValue;
+		pDint^ := TO_DINT(sValue);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_LINT:
+		pLint := Value.pValue;
+		pLint^ := TO_LINT(sValue);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_USINT:
+		pUSint := Value.pValue;
+		pUSint^ := TO_USINT(sValue);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_UINT:
+		pUInt := Value.pValue;
+		pUInt^ := TO_UINT(sValue);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_UDINT:
+		pUDint := Value.pValue;
+		pUDint^ := TO_UDINT(sValue);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_ULINT:
+		pULint := Value.pValue;
+		pULint^ := TO_ULINT(sValue);
+		
+   __SYSTEM.TYPE_CLASS.TYPE_REAL:
+		pReal := Value.pValue;
+		pReal^ := TO_REAL(sValue);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_LREAL:
+		pLReal := Value.pValue;
+		pLReal^ := TO_LREAL(sValue);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_STRING:
+		Tc2_Utilities.STRNCPY(Value.pValue, ADR(sValue), Value.diSize); 
+		
+   __SYSTEM.TYPE_CLASS.TYPE_WSTRING:
+   		Tc2_Utilities.STRING_TO_WSTRING2(Value.pValue, ADR(sValue), TO_UDINT(Value.diSize));
+		
+    __SYSTEM.TYPE_CLASS.TYPE_TIME:
+		pTime := Value.pValue;
+		pTime^ := TO_TIME(sValue);
+		
+	__SYSTEM.TYPE_CLASS.TYPE_LTIME:
+		pLTime := Value.pValue;
+		pLTime^ := TO_LTIME(sValue);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_DATE:
+		pDate := Value.pValue;
+		pDate^ := TO_DATE(sValue);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_DATEANDTIME:
+		pDate_And_Time := Value.pValue;
+		pDate_And_Time^ := TO_DT(sValue);
+		
+    __SYSTEM.TYPE_CLASS.TYPE_TIMEOFDAY:
+		pTime_Of_Day := Value.pValue;
+		pTime_Of_Day^ := TO_TOD(sValue);
+	
+	__SYSTEM.TYPE_CLASS.TYPE_POINTER:
+		pPointer := Value.pValue;
+		pPointer^ := Tc2_Utilities.STRING_TO_PVOID(sValue);
+END_CASE]]></ST>
+    </Implementation>
+    <LineIds Name="F_String_To_Any">
+      <LineId Id="7" Count="0" />
+      <LineId Id="147" Count="0" />
+      <LineId Id="146" Count="0" />
+      <LineId Id="35" Count="2" />
+      <LineId Id="39" Count="3" />
+      <LineId Id="44" Count="3" />
+      <LineId Id="49" Count="3" />
+      <LineId Id="54" Count="3" />
+      <LineId Id="59" Count="3" />
+      <LineId Id="64" Count="3" />
+      <LineId Id="69" Count="3" />
+      <LineId Id="74" Count="3" />
+      <LineId Id="79" Count="3" />
+      <LineId Id="84" Count="3" />
+      <LineId Id="89" Count="3" />
+      <LineId Id="94" Count="3" />
+      <LineId Id="99" Count="3" />
+      <LineId Id="104" Count="3" />
+      <LineId Id="109" Count="9" />
+      <LineId Id="120" Count="3" />
+      <LineId Id="125" Count="17" />
+      <LineId Id="34" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

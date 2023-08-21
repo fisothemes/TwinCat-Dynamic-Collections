@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
-  <DUT Name="_ST_DATA_" Id="{99eb87b2-9799-4294-a279-6706ba97fec6}">
-    <Declaration><![CDATA[ TYPE _ST_DATA_ :
-STRUCT
-END_STRUCT
-END_TYPE]]></Declaration>
-  </DUT>
-</TcPlcObject>

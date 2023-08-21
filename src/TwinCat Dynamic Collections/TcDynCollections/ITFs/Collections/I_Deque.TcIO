@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <Itf Name="I_Deque" Id="{91ae1363-6f2f-0538-0f81-6b0e4f1a4878}">
+    <Declaration><![CDATA[// Interface for a double ended queue - Deque
+INTERFACE I_Deque EXTENDS I_Collection
+]]></Declaration>
+    <Property Name="_Values" Id="{b76e947a-492d-0cd2-18e3-20ea463f63c0}">
+      <Declaration><![CDATA[// Gets an immutable list of the items in Deque.
+PROPERTY _Values : I_Immutable_List]]></Declaration>
+      <Get Name="Get" Id="{5ab28f2c-21e9-0d1c-099f-b4e7d175cb52}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Method Name="Back" Id="{44a8b887-9b01-04b3-15d6-16622b8b2402}">
+      <Declaration><![CDATA[// Get item at the back of the deque without removing it.
+METHOD Back : I_Deque
+VAR_INPUT
+	Item : ANY; // Variable to store returned item value
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Dequeue_At_Back" Id="{f46d6301-ff2d-0719-1e72-e68214c632a9}">
+      <Declaration><![CDATA[// Removes item at the front of the deque.
+METHOD Dequeue_At_Back : I_Deque
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Dequeue_At_Front" Id="{f413465a-4970-0d0f-1bbc-84d751221bb5}">
+      <Declaration><![CDATA[// Removes item at the front of the deque.
+METHOD Dequeue_At_Front : I_Deque
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Enqueue_At_Back" Id="{09803c0d-6f72-0ce6-0551-fbb81f7a130c}">
+      <Declaration><![CDATA[// Adds item at the back of the deque.
+METHOD Enqueue_At_Back : I_Deque
+VAR_INPUT
+	Item : ANY; // Item to store.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Enqueue_At_Front" Id="{cbad7e12-08fe-0b98-226d-90599d49765e}">
+      <Declaration><![CDATA[// Add item to the front of the deque.
+METHOD Enqueue_At_Front : I_Stack
+VAR_INPUT
+	Item : ANY; // Item to store.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Enqueue_Generic" Id="{d0afd85b-cf07-0cf0-2f07-33d9e2fee769}">
+      <Declaration><![CDATA[// Adds a generic item at the back of the deque.
+METHOD Enqueue_Generic : I_Deque
+VAR_INPUT
+	Item : T_Generic; // Item to store.
+	bAt_Front : BOOL; // Enqueues at front if set to TRUE.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Front" Id="{bc88d2f1-9bc1-0754-08b6-b4d7a3c3f240}">
+      <Declaration><![CDATA[// Get item at the front of the deque without removing it.
+METHOD Front : I_Deque
+VAR_INPUT
+	Item : ANY; // Variable to store returned item value
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Reverse" Id="{d57f8279-5bc6-0b89-22fd-efc048b9594d}">
+      <Declaration><![CDATA[// Reverses the order of items in the deque.
+METHOD Reverse : I_Deque
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

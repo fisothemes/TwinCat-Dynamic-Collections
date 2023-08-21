@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="FB_Immutable_Set" Id="{3afbf122-9852-03b8-0749-44fef68dc495}" SpecialFunc="None">
+    <Declaration><![CDATA[// Collection that exposes only immutable methods and properties of a collection that implements I_Set.
+{attribute 'enable_dynamic_creation'}
+FUNCTION_BLOCK FB_Immutable_Set EXTENDS FB_Collection IMPLEMENTS I_Immutable_Set
+VAR_INPUT
+	ipSet : I_Set;
+END_VAR
+VAR
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF THIS^.ipSet = 0 THEN RETURN; END_IF
+THIS^._Count := THIS^.ipSet._Count;]]></ST>
+    </Implementation>
+    <Property Name="_Count" Id="{e75b6bd0-00bf-09b5-1d1e-a52e85bd879c}">
+      <Declaration><![CDATA[// Number of items in the collection.
+PROPERTY _Count : T_Capacity]]></Declaration>
+      <Get Name="Get" Id="{a56c62de-8d3e-0a63-3194-38dcd920b3f8}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF THIS^.ipSet = 0 THEN 
+	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipSet is null.');
+	RETURN; 
+	END_IF
+	
+_Count := THIS^.Count := THIS^.ipSet._Count;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="_Error_Status" Id="{7c517ed0-6a3a-0c83-0d5f-3b2057631059}">
+      <Declaration><![CDATA[// Error status of the collection.
+PROPERTY _Error_Status : T_Error]]></Declaration>
+      <Get Name="Get" Id="{05634e8b-9183-076a-0814-958c108bb693}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF THIS^.ipSet = 0 THEN 
+	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipSet is null.');
+	RETURN; 
+	END_IF
+	
+_Error_Status := THIS^.Error := THIS^.ipSet._Error_Status;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="_Is_Empty" Id="{18c8bc00-2436-0ecf-1c24-280bdd534b78}">
+      <Declaration><![CDATA[// Checks if collection is empty.
+PROPERTY _Is_Empty : BOOL]]></Declaration>
+      <Get Name="Get" Id="{5efbca70-23d1-0763-0668-ce9270860e37}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF THIS^.ipSet = 0 THEN 
+	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipSet is null.');
+	RETURN; 
+	END_IF
+	
+_Is_Empty := THIS^.ipSet._Is_Empty;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Contains" Id="{a4babfbd-b0c3-0e0f-37a7-97164cd0541d}">
+      <Declaration><![CDATA[// Checks if item is contained in set.
+METHOD Contains : BOOL
+VAR_INPUT
+	Item : ANY; // Item to find.
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF THIS^.ipSet = 0 THEN 
+	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipSet is null.');
+	RETURN; 
+	END_IF
+
+Contains := THIS^.ipSet.Contains(Item);
+THIS^._Count := THIS^.ipSet._Count;
+THIS^._Error_Status := THIS^.ipSet._Error_Status;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_Values" Id="{7932ed8d-68b8-08c1-17c4-535dddfe387d}">
+      <Declaration><![CDATA[// Gets an immutable list of the values in the set.
+METHOD Get_Values : I_Immutable_List
+VAR
+	fbDefault_Immutable_List : FB_Immutable_List;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF THIS^.ipSet = 0 THEN 
+	Get_Values := fbDefault_Immutable_List;
+	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipSet is null.');
+	RETURN; 
+	END_IF
+
+Get_Values := THIS^.ipSet.Get_Values();
+THIS^._Count := THIS^.ipSet._Count;
+THIS^._Error_Status := THIS^.ipSet._Error_Status;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Immutable_Set">
+      <LineId Id="29" Count="0" />
+      <LineId Id="14" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Immutable_Set._Count.Get">
+      <LineId Id="8" Count="2" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Immutable_Set._Error_Status.Get">
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Immutable_Set._Is_Empty.Get">
+      <LineId Id="8" Count="2" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Immutable_Set.Contains">
+      <LineId Id="7" Count="6" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Immutable_Set.Get_Values">
+      <LineId Id="4" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="5" Count="4" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="3" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

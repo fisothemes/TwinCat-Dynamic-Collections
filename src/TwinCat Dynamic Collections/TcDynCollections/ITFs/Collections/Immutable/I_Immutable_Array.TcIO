@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <Itf Name="I_Immutable_Array" Id="{42465216-9c3c-0fc1-3f9c-7a9fa3631a8c}">
+    <Declaration><![CDATA[// Interface for an immutable array.
+INTERFACE I_Immutable_Array EXTENDS I_Immutable_Collection
+]]></Declaration>
+    <Method Name="Contains" Id="{7972bd38-585d-001c-1f22-1332255bb95f}">
+      <Declaration><![CDATA[// Checks if item is contained in array.
+METHOD Contains : BOOL
+VAR_INPUT
+	Item : ANY; // Item to find.
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Get" Id="{eb97c7d5-0c09-09d4-2bdb-58258bc63709}">
+      <Declaration><![CDATA[// Gets item from array at specified location.
+METHOD Get : I_Immutable_Array
+VAR_INPUT
+	Index : T_Position; // Location of item.
+	Item : ANY;  // Variable to store returned item.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Get_As_String" Id="{e16bde77-1fde-0b27-154e-5f09ea6f2fe6}">
+      <Declaration><![CDATA[// Returns item as a string, if type to string conversion is supported.
+METHOD Get_As_String : I_Immutable_Array
+VAR_INPUT
+	Index : T_Position; // Location of item.
+	sItem : REFERENCE TO STRING; // Variable to store returned item.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Get_Type_At" Id="{f4703b84-ea45-0dc9-3b6f-3e5f42196d01}">
+      <Declaration><![CDATA[// Gets the type of the item at specified location.
+METHOD Get_Type_At : I_Immutable_Array
+VAR_INPUT
+	Index : T_Position;
+END_VAR
+VAR_OUTPUT
+	Item_Type : T_Type;
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Search" Id="{a314e2f7-f81a-0ffb-1218-ab54ee1a3590}">
+      <Declaration><![CDATA[// Find the location of an item in the array.
+METHOD Search : I_Immutable_Array
+VAR_INPUT
+	Item : ANY; // Item to find.
+END_VAR
+VAR_OUTPUT
+	Index : T_Position; //Location of item.
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="FB_Immutable_Array" Id="{73f571b4-60ce-0a01-0a00-4968c563837d}" SpecialFunc="None">
+    <Declaration><![CDATA[// Collection that exposes only immutable methods and properties of a collection that implements I_Array.
+{attribute 'enable_dynamic_creation'}
+FUNCTION_BLOCK FB_Immutable_Array EXTENDS FB_Collection IMPLEMENTS I_Immutable_Array
+VAR_INPUT
+	ipArray : I_Array;
+END_VAR
+VAR
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF THIS^.ipArray = 0 THEN RETURN; END_IF
+THIS^._Count := THIS^.ipArray._Count;]]></ST>
+    </Implementation>
+    <Property Name="_Count" Id="{30f84f30-18a4-0cc7-1a47-0d61a5ae06d0}">
+      <Declaration><![CDATA[// Number of items in the collection.
+PROPERTY _Count : T_Capacity]]></Declaration>
+      <Get Name="Get" Id="{876eacc8-4e1f-03ef-1324-891faad904a5}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF THIS^.ipArray = 0 THEN 
+	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipArray is null.');
+	RETURN; 
+	END_IF
+	
+_Count := THIS^.Count := THIS^.ipArray._Count;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="_Error_Status" Id="{2f157328-2a26-00a9-06c6-c955fbb25e32}">
+      <Declaration><![CDATA[// Error status of the collection.
+PROPERTY _Error_Status : T_Error]]></Declaration>
+      <Get Name="Get" Id="{37376c54-ab20-07ff-28fc-687dd6296802}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF THIS^.ipArray = 0 THEN 
+	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipArray is null.');
+	RETURN; 
+	END_IF
+	
+_Error_Status := THIS^.Error := THIS^.ipArray._Error_Status;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="_Is_Empty" Id="{7bbbc7d9-3b84-0243-17ff-f498adef2bd4}">
+      <Declaration><![CDATA[// Checks if collection is empty.
+PROPERTY _Is_Empty : BOOL]]></Declaration>
+      <Get Name="Get" Id="{09d8229f-90df-00b2-0f73-d11f28cf62d0}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF THIS^.ipArray = 0 THEN 
+	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipArray is null.');
+	RETURN; 
+	END_IF
+	
+_Is_Empty := THIS^.ipArray._Is_Empty;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Contains" Id="{14b3edc0-7ad1-0a77-365e-05bfd25ae2de}">
+      <Declaration><![CDATA[// Checks if item is contained in list.
+METHOD Contains : BOOL
+VAR_INPUT
+	Item : ANY; // Item to find in list
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF THIS^.ipArray = 0 THEN 
+	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipArray is null.');
+	RETURN; 
+	END_IF
+
+Contains := THIS^.ipArray.Contains(Item);
+THIS^._Count:= THIS^.ipArray._Count;
+THIS^._Error_Status := THIS^.ipArray._Error_Status;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get" Id="{8878b48b-5cba-0b3e-2323-520ee798b27b}">
+      <Declaration><![CDATA[// Gets item from list at specified location without removing it.
+METHOD Get : I_Immutable_List
+VAR_INPUT
+	Index : T_Position; // Location of item
+	Item : ANY;  // Variable to store returned item
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get := THIS^;
+
+IF THIS^.ipArray = 0 THEN 
+	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipArray is null.');
+	RETURN; 
+	END_IF
+
+THIS^.ipArray.Get(Index, Item, bSuccess => bSuccess);
+THIS^._Count:= THIS^.ipArray._Count;
+THIS^._Error_Status := THIS^.ipArray._Error_Status;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_As_String" Id="{9f9c772d-35f0-0081-3a8f-d512bc65bb2d}">
+      <Declaration><![CDATA[// Returns item as a string, if type to string conversion is supported.
+METHOD Get_As_String : I_Immutable_List
+VAR_INPUT
+	Index : T_Position; // Location of item
+	sItem : REFERENCE TO STRING; // Variable to store returned item.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get_As_String := THIS^;
+
+IF THIS^.ipArray = 0 THEN 
+	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipArray is null.');
+	RETURN; 
+	END_IF
+
+THIS^.ipArray.Get_As_String(Index, sItem, bSuccess => bSuccess);
+THIS^._Count:= THIS^.ipArray._Count;
+THIS^._Error_Status := THIS^.ipArray._Error_Status;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_Type_At" Id="{dbad9845-3fa2-0db4-0223-3e0ba687e21c}">
+      <Declaration><![CDATA[// Gets the type of the item at specified location.
+METHOD Get_Type_At : I_Immutable_Array
+VAR_INPUT
+	Index : T_Position;
+END_VAR
+VAR_OUTPUT
+	Item_Type : T_Type := T_Type.TYPE_NONE;
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get_Type_At := THIS^;
+
+IF THIS^.ipArray = 0 THEN 
+	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipArray is null.');
+	RETURN; 
+	END_IF
+
+THIS^.ipArray.Get_Type_At(Index, Item_Type => Item_Type, bSuccess => bSuccess);
+THIS^._Count:= THIS^.ipArray._Count;
+THIS^._Error_Status := THIS^.ipArray._Error_Status;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Search" Id="{9a531ecc-dafc-07b8-03c3-7df3d3becae5}">
+      <Declaration><![CDATA[// Find the location of an item in list.
+METHOD Search : I_Immutable_List
+VAR_INPUT
+	Item : ANY; // Item to find in list
+END_VAR
+VAR_OUTPUT
+	Index : T_Position := -1; //Location of item in list 
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Search := THIS^;
+
+IF THIS^.ipArray = 0 THEN 
+	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipArray is null.');
+	RETURN; 
+	END_IF
+
+THIS^.ipArray.Search(Item, Index => Index, bSuccess => bSuccess);
+THIS^._Count:= THIS^.ipArray._Count;
+THIS^._Error_Status := THIS^.ipArray._Error_Status;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Immutable_Array">
+      <LineId Id="29" Count="0" />
+      <LineId Id="14" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Immutable_Array._Count.Get">
+      <LineId Id="8" Count="2" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Immutable_Array._Error_Status.Get">
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Immutable_Array._Is_Empty.Get">
+      <LineId Id="8" Count="2" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Immutable_Array.Contains">
+      <LineId Id="15" Count="2" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Immutable_Array.Get">
+      <LineId Id="11" Count="1" />
+      <LineId Id="25" Count="2" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="15" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Immutable_Array.Get_As_String">
+      <LineId Id="12" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="25" Count="2" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="15" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Immutable_Array.Get_Type_At">
+      <LineId Id="11" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="18" Count="2" />
+      <LineId Id="14" Count="3" />
+      <LineId Id="12" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Immutable_Array.Search">
+      <LineId Id="11" Count="1" />
+      <LineId Id="25" Count="2" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="15" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

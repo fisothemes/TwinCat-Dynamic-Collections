@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <DUT Name="ST_AVL_MAP_NODE" Id="{f84d5cd2-25ff-03e1-324e-d4d34523fd09}">
+    <Declaration><![CDATA[// Node for an AVL Tree Map.
+{attribute 'enable_dynamic_creation'}
+TYPE ST_AVL_MAP_NODE EXTENDS ST_MAP_ENTRY :
+STRUCT
+	Height 		: T_Position; // Height of the node.
+	pParent 	: POINTER TO ST_AVL_MAP_NODE; 	// Pointer to parent node.
+	pLeft 		: POINTER TO ST_AVL_MAP_NODE; 	// Pointer to left node.
+	pRight 		: POINTER TO ST_AVL_MAP_NODE; 	// Pointer to right node.
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

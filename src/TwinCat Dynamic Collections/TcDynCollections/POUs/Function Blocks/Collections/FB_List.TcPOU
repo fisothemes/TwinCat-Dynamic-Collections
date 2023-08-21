@@ -1,0 +1,848 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="FB_List" Id="{d550f6e7-26a2-0630-31fa-d3a0d542037c}" SpecialFunc="None">
+    <Declaration><![CDATA[// A doubly linked list with iterator hint optimisation.
+// Essentially the linked list keeps track of the node it last accessed.
+// Iteration starts from the closest node (head, tail or last accessed) to the access/mutation index.
+// This should result in sequential access times of O(1) and similar times for access/mutation on the same index.
+{attribute 'enable_dynamic_creation'}
+{attribute 'no_assign'}
+{attribute 'no_explicit_call' := 'direct call for this function block is not allowed'}
+FUNCTION_BLOCK FINAL FB_List EXTENDS FB_Collection IMPLEMENTS I_List//, I_Enumerable, I_Copyable
+VAR
+	pHead, pTail, pLast_Accessed : POINTER TO T_List_Node;
+	Last_Accessed_Index : T_Position := -1;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="Internal" Id="{f1a4dbb5-4494-000f-0ffb-7997f7a89e00}" />
+    <Method Name="Append" Id="{4fc84931-a6ae-08e7-36de-592518bdadd3}">
+      <Declaration><![CDATA[// Adds an item to the end of the list.
+METHOD Append : I_List
+VAR_INPUT
+	Item : ANY; // Value to store in list
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Append := THIS^;
+
+THIS^.Insert_Generic(THIS^._Count, Item, bSuccess => bSuccess);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Clear" Id="{8ee2c30a-a29d-040b-24ca-43c7f2cba241}">
+      <Declaration><![CDATA[// Empties/Clears/Deletes every item in the list.
+METHOD Clear : I_List
+VAR
+	pTmp : POINTER TO T_List_Node;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Clear := THIS^;
+
+WHILE THIS^.pHead <> 0 DO
+	pTmp := THIS^.pHead^.pNext;
+	F_Delete_Generic(THIS^.pHead^.Data);
+	__DELETE(THIS^.pHead);
+	THIS^.pHead := pTmp;
+	END_WHILE
+
+THIS^._Count := 0;	
+THIS^.pTail := THIS^.pLast_Accessed := 0;
+THIS^.Last_Accessed_Index := -1;
+THIS^.Clear_Error();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Closest_Node_Iterator" Id="{dcb4bc24-5fe8-0fa3-18ad-85ae6cae215f}" FolderPath="Internal\">
+      <Declaration><![CDATA[// Iteration helper method that finds the closest node to an index and iterates from there to the node at the specified index.
+METHOD PROTECTED Closest_Node_Iterator : POINTER TO T_List_Node
+VAR_INPUT
+	Index : T_Position;
+END_VAR
+VAR
+	pTmp : POINTER TO T_List_Node;
+	Dist, Last_Access_Dist,
+	Head_Dist, Tail_Dist : T_Position;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Last_Access_Dist := ABS(THIS^.Last_Accessed_Index - Index);
+Head_Dist := Index;
+Tail_Dist := THIS^._Count - Index - 1;
+
+Dist := MIN(Last_Access_Dist, Head_Dist, Tail_Dist);
+
+Closest_Node_Iterator := THIS^.Iterate(
+	SEL(Dist = Head_Dist, SEL(Dist = Tail_Dist,  THIS^.pLast_Accessed, THIS^.pTail), THIS^.pHead), // Select the closest node to start iteration.
+	Dist, // get the smallest displacement
+	SEL(Dist = Head_Dist, SEL(Dist = Tail_Dist, Index > THIS^.Last_Accessed_Index, FALSE), TRUE)); // Set the iteration direction.]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Contains" Id="{dd523f27-d11d-065b-180f-0a0b2ee9a4b9}">
+      <Declaration><![CDATA[// Checks if item is contained in list.
+METHOD Contains : BOOL
+VAR_INPUT
+	Item : ANY; // Item to find in list
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.Search(Item, bSuccess => Contains);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FB_exit" Id="{a821d335-2b1f-0418-2318-f2748130d064}">
+      <Declaration><![CDATA[METHOD FB_exit : BOOL
+VAR_INPUT
+	bInCopyCode : BOOL; // if TRUE, the exit method is called for exiting an instance that is copied afterwards (online change).
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.Clear();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get" Id="{b8bbf96b-e911-05e0-15b2-8869381e2f3e}">
+      <Declaration><![CDATA[// Gets item from list at specified location without removing it
+METHOD Get : I_List
+VAR_INPUT
+	Index : T_Position; // Location of item
+	Item : ANY;  // Variable to store returned item
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+VAR
+	Tmp : T_Generic;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get := THIS^;
+
+THIS^.Get_Generic(Index, Item => Tmp, bSuccess => bSuccess);
+
+IF NOT bSuccess THEN RETURN; END_IF
+
+IF NOT F_Matching_Generics(Item, Tmp) THEN
+	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_TYPE_MISMATCH, 'Type mismatch.');
+	RETURN;
+	END_IF
+	
+F_Copy_Generic_Value(Tmp, Item);
+bSuccess := TRUE;
+THIS^.Clear_Error();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_As_String" Id="{52b906eb-5600-0450-2660-7daf488c2076}">
+      <Declaration><![CDATA[// Returns item as a string, if type to string conversion is supported
+METHOD Get_As_String : I_List
+VAR_INPUT
+	Index : T_Position; // Location of item
+	sItem : REFERENCE TO STRING; // Variable to store returned item.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+VAR
+	Tmp : T_Generic;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get_As_String := THIS^;
+
+IF NOT __ISVALIDREF(sItem) THEN 
+	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_INVALID_REFERENCE, 'Invalid reference.');
+	RETURN;
+	END_IF
+	
+THIS^.Get_Generic(Index, Item => Tmp, bSuccess => bSuccess);
+
+IF NOT bSuccess THEN RETURN; END_IF
+	
+IF NOT F_String_Convertable_Generic(Tmp) THEN 
+	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_NOT_SUPPORTED, 'No support for converting item at index to string.');
+	RETURN;
+	END_IF
+	
+CASE Tmp.TypeClass OF
+	T_Type.TYPE_STRING:
+		Tc2_Utilities.STRNCPY(ADR(sItem), Tmp.pValue, MIN(Tc2_Utilities.LEN2(ADR(sItem))+1, TO_UDINT(Tmp.diSize)));
+
+	T_Type.TYPE_WSTRING:
+		Tc2_Utilities.WSTRING_TO_STRING2(ADR(sItem), Tmp.pValue, MIN(Tc2_Utilities.LEN2(ADR(sItem))+1, TO_UDINT(Tmp.diSize)));
+ELSE
+	sItem := F_Generic_To_String(Tmp);
+	END_CASE
+	
+bSuccess := TRUE;
+THIS^.Clear_Error();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_Generic" Id="{addd6381-b8ef-0e85-1d34-baa79b0c7141}">
+      <Declaration><![CDATA[// Gets a value from a list in it's generic form.
+// (** Use carefully as this contains the pointer of the actual value in the collection. **)
+// If you wish to use this it is recommeded you create a copy of the returned value using MEMMOVE or MEMCPY
+METHOD Get_Generic : I_List
+VAR_INPUT
+	Index : T_Position; // Location of item
+END_VAR
+VAR_OUTPUT
+	Item : T_Generic := (TypeClass := T_Type.TYPE_NONE);
+	bSuccess : BOOL;
+END_VAR
+VAR
+	pTmp : POINTER TO T_List_Node;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get_Generic := THIS^;
+
+IF Index < 0 OR_ELSE Index >= THIS^._Count THEN
+	// Throw out of bounds error.
+	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_OUT_OF_LIMITS, 'Index out of bounds.');
+	RETURN;
+	END_IF
+	
+IF Index = 0 THEN
+	Item := THIS^.pHead^.Data;
+ELSIF Index = THIS^._Count - 1 THEN
+	Item := THIS^.pTail^.Data;
+ELSIF Index = THIS^.Last_Accessed_Index THEN
+	Item := THIS^.pLast_Accessed^.Data;
+ELSE
+	pTmp := THIS^.Closest_Node_Iterator(Index);
+	Item := pTmp^.Data;
+	
+	THIS^.Last_Accessed_Index := Index;
+	THIS^.pLast_Accessed := pTmp;
+	
+	END_IF
+	
+bSuccess := TRUE;
+THIS^.Clear_Error();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_Type_At" Id="{fd5b7005-b3cd-0e10-30de-aadcd8bb75b4}">
+      <Declaration><![CDATA[// Gets the type of the item at specified location.
+METHOD Get_Type_At : I_List
+VAR_INPUT
+	Index : T_Position;
+END_VAR
+VAR_OUTPUT
+	Item_Type : T_Type := T_Type.TYPE_NONE;
+	bSuccess : BOOL;
+END_VAR
+VAR
+	Tmp : T_Generic;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get_Type_At := THIS^;
+
+THIS^.Get_Generic(Index, Item => Tmp, bSuccess => bSuccess);
+Item_Type := Tmp.TypeClass;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Insert" Id="{ae9e31fd-70b9-0e82-0c68-ec5af31d4699}">
+      <Declaration><![CDATA[// Adds new item to list at specified location, if index = 0, item will be added at the front, if index = count, item will be added at the back
+METHOD Insert : I_List
+VAR_INPUT
+	Index : T_Position; // Location of item
+	Item : ANY; // Item to store in list
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Insert := THIS^;
+
+THIS^.Insert_Generic(Index, Item, bSuccess => bSuccess);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Insert_Generic" Id="{c85c0a51-0ba6-0bd8-15f7-7a9a1877a070}">
+      <Declaration><![CDATA[// Adds new item to list at specified location using the generic form. 
+// If index = 0, item will be added at the front, if index = count, item will be added at the back
+METHOD Insert_Generic : I_List
+VAR_INPUT
+	Index 	 : T_Position; 	// Location of item
+	Item 	 : T_Generic;  	// Item to store in list
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+VAR
+	pTmp, pCurrent : POINTER TO ST_LIST_NODE;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Insert_Generic := THIS^;
+
+IF Index < 0 OR_ELSE Index > THIS^._Count THEN
+	// Throw out of bounds error.
+	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_OUT_OF_LIMITS, 'Index out of bounds.');
+	RETURN;
+	END_IF
+	
+pTmp := __NEW(ST_LIST_NODE);
+pTmp^.Data := F_Clone_Generic(Item);
+
+IF Index = 0 THEN
+	//...
+	pTmp^.pNext := THIS^.pHead;
+	IF THIS^.pHead <> 0 THEN THIS^.pHead^.pPrevious := pTmp; END_IF
+	IF THIS^.pTail = 0 THEN THIS^.pTail := pTmp; END_IF
+	THIS^.pHead := pTmp;
+ELSIF Index = THIS^._Count THEN
+	//...
+	pTmp^.pPrevious := THIS^.pTail;
+	IF THIS^.pTail <> 0 THEN THIS^.pTail^.pNext := pTmp; END_IF
+	THIS^.pTail := pTmp;
+ELSE	
+	pCurrent := THIS^.Closest_Node_Iterator(Index);
+	
+	pTmp^.pNext := pCurrent;
+	pTmp^.pPrevious := pCurrent^.pNext;
+	pCurrent^.pPrevious^.pNext := pTmp;
+	pCurrent^.pPrevious := pTmp;
+	
+	THIS^.Last_Accessed_Index := Index;
+	THIS^.pLast_Accessed := pTmp;
+	END_IF
+	
+THIS^.Increment_Count();
+bSuccess := TRUE;
+THIS^.Clear_Error();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Iterate" Id="{dbfa44dc-2616-0dc3-0da0-669bcbfbc6d1}" FolderPath="Internal\">
+      <Declaration><![CDATA[// Iteration helper method to iterate from a given node in a specific direction for a specified count.
+METHOD PROTECTED Iterate : POINTER TO T_List_Node
+VAR_INPUT
+	pStart 		: POINTER TO T_List_Node;
+	Count 		: T_Capacity;
+	bIterateUp 	: BOOL;
+END_VAR
+VAR
+	i : T_Capacity;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Iterate := pStart;
+IF Count = 0 THEN RETURN; END_IF
+IF bIterateUp THEN FOR i := 0 TO Count - 1 DO Iterate := Iterate^.pNext; END_FOR RETURN; END_IF
+FOR i := 0 TO Count - 1 DO Iterate := Iterate^.pPrevious; END_FOR]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Prepend" Id="{f2813aec-b867-0125-3e75-1fa2c6be9c03}">
+      <Declaration><![CDATA[// Adds an item at the front of the list.
+METHOD Prepend : I_List
+VAR_INPUT
+	Item : ANY; // Value to store in list
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Prepend := THIS^;
+
+THIS^.Insert_Generic(0, Item, bSuccess => bSuccess);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Remove" Id="{796b00f8-d3e6-00d6-0ce9-176721e9a77c}">
+      <Declaration><![CDATA[// Removes item from the list.
+METHOD Remove : I_List
+VAR_INPUT
+	Item : ANY; // Item to remove from in list
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+VAR
+	Tmp : T_Position;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Remove := THIS^;
+
+THIS^.Search(Item, Index => Tmp, bSuccess => bSuccess);
+IF NOT bSuccess THEN RETURN; END_IF 
+THIS^.Remove_At(0, bSuccess => bSuccess);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Remove_At" Id="{ee0944b3-e733-0f32-31de-e04d1b5df91f}">
+      <Declaration><![CDATA[// Remove item at specified location 
+METHOD Remove_At : I_List
+VAR_INPUT
+	Index : T_Position; // Location of item
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+VAR_INST
+	pTmp, pp : POINTER TO T_List_Node;
+	i : T_Position;
+	MA : ARRAY[0..10] OF POINTER TO T_List_Node;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Remove_At := THIS^;
+
+IF Index < 0 OR_ELSE Index >= THIS^._Count THEN
+	// Throw out of bounds error.
+	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_OUT_OF_LIMITS, 'Index out of bounds.');
+	RETURN;
+	END_IF
+
+IF Index = 0 THEN
+	//...
+	pTmp := THIS^.pHead;
+	IF THIS^.pHead = THIS^.pTail THEN
+		THIS^.pLast_Accessed := THIS^.pTail := 0;
+		THIS^.Last_Accessed_Index := -1;
+		END_IF
+		
+	THIS^.pHead := THIS^.pHead^.pNext;
+	
+	F_Delete_Generic(pTmp^.Data);
+	__DELETE(pTmp);
+	
+ELSIF Index = THIS^._Count - 1 THEN
+	//...
+	pTmp := THIS^.pTail^.pPrevious;
+	THIS^.pTail := pTmp;
+	F_Delete_Generic(pTmp^.pNext^.Data);
+	__DELETE(pTmp^.pNext);
+ELSE
+	//...	
+	pTmp := THIS^.Closest_Node_Iterator(Index);
+	
+	// Do deletion
+	pTmp^.pNext^.pPrevious := pTmp^.pPrevious;
+	pTmp^.pPrevious^.pNext := pTmp^.pNext;
+	
+	THIS^.Last_Accessed_Index := -1;
+	THIS^.pLast_Accessed := 0;
+	
+	THIS^.Last_Accessed_Index := Index;
+	THIS^.pLast_Accessed := pTmp^.pNext;
+	
+	F_Delete_Generic(pTmp^.Data);
+	__DELETE(pTmp);
+	END_IF
+	
+THIS^.Decrement_Count();
+bSuccess := TRUE;
+THIS^.Clear_Error();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Remove_Last" Id="{4c46f3d0-04e6-072f-0407-9c56f8dc3757}">
+      <Declaration><![CDATA[// Removes item at the back of the list.
+METHOD Remove_Last : I_List
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Remove_Last := THIS^.Remove_At(THIS^._Count - 1, bSuccess => bSuccess);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Resize" Id="{ef6db417-90c8-0aae-323f-2838e6ef68f4}">
+      <Declaration><![CDATA[// Manually resize list. If list becomes smaller, item on higher locations will be deleted.
+METHOD Resize : I_List
+VAR_INPUT
+	Size : T_Capacity; // New size of list.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+VAR
+	Tmp : T_Generic := (TypeClass := T_Type.TYPE_NONE);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Resize := THIS^;
+
+IF Size = 0 THEN 
+	THIS^.Clear();
+ELSE
+	WHILE THIS^._Count > Size DO THIS^.Remove_At(THIS^._Count - 1); END_WHILE
+	WHILE THIS^._Count < Size DO THIS^.Insert_Generic(THIS^._Count, Tmp); END_WHILE
+	END_IF
+	
+bSuccess := TRUE;
+THIS^.Clear_Error();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Reverse" Id="{e63a0f73-f1bb-08a6-0ca1-52777c5f0814}">
+      <Declaration><![CDATA[// Reverses the order of items in the list
+METHOD Reverse : I_List
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+VAR
+	pFront, pBack : POINTER TO T_List_Node;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Reverse := THIS^;
+
+IF THIS^._Is_Empty THEN RETURN; END_IF
+
+pFront := THIS^.pHead;
+pBack := THIS^.pTail;
+
+WHILE pFront <> pBack DO
+	F_Swap_Generics(pFront^.Data, pBack^.Data);
+	pFront := pFront^.pNext;
+	pBack := pBack^.pPrevious;
+	END_WHILE
+	
+bSuccess := TRUE;
+THIS^.Clear_Error();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Search" Id="{fea94636-5a68-057a-1fd1-70b7e7dedc45}">
+      <Declaration><![CDATA[// Find the location of an item in list.
+METHOD Search : I_List
+VAR_INPUT
+	Item : ANY; // Item to find in list
+END_VAR
+VAR_OUTPUT
+	Index : T_Position := -1; //Location of item in list 
+	bSuccess : BOOL;
+END_VAR
+VAR
+	i : T_Position;
+	pTmp : POINTER TO T_List_Node;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Search := THIS^;
+
+pTmp := THIS^.pHead; 
+WHILE pTmp <> 0 DO
+	CASE F_Compare_Generics(Item, pTmp^.Data) OF
+		T_Comparison.Equal:
+			bSuccess := TRUE;
+			THIS^.Clear_Error();
+			Index := i;
+			RETURN;
+		END_CASE
+	pTmp := pTmp^.pNext;	
+	i := i + 1;
+	END_WHILE
+
+// Throw item not found error.
+THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_NO_OBJECT, 'Item not found.');]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Set" Id="{aa4fa2ad-ef36-02c7-2c97-6d9357bcd31c}">
+      <Declaration><![CDATA[// Changes the item at the specified location in the list.
+METHOD Set : I_List
+VAR_INPUT
+	Index 	: T_Position; // Location of item
+	Item 	: ANY; 	// Item to store in list
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Set := THIS^;
+
+THIS^.Set_Generic(Index, Item, bSuccess => bSuccess);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Set_Generic" Id="{d9ec335f-1339-0132-01a0-1dffda0b0772}">
+      <Declaration><![CDATA[// Changes the item at the specified location in the list in it's generic form.
+METHOD Set_Generic : I_List
+VAR_INPUT
+	Index : T_Position; // Location of item
+	Item : T_Generic; // Item to store in list
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+VAR
+	pTmp : POINTER TO T_List_Node;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Set_Generic := THIS^;
+
+IF Index < 0 OR_ELSE Index >= THIS^._Count THEN
+	// Throw out of bounds error.
+	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_OUT_OF_LIMITS, 'Index out of bounds.');
+	RETURN;
+	END_IF
+	
+IF Index = 0 THEN
+	F_Delete_Generic(THIS^.pHead^.Data);
+	THIS^.pHead^.Data := F_Clone_Generic(Item);
+ELSIF Index = THIS^._Count - 1 THEN
+	F_Delete_Generic(THIS^.pTail^.Data);
+	THIS^.pTail^.Data := F_Clone_Generic(Item);
+ELSIF Index = THIS^.Last_Accessed_Index THEN
+	F_Delete_Generic(THIS^.pLast_Accessed^.Data);
+	THIS^.pLast_Accessed^.Data := F_Clone_Generic(Item);
+ELSE
+	pTmp := THIS^.Closest_Node_Iterator(Index);
+	F_Delete_Generic(pTmp^.Data);
+	pTmp^.Data := F_Clone_Generic(Item);
+
+	THIS^.Last_Accessed_Index := Index;
+	THIS^.pLast_Accessed := pTmp;
+	END_IF
+	
+bSuccess := TRUE;
+THIS^.Clear_Error();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Swap" Id="{fc8cded5-55a0-01c9-338b-3eb31966ba86}">
+      <Declaration><![CDATA[// Swaps item at index A with item at index B.
+METHOD Swap : I_List
+VAR_INPUT
+	Index_A, Index_B : T_Position;
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Swap := THIS^;
+
+IF Index_A < 0 OR_ELSE Index_A >= THIS^._Count OR_ELSE Index_B < 0 OR_ELSE Index_B >= THIS^._Count THEN
+	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_OUT_OF_LIMITS, 'Index out of bounds.');
+	RETURN;
+	END_IF
+	
+bSuccess := F_Swap_Generics(THIS^.Closest_Node_Iterator(Index_A)^.Data, THIS^.Closest_Node_Iterator(Index_B)^.Data);
+THIS^.Clear_Error();]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_List">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_List.Append">
+      <LineId Id="9" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_List.Clear">
+      <LineId Id="16" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="14" Count="1" />
+      <LineId Id="18" Count="1" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="11" Count="2" />
+      <LineId Id="20" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_List.Closest_Node_Iterator">
+      <LineId Id="32" Count="8" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_List.Contains">
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_List.FB_exit">
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_List.Get">
+      <LineId Id="10" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="19" Count="3" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="25" Count="1" />
+      <LineId Id="24" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_List.Get_As_String">
+      <LineId Id="45" Count="0" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="74" Count="2" />
+      <LineId Id="73" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="88" Count="1" />
+      <LineId Id="86" Count="1" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="27" Count="1" />
+      <LineId Id="62" Count="2" />
+      <LineId Id="66" Count="2" />
+      <LineId Id="77" Count="0" />
+      <LineId Id="70" Count="1" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="47" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_List.Get_Generic">
+      <LineId Id="13" Count="0" />
+      <LineId Id="16" Count="4" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="64" Count="0" />
+      <LineId Id="63" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="61" Count="1" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="32" Count="1" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="34" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_List.Get_Type_At">
+      <LineId Id="11" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="19" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_List.Insert">
+      <LineId Id="11" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="12" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_List.Insert_Generic">
+      <LineId Id="11" Count="0" />
+      <LineId Id="13" Count="4" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="21" Count="1" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="27" Count="1" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="33" Count="1" />
+      <LineId Id="42" Count="2" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="69" Count="1" />
+      <LineId Id="64" Count="3" />
+      <LineId Id="61" Count="2" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="38" Count="2" />
+    </LineIds>
+    <LineIds Name="FB_List.Iterate">
+      <LineId Id="5" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="14" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_List.Prepend">
+      <LineId Id="12" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_List.Remove">
+      <LineId Id="17" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="18" Count="1" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_List.Remove_At">
+      <LineId Id="9" Count="0" />
+      <LineId Id="13" Count="4" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="18" Count="2" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="118" Count="0" />
+      <LineId Id="120" Count="0" />
+      <LineId Id="124" Count="0" />
+      <LineId Id="121" Count="0" />
+      <LineId Id="130" Count="0" />
+      <LineId Id="122" Count="0" />
+      <LineId Id="171" Count="0" />
+      <LineId Id="173" Count="1" />
+      <LineId Id="172" Count="0" />
+      <LineId Id="25" Count="2" />
+      <LineId Id="157" Count="0" />
+      <LineId Id="165" Count="0" />
+      <LineId Id="167" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="86" Count="1" />
+      <LineId Id="75" Count="2" />
+      <LineId Id="88" Count="2" />
+      <LineId Id="80" Count="1" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="168" Count="2" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="84" Count="0" />
+      <LineId Id="57" Count="1" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_List.Remove_Last">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_List.Resize">
+      <LineId Id="9" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="14" Count="2" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="23" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_List.Reverse">
+      <LineId Id="6" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="21" Count="2" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="25" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_List.Search">
+      <LineId Id="10" Count="0" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="53" Count="5" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="37" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_List.Set">
+      <LineId Id="11" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="12" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_List.Set_Generic">
+      <LineId Id="11" Count="0" />
+      <LineId Id="13" Count="4" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="20" Count="1" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="22" Count="1" />
+      <LineId Id="45" Count="3" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="52" Count="1" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="60" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="19" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_List.Swap">
+      <LineId Id="9" Count="0" />
+      <LineId Id="16" Count="3" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="23" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="F_String_Convertable_Generic" Id="{6c5f9e50-d2cc-0db5-0baf-aaed7aac5b03}" SpecialFunc="None">
+    <Declaration><![CDATA[// Checks if value can be converted to string
+FUNCTION F_String_Convertable_Generic : BOOL
+VAR_INPUT
+	Value : T_Generic;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE Value.TypeClass OF
+	__SYSTEM.TYPE_CLASS.TYPE_STRING,
+	__SYSTEM.TYPE_CLASS.TYPE_WSTRING,
+	__SYSTEM.TYPE_CLASS.TYPE_BOOL,
+	__SYSTEM.TYPE_CLASS.TYPE_BYTE,
+	__SYSTEM.TYPE_CLASS.TYPE_WORD,
+	__SYSTEM.TYPE_CLASS.TYPE_DWORD,
+	__SYSTEM.TYPE_CLASS.TYPE_LWORD,
+	__SYSTEM.TYPE_CLASS.TYPE_SINT,
+	__SYSTEM.TYPE_CLASS.TYPE_INT,
+	__SYSTEM.TYPE_CLASS.TYPE_DINT,
+	__SYSTEM.TYPE_CLASS.TYPE_LINT,
+	__SYSTEM.TYPE_CLASS.TYPE_USINT,
+	__SYSTEM.TYPE_CLASS.TYPE_UINT,
+	__SYSTEM.TYPE_CLASS.TYPE_UDINT,
+	__SYSTEM.TYPE_CLASS.TYPE_ULINT,
+	__SYSTEM.TYPE_CLASS.TYPE_REAL,
+	__SYSTEM.TYPE_CLASS.TYPE_LREAL,
+	__SYSTEM.TYPE_CLASS.TYPE_TIME,
+	__SYSTEM.TYPE_CLASS.TYPE_LTIME,
+	__SYSTEM.TYPE_CLASS.TYPE_DATE,
+	__SYSTEM.TYPE_CLASS.TYPE_DATEANDTIME,
+	__SYSTEM.TYPE_CLASS.TYPE_TIMEOFDAY,
+	__SYSTEM.TYPE_CLASS.TYPE_POINTER:
+		F_String_Convertable_Generic := TRUE;
+ELSE
+	RETURN;
+END_CASE]]></ST>
+    </Implementation>
+    <LineIds Name="F_String_Convertable_Generic">
+      <LineId Id="79" Count="26" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <Itf Name="I_List" Id="{46566888-019a-0c55-336c-8af5a3e5983b}">
+    <Declaration><![CDATA[// Interface for a list.
+INTERFACE I_List EXTENDS I_Collection
+]]></Declaration>
+    <Method Name="Append" Id="{b5545aee-8b95-0f2c-2b82-71ec520c8f46}">
+      <Declaration><![CDATA[// Adds an item to the end of the list.
+METHOD Append : I_List
+VAR_INPUT
+	Item : ANY; // Value to store in list
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Clear" Id="{0d325e33-b6a9-0811-0bab-86c0312dfd25}">
+      <Declaration><![CDATA[// Empties/Clears/Deletes every item in the list.
+METHOD Clear : I_List
+]]></Declaration>
+    </Method>
+    <Method Name="Contains" Id="{aec5154c-fe06-0f69-298d-e0ef9b95e569}">
+      <Declaration><![CDATA[// Checks if item is contained in list.
+METHOD Contains : BOOL
+VAR_INPUT
+	Item : ANY; // Item to find in list
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Get" Id="{99c4304e-0d1c-0b6f-2d46-458e55236ef5}">
+      <Declaration><![CDATA[// Gets item from list at specified location without removing it
+METHOD Get : I_List
+VAR_INPUT
+	Index : T_Position; // Location of item
+	Item : ANY;  // Variable to store returned item
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Get_As_String" Id="{544f1fb6-cb74-0fa3-0870-7260f5bd106c}">
+      <Declaration><![CDATA[// Returns item as a string, if type to string conversion is supported
+METHOD Get_As_String : I_List
+VAR_INPUT
+	Index : T_Position; // Location of item
+	sItem : REFERENCE TO STRING; // Variable to store returned item.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Get_Generic" Id="{c879e8f6-10f4-04a7-0247-bdfa9a26dd32}">
+      <Declaration><![CDATA[// Gets a value from a list in it's generic form.
+// (** Use carefully as this contains the pointer of the actual value in the collection. **)
+// If you wish to use this it is recommeded you create a copy of the returned value using MEMMOVE or MEMCPY
+METHOD Get_Generic : I_List
+VAR_INPUT
+	Index : T_Position; // Location of item
+END_VAR
+VAR_OUTPUT
+	Item : T_Generic;
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Get_Type_At" Id="{c731a223-b208-0479-0fd9-fe7e8e450c27}">
+      <Declaration><![CDATA[// Gets the type of the item at specified location.
+METHOD Get_Type_At : I_List
+VAR_INPUT
+	Index : T_Position;
+END_VAR
+VAR_OUTPUT
+	Item_Type : T_Type;
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Insert" Id="{2c76d984-6068-03ed-3c12-32fc9299eaa1}">
+      <Declaration><![CDATA[// Adds new item to list at specified location, if index = 0, item will be added at the front, if index = count, item will be added at the back
+METHOD Insert : I_List
+VAR_INPUT
+	Index : T_Position; // Location of item
+	Item : ANY; // Item to store in list
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Insert_Generic" Id="{da137e14-eb82-024e-26b4-bf2796c5f5e2}">
+      <Declaration><![CDATA[// Adds new item to list at specified location using the generic form. 
+// If index = 0, item will be added at the front, if index = count, item will be added at the back
+METHOD Insert_Generic : I_List
+VAR_INPUT
+	Index 	 : T_Position; 	// Location of item
+	Item 	 : T_Generic;  	// Item to store in list
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Prepend" Id="{2df2b66e-cb68-0027-3ba4-ee7d97a84609}">
+      <Declaration><![CDATA[// Adds an item at the front of the list.
+METHOD Prepend : I_List
+VAR_INPUT
+	Item : ANY; // Value to store in list
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Remove" Id="{ef30e742-8bb7-0186-1325-780152535566}">
+      <Declaration><![CDATA[// Removes item from the list.
+METHOD Remove : I_List
+VAR_INPUT
+	Item : ANY; // Item to remove from in list
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Remove_At" Id="{77856e93-8b1b-00ec-28fb-c0c13e7000aa}">
+      <Declaration><![CDATA[// Remove item at specified location 
+METHOD Remove_At : I_List
+VAR_INPUT
+	Index : T_Position; // Location of item
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Remove_Last" Id="{2678c6ed-572c-08d4-18b9-2725175e872c}">
+      <Declaration><![CDATA[// Removes item at the back of the list.
+METHOD Remove_Last : I_List
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Resize" Id="{6f645003-871d-0366-0682-9709e8ee504d}">
+      <Declaration><![CDATA[// Manually resize list. If list becomes smaller, item on higher locations will be deleted.
+METHOD Resize : I_List
+VAR_INPUT
+	Size : T_Capacity; // New size of list.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Reverse" Id="{e6480a03-c9e6-071b-2c4c-731fc78d89c4}">
+      <Declaration><![CDATA[// Reverses the order of items in the list
+METHOD Reverse : I_List
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Search" Id="{62f19e7a-aa13-0121-3c39-a30306aa5182}">
+      <Declaration><![CDATA[// Find the location of an item in list.
+METHOD Search : I_List
+VAR_INPUT
+	Item : ANY; // Item to find in list
+END_VAR
+VAR_OUTPUT
+	Index : T_Position; //Location of item in list 
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Set" Id="{fc154781-c531-0d7c-0bd6-7f1206106c17}">
+      <Declaration><![CDATA[// Changes the item at the specified location in the list.
+METHOD Set : I_List
+VAR_INPUT
+	Index 	: T_Position; // Location of item
+	Item 	: ANY; 	// Item to store in list
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Set_Generic" Id="{2be0bcd6-c685-087f-3edd-fb82fe441640}">
+      <Declaration><![CDATA[// Changes the item at the specified location in the list in it's generic form.
+METHOD Set_Generic : I_List
+VAR_INPUT
+	Index : T_Position; // Location of item
+	Item : T_Generic; // Item to store in list
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Swap" Id="{fbc2eaf7-684f-08c2-20de-20f1c83eae0f}">
+      <Declaration><![CDATA[// Swaps item at index A with item at index B.
+METHOD Swap : I_List
+VAR_INPUT
+	Index_A, Index_B : T_Position;
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

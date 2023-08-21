@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <Itf Name="I_Immutable_Set" Id="{1b7c698b-d1f4-00e5-287f-325bc5e3eaaf}">
+    <Declaration><![CDATA[// Interface for immutable set.
+INTERFACE I_Immutable_Set EXTENDS I_Immutable_Collection
+]]></Declaration>
+    <Method Name="Contains" Id="{044782f2-2446-0b12-127b-3270d39da13d}">
+      <Declaration><![CDATA[// Checks if item is contained in set.
+METHOD Contains : BOOL
+VAR_INPUT
+	Item : ANY; // Item to find.
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Get_Values" Id="{0eb7c131-e401-06e7-0d63-d967c5772274}">
+      <Declaration><![CDATA[// Gets an immutable list of the values in the set.
+METHOD Get_Values : I_Immutable_List]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

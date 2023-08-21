@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Refactors>
+  <Renames>
+    <RenamedSymbol>
+      <Type guid="47becfa5-c9ee-44dd-8026-c7a30fb38993">FB_Immutable_Set</Type>
+      <From>ipList</From>
+      <To>ipSet</To>
+    </RenamedSymbol>
+    <RenamedSymbol>
+      <Type guid="e15880d6-d7e9-4311-ae1d-d77f7fafc252">FB_Immutable_Map</Type>
+      <From>ipSet</From>
+      <To>ipMap</To>
+    </RenamedSymbol>
+  </Renames>
+</Refactors>

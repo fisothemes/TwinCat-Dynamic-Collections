@@ -1,13 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
-  <EnumerationTextList Name="E_BINARY_SEARCH_TREE_TRAVERSAL" Id="{3702585d-0304-4df6-91ef-ea8a96b75369}">
-    <Declaration><![CDATA[{attribute 'qualified_only'}
-{attribute 'strict'}
+  <EnumerationTextList Name="E_BINARY_SEARCH_TREE_TRAVERSAL" Id="{3e0edefa-b709-0855-345d-bee12ed26c98}">
+    <Declaration><![CDATA[// Methods for traversing a binary search tree.
+{attribute 'qualified_only'}
+{attribute 'to_string'}
 TYPE E_BINARY_SEARCH_TREE_TRAVERSAL :
 (
-	Inorder := 0,
-	Preorder,
-	Postorder, 
+	In_Order := 0,
+	Pre_Order,
+	Post_Order, 
 	Level_Order
 )BYTE;
 END_TYPE
@@ -17,17 +18,17 @@ END_TYPE
         <o xml:space="preserve" t="TextListEnumerationTextListObject">
           <l n="TextList" t="ArrayList" cet="TextListRow">
             <o>
-              <v n="TextID">"Inorder"</v>
+              <v n="TextID">"In_Order"</v>
               <v n="TextDefault">"0"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
-              <v n="TextID">"Preorder"</v>
+              <v n="TextID">"Pre_Order"</v>
               <v n="TextDefault">""</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
-              <v n="TextID">"Postorder"</v>
+              <v n="TextID">"Post_Order"</v>
               <v n="TextDefault">""</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>

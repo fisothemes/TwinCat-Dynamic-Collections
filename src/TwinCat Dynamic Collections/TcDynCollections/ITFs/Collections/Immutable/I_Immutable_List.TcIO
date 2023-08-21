@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <Itf Name="I_Immutable_List" Id="{06b68edb-8a76-0a45-125b-ee1050df5d45}">
+    <Declaration><![CDATA[// Interface for an immutable list.
+INTERFACE I_Immutable_List EXTENDS I_Immutable_Collection
+]]></Declaration>
+    <Method Name="Contains" Id="{6b004137-d7bc-04e1-0420-33618d82fb2e}">
+      <Declaration><![CDATA[(* Checks if item is contained in list *)
+METHOD Contains : BOOL
+VAR_INPUT
+	Item : ANY; // Item to find in list
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Get" Id="{d52773eb-e904-0848-0375-939511fd62bd}">
+      <Declaration><![CDATA[// Gets item from list at specified location without removing it.
+METHOD Get : I_Immutable_List
+VAR_INPUT
+	Index : T_Position; // Location of item
+	Item : ANY;  // Variable to store returned item
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Get_As_String" Id="{f6017d33-4e8f-0491-169e-4615ec944bf4}">
+      <Declaration><![CDATA[// Returns item as a string, if type to string conversion is supported.
+METHOD Get_As_String : I_Immutable_List
+VAR_INPUT
+	Index : T_Position; // Location of item
+	sItem : REFERENCE TO STRING; // Variable to store returned item.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Get_Type_At" Id="{4260ad72-a782-0afb-3987-66c2b37f67e4}">
+      <Declaration><![CDATA[// Gets the type of the item at specified location.
+METHOD Get_Type_At : I_Immutable_List
+VAR_INPUT
+	Index : T_Position;
+END_VAR
+VAR_OUTPUT
+	Item_Type : T_Type;
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Search" Id="{8b8f241e-a5a0-05be-0720-b8c8b6bf6cef}">
+      <Declaration><![CDATA[// Find the location of an item in list.
+METHOD Search : I_Immutable_List
+VAR_INPUT
+	Item : ANY; // Item to find in list
+END_VAR
+VAR_OUTPUT
+	Index : T_Position; //Location of item in list 
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

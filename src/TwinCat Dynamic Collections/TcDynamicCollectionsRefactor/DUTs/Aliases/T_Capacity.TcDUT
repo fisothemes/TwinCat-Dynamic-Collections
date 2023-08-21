@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
-  <DUT Name="T_Capacity" Id="{5fb28fb4-03fc-4a00-9b88-5b1487c289d6}">
-    <Declaration><![CDATA[TYPE T_Capacity : DINT(0..2147483647); END_TYPE]]></Declaration>
-  </DUT>
-</TcPlcObject>

@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <Itf Name="I_Queue" Id="{e54f9fb5-b69a-0cb3-156c-7e13d75abdb5}">
+    <Declaration><![CDATA[// Interface for a queue
+INTERFACE I_Queue EXTENDS I_Collection
+]]></Declaration>
+    <Property Name="_Values" Id="{6dd6c214-7193-0c02-34fc-431109446959}">
+      <Declaration><![CDATA[// Gets an immutable list of the items in the queue.
+PROPERTY _Values : I_Immutable_List]]></Declaration>
+      <Get Name="Get" Id="{78a8ad29-91a0-0ba3-1dc7-b517fbee1594}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Method Name="Clear" Id="{d0ebe50d-c6ca-057d-2244-74b93814929d}">
+      <Declaration><![CDATA[// Empties/Clears/Deletes every item in the queue.
+METHOD Clear : I_Queue
+]]></Declaration>
+    </Method>
+    <Method Name="Dequeue" Id="{58fb84c5-9313-08c4-36ef-05268e5c5abc}">
+      <Declaration><![CDATA[// Removes item at the front the queue.
+METHOD Dequeue : I_Queue
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Enqueue" Id="{9ee7bcc1-13c8-0dbb-14d3-efc017217ec0}">
+      <Declaration><![CDATA[// Adds item at the back of the queue.
+METHOD Enqueue : I_Queue
+VAR_INPUT
+	Item : ANY; // Item to store.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Enqueue_At_Front" Id="{483d4468-fe38-0637-1fb4-b6bd578723cd}">
+      <Declaration><![CDATA[// Adds item at the front of the queue.
+METHOD Enqueue_At_Front : I_Queue
+VAR_INPUT
+	Item : ANY; // Item to store.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Enqueue_Generic" Id="{a459e506-85e6-0fb1-2fbf-52f7ff8c8a00}">
+      <Declaration><![CDATA[// Adds a generic item at the back of the queue.
+METHOD Enqueue_Generic : I_Queue
+VAR_INPUT
+	Item : T_Generic; // Item to store.
+	bAt_Front : BOOL; // Enqueues at front if set to TRUE.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Get" Id="{2c3eb60d-827a-0e7d-340e-4ca0305680b9}">
+      <Declaration><![CDATA[// Gets the item at the front of the queue.
+METHOD Get : I_Queue
+VAR_INPUT
+	Item : ANY; // Variable to store returned item value
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Get_Generic" Id="{4fecf58e-895e-071b-316d-cddc76e25825}">
+      <Declaration><![CDATA[// Gets the item at the front of the queue as a generic.
+METHOD Get_Generic : I_Queue
+VAR_OUTPUT
+	Item : T_Generic; // Variable to store returned item value
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Reverse" Id="{e61f3245-285d-05f1-2a2b-86b692baf915}">
+      <Declaration><![CDATA[// Reverses the order of the items in the queue.
+METHOD Reverse : I_Queue
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

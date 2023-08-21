@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="FB_Stack" Id="{9a992fe7-0267-06d4-33ff-969f591448bf}" SpecialFunc="None">
+    <Declaration><![CDATA[// A collection whose access/mutation of items is last-in, first-out.
+{attribute 'enable_dynamic_creation'}
+{attribute 'no_assign'}
+{attribute 'no_explicit_call' := 'direct call for this function block is not allowed'}
+FUNCTION_BLOCK FINAL FB_Stack EXTENDS FB_Collection IMPLEMENTS I_Stack //, I_Enumerable, I_Copyable
+VAR
+	fbList : FB_List;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="_Values" Id="{ac73bae5-8dcb-0d37-36e6-ab46adea9629}">
+      <Declaration><![CDATA[// Gets an immutable list of the items in the stack.
+PROPERTY _Values : I_Immutable_List]]></Declaration>
+      <Get Name="Get" Id="{80ba323c-77b8-08bf-0dda-571a924acf61}">
+        <Declaration><![CDATA[VAR_INST
+	fbImmutable_List : FB_Immutable_List := (ipList := THIS^.fbList);
+END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_Values := fbImmutable_List;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Clear" Id="{0eb2a151-1239-08ae-07d3-3463619cbdd7}">
+      <Declaration><![CDATA[// Empties/Clears/Deletes every item in the stack.
+METHOD Clear : I_Stack
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Clear := THIS^;
+
+THIS^.fbList.Clear();
+
+THIS^._Error_Status :=  THIS^.fbList._Error_Status;
+THIS^._Count := THIS^.fbList._Count;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get" Id="{3c7972ee-62a2-061d-1590-3cbee4ff11d5}">
+      <Declaration><![CDATA[// Gets item at the top of the stack.
+METHOD Get : I_Stack
+VAR_INPUT
+	Item : ANY; // Variable to store returned item value. 
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get := THIS^;
+
+THIS^.fbList.Get(0, Item, bSuccess => bSuccess);
+
+THIS^._Error_Status := THIS^.fbList._Error_Status;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_Generic" Id="{8d0f459f-0065-01c0-2a59-65e8f17e91e4}">
+      <Declaration><![CDATA[// Gets item at the top of the stack as a generic.
+METHOD Get_Generic : I_Stack
+VAR_OUTPUT
+	Item : T_Generic; // Variable to store returned item value
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get_Generic := THIS^;
+
+THIS^.fbList.Get_Generic(0, Item => Item, bSuccess => bSuccess);
+
+THIS^._Error_Status := THIS^.fbList._Error_Status;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Pop" Id="{5b334a56-0cb9-09e3-1d10-c6f0aa505e90}">
+      <Declaration><![CDATA[// Removes item at the top of the stack without returning anything.
+METHOD Pop : I_Stack
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Pop := THIS^;
+
+THIS^.fbList.Remove_At(0, bSuccess => bSuccess);
+
+THIS^._Error_Status := THIS^.fbList._Error_Status;
+THIS^._Count := THIS^.fbList._Count;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Push" Id="{2c6bbbe5-a3d2-00b6-15e3-2cd0292b435f}">
+      <Declaration><![CDATA[// Add item to the top of the stack.
+METHOD Push : I_Stack
+VAR_INPUT
+	Item : ANY; // Item to store.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Push := THIS^;
+
+THIS^.fbList.Insert_Generic(0, Item, bSuccess => bSuccess);
+
+THIS^._Error_Status :=  THIS^.fbList._Error_Status;
+THIS^._Count := THIS^.fbList._Count;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Push_Generic" Id="{9150115e-0116-02eb-28f6-b7be4becb93e}">
+      <Declaration><![CDATA[// Add generic item to the top of the stack.
+METHOD Push_Generic : I_Stack
+VAR_INPUT
+	Item : T_Generic; // Item to store.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Push_Generic := THIS^;
+
+THIS^.fbList.Insert_Generic(0, Item, bSuccess => bSuccess);
+
+THIS^._Error_Status :=  THIS^.fbList._Error_Status;
+THIS^._Count := THIS^.fbList._Count;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Reverse" Id="{84b66e32-e6a1-031d-03aa-5aa15541e96d}">
+      <Declaration><![CDATA[// Reverses order of items on stack.
+METHOD Reverse : I_Stack
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Reverse := THIS^;
+
+THIS^.fbList.Reverse(bSuccess => bSuccess);
+
+THIS^._Error_Status :=  THIS^.fbList._Error_Status;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Stack">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Stack._Values.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Stack.Clear">
+      <LineId Id="5" Count="3" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Stack.Get">
+      <LineId Id="10" Count="3" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Stack.Get_Generic">
+      <LineId Id="8" Count="3" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Stack.Pop">
+      <LineId Id="7" Count="4" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Stack.Push">
+      <LineId Id="10" Count="4" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Stack.Push_Generic">
+      <LineId Id="10" Count="4" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Stack.Reverse">
+      <LineId Id="7" Count="3" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

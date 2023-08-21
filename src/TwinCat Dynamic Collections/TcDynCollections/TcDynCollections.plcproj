@@ -20,15 +20,16 @@
     <Title>TwinCat Dynamic Collections</Title>
     <Author>Goodwill Mzumala</Author>
     <DefaultNamespace>TcDynCollections</DefaultNamespace>
-    <ProjectVersion>0.3.1.0</ProjectVersion>
+    <ProjectVersion>1.0.1.1</ProjectVersion>
     <DocFormat>reStructuredText</DocFormat>
     <Description>A library for handling collections of data dynamically.</Description>
+    <CombineIds>true</CombineIds>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DUTs\Aliases\T_Hash_Code.TcDUT">
+    <Compile Include="DUTs\Aliases\T_AVL_Map_Node.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\Aliases\T_BST_Node.TcDUT">
+    <Compile Include="DUTs\Aliases\T_AVL_Node.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\Aliases\T_BST_Traversal.TcDUT">
@@ -37,16 +38,22 @@
     <Compile Include="DUTs\Aliases\T_Capacity.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\Aliases\T_Comparison.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\Aliases\T_Error.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\Aliases\T_Generic.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\Aliases\T_Generic_Ex.TcDUT">
+    <Compile Include="DUTs\Aliases\T_List_Node.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\Aliases\T_Query_Interface.TcDUT">
+    <Compile Include="DUTs\Aliases\T_Map_Entry.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Aliases\T_Position.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\Aliases\T_Type.TcDUT">
@@ -55,128 +62,191 @@
     <Compile Include="DUTs\Enums\E_BINARY_SEARCH_TREE_TRAVERSAL.TcTLEO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\Interfaces\I_Binary_Search_Tree.TcIO">
+    <Compile Include="DUTs\Enums\E_COMPARISON.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\Interfaces\I_Collection.TcIO">
+    <Compile Include="DUTs\Structs\ST_AVL_MAP_NODE.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\Interfaces\I_Deque.TcIO">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\Interfaces\I_Generic_Binary_Search_Tree.TcIO">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\Interfaces\I_Generic_Collection.TcIO">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\Interfaces\I_Generic_List.TcIO">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\Interfaces\I_List.TcIO">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\Interfaces\I_Map.TcIO">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\Interfaces\I_Queue.TcIO">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\Interfaces\I_Read_Only_List.TcIO">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\Interfaces\I_Stack.TcIO">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\Interfaces\I_Tree_Map.TcIO">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\Interfaces\I_Write_Only_List.TcIO">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\Structs\ST_BINARY_SEARCH_TREE_NODE.TcDUT">
+    <Compile Include="DUTs\Structs\ST_AVL_NODE.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\Structs\ST_ERROR.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\Structs\ST_GENERIC.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\Structs\ST_HASH_MAP_ENTRY.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="DUTs\Structs\ST_LIST_NODE.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\Structs\ST_TREE_MAP_ENTRY_NODE.TcDUT">
+    <Compile Include="DUTs\Structs\ST_MAP_ENTRY.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="GVLs\GVL_CmpErrors.TcGVL">
+    <Compile Include="GVLs\GVL_Errors.TcGVL">
       <SubType>Code</SubType>
       <LinkAlways>true</LinkAlways>
+    </Compile>
+    <Compile Include="ITFs\Collections\Immutable\I_Immutable_Array.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITFs\Collections\Immutable\I_Immutable_Collection.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITFs\Collections\Immutable\I_Immutable_List.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITFs\Collections\Immutable\I_Immutable_Map.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITFs\Collections\Immutable\I_Immutable_Set.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITFs\Collections\I_Array.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITFs\Collections\I_Array_List.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITFs\Collections\I_Collection.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITFs\Collections\I_Deque.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITFs\Collections\I_List.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITFs\Collections\I_Map.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITFs\Collections\I_Queue.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITFs\Collections\I_Set.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITFs\Collections\I_Stack.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITFs\Collections\I_Tree_Map.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITFs\Collections\I_Tree_Set.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITFs\Enumerators\I_Enumerable.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITFs\Enumerators\I_Enumerator.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITFs\Misc\I_Copyable.TcIO">
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Examples\P_Example_Array_List.TcPOU">
+    <Compile Include="POUs\Function Blocks\Collections\FB_Array.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Examples\P_Example_Binary_Search_Tree.TcPOU">
+    <Compile Include="POUs\Function Blocks\Collections\FB_Array_List.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Examples\P_Example_List.TcPOU">
+    <Compile Include="POUs\Function Blocks\Collections\FB_Collection.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Examples\P_Example_Queue.TcPOU">
+    <Compile Include="POUs\Function Blocks\Collections\FB_Hash_Map.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Examples\P_Example_Stack.TcPOU">
+    <Compile Include="POUs\Function Blocks\Collections\FB_Hash_Set.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Examples\P_Example_Tree_Map.TcPOU">
+    <Compile Include="POUs\Function Blocks\Collections\FB_List.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Function Blocks\Helpers\FB_Helper_BST_Balancer.TcPOU">
+    <Compile Include="POUs\Function Blocks\Collections\FB_Queue.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Function Blocks\Helpers\FB_Helper_Tree_Map_Balancer.TcPOU">
+    <Compile Include="POUs\Function Blocks\Collections\FB_Stack.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Function Blocks\FB_Array_List.TcPOU">
+    <Compile Include="POUs\Function Blocks\Collections\FB_Tree_Map.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Function Blocks\FB_Binary_Search_Tree.TcPOU">
+    <Compile Include="POUs\Function Blocks\Collections\FB_Tree_Set.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Function Blocks\FB_Collection.TcPOU">
+    <Compile Include="POUs\Function Blocks\Collections\Immutable\FB_Immutable_Array.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Function Blocks\FB_Hash_Map.TcPOU">
+    <Compile Include="POUs\Function Blocks\Collections\Immutable\FB_Immutable_List.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Function Blocks\FB_List.TcPOU">
+    <Compile Include="POUs\Function Blocks\Collections\Immutable\FB_Immutable_Map.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Function Blocks\FB_Queue.TcPOU">
+    <Compile Include="POUs\Function Blocks\Collections\Immutable\FB_Immutable_Set.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Function Blocks\FB_Read_Only_List.TcPOU">
+    <Compile Include="POUs\Function Blocks\Enumerators\FB_Enumerator.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Function Blocks\FB_Stack.TcPOU">
+    <Compile Include="POUs\Function Blocks\Misc\FB_Free.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Function Blocks\FB_Tree_Map.TcPOU">
+    <Compile Include="POUs\Functions\F_Any_To_Generic.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Function Blocks\FB_Write_Only_List.TcPOU">
+    <Compile Include="POUs\Functions\F_Clone_Generic.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Functions\F_Compare_Any.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Functions\F_Compare_Generics.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Functions\F_Copy_Generic_Value.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Functions\F_Delete_Generic.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\Functions\F_Error.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\Functions\F_Generic_To_DT.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Functions\F_Generic_To_LREAL.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Functions\F_Generic_To_LTIME.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Functions\F_Generic_To_String.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Functions\F_Is_Date_Generic.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Functions\F_Is_Numeric_Generic.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Functions\F_Is_Time_Generic.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\Functions\F_Malloc_Generic.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Functions\F_Matching_Generics.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Functions\F_String_Convertable_Generic.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Functions\F_String_To_Any.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Functions\F_Swap_Generics.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MAIN.TcPOU">
@@ -194,19 +264,7 @@
       <SubType>Code</SubType>
       <SystemCall>true</SystemCall>
     </Compile>
-    <Compile Include="UML\Array List UML.TcCD">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="UML\TwinCAT Dynamic Collections Interface UML.TcCD">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="UML\List UML.TcCD">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="UML\Queue UML.TcCD">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="UML\Stack UML.TcCD">
+    <Compile Include="UML\Collections Interfaces.TcCD">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Version\Global_Version.TcGVL">
@@ -217,18 +275,26 @@
     <Folder Include="DUTs" />
     <Folder Include="DUTs\Aliases" />
     <Folder Include="DUTs\Enums" />
-    <Folder Include="DUTs\Interfaces" />
     <Folder Include="DUTs\Structs" />
     <Folder Include="GVLs" />
-    <Folder Include="POUs\Function Blocks\Helpers" />
+    <Folder Include="ITFs" />
+    <Folder Include="ITFs\Collections" />
+    <Folder Include="ITFs\Collections\Immutable" />
+    <Folder Include="ITFs\Enumerators" />
+    <Folder Include="ITFs\Misc" />
+    <Folder Include="POUs" />
+    <Folder Include="POUs\Examples" />
+    <Folder Include="POUs\Function Blocks" />
+    <Folder Include="POUs\Function Blocks\Collections" />
+    <Folder Include="POUs\Function Blocks\Collections\Immutable" />
+    <Folder Include="POUs\Function Blocks\Enumerators" />
+    <Folder Include="POUs\Function Blocks\Misc" />
+    <Folder Include="POUs\Function Blocks\Wrappers" />
     <Folder Include="POUs\Functions" />
     <Folder Include="UML" />
-    <Folder Include="POUs\Function Blocks" />
-    <Folder Include="POUs\Examples" />
     <Folder Include="Project Information" />
     <Folder Include="Version" />
     <Folder Include="VISUs" />
-    <Folder Include="POUs" />
   </ItemGroup>
   <ItemGroup>
     <PlaceholderReference Include="Tc2_Standard">
@@ -245,41 +311,39 @@
     </PlaceholderReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="TcDynCollections.tmc">
-      <SubType>Content</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <LibraryReference Include="Tc2_Utilities,3.3.38.0,Beckhoff Automation GmbH">
       <Namespace>Tc2_Utilities</Namespace>
     </LibraryReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="TcDynCollections.tmc">
+      <SubType>Content</SubType>
+    </None>
+  </ItemGroup>
   <ProjectExtensions>
     <PlcProjectOptions>
       <XmlArchive>
-        <Data>
-          <o xml:space="preserve" t="OptionKey">
+  <Data>
+    <o xml:space="preserve" t="OptionKey">
       <v n="Name">"&lt;ProjectRoot&gt;"</v>
       <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
-        <v>{192FAD59-8248-4824-A8DE-9177C94C195A}</v>
-        <o>
-          <v n="Name">"{192FAD59-8248-4824-A8DE-9177C94C195A}"</v>
-          <d n="SubKeys" t="Hashtable" />
-          <d n="Values" t="Hashtable" />
-        </o>
-        <v>{246001F4-279D-43AC-B241-948EB31120E1}</v>
-        <o>
-          <v n="Name">"{246001F4-279D-43AC-B241-948EB31120E1}"</v>
-          <d n="SubKeys" t="Hashtable" />
-          <d n="Values" t="Hashtable" ckt="String" cvt="Boolean">
-            <v>UnicodeStrings</v>
-            <v>False</v>
-          </d>
-        </o>
         <v>{8F99A816-E488-41E4-9FA3-846536012284}</v>
         <o>
           <v n="Name">"{8F99A816-E488-41E4-9FA3-846536012284}"</v>
           <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" />
+        </o>
+        <v>{29BD8D0C-3586-4548-BB48-497B9A01693F}</v>
+        <o>
+          <v n="Name">"{29BD8D0C-3586-4548-BB48-497B9A01693F}"</v>
+          <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
+            <v>Rules</v>
+            <o>
+              <v n="Name">"Rules"</v>
+              <d n="SubKeys" t="Hashtable" />
+              <d n="Values" t="Hashtable" />
+            </o>
+          </d>
           <d n="Values" t="Hashtable" />
         </o>
         <v>{40450F57-0AA3-4216-96F3-5444ECB29763}</v>
@@ -291,17 +355,40 @@
             <v>IR0whWr8bwfwBwAAiD2qpQAAAABVAgAA37x72QAAAAABAAAAAAAAAAEaUwB5AHMAdABlAG0ALgBTAHQAcgBpAG4AZwACTHsAZgA5ADUAYgBiADQAMgA2AC0ANQA1ADIANAAtADQAYgA0ADUALQA5ADQAMAAwAC0AZgBiADAAZgAyAGUANwA3AGUANQAxAGIAfQADCE4AYQBtAGUABDBUAHcAaQBuAEMAQQBUACAAMwAuADEAIABCAHUAaQBsAGQAIAA0ADAAMgA0AC4ANwAFFlAAcgBvAGYAaQBsAGUARABhAHQAYQAGTHsAMQA2AGUANQA1AGIANgAwAC0ANwAwADQAMwAtADQAYQA2ADMALQBiADYANQBiAC0ANgAxADQANwAxADMAOAA3ADgAZAA0ADIAfQAHEkwAaQBiAHIAYQByAGkAZQBzAAhMewAzAGIAZgBkADUANAA1ADkALQBiADAANwBmAC0ANABkADYAZQAtAGEAZQAxAGEALQBhADgAMwAzADUANgBhADUANQAxADQAMgB9AAlMewA5AGMAOQA1ADgAOQA2ADgALQAyAGMAOAA1AC0ANAAxAGIAYgAtADgAOAA3ADEALQA4ADkANQBmAGYAMQBmAGUAZABlADEAYQB9AAoOVgBlAHIAcwBpAG8AbgALBmkAbgB0AAwKVQBzAGEAZwBlAA0KVABpAHQAbABlAA4aVgBpAHMAdQBFAGwAZQBtAE0AZQB0AGUAcgAPDkMAbwBtAHAAYQBuAHkAEAxTAHkAcwB0AGUAbQARElYAaQBzAHUARQBsAGUAbQBzABIwVgBpAHMAdQBFAGwAZQBtAHMAUwBwAGUAYwBpAGEAbABDAG8AbgB0AHIAbwBsAHMAEyhWAGkAcwB1AEUAbABlAG0AcwBXAGkAbgBDAG8AbgB0AHIAbwBsAHMAFCRWAGkAcwB1AEUAbABlAG0AVABlAHgAdABFAGQAaQB0AG8AcgAVIlYAaQBzAHUATgBhAHQAaQB2AGUAQwBvAG4AdAByAG8AbAAWFHYAaQBzAHUAaQBuAHAAdQB0AHMAFwxzAHkAcwB0AGUAbQAYGFYAaQBzAHUARQBsAGUAbQBCAGEAcwBlABkmRABlAHYAUABsAGEAYwBlAGgAbwBsAGQAZQByAHMAVQBzAGUAZAAaCGIAbwBvAGwAGyJQAGwAdQBnAGkAbgBDAG8AbgBzAHQAcgBhAGkAbgB0AHMAHEx7ADQAMwBkADUAMgBiAGMAZQAtADkANAAyAGMALQA0ADQAZAA3AC0AOQBlADkANAAtADEAYgBmAGQAZgAzADEAMABlADYAMwBjAH0AHRxBAHQATABlAGEAcwB0AFYAZQByAHMAaQBvAG4AHhRQAGwAdQBnAGkAbgBHAHUAaQBkAB8WUwB5AHMAdABlAG0ALgBHAHUAaQBkACBIYQBmAGMAZAA1ADQANAA2AC0ANAA5ADEANAAtADQAZgBlADcALQBiAGIANwA4AC0AOQBiAGYAZgBlAGIANwAwAGYAZAAxADcAIRRVAHAAZABhAHQAZQBJAG4AZgBvACJMewBiADAAMwAzADYANgBhADgALQBiADUAYwAwAC0ANABiADkAYQAtAGEAMAAwAGUALQBlAGIAOAA2ADAAMQAxADEAMAA0AGMAMwB9ACMOVQBwAGQAYQB0AGUAcwAkTHsAMQA4ADYAOABmAGYAYwA5AC0AZQA0AGYAYwAtADQANQAzADIALQBhAGMAMAA2AC0AMQBlADMAOQBiAGIANQA1ADcAYgA2ADkAfQAlTHsAYQA1AGIAZAA0ADgAYwAzAC0AMABkADEANwAtADQAMQBiADUALQBiADEANgA0AC0ANQBmAGMANgBhAGQAMgBiADkANgBiADcAfQAmFk8AYgBqAGUAYwB0AHMAVAB5AHAAZQAnVFUAcABkAGEAdABlAEwAYQBuAGcAdQBhAGcAZQBNAG8AZABlAGwARgBvAHIAQwBvAG4AdgBlAHIAdABpAGIAbABlAEwAaQBiAHIAYQByAGkAZQBzACgQTABpAGIAVABpAHQAbABlACkUTABpAGIAQwBvAG0AcABhAG4AeQAqHlUAcABkAGEAdABlAFAAcgBvAHYAaQBkAGUAcgBzACs4UwB5AHMAdABlAG0ALgBDAG8AbABsAGUAYwB0AGkAbwBuAHMALgBIAGEAcwBoAHQAYQBiAGwAZQAsEnYAaQBzAHUAZQBsAGUAbQBzAC1INgBjAGIAMQBjAGQAZQAxAC0AZAA1AGQAYwAtADQAYQAzAGIALQA5ADAANQA0AC0AMgAxAGYAYQA3ADUANgBhADMAZgBhADQALihJAG4AdABlAHIAZgBhAGMAZQBWAGUAcgBzAGkAbwBuAEkAbgBmAG8AL0x7AGMANgAxADEAZQA0ADAAMAAtADcAZgBiADkALQA0AGMAMwA1AC0AYgA5AGEAYwAtADQAZQAzADEANABiADUAOQA5ADYANAAzAH0AMBhNAGEAagBvAHIAVgBlAHIAcwBpAG8AbgAxGE0AaQBuAG8AcgBWAGUAcgBzAGkAbwBuADIMTABlAGcAYQBjAHkAMzBMAGEAbgBnAHUAYQBnAGUATQBvAGQAZQBsAFYAZQByAHMAaQBvAG4ASQBuAGYAbwA0MEwAbwBhAGQATABpAGIAcgBhAHIAaQBlAHMASQBuAHQAbwBQAHIAbwBqAGUAYwB0ADUaQwBvAG0AcABhAHQAaQBiAGkAbABpAHQAeQDQAAIaA9ADAS0E0AUGGgfQBwgaAUUHCQjQAAkaBEUKCwQDAAAABQAAAA0AAAAAAAAA0AwLrQIAAADQDQEtDtAPAS0Q0AAJGgRFCgsEAwAAAAUAAAANAAAAKAAAANAMC60BAAAA0A0BLRHQDwEtENAACRoERQoLBAMAAAAFAAAADQAAAAAAAADQDAutAgAAANANAS0S0A8BLRDQAAkaBEUKCwQDAAAABQAAAA0AAAAUAAAA0AwLrQIAAADQDQEtE9APAS0Q0AAJGgRFCgsEAwAAAAUAAAANAAAAAAAAANAMC60CAAAA0A0BLRTQDwEtENAACRoERQoLBAMAAAAFAAAADQAAAAAAAADQDAutAgAAANANAS0V0A8BLRDQAAkaBEUKCwQDAAAABQAAAA0AAAAAAAAA0AwLrQIAAADQDQEtFtAPAS0X0AAJGgRFCgsEAwAAAAUAAAANAAAAKAAAANAMC60EAAAA0A0BLRjQDwEtENAZGq0BRRscAdAAHBoCRR0LBAMAAAAFAAAADQAAAAAAAADQHh8tINAhIhoCRSMkAtAAJRoFRQoLBAMAAAADAAAAAAAAAAoAAADQJgutAAAAANADAS0n0CgBLRHQKQEtENAAJRoFRQoLBAMAAAADAAAAAAAAAAoAAADQJgutAQAAANADAS0n0CgBLRHQKQEtEJoqKwFFAAEC0AABLSzQAAEtF9AAHy0t0C4vGgPQMAutAQAAANAxC60XAAAA0DIarQDQMy8aA9AwC60CAAAA0DELrQMAAADQMhqtANA0Gq0A0DUarQA=</v>
           </d>
         </o>
+        <v>{192FAD59-8248-4824-A8DE-9177C94C195A}</v>
+        <o>
+          <v n="Name">"{192FAD59-8248-4824-A8DE-9177C94C195A}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" />
+        </o>
+        <v>{F66C7017-BDD8-4114-926C-81D6D687E35F}</v>
+        <o>
+          <v n="Name">"{F66C7017-BDD8-4114-926C-81D6D687E35F}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" />
+        </o>
+        <v>{246001F4-279D-43AC-B241-948EB31120E1}</v>
+        <o>
+          <v n="Name">"{246001F4-279D-43AC-B241-948EB31120E1}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" ckt="String">
+            <v>UnicodeStrings</v>
+            <v>false</v>
+            <v>GlobalVisuImageFilePath</v>
+            <v>"%APPLICATIONPATH%"</v>
+          </d>
+        </o>
       </d>
       <d n="Values" t="Hashtable" />
     </o>
-        </Data>
-        <TypeList>
-          <Type n="Boolean">System.Boolean</Type>
-          <Type n="Hashtable">System.Collections.Hashtable</Type>
-          <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
-          <Type n="String">System.String</Type>
-        </TypeList>
-      </XmlArchive>
+  </Data>
+  <TypeList>
+    <Type n="Boolean">System.Boolean</Type>
+    <Type n="Hashtable">System.Collections.Hashtable</Type>
+    <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
+    <Type n="String">System.String</Type>
+  </TypeList>
+</XmlArchive>
     </PlcProjectOptions>
   </ProjectExtensions>
 </Project>

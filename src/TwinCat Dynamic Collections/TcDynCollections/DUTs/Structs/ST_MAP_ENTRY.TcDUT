@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <DUT Name="ST_MAP_ENTRY" Id="{4e90e475-a333-09d6-2d17-e113862f6c6c}">
+    <Declaration><![CDATA[// Entry for a key value pair.
+{attribute 'enable_dynamic_creation'}
+TYPE ST_MAP_ENTRY :
+STRUCT
+	Key : T_Generic; // Key used to identify stored value    
+	Value : T_Generic; // Value to store in dictionary with key
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

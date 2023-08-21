@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <Itf Name="I_Map" Id="{e0931a88-4ed8-09ea-153d-9dd89865a137}">
+    <Declaration><![CDATA[// An interface for a collection that holds key/value pairs  
+INTERFACE I_Map EXTENDS I_Collection
+]]></Declaration>
+    <Method Name="Clear" Id="{2141a088-5330-0958-1ff4-2ac8d72ce700}">
+      <Declaration><![CDATA[// Empties/Clears/Deletes every item in the map.
+METHOD Clear : I_Map
+]]></Declaration>
+    </Method>
+    <Method Name="Contains" Id="{45d09814-6fc0-0338-0d80-dff1d20d098b}">
+      <Declaration><![CDATA[// Checks if key is contained in the map.
+METHOD Contains : BOOL
+VAR_INPUT
+	Key : ANY; // Key to find.
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Get" Id="{b88576af-6a84-0cac-093b-0d531737c03c}">
+      <Declaration><![CDATA[// Gets the value associated with the specified key without removing it from the map.
+METHOD Get : I_Map
+VAR_INPUT
+	Key : ANY; // Key used to identify stored value
+	Value : ANY; // Variable to store requested data 
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Get_As_String" Id="{2eaf1740-0eb2-09f3-2450-00cca5f49d0c}">
+      <Declaration><![CDATA[// Returns value as a string, if type to string conversion is supported.
+METHOD Get_As_String : I_Map
+VAR_INPUT
+	Key : ANY; // Key used to identify stored value
+	sValue : REFERENCE TO STRING; // Variable to store returned item.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Get_Generic" Id="{6e074319-ab5b-0dae-163e-683d6b3f2fd2}">
+      <Declaration><![CDATA[// Gets the value in its generic form associated with the specified key in its generic form without removing it from the map.
+// (** Use carefully as this contains the pointer of the actual value in the collection. **)
+// If you wish to use this it is recommeded you create a copy of the returned value using MEMMOVE or MEMCPY
+METHOD Get_Generic : I_Map
+VAR_INPUT
+	Key : T_Generic; // Key used to identify stored value
+END_VAR
+VAR_OUTPUT
+	Value : T_Generic; // Variable to store requested data 
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Get_Keys" Id="{1d9b060a-2d61-036f-33e1-b2a7ebbd6534}">
+      <Declaration><![CDATA[// Gets an immutable list of the keys.
+METHOD Get_Keys : I_Immutable_List
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Get_Values" Id="{23d6fdd2-74f7-0a27-01a2-56315e7488ba}">
+      <Declaration><![CDATA[// Gets an immutable list of the values.
+METHOD Get_Values : I_Immutable_List
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Insert" Id="{c83aa29c-220d-0dea-1c91-7e9e30678265}">
+      <Declaration><![CDATA[// Insert an element with the provided key and value to the map.
+METHOD Insert : I_Map
+VAR_INPUT
+	Key : ANY; // Key used to identify stored value
+	Value : ANY; // Value to store in map with key
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Insert_Generic" Id="{cf8c6a4e-fb41-0d56-3eaa-6484f1d71180}">
+      <Declaration><![CDATA[// Insert an element with the provided key and value in their generic forms to the map.
+METHOD Insert_Generic : I_Map
+VAR_INPUT
+	Key : T_Generic; // Key used to identify stored value
+	Value : T_Generic; // Value to store in map with key
+	bUpdate : BOOL; // If this is true the value will be updated if the key already exists.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Remove" Id="{36e1475a-f6ec-0138-33c4-1a4fbf038b0d}">
+      <Declaration><![CDATA[// Removes value with the specified key from the map.
+METHOD Remove : I_Map
+VAR_INPUT
+	Key : ANY; // Key used to identify stored value
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Remove_Generic" Id="{b7332816-032e-0fdb-04ae-054ecbed69db}">
+      <Declaration><![CDATA[// Removes value with the specified key in its generic form from the map.
+METHOD Remove_Generic : I_Map
+VAR_INPUT
+	Key : T_Generic; // Key used to identify stored value
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Update" Id="{613dfd58-3443-0c84-3e46-9e6fa9db4673}">
+      <Declaration><![CDATA[// Updates the value an element with the provided key and value in the map.
+METHOD Update : I_Map
+VAR_INPUT
+	Key 	: ANY; // Key used to identify stored value
+	Value 	: ANY; // Value to store in map with key
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Upsert" Id="{7ab290e9-dee8-0f6d-0201-f709f9b63c9b}">
+      <Declaration><![CDATA[// Updates a value in the map for a given key. If the key doesnt exist, it will be inserted.
+METHOD Upsert : I_Map
+VAR_INPUT
+	Key 	: ANY; // Key used to identify stored value
+	Value 	: ANY; // Value to store in map with key
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

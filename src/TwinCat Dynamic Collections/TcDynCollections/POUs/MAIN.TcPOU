@@ -1,22 +1,48 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
-  <POU Name="MAIN" Id="{5cf07311-f6ac-4bec-887a-480059b7269f}" SpecialFunc="None">
-    <Declaration><![CDATA[PROGRAM MAIN
+  <POU Name="MAIN" Id="{dc6abe44-dfc6-0eff-1900-3902669cc79c}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM INTERNAL MAIN
 VAR
+	i,j : T_Position;
+	Comp : T_Comparison;
+	bAdd, bRemove, bClear : BOOL;
+	fbSet : FB_Tree_Set;
+	fbMap : FB_Tree_Map;
+	Data : ARRAY[0..10] OF INT := [1,2,3,4,5,6,7,8,9,10];
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[P_Example_Array_List();
-P_Example_Binary_Search_Tree();
-P_Example_Tree_Map();
-P_Example_List();
-P_Example_Queue();
-P_Example_Stack();]]></ST>
+      <ST><![CDATA[Comp := F_Compare_Any(i,j);
+
+IF bAdd THEN
+	bAdd := FALSE;
+	FOR i := 0 TO 3 DO fbSet.Insert(i); END_FOR
+	END_IF
+
+IF bRemove THEN 
+	bRemove := FALSE;
+	fbSet.Remove(j);
+	END_IF
+	
+IF bClear THEN 
+	bClear := FALSE;
+	fbSet.Clear();
+	END_IF]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
-      <LineId Id="15" Count="1" />
-      <LineId Id="18" Count="2" />
-      <LineId Id="7" Count="0" />
+      <LineId Id="158" Count="1" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="126" Count="0" />
+      <LineId Id="105" Count="0" />
+      <LineId Id="60" Count="1" />
+      <LineId Id="96" Count="0" />
+      <LineId Id="63" Count="0" />
+      <LineId Id="155" Count="0" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="141" Count="0" />
+      <LineId Id="143" Count="1" />
+      <LineId Id="171" Count="0" />
+      <LineId Id="142" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

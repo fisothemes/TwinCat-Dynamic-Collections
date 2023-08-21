@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="F_Is_Numeric_Generic" Id="{02f59d13-d820-02f7-05cb-f3ccf4577e2d}" SpecialFunc="None">
+    <Declaration><![CDATA[// Checks if a generic is numeric.
+FUNCTION F_Is_Numeric_Generic : BOOL
+VAR_INPUT
+	Value : T_Generic;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE Value.TypeClass OF
+	__SYSTEM.TYPE_CLASS.TYPE_BOOL,
+	__SYSTEM.TYPE_CLASS.TYPE_BYTE,
+	__SYSTEM.TYPE_CLASS.TYPE_WORD,
+	__SYSTEM.TYPE_CLASS.TYPE_DWORD,
+	__SYSTEM.TYPE_CLASS.TYPE_LWORD,
+	__SYSTEM.TYPE_CLASS.TYPE_SINT,
+	__SYSTEM.TYPE_CLASS.TYPE_INT,
+	__SYSTEM.TYPE_CLASS.TYPE_DINT,
+	__SYSTEM.TYPE_CLASS.TYPE_LINT,
+	__SYSTEM.TYPE_CLASS.TYPE_USINT,
+	__SYSTEM.TYPE_CLASS.TYPE_UINT,
+	__SYSTEM.TYPE_CLASS.TYPE_UDINT,
+	__SYSTEM.TYPE_CLASS.TYPE_ULINT,
+	__SYSTEM.TYPE_CLASS.TYPE_REAL,
+	__SYSTEM.TYPE_CLASS.TYPE_LREAL,
+	__SYSTEM.TYPE_CLASS.TYPE_POINTER:
+		F_Is_Numeric_Generic := TRUE;
+END_CASE]]></ST>
+    </Implementation>
+    <LineIds Name="F_Is_Numeric_Generic">
+      <LineId Id="39" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="14" Count="13" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

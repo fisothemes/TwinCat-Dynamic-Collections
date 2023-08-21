@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="F_Any_To_Generic" Id="{70886885-63aa-0fec-045b-eb312a165e94}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_Any_To_Generic : T_Generic
+VAR_INPUT
+	Value : ANY;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[F_Any_To_Generic := Value;]]></ST>
+    </Implementation>
+    <LineIds Name="F_Any_To_Generic">
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

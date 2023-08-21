@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="FB_Collection" Id="{7742cad6-cf07-0c6e-381d-54d92eee7230}" SpecialFunc="None">
+    <Declaration><![CDATA[// Abstract class/Function Block that all collections inherit.
+// Contains inheritable helper methods and base implementation
+// for methods and properties for creating a collection.
+{attribute 'enable_dynamic_creation'}
+{attribute 'no_explicit_call' := 'direct call for this function block is not allowed'}
+FUNCTION_BLOCK ABSTRACT FB_Collection IMPLEMENTS I_Collection
+VAR
+	Count : T_Capacity;
+	Error : T_Error := (bStatus := FALSE, nCode := GVL_Errors.ERR_OK, sSource := 'No Error.');
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="Protected" Id="{dafbf2f8-a1aa-0dc3-14ad-1bab7f8f36e0}" />
+    <Property Name="_Count" Id="{26b379f5-40ad-064d-3faf-8e917bdfeaae}">
+      <Declaration><![CDATA[// Number of items in the collection.
+PROPERTY _Count : T_Capacity]]></Declaration>
+      <Get Name="Get" Id="{e0894d02-2319-02b4-2f05-03704cc729c7}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_Count := THIS^.Count;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{439d8e64-6861-058a-2f58-0d1132366a2d}">
+        <Declaration><![CDATA[PROTECTED 
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.Count := _Count;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="_Error_Status" Id="{b13cb86a-4979-07d5-22fe-e75f85a83eee}">
+      <Declaration><![CDATA[// Error status of the collection.
+PROPERTY _Error_Status : T_Error]]></Declaration>
+      <Get Name="Get" Id="{29540553-64a1-0f89-3626-ede965f403f3}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_Error_Status := THIS^.Error;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{13c9a81c-bd7d-05cb-006b-9f5168f136d7}">
+        <Declaration><![CDATA[PROTECTED 
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.Error := _Error_Status;]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Property Name="_Is_Empty" Id="{8290ebb5-2a66-0ab9-2091-8f592a26cca5}">
+      <Declaration><![CDATA[// Checks if collection is empty.
+PROPERTY _Is_Empty : BOOL]]></Declaration>
+      <Get Name="Get" Id="{9e16e4fb-101a-0896-080b-b086925cabcd}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_Is_Empty := THIS^._Count <= 0;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Clear_Error" Id="{56214d32-03a5-05b7-267e-3a7bf0140f9b}" FolderPath="Protected\">
+      <Declaration><![CDATA[METHOD PROTECTED Clear_Error
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^._Error_Status := F_Error(0,0,'');]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Decrement_Count" Id="{6870a1c1-1f8d-035b-002e-86525d99ae88}" FolderPath="Protected\">
+      <Declaration><![CDATA[// Decrement collection count by 1.
+METHOD PROTECTED Decrement_Count
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^._Count := THIS^._Count - 1;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Increment_Count" Id="{b1768fd9-4b59-029a-30b3-52d595ca45fd}" FolderPath="Protected\">
+      <Declaration><![CDATA[// Increments collection count by 1
+METHOD PROTECTED Increment_Count
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^._Count := THIS^._Count + 1;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Collection">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collection._Count.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collection._Count.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collection._Error_Status.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collection._Error_Status.Set">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collection._Is_Empty.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collection.Clear_Error">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collection.Decrement_Count">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Collection.Increment_Count">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

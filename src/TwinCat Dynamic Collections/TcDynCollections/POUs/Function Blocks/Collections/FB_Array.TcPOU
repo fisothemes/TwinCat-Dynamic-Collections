@@ -1,0 +1,377 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="FB_Array" Id="{7432a012-b7d8-0e77-1c4b-8dc2f2af4694}" SpecialFunc="None">
+    <Declaration><![CDATA[// Static array function block.
+{attribute 'enable_dynamic_creation'}
+{attribute 'no_assign'}
+{attribute 'no_explicit_call' := 'direct call for this function block is not allowed'}
+FUNCTION_BLOCK FINAL FB_Array EXTENDS FB_Collection IMPLEMENTS I_Array //, I_Enumerable, I_Copyable
+VAR
+	pBuffer : POINTER TO T_Generic;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="Contains" Id="{335eaf07-5e94-0c80-1cbd-38a03a0ac891}">
+      <Declaration><![CDATA[// Checks if item is contained in array.
+METHOD Contains : BOOL
+VAR_INPUT
+	Item : ANY; // Item to find.
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.Search(Item, bSuccess => Contains);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FB_exit" Id="{842c5797-59e9-031e-25b4-5a90facb202c}">
+      <Declaration><![CDATA[{attribute 'hide'}
+METHOD FB_exit : BOOL
+VAR_INPUT
+	bInCopyCode : BOOL; // if TRUE, the exit method is called for exiting an instance that is copied afterwards (online change).
+END_VAR
+VAR
+	i : T_Capacity;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Return if it's an online change.
+IF bInCopyCode THEN RETURN; END_IF
+
+THIS^.Clear_Error();
+
+IF THIS^.pBuffer = 0 THEN THIS^._Count := 0; RETURN; END_IF
+
+FOR i := 0 TO THIS^._Count - 1 DO
+	F_Delete_Generic_Value(THIS^.pBuffer[i]);
+	END_FOR
+	
+THIS^._Count := 0;	
+__DELETE(THIS^.pBuffer);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FB_init" Id="{745f2e3b-bb0c-0f05-3f9f-e3159fee233e}">
+      <Declaration><![CDATA[{attribute 'hide'}
+METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains 	: BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode 	: BOOL; // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	Count 			: T_Capacity; // The size of the array.
+END_VAR
+VAR
+	i : T_Capacity;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Return if it's an online change.
+IF bInCopyCode THEN RETURN; END_IF
+
+THIS^._Count := Count;
+
+IF Count = 0 THEN RETURN; END_IF
+
+THIS^.pBuffer := F_Malloc_Generic(Count);
+
+FOR i := 0 TO THIS^._Count - 1 DO
+	THIS^.pBuffer[i].TypeClass := T_Type.TYPE_NONE;
+	END_FOR]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get" Id="{8978f0d6-cf9c-06f5-0215-9d84078d918c}">
+      <Declaration><![CDATA[// Gets item from array at specified location.
+METHOD Get : I_Array
+VAR_INPUT
+	Index : T_Position; // Location of item.
+	Item : ANY;  // Variable to store returned item.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get := THIS^;
+
+IF Index < 0 OR_ELSE Index >= THIS^._Count THEN
+	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_OUT_OF_LIMITS, 'Index out of bounds.');
+	RETURN;
+	END_IF
+
+IF NOT F_Matching_Generics(Item, THIS^.pBuffer[Index]) THEN
+	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_TYPE_MISMATCH, 'Type mismatch.');
+	RETURN;
+	END_IF
+	
+F_Copy_Generic_Value(THIS^.pBuffer[Index], Item);
+bSuccess := TRUE;
+THIS^.Clear_Error();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_As_String" Id="{33cfdf05-c2ad-02de-1d8a-eb2855ccf353}">
+      <Declaration><![CDATA[// Returns item as a string, if type to string conversion is supported.
+METHOD Get_As_String : I_Array
+VAR_INPUT
+	Index : T_Position; // Location of item.
+	sItem : REFERENCE TO STRING; // Variable to store returned item.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get_As_String := THIS^;
+
+IF NOT __ISVALIDREF(sItem) THEN 
+	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_INVALID_REFERENCE, 'Invalid reference.');
+	RETURN;
+	END_IF
+
+IF Index < 0 OR_ELSE Index >= THIS^._Count THEN
+	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_OUT_OF_LIMITS, 'Index out of bounds.');
+	RETURN;
+	END_IF
+	
+IF NOT F_String_Convertable_Generic(THIS^.pBuffer[Index]) THEN 
+	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_NOT_SUPPORTED, 'No support for converting item at index to string.');
+	RETURN;
+	END_IF
+	
+CASE THIS^.pBuffer[Index].TypeClass OF
+	T_Type.TYPE_STRING:
+		Tc2_Utilities.STRNCPY(ADR(sItem), THIS^.pBuffer[Index].pValue, MIN(Tc2_Utilities.LEN2(ADR(sItem))+1, TO_UDINT(THIS^.pBuffer[Index].diSize)));
+
+	T_Type.TYPE_WSTRING:
+		Tc2_Utilities.WSTRING_TO_STRING2(ADR(sItem), THIS^.pBuffer[Index].pValue, MIN(Tc2_Utilities.LEN2(ADR(sItem))+1, TO_UDINT(THIS^.pBuffer[Index].diSize)));
+ELSE
+	sItem := F_Generic_To_String(THIS^.pBuffer[Index]);
+	END_CASE
+	
+bSuccess := TRUE;
+THIS^.Clear_Error();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_Generic" Id="{2dedf65a-6bcb-0ae0-385e-28f38eafd5ed}">
+      <Declaration><![CDATA[// Gets an item from the array in it's generic form.
+// (** Use carefully as this contains the pointer of the actual value in the collection. **)
+// If you wish to use this it is recommeded you create a copy of the returned value using MEMMOVE or MEMCPY
+METHOD Get_Generic : I_Array
+VAR_INPUT
+	Index : T_Position; // Location of item.
+END_VAR
+VAR_OUTPUT
+	Item : T_Generic;
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get_Generic := THIS^;
+
+IF Index < 0 OR_ELSE Index >= THIS^._Count THEN
+	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_OUT_OF_LIMITS, 'Index out of bounds.');
+	RETURN;
+	END_IF
+
+Item := THIS^.pBuffer[Index];
+bSuccess := TRUE;
+THIS^.Clear_Error();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_Type_At" Id="{b86b5caa-c46e-0925-0e84-ba84acf1cc0d}">
+      <Declaration><![CDATA[// Gets the type of the item at specified location.
+METHOD Get_Type_At : I_Array
+VAR_INPUT
+	Index : T_Position;
+END_VAR
+VAR_OUTPUT
+	Item_Type : T_Type := T_Type.TYPE_NONE;
+	bSuccess : BOOL;
+END_VAR
+VAR
+	Tmp : T_Generic;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get_Type_At := THIS^;
+
+THIS^.Get_Generic(Index, Item => Tmp, bSuccess => bSuccess);
+
+IF bSuccess THEN Item_Type := Tmp.TypeClass; END_IF ]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Reverse" Id="{ed5e0f51-39b2-0753-38b6-fd4425375a8f}">
+      <Declaration><![CDATA[// Reverses the order of items in the array.
+METHOD Reverse : I_Array
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+VAR
+	i : T_Capacity;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Reverse := THIS^;
+
+IF NOT THIS^._Is_Empty THEN
+	FOR i := 0 TO (THIS^._Count/2) - 1 DO
+		F_Swap_Generics(THIS^.pBuffer[i], THIS^.pBuffer[THIS^._Count - i - 1]);
+		END_FOR
+	END_IF
+
+bSuccess := TRUE;
+THIS^.Clear_Error();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Search" Id="{e4142fa7-9d05-0642-0827-feba59751280}">
+      <Declaration><![CDATA[// Find the location of an item in the array.
+METHOD Search : I_Array
+VAR_INPUT
+	Item : ANY; // Item to find.
+END_VAR
+VAR_OUTPUT
+	Index : T_Position; //Location of item.
+	bSuccess : BOOL;
+END_VAR
+VAR
+	i : T_Position;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Search := THIS^;
+
+IF THIS^._Is_Empty THEN RETURN; END_IF
+FOR i := 0 TO THIS^._Count - 1 DO
+	CASE F_Compare_Generics(Item, THIS^.pBuffer[i]) OF
+		T_Comparison.Equal:
+			bSuccess := TRUE;
+			THIS^.Clear_Error();
+			Index := i;
+			RETURN;
+		END_CASE
+	END_FOR]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Set" Id="{95e83969-0886-0b87-218c-8e98f50f8d8f}">
+      <Declaration><![CDATA[// Changes the item at the specified location in the array.
+METHOD Set : I_Array
+VAR_INPUT
+	Index 	: T_Position; // Location of item.
+	Item 	: ANY; 	// Item to store.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Set := THIS^;
+
+THIS^.Set_Generic(Index, Item, bSuccess => bSuccess);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Set_Generic" Id="{8c41a9ad-b1fc-0efe-11bb-8d7e544b9c5e}">
+      <Declaration><![CDATA[// Changes the item at the specified location in the array in it's generic form.
+METHOD Set_Generic : I_Array
+VAR_INPUT
+	Index : T_Position; // Location of item.
+	Item : T_Generic; // Item to store.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Set_Generic := THIS^;
+
+IF Index < 0 OR_ELSE Index >= THIS^._Count THEN
+	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_OUT_OF_LIMITS, 'Index out of bounds.');
+	RETURN;
+	END_IF
+	
+F_Delete_Generic(THIS^.pBuffer[Index]);
+THIS^.pBuffer[Index] := F_Clone_Generic(Item);
+
+bSuccess := TRUE;
+THIS^.Clear_Error();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Swap" Id="{f4582bb2-2ef5-0e73-0f07-d67d2795eb25}">
+      <Declaration><![CDATA[// Swaps item at index with item at index B.
+METHOD Swap : I_Array
+VAR_INPUT
+	Index_A, Index_B : T_Position;
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Swap := THIS^;
+
+IF Index_A < 0 OR_ELSE Index_A >= THIS^._Count OR_ELSE Index_B < 0 OR_ELSE Index_B >= THIS^._Count THEN
+	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_OUT_OF_LIMITS, 'Index out of bounds.');
+	RETURN;
+	END_IF
+	
+F_Swap_Generics(THIS^.pBuffer[Index_A], THIS^.pBuffer[Index_B]);
+bSuccess := TRUE;
+THIS^.Clear_Error();]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Array">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Array.Contains">
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Array.FB_exit">
+      <LineId Id="10" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="42" Count="1" />
+      <LineId Id="31" Count="1" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="34" Count="2" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="13" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Array.FB_init">
+      <LineId Id="10" Count="0" />
+      <LineId Id="23" Count="1" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="32" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_Array.Get">
+      <LineId Id="11" Count="13" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Array.Get_As_String">
+      <LineId Id="11" Count="27" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Array.Get_Generic">
+      <LineId Id="14" Count="8" />
+      <LineId Id="13" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Array.Get_Type_At">
+      <LineId Id="11" Count="0" />
+      <LineId Id="13" Count="2" />
+      <LineId Id="12" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Array.Reverse">
+      <LineId Id="7" Count="8" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Array.Search">
+      <LineId Id="11" Count="10" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Array.Set">
+      <LineId Id="11" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="12" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Array.Set_Generic">
+      <LineId Id="32" Count="10" />
+      <LineId Id="11" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Array.Swap">
+      <LineId Id="10" Count="8" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

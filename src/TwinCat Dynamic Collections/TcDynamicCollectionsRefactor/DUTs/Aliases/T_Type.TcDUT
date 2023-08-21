@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
-  <DUT Name="T_Type" Id="{934b55ba-ac30-4a39-b972-952d26ce65d9}">
-    <Declaration><![CDATA[TYPE T_Type : __SYSTEM.TYPE_CLASS; END_TYPE
-]]></Declaration>
-  </DUT>
-</TcPlcObject>

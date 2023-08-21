@@ -1,0 +1,217 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="FB_Queue" Id="{13eadc58-7a50-0405-154b-84e7d6eef744}" SpecialFunc="None">
+    <Declaration><![CDATA[// A collection whose access/mutation of items is first-in, first-out.
+{attribute 'enable_dynamic_creation'}
+{attribute 'no_assign'}
+{attribute 'no_explicit_call' := 'direct call for this function block is not allowed'}
+FUNCTION_BLOCK FINAL FB_Queue EXTENDS FB_Collection IMPLEMENTS I_Queue//, I_Enumerable, I_Copyable
+VAR
+	fbList : FB_List := ();
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="_Values" Id="{b6ab9f18-8907-0c33-2dde-39824895bb65}">
+      <Declaration><![CDATA[// Gets an immutable list of the items in the queue.
+PROPERTY _Values : I_Immutable_List]]></Declaration>
+      <Get Name="Get" Id="{4d116fd9-3db6-01a4-022a-858ceedab0b9}">
+        <Declaration><![CDATA[VAR_INST
+	fbImmutable_List : FB_Immutable_List := (ipList := THIS^.fbList);
+END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_Values := fbImmutable_List;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Clear" Id="{f54dec3f-d022-0fd8-0198-8b74f6c05569}">
+      <Declaration><![CDATA[// Empties/Clears/Deletes every item in the queue.
+METHOD Clear : I_Queue
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Clear := THIS^;
+
+THIS^.fbList.Clear();
+
+THIS^._Error_Status :=  THIS^.fbList._Error_Status;
+THIS^._Count := THIS^.fbList._Count;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Dequeue" Id="{632cafbf-45e3-0b80-010f-82eb45df36a0}">
+      <Declaration><![CDATA[// Removes item at the front the queue.
+METHOD Dequeue : I_Queue
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Dequeue := THIS^;
+
+THIS^.fbList.Remove_At(0, bSuccess => bSuccess);
+
+THIS^._Error_Status := THIS^.fbList._Error_Status;
+THIS^._Count := THIS^.fbList._Count;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Enqueue" Id="{1bbf37a9-730a-0c2b-0e44-e912b8799892}">
+      <Declaration><![CDATA[// Adds item at the back of the queue.
+METHOD Enqueue : I_Queue
+VAR_INPUT
+	Item : ANY; // Variable containg data to store on the queue.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Enqueue := THIS^;
+
+THIS^.fbList.Insert_Generic(THIS^.fbList._Count, Item, bSuccess => bSuccess);
+
+THIS^._Error_Status :=  THIS^.fbList._Error_Status;
+THIS^._Count := THIS^.fbList._Count;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Enqueue_At_Front" Id="{2b1bc775-8b54-0b0c-0503-f554d32ff1ff}">
+      <Declaration><![CDATA[// Adds item at the front of the queue.
+METHOD Enqueue_At_Front : I_Queue
+VAR_INPUT
+	Item : ANY; // Variable containg data to store on the queue.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Enqueue_At_Front := THIS^;
+
+THIS^.fbList.Insert_Generic(0, Item, bSuccess => bSuccess);
+
+THIS^._Error_Status :=  THIS^.fbList._Error_Status;
+THIS^._Count := THIS^.fbList._Count;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Enqueue_Generic" Id="{4559d35d-dddb-04f5-3555-24c6cdac1f65}">
+      <Declaration><![CDATA[// Adds a generic item at the back of the queue.
+METHOD Enqueue_Generic : I_Queue
+VAR_INPUT
+	Item : T_Generic; // Item to store.
+	bAt_Front : BOOL; // Enqueues at front if set to TRUE.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Enqueue_Generic := THIS^;
+
+IF bAt_Front THEN
+	THIS^.fbList.Insert_Generic(0, Item, bSuccess => bSuccess);
+ELSE
+	THIS^.fbList.Insert_Generic(THIS^.fbList._Count, Item, bSuccess => bSuccess);
+	END_IF
+	
+THIS^._Error_Status :=  THIS^.fbList._Error_Status;
+THIS^._Count := THIS^.fbList._Count;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get" Id="{07b030e2-3e18-044e-3db2-e43824ea14ab}">
+      <Declaration><![CDATA[// Gets the item at the front of the queue.
+METHOD Get : I_Queue
+VAR_INPUT
+	Item : ANY; // Variable to store returned item value
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get := THIS^;
+
+THIS^.fbList.Get(0, Item, bSuccess => bSuccess);
+
+THIS^._Error_Status := THIS^.fbList._Error_Status;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_Generic" Id="{48b8e096-b1d3-034e-1505-452ed5475c9f}">
+      <Declaration><![CDATA[// Gets the item at the front of the queue as a generic.
+METHOD Get_Generic : I_Queue
+VAR_OUTPUT
+	Item : T_Generic; // Variable to store returned item value
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get_Generic := THIS^;
+
+THIS^.fbList.Get_Generic(0, Item => Item, bSuccess => bSuccess);
+
+THIS^._Error_Status := THIS^.fbList._Error_Status;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Reverse" Id="{2cafa4be-456d-064e-0a58-b0c3cd0ea39e}">
+      <Declaration><![CDATA[// Reverses the order of the items in the queue.
+METHOD Reverse : I_Queue
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Reverse := THIS^;
+
+THIS^.fbList.Reverse(bSuccess => bSuccess);
+
+THIS^._Error_Status :=  THIS^.fbList._Error_Status;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Queue">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Queue._Values.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Queue.Clear">
+      <LineId Id="5" Count="3" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Queue.Dequeue">
+      <LineId Id="7" Count="0" />
+      <LineId Id="9" Count="3" />
+      <LineId Id="8" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Queue.Enqueue">
+      <LineId Id="9" Count="0" />
+      <LineId Id="11" Count="3" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Queue.Enqueue_At_Front">
+      <LineId Id="12" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="10" Count="1" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Queue.Enqueue_Generic">
+      <LineId Id="10" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="18" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Queue.Get">
+      <LineId Id="10" Count="4" />
+    </LineIds>
+    <LineIds Name="FB_Queue.Get_Generic">
+      <LineId Id="7" Count="0" />
+      <LineId Id="9" Count="2" />
+      <LineId Id="8" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Queue.Reverse">
+      <LineId Id="6" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <Itf Name="I_Immutable_Map" Id="{de4f4757-5f5c-0b05-0fcf-40bb010c74c0}">
+    <Declaration><![CDATA[INTERFACE I_Immutable_Map EXTENDS I_Immutable_Collection
+]]></Declaration>
+    <Method Name="Contains" Id="{ac7f458e-3a3a-0376-0e30-bb9de090e8a4}">
+      <Declaration><![CDATA[// Checks if key is contained in the map.
+METHOD Contains : BOOL
+VAR_INPUT
+	Key : ANY; // Key to find.
+END_VAR]]></Declaration>
+    </Method>
+    <Method Name="Get" Id="{d45c13f2-484c-0eaa-342a-238e5a0ea004}">
+      <Declaration><![CDATA[// Gets the value associated with the specified key without removing it from the map.
+METHOD Get : I_Immutable_Map
+VAR_INPUT
+	Key : ANY; // Key used to identify stored value
+	Value : ANY; // Variable to store requested data 
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Get_As_String" Id="{85ee1246-521b-05a3-2f71-aeec57429971}">
+      <Declaration><![CDATA[// Returns value as a string, if type to string conversion is supported.
+METHOD Get_As_String : I_Immutable_Map
+VAR_INPUT
+	Key : ANY; // Key used to identify stored value
+	sValue : REFERENCE TO STRING; // Variable to store returned item.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Get_Keys" Id="{a5c9d433-bcdc-0e26-1000-2f991b0bfab8}">
+      <Declaration><![CDATA[// Gets an immutable list of the keys.
+METHOD Get_Keys : I_Immutable_List
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+    <Method Name="Get_Values" Id="{cb9a5ca8-7ba5-0da1-2717-ca85abd9a9b1}">
+      <Declaration><![CDATA[// Gets an immutable list of the values.
+METHOD Get_Values : I_Immutable_List
+VAR_INPUT
+END_VAR
+]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

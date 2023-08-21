@@ -14,14 +14,8 @@
 				<Task Id="3" Priority="20" CycleTime="100000" AmsPort="350" AdtTasks="true">
 					<Name>PlcTask</Name>
 				</Task>
-				<Task Id="4" Priority="1" CycleTime="100000" AmsPort="351" AdtTasks="true">
-					<Name>HgV_Task</Name>
-				</Task>
-				<Task Id="5" Priority="30" CycleTime="2000000" AmsPort="352" AdtTasks="true">
-					<Name>VISU_TASK</Name>
-				</Task>
 				<Task Id="6" Priority="21" CycleTime="100000" AmsPort="353" AdtTasks="true">
-					<Name>PlcTask1</Name>
+					<Name>PlcTestTask</Name>
 				</Task>
 			</Tasks>
 		</System>

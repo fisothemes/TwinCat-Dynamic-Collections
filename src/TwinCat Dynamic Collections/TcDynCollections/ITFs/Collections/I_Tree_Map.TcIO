@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <Itf Name="I_Tree_Map" Id="{14451225-0556-0f35-2947-070bd85e3e19}">
+    <Declaration><![CDATA[INTERFACE I_Tree_Map EXTENDS I_Map
+]]></Declaration>
+    <Property Name="_Traversal" Id="{902f1fd8-d3e5-091f-1c7d-b6e0b9ae3e69}">
+      <Declaration><![CDATA[// Traversal method for retrieving keys and values in the tree map set.
+PROPERTY _Traversal : T_BST_Traversal]]></Declaration>
+      <Get Name="Get" Id="{378a266b-aaf4-0962-14dd-47029a3e0ec3}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+      <Set Name="Set" Id="{04ff649f-7ba0-06a9-23d1-83bd539e1785}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+  </Itf>
+</TcPlcObject>
