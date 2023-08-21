@@ -46,7 +46,7 @@ Here are some of the features of Dynamic Collections:
 **Declarations:** 
 ```js
 fbArray      : FB_Array(3);
-fbArray_List : FB_ArrayList(0);
+fbArray_List : FB_Array_List(0);
 fbList       : FB_List; 
 
 sData   : STRING := 'Cats'; // variable that holds string data
