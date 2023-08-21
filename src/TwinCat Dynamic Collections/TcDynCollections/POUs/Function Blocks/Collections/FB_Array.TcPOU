@@ -40,7 +40,7 @@ THIS^.Clear_Error();
 IF THIS^.pBuffer = 0 THEN THIS^._Count := 0; RETURN; END_IF
 
 FOR i := 0 TO THIS^._Count - 1 DO
-	F_Delete_Generic_Value(THIS^.pBuffer[i]);
+	F_Delete_Generic(THIS^.pBuffer[i]);
 	END_FOR
 	
 THIS^._Count := 0;	
