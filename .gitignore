@@ -276,3 +276,4 @@ src/TwinCat Dynamic Collections/TcDynCollections/_CompileInfo/3E528212-BB20-E7F0
 *.compileinfo
 src/TwinCat Dynamic Collections/TwinCat Dynamic Collections.tsproj.bak
 src/TwinCat Dynamic Collections/TwinCat Dynamic Collections.tsproj.bak
+*.tmc
