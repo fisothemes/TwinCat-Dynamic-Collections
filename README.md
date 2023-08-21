@@ -64,7 +64,7 @@ List_Count : T_Capacity; // variables will hold the number of items in the colle
 ```
 
 **Implementation:**
-```cpp
+```js
 fbArray
     .Set(0, sData)
     .Set(1, nData)
@@ -98,22 +98,22 @@ List_Count := fbList._Count;
 
 ## Simple Queue and Stack Examples 
 
-```st
+```js
 FOR i := 0 TO 2 DO
     fbQueue.Enqueue(i);
     END_FOR
 
 fbQueue.Reverse();
 
-WHILE NOT fbQueue._Is_Empty DO
+WHILE NOT fbQueue._Empty DO
     fbQueue.Get(Values[j]).Dequeue();
     fbStack.Push(Values[j]);
-    j := j + 1
+    j := j + 1;
     END_WHILE
 
-WHILE NOT fbStack._Is_Empty DO
+WHILE NOT fbStack._Empty DO
     fbStack.Get(Values[k]).Pop();
-    k := k + 1
+    k := k + 1;
     END_WHILE
 ```
 
@@ -129,7 +129,7 @@ ipItems : I_Immutable_List;
 Count : T_Capacity;
 ```
 **Implementation:**
-```cpp
+```js
 FOR i := 0 TO 5 DO
     fbSet.Insert(i);
     END_FOR
@@ -151,6 +151,8 @@ ipItems
 ```js
 
 fbTree_Map : FB_Tree_Map;
+ipKeys     : I_Immutable_List;
+ipValues   : I_Immutable_List;
 
 arKeys        : ARRAY[0..6] OF WSTRING := ["qwerty","play","thomas","jerry","perry","sarah"];
 arValues      : ARRAY[0..6] OF WSTRING := ["Cats","Dogs","Ravens","Mollies","Anaconda","Cow"]
@@ -186,17 +188,17 @@ fbTree_Map
 
 // Get and remove
 fbTree_Map
-       .Get(arKeys[3],rmvdVal)
+       .Get(arKeys[3], rmvdVal)
        .Remove(arKeys[3]);
 
 // Retrieve all keys and values
 fbTree_Map._Traversal := T_BST_Traversal.Inorder // Sets traversal method in which keys/values are to be retrieved.
+ipKeys := fbTree_Map.Get_Keys();
+ipValues := fbTree_Map.Get_Values();
 FOR i := 0 TO fbTree_Map._Count - 1 DO 
-    fbTree_Map
-        .Get_Keys()
+    ipKeys
         .Get_As_String(i, arTravData[0][i]);
-    fbTree_Map
-        .Get_Values()
+    ipValues
         .Get_As_String(i, arTravData[1][i]); 
     END_FOR
 ```
