@@ -11,7 +11,7 @@ TYPE E_COMPARISON :
 	Less,
 	Equal,
 	Greater
-);
+)BYTE;
 END_TYPE
 ]]></Declaration>
   </DUT>
