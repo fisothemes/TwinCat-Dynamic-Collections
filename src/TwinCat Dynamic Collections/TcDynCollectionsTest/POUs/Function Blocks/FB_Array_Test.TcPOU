@@ -1,0 +1,217 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="FB_Array_Test" Id="{a8e907c8-d0d9-0fdc-3307-d7e77352be48}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Array_Test EXTENDS TcUnit.FB_TestSuite
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Create_Empty_Array_And_Array_With_Item_And_Check_Count();
+Set_Value_At_Index_To_Item_And_Get_Item();
+Set_Items_Reverse_The_Array_And_Get_Items();
+Set_And_Find_Item_Indices_Then_Get_Items();]]></ST>
+    </Implementation>
+    <Method Name="Create_Empty_Array_And_Array_With_Item_And_Check_Count" Id="{0c577bf0-72b9-0843-34d7-7864ec755d9d}">
+      <Declaration><![CDATA[// 1) Test that a newly created FB_Array_List has an item count of 0 and is empty.
+// 2) Test that after appending elements, the size increases accordingly and is no longer empty.
+// 3) Test that after removing all elements, the size becomes 0 again and the list is empty.
+METHOD Create_Empty_Array_And_Array_With_Item_And_Check_Count
+VAR_INST
+	fbEmpty_Array : TcDynCollections.FB_Array(0);
+	fbArray : TcDynCollections.FB_Array(2);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Create_Empty_Array_And_Array_With_Item_And_Check_Count');
+
+	THIS^.AssertEquals_DINT(0, fbEmpty_Array._Count, 'Array item count must be 0.');
+	THIS^.AssertEquals_BOOL(TRUE, fbEmpty_Array._Empty, 'Array _Empty property didnt return TRUE.');
+	
+	THIS^.AssertEquals_DINT(2, fbArray._Count, 'Array item count must be 2.');
+	THIS^.AssertEquals_BOOL(FALSE, fbArray._Empty, 'Array _Empty property didnt return FALSE after appending value.');
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Set_And_Find_Item_Indices_Then_Get_Items" Id="{9410ad15-95b4-05c7-23a8-9f893924b631}">
+      <Declaration><![CDATA[// Test appending multiple elements, finds them and verify values using the get method.
+METHOD Set_And_Find_Item_Indices_Then_Get_Items
+VAR_INST
+	fbArray 		: TcDynCollections.FB_Array(5);
+	Idx 		: ARRAY[0..4] OF TcDynCollections.T_Position;
+	arbValue 	: ARRAY[0..2] OF BOOL := [TRUE, TRUE];
+	arnValue 	: ARRAY[0..2] OF INT := [33, 33];
+	arsValue 	: ARRAY[0..2] OF STRING := ['I love cats.', 'I love cats.'];
+	arwsValue 	: ARRAY[0..2] OF WSTRING := ["I love dogs.", "I love dogs."];
+	arfValue 	: ARRAY[0..2] OF LREAL := [21.3, 21.3];
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Set_And_Find_Item_Indices_Then_Get_Items');
+
+	fbArray
+		.Set(0, arbValue[0])
+		.Set(1, arnValue[0])
+		.Set(2, arsValue[0])
+		.Set(3, arwsValue[0])
+		.Set(4, arfValue[0]);
+
+	// Make the strings dirty. 	
+	arsValue[0] 	:= 'kjhsadkfjvhbkjhdfbkvsjhbfkvjhsbkfv';
+	arwsValue[0] 	:= "kjhsadkfjvhbkjhdfbkvsjhbfkvjhsbkfv";
+	arsValue[0] 	:= 'I love cats.';
+	arwsValue[0] 	:= "I love dogs.";
+		
+	fbArray
+		.Search(arbValue[0], Index => Idx[0])
+		.Search(arnValue[0], Index => Idx[1])
+		.Search(arsValue[0], Index => Idx[2])
+		.Search(arwsValue[0],Index => Idx[3])
+		.Search(arfValue[0], Index => Idx[4]);
+		
+	fbArray
+		.Get(Idx[0], arbValue[2])
+		.Get(Idx[1], arnValue[2])
+		.Get(Idx[2], arsValue[2])
+		.Get(Idx[3], arwsValue[2])
+		.Get(Idx[4], arfValue[2]);
+		
+	THIS^.AssertEquals_DINT(5, fbArray._Count, 'Array item count must be 5 after after appending items to list.');
+	THIS^.AssertEquals_BOOL(arbValue[1], arbValue[2], 'Set BOOL item is not what is expected after the get operation.');
+	THIS^.AssertEquals_INT(arnValue[1], arnValue[2], 'Set INT item is not what is expected after the get operation.');
+	THIS^.AssertEquals_STRING(arsValue[1], arsValue[2], 'Set STRING item is not what is expected after the get operation.');
+	THIS^.AssertEquals_WSTRING(arwsValue[1], arwsValue[2], 'Set STRING item is not what is expected after the get operation.');
+	THIS^.AssertEquals_LREAL(arfValue[1], arfValue[2],0.01, 'Set LREAL item is not what is expected after the get operation.');
+
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Set_Items_Reverse_The_Array_And_Get_Items" Id="{a876f1d3-54fb-0e39-0eef-acb9f2fc3bfa}">
+      <Declaration><![CDATA[// Test appending multiple elements, reversing their order and verifiying their order and values using the get method.
+METHOD Set_Items_Reverse_The_Array_And_Get_Items
+VAR_INST
+	fbArray 	: TcDynCollections.FB_Array(5);
+	
+	arbValue 	: ARRAY[0..2] OF BOOL := [TRUE, TRUE];
+	arnValue 	: ARRAY[0..2] OF INT := [33, 33];
+	arsValue 	: ARRAY[0..2] OF STRING := ['I love cats.', 'I love cats.'];
+	arwsValue 	: ARRAY[0..2] OF WSTRING := ["I love dogs.", "I love dogs."];
+	arfValue 	: ARRAY[0..2] OF LREAL := [21.3, 21.3];
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Set_Items_Reverse_The_Array_And_Get_Items');
+
+	fbArray
+		.Set(0, arbValue[0])
+		.Set(1, arnValue[0])
+		.Set(2, arsValue[0])
+		.Set(3, arwsValue[0])
+		.Set(4, arfValue[0])
+		.Reverse();
+		
+	fbArray
+		.Get(4, arbValue[2])
+		.Get(3, arnValue[2])
+		.Get(2, arsValue[2])
+		.Get(1, arwsValue[2])
+		.Get(0, arfValue[2]);
+		
+	THIS^.AssertEquals_DINT(5, fbArray._Count, 'Array item count must be 5 after after appending items to list.');
+	THIS^.AssertEquals_BOOL(arbValue[1], arbValue[2], 'Set BOOL item is not what is expected after the get operation.');
+	THIS^.AssertEquals_INT(arnValue[1], arnValue[2], 'Set INT item is not what is expected after the get operation.');
+	THIS^.AssertEquals_STRING(arsValue[1], arsValue[2], 'Set STRING item is not what is expected after the get operation.');
+	THIS^.AssertEquals_WSTRING(arwsValue[1], arwsValue[2], 'Set STRING item is not what is expected after the get operation.');
+	THIS^.AssertEquals_LREAL(arfValue[1], arfValue[2],0.01, 'Set LREAL item is not what is expected after the get operation.');
+
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Set_Value_At_Index_To_Item_And_Get_Item" Id="{ace6757a-3cc6-0279-3a89-74368353008b}">
+      <Declaration><![CDATA[// Test appending multiple elements and verify their order and values using the get method.
+METHOD Set_Value_At_Index_To_Item_And_Get_Item
+VAR_INST
+	fbArray 	: TcDynCollections.FB_Array(5);
+	
+	arbValue 	: ARRAY[0..2] OF BOOL := [TRUE, TRUE];
+	arnValue 	: ARRAY[0..2] OF INT := [33, 33];
+	arsValue 	: ARRAY[0..2] OF STRING := ['I love cats.', 'I love cats.'];
+	arwsValue 	: ARRAY[0..2] OF WSTRING := ["I love dogs.", "I love dogs."];
+	arfValue 	: ARRAY[0..2] OF LREAL := [21.3, 21.3];
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Set_Value_At_Index_To_Item_And_Get_Item');
+
+	fbArray
+		.Set(0, arbValue[0])
+		.Set(1, arnValue[0])
+		.Set(2, arsValue[0])
+		.Set(3, arwsValue[0])
+		.Set(4, arfValue[0]);
+		
+	fbArray
+		.Get(0, arbValue[2])
+		.Get(1, arnValue[2])
+		.Get(2, arsValue[2])
+		.Get(3, arwsValue[2])
+		.Get(4, arfValue[2]);
+		
+	THIS^.AssertEquals_DINT(5, fbArray._Count, 'Array item count must be 5 after after appending items to list.');
+	THIS^.AssertEquals_BOOL(arbValue[1], arbValue[2], 'Set BOOL item is not what is expected after the get operation.');
+	THIS^.AssertEquals_INT(arnValue[1], arnValue[2], 'Set INT item is not what is expected after the get operation.');
+	THIS^.AssertEquals_STRING(arsValue[1], arsValue[2], 'Set STRING item is not what is expected after the get operation.');
+	THIS^.AssertEquals_WSTRING(arwsValue[1], arwsValue[2], 'Set STRING item is not what is expected after the get operation.');
+	THIS^.AssertEquals_LREAL(arfValue[1], arfValue[2],0.01, 'Set LREAL item is not what is expected after the get operation.');
+
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Array_Test">
+      <LineId Id="10" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="11" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_Array_Test.Create_Empty_Array_And_Array_With_Item_And_Check_Count">
+      <LineId Id="35" Count="0" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="56" Count="2" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Array_Test.Set_And_Find_Item_Indices_Then_Get_Items">
+      <LineId Id="106" Count="2" />
+      <LineId Id="165" Count="3" />
+      <LineId Id="113" Count="0" />
+      <LineId Id="138" Count="0" />
+      <LineId Id="136" Count="1" />
+      <LineId Id="139" Count="0" />
+      <LineId Id="141" Count="1" />
+      <LineId Id="114" Count="21" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Array_Test.Set_Items_Reverse_The_Array_And_Get_Items">
+      <LineId Id="36" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="53" Count="1" />
+      <LineId Id="63" Count="1" />
+      <LineId Id="88" Count="0" />
+      <LineId Id="111" Count="0" />
+      <LineId Id="106" Count="4" />
+      <LineId Id="105" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="73" Count="3" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Array_Test.Set_Value_At_Index_To_Item_And_Get_Item">
+      <LineId Id="99" Count="22" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

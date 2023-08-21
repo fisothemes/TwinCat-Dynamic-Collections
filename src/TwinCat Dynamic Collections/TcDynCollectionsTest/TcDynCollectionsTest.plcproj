@@ -29,6 +29,9 @@
     <Compile Include="POUs\Function Blocks\FB_Array_List_Test.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\Function Blocks\FB_Array_Test.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\Function Blocks\FB_List_Test.TcPOU">
       <SubType>Code</SubType>
     </Compile>
