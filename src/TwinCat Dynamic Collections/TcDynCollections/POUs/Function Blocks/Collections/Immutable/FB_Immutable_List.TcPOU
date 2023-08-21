@@ -30,6 +30,23 @@ _Count := THIS^.Count := THIS^.ipList._Count;]]></ST>
         </Implementation>
       </Get>
     </Property>
+    <Property Name="_Empty" Id="{b4addd8c-1198-049d-186d-d427ae34a254}">
+      <Declaration><![CDATA[// Checks if collection is empty.
+PROPERTY _Empty : BOOL]]></Declaration>
+      <Get Name="Get" Id="{152a8d68-695c-0f8e-21c3-7ed5ebb60ac7}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF THIS^.ipList = 0 THEN 
+	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipList is null.');
+	RETURN; 
+	END_IF
+	
+_Empty := THIS^.ipList._Empty;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
     <Property Name="_Error_Status" Id="{7ce093dc-ff00-0dd4-1ee4-11602912d52f}">
       <Declaration><![CDATA[// Error status of the collection.
 PROPERTY _Error_Status : T_Error]]></Declaration>
@@ -44,23 +61,6 @@ END_VAR
 	END_IF
 	
 _Error_Status := THIS^.Error := THIS^.ipList._Error_Status;]]></ST>
-        </Implementation>
-      </Get>
-    </Property>
-    <Property Name="_Is_Empty" Id="{b4addd8c-1198-049d-186d-d427ae34a254}">
-      <Declaration><![CDATA[// Checks if collection is empty.
-PROPERTY _Is_Empty : BOOL]]></Declaration>
-      <Get Name="Get" Id="{152a8d68-695c-0f8e-21c3-7ed5ebb60ac7}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[IF THIS^.ipList = 0 THEN 
-	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipList is null.');
-	RETURN; 
-	END_IF
-	
-_Is_Empty := THIS^.ipList._Is_Empty;]]></ST>
         </Implementation>
       </Get>
     </Property>
@@ -184,17 +184,17 @@ THIS^._Error_Status := THIS^.ipList._Error_Status;]]></ST>
       <LineId Id="11" Count="0" />
       <LineId Id="2" Count="0" />
     </LineIds>
+    <LineIds Name="FB_Immutable_List._Empty.Get">
+      <LineId Id="8" Count="2" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
     <LineIds Name="FB_Immutable_List._Error_Status.Get">
       <LineId Id="5" Count="0" />
       <LineId Id="7" Count="0" />
       <LineId Id="6" Count="0" />
       <LineId Id="8" Count="0" />
-      <LineId Id="11" Count="0" />
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Immutable_List._Is_Empty.Get">
-      <LineId Id="8" Count="2" />
-      <LineId Id="5" Count="0" />
       <LineId Id="11" Count="0" />
       <LineId Id="2" Count="0" />
     </LineIds>

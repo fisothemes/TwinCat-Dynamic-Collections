@@ -203,7 +203,7 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Reverse := THIS^;
 
-IF NOT THIS^._Is_Empty THEN
+IF NOT THIS^._Empty THEN
 	FOR i := 0 TO (THIS^._Count/2) - 1 DO
 		F_Swap_Generics(THIS^.pBuffer[i], THIS^.pBuffer[THIS^._Count - i - 1]);
 		END_FOR
@@ -229,7 +229,7 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Search := THIS^;
 
-IF THIS^._Is_Empty THEN RETURN; END_IF
+IF THIS^._Empty THEN RETURN; END_IF
 FOR i := 0 TO THIS^._Count - 1 DO
 	CASE F_Compare_Generics(Item, THIS^.pBuffer[i]) OF
 		T_Comparison.Equal:

@@ -122,7 +122,7 @@ END_VAR]]></Declaration>
 
 fbNode_Stack.Push(pRoot);
 
-WHILE NOT fbNode_Stack._Is_Empty DO
+WHILE NOT fbNode_Stack._Empty DO
 	fbNode_Stack.Get(pTmp);
 	fbNode_Stack.Pop();
 	
@@ -249,7 +249,7 @@ IF THIS^.pRoot = 0 THEN RETURN; END_IF
 
 fbNode_Buffer.Enqueue(THIS^.pRoot);
 
-WHILE NOT fbNode_Buffer._Is_Empty DO
+WHILE NOT fbNode_Buffer._Empty DO
 	fbNode_Buffer.Get(pCurrent).Dequeue();
 	
 	CASE THIS^._Traversal OF
@@ -405,7 +405,7 @@ bSuccess := TRUE;
 THIS^.Decrement_Count();
 THIS^.Clear_Error();
 
-IF THIS^._Is_Empty THEN THIS^.pRoot := 0; END_IF]]></ST>
+IF THIS^._Empty THEN THIS^.pRoot := 0; END_IF]]></ST>
       </Implementation>
     </Method>
     <Method Name="Remove_Node" Id="{f8c0b73d-df0b-01cc-0943-45282e56f537}" FolderPath="Internal\">

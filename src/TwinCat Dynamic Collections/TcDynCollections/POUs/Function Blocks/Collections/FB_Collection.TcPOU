@@ -36,6 +36,18 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
+    <Property Name="_Empty" Id="{8290ebb5-2a66-0ab9-2091-8f592a26cca5}">
+      <Declaration><![CDATA[// Checks if collection is empty.
+PROPERTY _Empty : BOOL]]></Declaration>
+      <Get Name="Get" Id="{9e16e4fb-101a-0896-080b-b086925cabcd}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_Empty := THIS^._Count <= 0;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
     <Property Name="_Error_Status" Id="{b13cb86a-4979-07d5-22fe-e75f85a83eee}">
       <Declaration><![CDATA[// Error status of the collection.
 PROPERTY _Error_Status : T_Error]]></Declaration>
@@ -56,18 +68,6 @@ END_VAR
           <ST><![CDATA[THIS^.Error := _Error_Status;]]></ST>
         </Implementation>
       </Set>
-    </Property>
-    <Property Name="_Is_Empty" Id="{8290ebb5-2a66-0ab9-2091-8f592a26cca5}">
-      <Declaration><![CDATA[// Checks if collection is empty.
-PROPERTY _Is_Empty : BOOL]]></Declaration>
-      <Get Name="Get" Id="{9e16e4fb-101a-0896-080b-b086925cabcd}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[_Is_Empty := THIS^._Count <= 0;]]></ST>
-        </Implementation>
-      </Get>
     </Property>
     <Method Name="Clear_Error" Id="{56214d32-03a5-05b7-267e-3a7bf0140f9b}" FolderPath="Protected\">
       <Declaration><![CDATA[METHOD PROTECTED Clear_Error
@@ -105,13 +105,13 @@ END_VAR
     <LineIds Name="FB_Collection._Count.Set">
       <LineId Id="2" Count="0" />
     </LineIds>
+    <LineIds Name="FB_Collection._Empty.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
     <LineIds Name="FB_Collection._Error_Status.Get">
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_Collection._Error_Status.Set">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Collection._Is_Empty.Get">
       <LineId Id="2" Count="0" />
     </LineIds>
     <LineIds Name="FB_Collection.Clear_Error">

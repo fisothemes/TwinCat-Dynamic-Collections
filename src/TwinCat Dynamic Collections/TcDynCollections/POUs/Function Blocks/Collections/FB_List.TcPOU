@@ -476,7 +476,7 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Reverse := THIS^;
 
-IF THIS^._Is_Empty THEN RETURN; END_IF
+IF THIS^._Empty THEN RETURN; END_IF
 
 pFront := THIS^.pHead;
 pBack := THIS^.pTail;

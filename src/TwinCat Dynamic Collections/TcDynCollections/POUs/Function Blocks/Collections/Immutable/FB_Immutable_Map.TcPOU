@@ -30,6 +30,23 @@ _Count := THIS^.Count := THIS^.ipMap._Count;]]></ST>
         </Implementation>
       </Get>
     </Property>
+    <Property Name="_Empty" Id="{254c8366-b29d-09e5-1a0d-9aa17f6682b4}">
+      <Declaration><![CDATA[// Checks if collection is empty.
+PROPERTY _Empty : BOOL]]></Declaration>
+      <Get Name="Get" Id="{0dfd3965-7adc-0f3b-224d-533e50c1e78d}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[IF THIS^.ipMap = 0 THEN 
+	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipMap is null.');
+	RETURN; 
+	END_IF
+	
+_Empty := THIS^.ipMap._Empty;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
     <Property Name="_Error_Status" Id="{fdffd1aa-8a36-0b85-1934-3bbe770dc5ca}">
       <Declaration><![CDATA[// Error status of the collection.
 PROPERTY _Error_Status : T_Error]]></Declaration>
@@ -44,23 +61,6 @@ END_VAR
 	END_IF
 	
 _Error_Status := THIS^.Error := THIS^.ipMap._Error_Status;]]></ST>
-        </Implementation>
-      </Get>
-    </Property>
-    <Property Name="_Is_Empty" Id="{254c8366-b29d-09e5-1a0d-9aa17f6682b4}">
-      <Declaration><![CDATA[// Checks if collection is empty.
-PROPERTY _Is_Empty : BOOL]]></Declaration>
-      <Get Name="Get" Id="{0dfd3965-7adc-0f3b-224d-533e50c1e78d}">
-        <Declaration><![CDATA[VAR
-END_VAR
-]]></Declaration>
-        <Implementation>
-          <ST><![CDATA[IF THIS^.ipMap = 0 THEN 
-	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipMap is null.');
-	RETURN; 
-	END_IF
-	
-_Is_Empty := THIS^.ipMap._Is_Empty;]]></ST>
         </Implementation>
       </Get>
     </Property>
@@ -176,17 +176,15 @@ THIS^._Error_Status := THIS^.ipMap._Error_Status;]]></ST>
       <LineId Id="11" Count="0" />
       <LineId Id="2" Count="0" />
     </LineIds>
+    <LineIds Name="FB_Immutable_Map._Empty.Get">
+      <LineId Id="14" Count="4" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
     <LineIds Name="FB_Immutable_Map._Error_Status.Get">
       <LineId Id="5" Count="0" />
       <LineId Id="7" Count="0" />
       <LineId Id="6" Count="0" />
       <LineId Id="8" Count="0" />
-      <LineId Id="11" Count="0" />
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Immutable_Map._Is_Empty.Get">
-      <LineId Id="8" Count="2" />
-      <LineId Id="5" Count="0" />
       <LineId Id="11" Count="0" />
       <LineId Id="2" Count="0" />
     </LineIds>

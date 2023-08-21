@@ -125,7 +125,7 @@ END_VAR]]></Declaration>
 
 fbNode_Stack.Push(pRoot);
 
-WHILE NOT fbNode_Stack._Is_Empty DO
+WHILE NOT fbNode_Stack._Empty DO
 	fbNode_Stack.Get(pTmp);
 	fbNode_Stack.Pop();
 	
@@ -356,7 +356,7 @@ IF THIS^.pRoot = 0 THEN RETURN; END_IF
 
 fbNode_Buffer.Enqueue(THIS^.pRoot);
 
-WHILE NOT fbNode_Buffer._Is_Empty DO
+WHILE NOT fbNode_Buffer._Empty DO
 	fbNode_Buffer.Get(pCurrent).Dequeue();
 	
 	CASE THIS^._Traversal OF
@@ -408,7 +408,7 @@ IF THIS^.pRoot = 0 THEN RETURN; END_IF
 
 fbNode_Buffer.Enqueue(THIS^.pRoot);
 
-WHILE NOT fbNode_Buffer._Is_Empty DO
+WHILE NOT fbNode_Buffer._Empty DO
 	fbNode_Buffer.Get(pCurrent).Dequeue();
 	
 	CASE THIS^._Traversal OF
@@ -578,7 +578,7 @@ THIS^.Balance(pTmp);
 THIS^.Decrement_Count();
 THIS^.Clear_Error();
 
-IF THIS^._Is_Empty THEN THIS^.pRoot := 0; END_IF]]></ST>
+IF THIS^._Empty THEN THIS^.pRoot := 0; END_IF]]></ST>
       </Implementation>
     </Method>
     <Method Name="Remove_Node" Id="{af88455b-88f3-0a73-0f3b-559151760fed}" FolderPath="Internal\">
@@ -855,29 +855,7 @@ END_VAR]]></Declaration>
       <LineId Id="7" Count="0" />
     </LineIds>
     <LineIds Name="FB_Tree_Map.Get_Keys">
-      <LineId Id="15" Count="2" />
-      <LineId Id="37" Count="0" />
-      <LineId Id="36" Count="0" />
-      <LineId Id="18" Count="2" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="22" Count="0" />
-      <LineId Id="21" Count="0" />
-      <LineId Id="39" Count="1" />
-      <LineId Id="23" Count="0" />
-      <LineId Id="25" Count="0" />
-      <LineId Id="33" Count="1" />
-      <LineId Id="38" Count="0" />
-      <LineId Id="41" Count="0" />
-      <LineId Id="27" Count="0" />
-      <LineId Id="42" Count="3" />
-      <LineId Id="28" Count="0" />
-      <LineId Id="46" Count="2" />
-      <LineId Id="55" Count="0" />
-      <LineId Id="29" Count="0" />
-      <LineId Id="51" Count="0" />
-      <LineId Id="53" Count="0" />
-      <LineId Id="52" Count="0" />
-      <LineId Id="30" Count="2" />
+      <LineId Id="66" Count="35" />
       <LineId Id="24" Count="0" />
     </LineIds>
     <LineIds Name="FB_Tree_Map.Get_Values">
