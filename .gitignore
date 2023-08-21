@@ -260,3 +260,19 @@ paket-files/
 __pycache__/
 *.pyc
 *.~u
+src/TwinCat Dynamic Collections/_Boot/TwinCAT RT (x64)/CurrentConfig.xml
+src/TwinCat Dynamic Collections/_Boot/TwinCAT RT (x64)/Plc/Port_851.app
+src/TwinCat Dynamic Collections/_Boot/TwinCAT RT (x64)/Plc/Port_851.cid
+src/TwinCat Dynamic Collections/_Boot/TwinCAT RT (x64)/Plc/Port_851.crc
+src/TwinCat Dynamic Collections/_Boot/TwinCAT RT (x64)/Plc/Port_851.occ
+src/TwinCat Dynamic Collections/_Boot/TwinCAT RT (x64)/Plc/Port_851_boot.tizip
+src/TwinCat Dynamic Collections/_Boot/TwinCAT RT (x64)/Plc/Port_852.app
+src/TwinCat Dynamic Collections/_Boot/TwinCAT RT (x64)/Plc/Port_852.cid
+src/TwinCat Dynamic Collections/_Boot/TwinCAT RT (x64)/Plc/Port_852.crc
+src/TwinCat Dynamic Collections/_Boot/TwinCAT RT (x64)/Plc/Port_852.occ
+src/TwinCat Dynamic Collections/_Boot/TwinCAT RT (x64)/Plc/Port_852_boot.tizip
+src/TwinCat Dynamic Collections/TcDynCollections/_CompileInfo/084D2D3F-5C33-3E96-BD11-991B783C6A6E.compileinfo
+src/TwinCat Dynamic Collections/TcDynCollections/_CompileInfo/3E528212-BB20-E7F0-9E84-55EDD9D20196.compileinfo
+*.compileinfo
+src/TwinCat Dynamic Collections/TwinCat Dynamic Collections.tsproj.bak
+src/TwinCat Dynamic Collections/TwinCat Dynamic Collections.tsproj.bak
