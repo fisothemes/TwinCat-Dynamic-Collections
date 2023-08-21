@@ -259,6 +259,8 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+
+# TwinCAT files
 *.~u
 src/TwinCat Dynamic Collections/_Boot/TwinCAT RT (x64)/CurrentConfig.xml
 src/TwinCat Dynamic Collections/_Boot/TwinCAT RT (x64)/Plc/Port_851.app
@@ -277,3 +279,4 @@ src/TwinCat Dynamic Collections/TcDynCollections/_CompileInfo/3E528212-BB20-E7F0
 src/TwinCat Dynamic Collections/TwinCat Dynamic Collections.tsproj.bak
 src/TwinCat Dynamic Collections/TwinCat Dynamic Collections.tsproj.bak
 *.tmc
+src/TwinCat Dynamic Collections/_Boot/TwinCAT RT (x64)/Plc/Port_851.occ

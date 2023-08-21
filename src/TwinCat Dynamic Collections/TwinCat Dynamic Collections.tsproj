@@ -41,7 +41,7 @@
 				</Instance>
 			</Project>
 			<Project GUID="{B9F9D0EB-C791-4800-B43F-0927762498E9}" Name="TcDynCollectionsTest" PrjFilePath="TcDynCollectionsTest\TcDynCollectionsTest.plcproj" TmcFilePath="TcDynCollectionsTest\TcDynCollectionsTest.tmc" ReloadTmc="true" AmsPort="852" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502040" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="TcDynamicCollectionsRefactor\TcDynamicCollectionsRefactor.tmc">
+				<Instance Id="#x08502040" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="TcDynCollectionsTest\TcDynCollectionsTest.tmc">
 					<Name>TcDynCollectionsTest Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Contexts>

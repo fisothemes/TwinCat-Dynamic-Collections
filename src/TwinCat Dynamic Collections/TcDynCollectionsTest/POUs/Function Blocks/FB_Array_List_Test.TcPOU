@@ -242,7 +242,7 @@ END_VAR
 		END_FOR
 		
 	THIS^.AssertEquals_DINT(0, fbList._Count, 'List item count must be zero after removing all items from the back.');
-	THIS^.AssertEquals_BOOL(TRUE, fbList._Is_Empty, 'List Is_Empty property must be zero TRUE removing all items from the back.');
+	THIS^.AssertEquals_BOOL(TRUE, fbList._Empty, 'List Is_Empty property must be zero TRUE removing all items from the back.');
 	
 	FOR i := 0 TO 4 DO fbList.Prepend(arwsValue); END_FOR
 	
@@ -254,7 +254,7 @@ END_VAR
 		END_FOR
 		
 	THIS^.AssertEquals_DINT(0, fbList._Count, 'List item count must be zero after removing all items from the front.');
-	THIS^.AssertEquals_BOOL(TRUE, fbList._Is_Empty, 'List Is_Empty property must be zero TRUE removing all items from the front.');
+	THIS^.AssertEquals_BOOL(TRUE, fbList._Empty, 'List Is_Empty property must be zero TRUE removing all items from the front.');
 
 	TEST_FINISHED();]]></ST>
       </Implementation>
@@ -313,19 +313,19 @@ END_VAR]]></Declaration>
         <ST><![CDATA[TcUnit.TEST('Size_And_Is_Empty');
 
 	THIS^.AssertEquals_DINT(0, fbList._Count, 'List item count must be 0.');
-	THIS^.AssertEquals_BOOL(TRUE, fbList._Is_Empty, 'Is_Empty property didnt return TRUE.');
+	THIS^.AssertEquals_BOOL(TRUE, fbList._Empty, 'Is_Empty property didnt return TRUE.');
 	
 	fbList
 		.Append(nValue)
 		.Append(sValue);
 	
 	THIS^.AssertEquals_DINT(2, fbList._Count, 'List item count must be 2 after appending values.');
-	THIS^.AssertEquals_BOOL(FALSE, fbList._Is_Empty, 'Is_Empty property didnt return FALSE after appending value.');
+	THIS^.AssertEquals_BOOL(FALSE, fbList._Empty, 'Is_Empty property didnt return FALSE after appending value.');
 	
 	fbList.Clear();
 	
 	THIS^.AssertEquals_DINT(0, fbList._Count, 'List item count must be 0 after clearing list.');
-	THIS^.AssertEquals_BOOL(TRUE, fbList._Is_Empty, 'Is_Empty property didnt return TRUE after clearing list.');
+	THIS^.AssertEquals_BOOL(TRUE, fbList._Empty, 'Is_Empty property didnt return TRUE after clearing list.');
 	
 	TEST_FINISHED();]]></ST>
       </Implementation>

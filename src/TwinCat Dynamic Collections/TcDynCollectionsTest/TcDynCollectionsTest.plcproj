@@ -68,11 +68,10 @@
       <DefaultResolution>TcUnit, * (www.tcunit.org)</DefaultResolution>
       <Namespace>TcUnit</Namespace>
     </PlaceholderReference>
-  </ItemGroup>
-  <ItemGroup>
-    <LibraryReference Include="TwinCat Dynamic Collections,1.0.1.1,FisoThemes">
+    <PlaceholderReference Include="TwinCat Dynamic Collections">
+      <DefaultResolution>TwinCat Dynamic Collections, * (FisoThemes)</DefaultResolution>
       <Namespace>TcDynCollections</Namespace>
-    </LibraryReference>
+    </PlaceholderReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="TcDynCollectionsTest.tmc">
