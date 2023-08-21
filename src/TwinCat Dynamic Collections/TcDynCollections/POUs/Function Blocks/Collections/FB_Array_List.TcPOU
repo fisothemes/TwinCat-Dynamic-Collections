@@ -116,7 +116,7 @@ THIS^.Resize(Initial_Capacity);
 THIS^._Count := Initial_Capacity;
 
 
-IF THIS^._Is_Empty THEN RETURN; END_IF
+IF THIS^._Empty THEN RETURN; END_IF
 
 FOR i := 0 TO THIS^._Count - 1 DO
 	THIS^.pBuffer[i].TypeClass := T_Type.TYPE_NONE;
