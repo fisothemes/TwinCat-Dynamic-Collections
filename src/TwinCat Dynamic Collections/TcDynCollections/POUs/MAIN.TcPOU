@@ -11,7 +11,7 @@ VAR
 	fbList : FB_List;
 	fbSet : FB_Tree_Set;
 	fbMap : FB_Tree_Map;
-	
+	fbDeque : FB_Deque;
 	Data : ARRAY[0..10] OF INT := [1,2,3,4,5,6,7,8,9,10];
 END_VAR
 ]]></Declaration>

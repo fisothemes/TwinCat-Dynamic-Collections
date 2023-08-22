@@ -47,7 +47,7 @@ END_VAR]]></Declaration>
     </Method>
     <Method Name="Enqueue_At_Front" Id="{cbad7e12-08fe-0b98-226d-90599d49765e}">
       <Declaration><![CDATA[// Add item to the front of the deque.
-METHOD Enqueue_At_Front : I_Stack
+METHOD Enqueue_At_Front : I_Deque
 VAR_INPUT
 	Item : ANY; // Item to store.
 END_VAR

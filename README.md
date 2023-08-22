@@ -37,6 +37,8 @@ Here are some of the features of Dynamic Collections:
 
 * 👍 **FB_Stack** - A collection whose access/mutation of items is last-in, first-out whose base is FB_List. Can store multiple types. Implements `I_Stack`.
 
+* 👍 **FB_Deque** - (Pronounced as 'deck') Double-Ended Queue. A collection that supports the insertion and removal of items at the front and back. Its base is FB_List. Can store multiple types. Implements `I_Deque`.
+
 ## Interface UML
 
 ![TwinCAT Collections Interface UML](./assets/images/TwinCAT%20Dynamic%20Collections%20Interface%20UML.jpg)
@@ -192,7 +194,7 @@ fbTree_Map
        .Remove(arKeys[3]);
 
 // Retrieve all keys and values
-fbTree_Map._Traversal := T_BST_Traversal.Inorder // Sets traversal method in which keys/values are to be retrieved.
+fbTree_Map._Traversal := T_BST_Traversal.Inorder; // Sets traversal method in which keys/values are to be retrieved.
 ipKeys := fbTree_Map.Get_Keys();
 ipValues := fbTree_Map.Get_Values();
 FOR i := 0 TO fbTree_Map._Count - 1 DO 

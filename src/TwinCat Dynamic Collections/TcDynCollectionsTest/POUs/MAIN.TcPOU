@@ -6,14 +6,15 @@ VAR
 	fbArray_List_Test : FB_Array_List_Test;
 	fbList_Test : FB_List_Test;
 	fbArray_Test : FB_Array_Test;
+	// Add test for Queue
+	// Add test for Stack
 	// Add test for Set
 	// Add test for Tree Map
 	// Add test for Hash Map
 	// Add test for Immutable Map
 	// Add test for Immutable list and array
 	// Add test for Immutable Set
-END_VAR
-]]></Declaration>
+END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[TcUnit.RUN();
 ]]></ST>

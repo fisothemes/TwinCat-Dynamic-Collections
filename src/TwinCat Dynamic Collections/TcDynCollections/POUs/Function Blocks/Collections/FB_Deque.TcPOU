@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="FB_Deque" Id="{351f3076-c739-0dd7-09a9-eb6079709862}" SpecialFunc="None">
+    <Declaration><![CDATA[// (Pronounced Deck) Double ended queue. A collection that supports the insertion and removal of items at the front and back.
+{attribute 'enable_dynamic_creation'}
+{attribute 'no_assign'}
+{attribute 'no_explicit_call' := 'direct call for this function block is not allowed'}
+FUNCTION_BLOCK FB_Deque EXTENDS FB_Collection IMPLEMENTS I_Deque//, I_Enumerable, I_Copyable
+VAR
+	fbList : FB_List := ();
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="_Values" Id="{85cfff8b-3897-0ab8-2b6a-2a60780cf13f}">
+      <Declaration><![CDATA[// Gets an immutable list of the items in Deque.
+PROPERTY _Values : I_Immutable_List]]></Declaration>
+      <Get Name="Get" Id="{03fb7db4-8731-01ff-20c3-0bba100a2a13}">
+        <Declaration><![CDATA[VAR_INST
+	fbImmutable_List : FB_Immutable_List := (ipList := THIS^.fbList);
+END_VAR]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_Values := fbImmutable_List;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="Back" Id="{599ca234-38a3-018e-1a70-6ed57a737050}">
+      <Declaration><![CDATA[// Get item at the back of the deque without removing it.
+METHOD Back : I_Deque
+VAR_INPUT
+	Item : ANY; // Variable to store returned item value
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Back := THIS^;
+
+THIS^.fbList.Get(THIS^.fbList._Count - 1, Item, bSuccess => bSuccess);
+
+THIS^._Error_Status := THIS^.fbList._Error_Status;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Dequeue_At_Back" Id="{746d79ad-b058-0f22-39fd-85446b9bf825}">
+      <Declaration><![CDATA[// Removes item at the front of the deque.
+METHOD Dequeue_At_Back : I_Deque
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Dequeue_At_Back := THIS^;
+
+THIS^.fbList.Remove_Last(bSuccess => bSuccess);
+
+THIS^._Error_Status :=  THIS^.fbList._Error_Status;
+THIS^._Count := THIS^.fbList._Count;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Dequeue_At_Front" Id="{9dc29b1c-5de2-0712-0343-0e3c43281b8f}">
+      <Declaration><![CDATA[// Removes item at the front of the deque.
+METHOD Dequeue_At_Front : I_Deque
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Dequeue_At_Front := THIS^;
+
+THIS^.fbList.Remove_At(0, bSuccess => bSuccess);
+
+THIS^._Error_Status :=  THIS^.fbList._Error_Status;
+THIS^._Count := THIS^.fbList._Count;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Enqueue_At_Back" Id="{85ac7f7a-53dc-0a9a-1ac5-20c8841891a5}">
+      <Declaration><![CDATA[// Adds item at the back of the deque.
+METHOD Enqueue_At_Back : I_Deque
+VAR_INPUT
+	Item : ANY; // Item to store.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Enqueue_At_Back := THIS^.Enqueue_Generic(Item, FALSE,bSuccess => bSuccess);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Enqueue_At_Front" Id="{d09d1546-7fce-083f-3a44-1feb692b5bf9}">
+      <Declaration><![CDATA[// Add item to the front of the deque.
+METHOD Enqueue_At_Front : I_Deque
+VAR_INPUT
+	Item : ANY; // Item to store.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Enqueue_At_Front := THIS^.Enqueue_Generic(Item, TRUE,bSuccess => bSuccess);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Enqueue_Generic" Id="{4e2f6c57-dbf4-07d7-220f-cbe2a1eef027}">
+      <Declaration><![CDATA[// Adds a generic item at the back of the deque.
+METHOD Enqueue_Generic : I_Deque
+VAR_INPUT
+	Item : T_Generic; // Item to store.
+	bAt_Front : BOOL; // Enqueues at front if set to TRUE.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Enqueue_Generic := THIS^;
+
+IF bAt_Front THEN
+	THIS^.fbList.Insert_Generic(0, Item, bSuccess => bSuccess);
+ELSE
+	THIS^.fbList.Insert_Generic(THIS^.fbList._Count - 1, Item, bSuccess => bSuccess);
+	END_IF
+
+THIS^._Error_Status :=  THIS^.fbList._Error_Status;
+THIS^._Count := THIS^.fbList._Count;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Front" Id="{cafe8b46-1153-0694-10d8-0d7282325cde}">
+      <Declaration><![CDATA[// Get item at the front of the deque without removing it.
+METHOD Front : I_Deque
+VAR_INPUT
+	Item : ANY; // Variable to store returned item value
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Front := THIS^;
+
+THIS^.fbList.Get(0, Item, bSuccess => bSuccess);
+
+THIS^._Error_Status := THIS^.fbList._Error_Status;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Reverse" Id="{87f39b4d-0c4a-081e-24bd-fd59a4926ef4}">
+      <Declaration><![CDATA[// Reverses the order of items in the deque.
+METHOD Reverse : I_Deque
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Reverse := THIS^;
+
+THIS^.fbList.Reverse(bSuccess => bSuccess);
+
+THIS^._Error_Status := THIS^.fbList._Error_Status;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Deque">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Deque._Values.Get">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Deque.Back">
+      <LineId Id="9" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="12" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Deque.Dequeue_At_Back">
+      <LineId Id="6" Count="0" />
+      <LineId Id="10" Count="1" />
+      <LineId Id="8" Count="1" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Deque.Dequeue_At_Front">
+      <LineId Id="7" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="8" Count="1" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Deque.Enqueue_At_Back">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Deque.Enqueue_At_Front">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Deque.Enqueue_Generic">
+      <LineId Id="10" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="15" Count="1" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="22" Count="1" />
+      <LineId Id="19" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Deque.Front">
+      <LineId Id="10" Count="3" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Deque.Reverse">
+      <LineId Id="6" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="8" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
