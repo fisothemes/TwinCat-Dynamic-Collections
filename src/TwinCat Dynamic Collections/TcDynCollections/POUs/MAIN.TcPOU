@@ -9,6 +9,7 @@ VAR
 	fbArray : FB_Array(10);
 	fbArray_List : FB_Array_List(0);
 	fbList : FB_List;
+	fbQueue : FB_Queue;
 	fbSet : FB_Tree_Set;
 	fbMap : FB_Tree_Map;
 	fbDeque : FB_Deque;
@@ -20,7 +21,10 @@ END_VAR
 
 IF bAdd THEN
 	bAdd := FALSE;
-	FOR i := 0 TO 3 DO fbSet.Insert(i); END_FOR
+	fbQueue
+		.Enqueue(Data[0])
+		.Enqueue(Data[1])
+		.Reverse();
 	END_IF
 
 IF bRemove THEN 
@@ -38,6 +42,7 @@ IF bClear THEN
       <LineId Id="54" Count="0" />
       <LineId Id="126" Count="0" />
       <LineId Id="105" Count="0" />
+      <LineId Id="186" Count="2" />
       <LineId Id="60" Count="1" />
       <LineId Id="96" Count="0" />
       <LineId Id="63" Count="0" />

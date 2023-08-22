@@ -481,13 +481,14 @@ IF THIS^._Empty THEN RETURN; END_IF
 pFront := THIS^.pHead;
 pBack := THIS^.pTail;
 
-WHILE pFront <> pBack DO
+WHILE (pFront <> pBack) AND_THEN (pFront^.pPrevious <> pBack) DO
 	F_Swap_Generics(pFront^.Data, pBack^.Data);
 	pFront := pFront^.pNext;
 	pBack := pBack^.pPrevious;
 	END_WHILE
 	
 bSuccess := TRUE;
+
 THIS^.Clear_Error();]]></ST>
       </Implementation>
     </Method>
@@ -797,6 +798,7 @@ THIS^.Clear_Error();]]></ST>
       <LineId Id="14" Count="0" />
       <LineId Id="24" Count="0" />
       <LineId Id="26" Count="0" />
+      <LineId Id="34" Count="0" />
       <LineId Id="25" Count="0" />
     </LineIds>
     <LineIds Name="FB_List.Search">
