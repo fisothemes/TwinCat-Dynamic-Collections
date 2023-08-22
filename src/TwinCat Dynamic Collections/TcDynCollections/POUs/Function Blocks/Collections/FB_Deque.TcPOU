@@ -42,6 +42,19 @@ THIS^.fbList.Get(THIS^.fbList._Count - 1, Item, bSuccess => bSuccess);
 THIS^._Error_Status := THIS^.fbList._Error_Status;]]></ST>
       </Implementation>
     </Method>
+    <Method Name="Clear" Id="{1c5cc2ef-fd91-03ea-373e-2f2517852da8}">
+      <Declaration><![CDATA[// Empties/Clears/Deletes every item in the deque.
+METHOD Clear : I_Deque
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Clear := THIS^;
+
+THIS^.fbList.Clear();
+
+THIS^._Error_Status :=  THIS^.fbList._Error_Status;
+THIS^._Count := THIS^.fbList._Count;]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="Dequeue_At_Back" Id="{746d79ad-b058-0f22-39fd-85446b9bf825}">
       <Declaration><![CDATA[// Removes item at the front of the deque.
 METHOD Dequeue_At_Back : I_Deque
@@ -164,6 +177,13 @@ THIS^._Error_Status := THIS^.fbList._Error_Status;]]></ST>
       <LineId Id="10" Count="0" />
       <LineId Id="13" Count="0" />
       <LineId Id="12" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Deque.Clear">
+      <LineId Id="4" Count="0" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="1" />
+      <LineId Id="7" Count="0" />
     </LineIds>
     <LineIds Name="FB_Deque.Dequeue_At_Back">
       <LineId Id="6" Count="0" />

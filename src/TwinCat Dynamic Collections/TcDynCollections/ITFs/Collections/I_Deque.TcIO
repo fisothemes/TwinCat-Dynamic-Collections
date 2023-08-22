@@ -21,6 +21,11 @@ VAR_OUTPUT
 	bSuccess : BOOL;
 END_VAR]]></Declaration>
     </Method>
+    <Method Name="Clear" Id="{d87271e9-f21a-018a-3aa5-968499a8d314}">
+      <Declaration><![CDATA[// Empties/Clears/Deletes every item in the deque.
+METHOD Clear : I_Deque
+]]></Declaration>
+    </Method>
     <Method Name="Dequeue_At_Back" Id="{f46d6301-ff2d-0719-1e72-e68214c632a9}">
       <Declaration><![CDATA[// Removes item at the front of the deque.
 METHOD Dequeue_At_Back : I_Deque
