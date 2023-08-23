@@ -127,7 +127,7 @@ END_VAR]]></Declaration>
 IF bAt_Front THEN
 	THIS^.fbList.Insert_Generic(0, Item, bSuccess => bSuccess);
 ELSE
-	THIS^.fbList.Insert_Generic(THIS^.fbList._Count - 1, Item, bSuccess => bSuccess);
+	THIS^.fbList.Insert_Generic(THIS^.fbList._Count, Item, bSuccess => bSuccess);
 	END_IF
 
 THIS^._Error_Status :=  THIS^.fbList._Error_Status;

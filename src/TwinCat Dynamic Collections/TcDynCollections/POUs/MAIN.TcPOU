@@ -21,10 +21,9 @@ END_VAR
 
 IF bAdd THEN
 	bAdd := FALSE;
-	fbQueue
-		.Enqueue(Data[0])
-		.Enqueue(Data[1])
-		.Reverse();
+	fbDeque
+		.Enqueue_At_Back(Data[0])
+		.Enqueue_At_Back(Data[1]);
 	END_IF
 
 IF bRemove THEN 
@@ -42,7 +41,7 @@ IF bClear THEN
       <LineId Id="54" Count="0" />
       <LineId Id="126" Count="0" />
       <LineId Id="105" Count="0" />
-      <LineId Id="186" Count="2" />
+      <LineId Id="186" Count="1" />
       <LineId Id="60" Count="1" />
       <LineId Id="96" Count="0" />
       <LineId Id="63" Count="0" />
