@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
-  <POU Name="FB_Array_Test" Id="{a8e907c8-d0d9-0fdc-3307-d7e77352be48}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_Array_Test EXTENDS TcUnit.FB_TestSuite
+  <POU Name="FB_Array_Test_Suite" Id="{a8e907c8-d0d9-0fdc-3307-d7e77352be48}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Array_Test_Suite EXTENDS TcUnit.FB_TestSuite
 VAR
 END_VAR
 ]]></Declaration>
@@ -166,12 +166,12 @@ END_VAR
 	TEST_FINISHED();]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="FB_Array_Test">
+    <LineIds Name="FB_Array_Test_Suite">
       <LineId Id="10" Count="0" />
       <LineId Id="9" Count="0" />
       <LineId Id="11" Count="1" />
     </LineIds>
-    <LineIds Name="FB_Array_Test.Create_Empty_Array_And_Array_With_Item_And_Check_Count">
+    <LineIds Name="FB_Array_Test_Suite.Create_Empty_Array_And_Array_With_Item_And_Check_Count">
       <LineId Id="35" Count="0" />
       <LineId Id="48" Count="0" />
       <LineId Id="47" Count="0" />
@@ -180,7 +180,7 @@ END_VAR
       <LineId Id="46" Count="0" />
       <LineId Id="6" Count="0" />
     </LineIds>
-    <LineIds Name="FB_Array_Test.Set_And_Find_Item_Indices_Then_Get_Items">
+    <LineIds Name="FB_Array_Test_Suite.Set_And_Find_Item_Indices_Then_Get_Items">
       <LineId Id="106" Count="2" />
       <LineId Id="165" Count="3" />
       <LineId Id="113" Count="0" />
@@ -191,7 +191,7 @@ END_VAR
       <LineId Id="114" Count="21" />
       <LineId Id="6" Count="0" />
     </LineIds>
-    <LineIds Name="FB_Array_Test.Set_Items_Reverse_The_Array_And_Get_Items">
+    <LineIds Name="FB_Array_Test_Suite.Set_Items_Reverse_The_Array_And_Get_Items">
       <LineId Id="36" Count="0" />
       <LineId Id="57" Count="0" />
       <LineId Id="41" Count="0" />
@@ -209,7 +209,7 @@ END_VAR
       <LineId Id="47" Count="0" />
       <LineId Id="6" Count="0" />
     </LineIds>
-    <LineIds Name="FB_Array_Test.Set_Value_At_Index_To_Item_And_Get_Item">
+    <LineIds Name="FB_Array_Test_Suite.Set_Value_At_Index_To_Item_And_Get_Item">
       <LineId Id="99" Count="22" />
       <LineId Id="6" Count="0" />
     </LineIds>

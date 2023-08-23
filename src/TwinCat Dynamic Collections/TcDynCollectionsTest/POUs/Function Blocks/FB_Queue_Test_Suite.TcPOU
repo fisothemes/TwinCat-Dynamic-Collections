@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="FB_Queue_Test_Suite" Id="{6ac15373-09e4-0cf9-2824-086310ba23da}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Queue_Test_Suite EXTENDS TcUnit.FB_TestSuite
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Check_If_Clear_Empties_Items();
+Check_If_Dequeue_Removes_First_Item();
+Check_If_Enqueue_Adds_Items();
+Check_If_Get_Returns_First_Item();
+Check_If_Reverse_Reverses_Order_Of_Items();]]></ST>
+    </Implementation>
+    <Method Name="Check_If_Clear_Empties_Items" Id="{7aff011b-56b8-01d7-0108-6667556847cb}">
+      <Declaration><![CDATA[METHOD Check_If_Clear_Empties_Items
+VAR_INST
+	fbQueue : FB_Queue;
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Clear_Empties');
+	fbQueue
+		.Enqueue(sItem)
+		.Enqueue(nItem)
+		.Clear();
+		
+	THIS^.AssertEquals_DINT(0, fbQueue._Count, 'Queue was not empty after enqueueing data.');
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Dequeue_Removes_First_Item" Id="{10d34a58-8bfb-0259-2058-df91c3e9171f}">
+      <Declaration><![CDATA[METHOD Check_If_Dequeue_Removes_First_Item
+VAR_INST
+	fbQueue : FB_Queue;
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Dequeue_Removes_First_Item');
+	fbQueue
+		.Enqueue(sItem)
+		.Enqueue(nItem)
+		.Dequeue();
+		
+	THIS^.AssertEquals_DINT(1, fbQueue._Count, 'Queue failed to remove item.');
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Enqueue_Adds_Items" Id="{3ce8c0a0-6e68-0239-2ca0-aa3a46f6bbcf}">
+      <Declaration><![CDATA[METHOD Check_If_Enqueue_Adds_Items
+VAR_INST
+	fbQueue : FB_Queue;
+	ipItems : I_Immutable_List;
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+	sR_Item : STRING;
+	nR_Item : INT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Enqueue_Adds_Items');
+	
+	fbQueue
+		.Enqueue(sItem)
+		.Enqueue_At_Front(nItem);
+		
+	ipItems := fbQueue._Values;
+	
+	ipItems
+		.Get(0, nR_Item)
+		.Get(1, sR_Item);
+	
+	THIS^.AssertEquals_DINT(2, fbQueue._Count, 'Queue item count is not accurate.');
+	THIS^.AssertEquals_INT(42, nR_Item, 'Queue failed to enqueue int item correctly.');
+	THIS^.AssertEquals_STRING('I love cats', sR_Item, 'Queue failed to enqueue string item correctly.');
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Get_Returns_First_Item" Id="{0f431c73-ff7e-065d-01ab-170b523a1ccd}">
+      <Declaration><![CDATA[METHOD Check_If_Get_Returns_First_Item
+VAR_INST
+	fbQueue : FB_Queue;
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+	sR_Item : STRING;
+	nR_Item : INT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Get_Returns_First_Item');
+	
+	fbQueue
+		.Enqueue(sItem)
+		.Enqueue(nItem)
+		.Get(sR_Item);
+	
+	THIS^.AssertEquals_STRING('I love cats', sR_Item, 'Queue failed to get first item enqueued (string) correctly.');
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Reverse_Reverses_Order_Of_Items" Id="{2079da8e-0349-0763-0aa9-4720bf3841ee}">
+      <Declaration><![CDATA[METHOD Check_If_Reverse_Reverses_Order_Of_Items
+VAR_INST
+	fbQueue : FB_Queue;
+	ipItems : I_Immutable_List;
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+	sR_Item : STRING;
+	nR_Item : INT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Reverse_Reverses_Order_Of_Items');
+	
+	fbQueue
+		.Enqueue(sItem)
+		.Enqueue(nItem)
+		.Reverse();
+		
+	ipItems := fbQueue._Values;
+	
+	ipItems
+		.Get(0, nR_Item)
+		.Get(1, sR_Item);
+	
+	THIS^.AssertEquals_DINT(2, fbQueue._Count, 'Queue item count is not accurate.');
+	THIS^.AssertEquals_INT(42, nR_Item, 'Queue failed to enqueue int item correctly.');
+	THIS^.AssertEquals_STRING('I love cats', sR_Item, 'Queue failed to enqueue string item correctly.');
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Queue_Test_Suite">
+      <LineId Id="14" Count="2" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="17" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Queue_Test_Suite.Check_If_Clear_Empties_Items">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="13" Count="4" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Queue_Test_Suite.Check_If_Dequeue_Removes_First_Item">
+      <LineId Id="5" Count="0" />
+      <LineId Id="18" Count="4" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Queue_Test_Suite.Check_If_Enqueue_Adds_Items">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="17" Count="2" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="28" Count="3" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Queue_Test_Suite.Check_If_Get_Returns_First_Item">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="20" Count="2" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Queue_Test_Suite.Check_If_Reverse_Reverses_Order_Of_Items">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="20" Count="2" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="23" Count="8" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

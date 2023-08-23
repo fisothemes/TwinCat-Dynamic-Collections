@@ -3,17 +3,14 @@
   <POU Name="MAIN" Id="{17732e83-93d3-4e32-896f-74d26e2dd9ab}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-	fbArray_List_Test : FB_Array_List_Test;
-	fbList_Test : FB_List_Test;
-	fbArray_Test : FB_Array_Test;
-	// Add test for Queue
-	// Add test for Stack
+	fbArray_List_Test_Suite : FB_Array_List_Test_Suite;
+	fbList_Test_Suite : FB_List_Test_Suite;
+	fbArray_Test_Suite : FB_Array_Test_Suite;
+	fbQueue_Test_Suite : FB_Queue_Test_Suite;
+	fbStack_Test_Suite : FB_Stack_Test_Suite;
+	fbDeque_Test_Suite : FB_Deque_Test_Suite;
 	// Add test for Set
 	// Add test for Tree Map
-	// Add test for Hash Map
-	// Add test for Immutable Map
-	// Add test for Immutable list and array
-	// Add test for Immutable Set
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[TcUnit.RUN();

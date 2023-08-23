@@ -26,13 +26,22 @@
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Function Blocks\FB_Array_List_Test.TcPOU">
+    <Compile Include="POUs\Function Blocks\FB_Array_List_Test_Suite.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Function Blocks\FB_Array_Test.TcPOU">
+    <Compile Include="POUs\Function Blocks\FB_Array_Test_Suite.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Function Blocks\FB_List_Test.TcPOU">
+    <Compile Include="POUs\Function Blocks\FB_List_Test_Suite.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Function Blocks\FB_Queue_Test_Suite.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Function Blocks\FB_Deque_Test_Suite.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Function Blocks\FB_Stack_Test_Suite.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MAIN.TcPOU">

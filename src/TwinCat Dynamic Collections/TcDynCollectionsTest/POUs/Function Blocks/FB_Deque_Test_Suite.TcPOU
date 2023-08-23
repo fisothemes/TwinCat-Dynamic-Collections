@@ -1,0 +1,298 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="FB_Deque_Test_Suite" Id="{0478bdf5-3c05-0983-1c56-795a1b10c992}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Deque_Test_Suite EXTENDS TcUnit.FB_TestSuite
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Check_If_Clear_Empties_Items();
+Check_If_Dequeue_At_Front_Removes_First_Item();
+Check_If_Dequeue_At_Back_Removes_Last_Item();
+Check_If_Enqueue_At_Back_Adds_Items();
+Check_If_Enqueue_At_Front_Adds_Items();
+Check_If_Back_Returns_Items_At_Back();
+Check_If_Front_Returns_Items_At_Front();
+Check_If_Reverse_Reverses_Order_Of_Items();]]></ST>
+    </Implementation>
+    <Method Name="Check_If_Back_Returns_Items_At_Back" Id="{eca16030-ac10-01a3-0a1c-5b19200189ed}">
+      <Declaration><![CDATA[METHOD Check_If_Back_Returns_Items_At_Back
+VAR_INST
+	fbDeque : FB_Deque;
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+	sR_Item : STRING;
+	nR_Item : INT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Back_Returns_Items_At_Back');
+	
+	fbDeque
+		.Enqueue_At_Back(sItem)
+		.Enqueue_At_Back(nItem)
+		.Back(nR_Item);
+	
+	THIS^.AssertEquals_INT(42, nR_Item, 'Deque failed to get item (int) at the back correctly.');
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Clear_Empties_Items" Id="{2e81fce8-5881-05b9-2f5b-3d0883e029b3}">
+      <Declaration><![CDATA[METHOD Check_If_Clear_Empties_Items
+VAR_INST
+	fbDeque : FB_Deque;
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+END_VAR
+
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Clear_Empties');
+	
+	fbDeque
+		.Enqueue_At_Back (sItem)
+		.Enqueue_At_Front(nItem)
+		.Clear();
+		
+	THIS^.AssertEquals_DINT(0, fbDeque._Count, 'Deque was not empty after enqueueing data.');
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Dequeue_At_Back_Removes_Last_Item" Id="{1644f24e-b6d0-065e-33c1-f3b69020546e}">
+      <Declaration><![CDATA[METHOD Check_If_Dequeue_At_Back_Removes_Last_Item
+VAR_INST
+	fbDeque : FB_Deque;
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+	nR_Item : INT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Dequeue_At_Back_Removes_Last_Item');
+	
+	fbDeque
+		.Enqueue_At_Front(sItem)
+		.Enqueue_At_Front(nItem)
+		.Dequeue_At_Back()
+		._Values
+			.Get(0, nR_Item);
+		
+	THIS^.AssertEquals_DINT(1, fbDeque._Count, 'Deque failed to remove item.');
+	THIS^.AssertEquals_INT(42, nR_Item, 'Deque failed to get the last item.');
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Dequeue_At_Front_Removes_First_Item" Id="{782fa574-0a74-07b7-098f-be2be1d4a6d5}">
+      <Declaration><![CDATA[METHOD Check_If_Dequeue_At_Front_Removes_First_Item
+VAR_INST
+	fbDeque : FB_Deque;
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+	sR_Item : STRING;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Dequeue_At_Front_Removes_First_Item');
+	
+	fbDeque
+		.Enqueue_At_Front(sItem)
+		.Enqueue_At_Front(nItem)
+		.Dequeue_At_Front()
+		._Values
+			.Get(0, sR_Item);
+		
+	THIS^.AssertEquals_DINT(1, fbDeque._Count, 'Deque failed to remove item.');
+	THIS^.AssertEquals_STRING('I love cats', sR_Item, 'Deque failed to get the first item.');
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Enqueue_At_Back_Adds_Items" Id="{c6190f8d-a12a-063b-1bf2-75710c666030}">
+      <Declaration><![CDATA[METHOD Check_If_Enqueue_At_Back_Adds_Items
+VAR_INST
+	fbDeque : FB_Deque;
+	ipItems : I_Immutable_List;
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+	sR_Item : STRING;
+	nR_Item : INT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Enqueue_At_Back_Adds_Items');
+
+	fbDeque
+		.Enqueue_At_Back(sItem)
+		.Enqueue_At_Back(nItem);
+		
+	ipItems := fbDeque._Values;
+	ipItems
+		.Get(0, sR_Item)
+		.Get(1, nR_Item);
+	
+	THIS^.AssertEquals_DINT(2, fbDeque._Count, 'Deque didnt enqueue elements at back corrrectly.');
+	THIS^.AssertEquals_INT(42, nR_Item, 'Deque failed to get item (int) correctly.');
+	THIS^.AssertEquals_STRING('I love cats', sR_Item, 'Deque failed to get item (string) correctly.');	
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Enqueue_At_Front_Adds_Items" Id="{46b4d97f-88eb-000a-303d-dd09ce4ddbee}">
+      <Declaration><![CDATA[METHOD Check_If_Enqueue_At_Front_Adds_Items
+VAR_INST
+	fbDeque : FB_Deque;
+	ipItems : I_Immutable_List;
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+	sR_Item : STRING;
+	nR_Item : INT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Enqueue_At_Front_Adds_Items');
+
+	fbDeque
+		.Enqueue_At_Front(sItem)
+		.Enqueue_At_Front(nItem);
+		
+	ipItems := fbDeque._Values;
+	ipItems
+		.Get(0, nR_Item)
+		.Get(1, sR_Item);
+	
+	THIS^.AssertEquals_DINT(2, fbDeque._Count, 'Deque didnt enqueue elements at front corrrectly.');
+	THIS^.AssertEquals_INT(42, nR_Item, 'Deque failed to get item (int) correctly.');
+	THIS^.AssertEquals_STRING('I love cats', sR_Item, 'Deque failed to get item (string) correctly.');			
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Front_Returns_Items_At_Front" Id="{70bb3631-cb00-064e-1ef7-92c9a714c802}">
+      <Declaration><![CDATA[METHOD Check_If_Front_Returns_Items_At_Front
+VAR_INST
+	fbDeque : FB_Deque;
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+	sR_Item : STRING;
+	nR_Item : INT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Front_Returns_Items_At_Front');
+	
+	fbDeque
+		.Enqueue_At_Back(sItem)
+		.Enqueue_At_Back(nItem)
+		.Front(sR_Item);
+	
+	THIS^.AssertEquals_STRING('I love cats', sR_Item, 'Deque failed to get item (string) at the front correctly.');	
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Reverse_Reverses_Order_Of_Items" Id="{ef1bc90b-ba29-05cb-2bb7-7f05613d0067}">
+      <Declaration><![CDATA[METHOD Check_If_Reverse_Reverses_Order_Of_Items
+VAR_INST
+	fbDeque : FB_Deque;
+	ipItems : I_Immutable_List;
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+	sR_Item : STRING;
+	nR_Item : INT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Reverse_Reverses_Order_Of_Items');
+
+	fbDeque
+		.Enqueue_At_Back(sItem)
+		.Enqueue_At_Back(nItem)
+		.Reverse();
+		
+	ipItems := fbDeque._Values;
+	ipItems
+		.Get(0, nR_Item)
+		.Get(1, sR_Item);
+	
+	THIS^.AssertEquals_INT(42, nR_Item, 'Deque failed to get item (int) correctly.');
+	THIS^.AssertEquals_STRING('I love cats', sR_Item, 'Deque failed to get item (string) correctly.');		
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Deque_Test_Suite">
+      <LineId Id="26" Count="4" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="31" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_Deque_Test_Suite.Check_If_Back_Returns_Items_At_Back">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="20" Count="4" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Deque_Test_Suite.Check_If_Clear_Empties_Items">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="15" Count="4" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Deque_Test_Suite.Check_If_Dequeue_At_Back_Removes_Last_Item">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="21" Count="3" />
+      <LineId Id="26" Count="1" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Deque_Test_Suite.Check_If_Dequeue_At_Front_Removes_First_Item">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="18" Count="7" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Deque_Test_Suite.Check_If_Enqueue_At_Back_Adds_Items">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="20" Count="10" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Deque_Test_Suite.Check_If_Enqueue_At_Front_Adds_Items">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="31" Count="2" />
+      <LineId Id="35" Count="5" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Deque_Test_Suite.Check_If_Front_Returns_Items_At_Front">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="22" Count="4" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Deque_Test_Suite.Check_If_Reverse_Reverses_Order_Of_Items">
+      <LineId Id="5" Count="0" />
+      <LineId Id="19" Count="4" />
+      <LineId Id="26" Count="4" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="8" Count="1" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

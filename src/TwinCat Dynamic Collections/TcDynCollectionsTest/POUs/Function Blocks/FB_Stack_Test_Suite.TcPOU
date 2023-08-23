@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="FB_Stack_Test_Suite" Id="{cc4e8044-127f-095b-005a-7d328f2e44e2}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Stack_Test_Suite EXTENDS TcUnit.FB_TestSuite
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Check_If_Clear_Empties_Items();
+Check_If_Pop_Removes_Item();
+Check_If_Push_Adds_Items();
+Check_If_Get_Returns_Top_Item();
+Check_If_Reverse_Reverses_Order_Of_Items();]]></ST>
+    </Implementation>
+    <Method Name="Check_If_Clear_Empties_Items" Id="{88c3abe5-e7c4-047a-0adf-b95b78e7bbff}">
+      <Declaration><![CDATA[METHOD Check_If_Clear_Empties_Items
+VAR_INST
+	fbStack : FB_Stack;
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Clear_Empties');
+	
+	fbStack
+		.Push(sItem)
+		.Push(nItem)
+		.Clear();
+		
+	THIS^.AssertEquals_DINT(0, fbStack._Count, 'Stack was not empty after pushing data.');
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Get_Returns_Top_Item" Id="{0d2a1147-862b-0aa2-08b7-2ca02bc6d134}">
+      <Declaration><![CDATA[METHOD Check_If_Get_Returns_Top_Item
+VAR_INST
+	fbStack : FB_Stack;
+	ipItems : I_Immutable_List;
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+	sR_Item : STRING;
+	nR_Item : INT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Get_Returns_Top_Item');
+	
+	fbStack
+		.Push(sItem)
+		.Push(nItem)
+		.Get(nR_Item);
+	
+	THIS^.AssertEquals_INT(42, nR_Item, 'Stack failed to get top item pushed (int) correctly.');
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Pop_Removes_Item" Id="{21954dbb-c5ff-05e5-0bf7-4014ca78518a}">
+      <Declaration><![CDATA[METHOD Check_If_Pop_Removes_Item
+VAR_INST
+	fbStack : FB_Stack;
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Pop_Removes_Item');
+	
+	fbStack
+		.Push(sItem)
+		.Push(nItem)
+		.Pop();
+		
+	THIS^.AssertEquals_DINT(1, fbStack._Count, 'Stack failed to remove item.');
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Push_Adds_Items" Id="{aa0e273f-b5e0-0753-2d9f-79ab9bb4840e}">
+      <Declaration><![CDATA[METHOD Check_If_Push_Adds_Items
+VAR_INST
+	fbStack : FB_Stack;
+	ipItems : I_Immutable_List;
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+	sR_Item : STRING;
+	nR_Item : INT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Push_Adds_Items');
+	
+	fbStack
+		.Push(sItem)
+		.Push(nItem);
+		
+	ipItems := fbStack._Values;
+	
+	ipItems
+		.Get(0, nR_Item)
+		.Get(1, sR_Item);
+	
+	THIS^.AssertEquals_DINT(2, fbStack._Count, 'Stack item count is not accurate.');
+	THIS^.AssertEquals_INT(42, nR_Item, 'Stack failed to push int item correctly.');
+	THIS^.AssertEquals_STRING('I love cats', sR_Item, 'Stack failed to push string item correctly.');
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Reverse_Reverses_Order_Of_Items" Id="{db046409-a8c4-07a9-3eb9-a1edc5d69433}">
+      <Declaration><![CDATA[METHOD Check_If_Reverse_Reverses_Order_Of_Items
+VAR_INST
+	fbStack : FB_Stack;
+	ipItems : I_Immutable_List;
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+	sR_Item : STRING;
+	nR_Item : INT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Reverse_Reverses_Order_Of_Items');
+	
+	fbStack
+		.Push(sItem)
+		.Push(nItem)
+		.Reverse();
+		
+	ipItems := fbStack._Values;
+	
+	ipItems
+		.Get(0, sR_Item)
+		.Get(1, nR_Item);
+	
+	THIS^.AssertEquals_DINT(2, fbStack._Count, 'Stack item count is not accurate.');
+	THIS^.AssertEquals_INT(42, nR_Item, 'Stack failed to push int item correctly.');
+	THIS^.AssertEquals_STRING('I love cats', sR_Item, 'Stack failed to push string item correctly.');
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Stack_Test_Suite">
+      <LineId Id="27" Count="3" />
+      <LineId Id="26" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Stack_Test_Suite.Check_If_Clear_Empties_Items">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="14" Count="4" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Stack_Test_Suite.Check_If_Get_Returns_Top_Item">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="21" Count="4" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Stack_Test_Suite.Check_If_Pop_Removes_Item">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="17" Count="4" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Stack_Test_Suite.Check_If_Push_Adds_Items">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="13" Count="11" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Stack_Test_Suite.Check_If_Reverse_Reverses_Order_Of_Items">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="20" Count="12" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
