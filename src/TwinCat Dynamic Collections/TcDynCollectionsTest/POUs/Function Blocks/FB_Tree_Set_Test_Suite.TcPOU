@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="FB_Tree_Set_Test_Suite" Id="{a7ec9432-cc4e-056f-22ea-935141723e10}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Tree_Set_Test_Suite  EXTENDS TcUnit.FB_TestSuite
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Check_If_Clear_Empties_Items();
+Check_If_Contains_Returns_True_If_Item_In_Set();
+Check_If_Duplicate_Items_Cannot_Be_Inserted();
+Check_If_Get_Values_Returns_Values_In_Specified_Order();
+Check_If_Insert_Adds_Items();
+Check_If_Remove_Removes_Items();]]></ST>
+    </Implementation>
+    <Method Name="Check_If_Clear_Empties_Items" Id="{18cc3c41-f2de-06c6-3de9-714d60a7fa90}">
+      <Declaration><![CDATA[METHOD Check_If_Clear_Empties_Items
+VAR_INST
+	fbSet : FB_Tree_Set;
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Clear_Empties');
+	fbSet
+		.Insert(sItem)
+		.Insert(nItem)
+		.Clear();
+		
+	THIS^.AssertEquals_DINT(0, fbSet._Count, 'Set was not empty after inserting data.');
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Contains_Returns_True_If_Item_In_Set" Id="{0292d14f-f881-0451-1fb1-ba08277f55f2}">
+      <Declaration><![CDATA[METHOD Check_If_Contains_Returns_True_If_Item_In_Set
+VAR_INST
+	fbSet : FB_Tree_Set;
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+	bResult : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Contains_Returns_True_If_Item_In_Set');
+
+	bResult := fbSet
+		.Insert(sItem)
+		.Insert(nItem)
+		.Contains(nItem);
+		
+	THIS^.AssertEquals_BOOL(TRUE, bResult, 'Failed to check if item is in set.');
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Duplicate_Items_Cannot_Be_Inserted" Id="{b044935a-8f5f-0665-10b9-6d9ca64050cc}">
+      <Declaration><![CDATA[METHOD Check_If_Duplicate_Items_Cannot_Be_Inserted
+VAR_INST
+	fbSet : FB_Tree_Set;
+	arnItems : ARRAY[0..5] OF DINT := [3,1,2,1,3,2];
+	arnItems2 : ARRAY[0..2] OF DINT;
+	ipItems : I_Immutable_List;
+	i : DINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Duplicate_Items_Cannot_Be_Inserted');
+
+	FOR i := 0 TO 5 DO
+    	fbSet.Insert(arnItems[i]);
+    	END_FOR
+		
+	THIS^.AssertEquals_DINT(3, fbSet._Count, 'Set inserted duplicate items.');
+	
+	fbSet._Traversal := T_BST_Traversal.In_Order; // will get the values in ascending order
+
+	ipItems := fbSet.Get_Values();
+	ipItems
+		.Get(0, arnItems2[0])
+		.Get(1, arnItems2[1])
+		.Get(2, arnItems2[2]);
+		
+	THIS^.AssertEquals_DINT(1, arnItems2[0],'');
+	THIS^.AssertEquals_DINT(2, arnItems2[1],'');
+	THIS^.AssertEquals_DINT(3, arnItems2[2],'');
+		
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Get_Values_Returns_Values_In_Specified_Order" Id="{8c1b108d-5654-0c7f-0d97-6d54e9b14f1f}">
+      <Declaration><![CDATA[METHOD Check_If_Get_Values_Returns_Values_In_Specified_Order
+VAR_INST
+	fbSet : FB_Tree_Set;
+	arnItems : ARRAY[0..3] OF DINT := [1,2,3,4];
+	arnIn_Order, arnPre_Order, arnPost_Order, arnLevel_Order : ARRAY[0..3] OF DINT;
+	ipItems : I_Immutable_List;
+	i : DINT;
+END_VAR
+// Checked using: https://www.cs.usfca.edu/~galles/visualization/AVLtree.html
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Get_Values_Returns_Values_In_Specified_Order');
+
+	FOR i := 0 TO 3 DO
+    	fbSet.Insert(arnItems[i]);
+    	END_FOR
+		
+	fbSet._Traversal := T_BST_Traversal.In_Order;
+	ipItems := fbSet.Get_Values();
+	ipItems
+		.Get(0, arnIn_Order[0])
+		.Get(1, arnIn_Order[1])
+		.Get(2, arnIn_Order[2])
+		.Get(3, arnIn_Order[3]);
+	THIS^.AssertEquals_DINT(1, arnIn_Order[0],'Failed to get item with in-order traversal.');
+	THIS^.AssertEquals_DINT(2, arnIn_Order[1],'Failed to get item with in-order traversal.');
+	THIS^.AssertEquals_DINT(3, arnIn_Order[2],'Failed to get item with in-order traversal.');
+	THIS^.AssertEquals_DINT(4, arnIn_Order[3],'Failed to get item with in-order traversal.');
+	
+	fbSet._Traversal := T_BST_Traversal.Pre_Order;
+	ipItems := fbSet.Get_Values();
+	ipItems
+		.Get(0, arnPre_Order[0])
+		.Get(1, arnPre_Order[1])
+		.Get(2, arnPre_Order[2])
+		.Get(3, arnPre_Order[3]);
+	THIS^.AssertEquals_DINT(2, arnPre_Order[0],'Failed to get item with pre-order traversal.');
+	THIS^.AssertEquals_DINT(1, arnPre_Order[1],'Failed to get item with pre-order traversal.');
+	THIS^.AssertEquals_DINT(3, arnPre_Order[2],'Failed to get item with pre-order traversal.');
+	THIS^.AssertEquals_DINT(4, arnPre_Order[3],'Failed to get item with pre-order traversal.');
+	
+	fbSet._Traversal := T_BST_Traversal.Post_Order; 
+	ipItems := fbSet.Get_Values();
+	ipItems
+		.Get(0, arnPost_Order[0])
+		.Get(1, arnPost_Order[1])
+		.Get(2, arnPost_Order[2])
+		.Get(3, arnPost_Order[3]);
+	THIS^.AssertEquals_DINT(1, arnPost_Order[0],'Failed to get item with post-order traversal.');
+	THIS^.AssertEquals_DINT(4, arnPost_Order[1],'Failed to get item with post-order traversal.');
+	THIS^.AssertEquals_DINT(3, arnPost_Order[2],'Failed to get item with post-order traversal.');
+	THIS^.AssertEquals_DINT(2, arnPost_Order[3],'Failed to get item with post-order traversal.');
+	
+	fbSet._Traversal := T_BST_Traversal.Level_Order; // will get the values in ascending order
+	ipItems := fbSet.Get_Values();
+	ipItems
+		.Get(0, arnLevel_Order[0])
+		.Get(1, arnLevel_Order[1])
+		.Get(2, arnLevel_Order[2])
+		.Get(3, arnLevel_Order[3]);
+	THIS^.AssertEquals_DINT(2, arnLevel_Order[0],'Failed to get item with level-order traversal.');
+	THIS^.AssertEquals_DINT(1, arnLevel_Order[1],'Failed to get item with level-order traversal.');
+	THIS^.AssertEquals_DINT(3, arnLevel_Order[2],'Failed to get item with level-order traversal.');
+	THIS^.AssertEquals_DINT(4, arnLevel_Order[3],'Failed to get item with level-order traversal.');
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Insert_Adds_Items" Id="{f5022a88-4aad-033c-0a19-794afc77c1b2}">
+      <Declaration><![CDATA[METHOD Check_If_Insert_Adds_Items
+VAR_INST
+	fbSet : FB_Tree_Set;
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Insert_Adds_Items');
+	fbSet
+		.Insert(sItem)
+		.Insert(nItem);
+		
+	THIS^.AssertEquals_DINT(2, fbSet._Count, 'Failed to insert items into set.');
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Remove_Removes_Items" Id="{7142dc8e-c096-0d14-29b5-314ea8f4f30a}">
+      <Declaration><![CDATA[METHOD Check_If_Remove_Removes_Items
+VAR_INST
+	fbSet : FB_Tree_Set;
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+	fItem : LREAL := 37.4;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Remove_Removes_Items');
+
+	fbSet
+		.Insert(sItem)
+		.Insert(nItem)
+		.Insert(fItem)
+		.Remove(nItem);
+		
+	THIS^.AssertEquals_DINT(2, fbSet._Count, 'Failed to remove item in set.');
+	THIS^.AssertEquals_BOOL(TRUE, fbSet.Contains(sItem), 'Failed to remove item in set.');
+	THIS^.AssertEquals_BOOL(FALSE, fbSet.Contains(nItem), 'Failed to remove item in set.');
+	THIS^.AssertEquals_BOOL(TRUE, fbSet.Contains(fItem), 'Failed to remove item in set.');	
+
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_Tree_Set_Test_Suite">
+      <LineId Id="18" Count="4" />
+      <LineId Id="14" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Set_Test_Suite.Check_If_Clear_Empties_Items">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="13" Count="4" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="6" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Set_Test_Suite.Check_If_Contains_Returns_True_If_Item_In_Set">
+      <LineId Id="6" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="17" Count="4" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Set_Test_Suite.Check_If_Duplicate_Items_Cannot_Be_Inserted">
+      <LineId Id="6" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="20" Count="1" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="23" Count="1" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="26" Count="5" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="34" Count="1" />
+      <LineId Id="37" Count="1" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Set_Test_Suite.Check_If_Get_Values_Returns_Values_In_Specified_Order">
+      <LineId Id="6" Count="0" />
+      <LineId Id="23" Count="2" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="26" Count="1" />
+      <LineId Id="29" Count="4" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="35" Count="1" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="39" Count="4" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="46" Count="0" />
+      <LineId Id="49" Count="2" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="55" Count="9" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="65" Count="0" />
+      <LineId Id="67" Count="9" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Set_Test_Suite.Check_If_Insert_Adds_Items">
+      <LineId Id="6" Count="0" />
+      <LineId Id="21" Count="2" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="12" Count="1" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Tree_Set_Test_Suite.Check_If_Remove_Removes_Items">
+      <LineId Id="6" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="23" Count="2" />
+      <LineId Id="27" Count="1" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="29" Count="2" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
