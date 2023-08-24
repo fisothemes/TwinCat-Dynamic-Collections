@@ -234,8 +234,9 @@ VAR_INST
 	fbImmutable_List : FB_Immutable_List;
 END_VAR
 VAR
-	pCurrent : POINTER TO T_AVL_Node;
+	pCurrent, pPrevious, pTmp : POINTER TO T_AVL_Node := THIS^.pRoot;
 	fbNode_Buffer : FB_Queue;
+	bSuccess : BOOL;
 END_VAR
 ]]></Declaration>
       <Implementation>
@@ -245,33 +246,55 @@ Get_Values := fbImmutable_List;
 
 THIS^.pValues^.Clear();
 
-IF THIS^.pRoot = 0 THEN RETURN; END_IF
+IF pCurrent = 0 THEN RETURN; END_IF
 
-fbNode_Buffer.Enqueue(THIS^.pRoot);
-
-WHILE NOT fbNode_Buffer._Empty DO
-	fbNode_Buffer.Get(pCurrent).Dequeue();
+WHILE (NOT fbNode_Buffer._Empty) OR_ELSE pCurrent <> 0 DO
 	
 	CASE THIS^._Traversal OF
 		T_BST_Traversal.In_Order:
-			IF pCurrent^.pLeft <> 0 THEN fbNode_Buffer.Enqueue_At_Front(pCurrent^.pLeft); END_IF
-			THIS^.pValues^.Insert_Generic(THIS^.pValues^._Count, pCurrent^.Data);
-			IF pCurrent^.pRight <> 0 THEN fbNode_Buffer.Enqueue_At_Front(pCurrent^.pRight); END_IF
-			
+			IF pCurrent <> 0 THEN 
+				fbNode_Buffer.Enqueue_At_Front(pCurrent);
+				pCurrent := pCurrent^.pLeft;
+			ELSE
+				fbNode_Buffer.Get(pCurrent).Dequeue();
+				THIS^.pValues^.Insert_Generic(THIS^.pValues^._Count, pCurrent^.Data);
+				pCurrent := pCurrent^.pRight;
+				END_IF
+				
 		T_BST_Traversal.Pre_Order:
-			THIS^.pValues^.Insert_Generic(THIS^.pValues^._Count, pCurrent^.Data);
-			IF pCurrent^.pLeft <> 0 THEN fbNode_Buffer.Enqueue_At_Front(pCurrent^.pLeft); END_IF
-			IF pCurrent^.pRight <> 0 THEN fbNode_Buffer.Enqueue_At_Front(pCurrent^.pRight); END_IF
+			IF pCurrent <> 0 THEN 
+				THIS^.pValues^.Insert_Generic(THIS^.pValues^._Count, pCurrent^.Data);
+				IF pCurrent^.pRight <> 0 THEN fbNode_Buffer.Enqueue_At_Front(pCurrent^.pRight); END_IF
+				pCurrent := pCurrent^.pLeft;
+			ELSE
+				fbNode_Buffer.Get(pCurrent).Dequeue();
+				END_IF
 			
 		T_BST_Traversal.Post_Order:
-			IF pCurrent^.pLeft <> 0 THEN fbNode_Buffer.Enqueue_At_Front(pCurrent^.pLeft); END_IF
-			IF pCurrent^.pRight <> 0 THEN fbNode_Buffer.Enqueue_At_Front(pCurrent^.pRight); END_IF
-			THIS^.pValues^.Insert_Generic(THIS^.pValues^._Count, pCurrent^.Data);
+			WHILE pCurrent <> 0 DO 
+				fbNode_Buffer.Enqueue_At_Front(pCurrent);
+				pCurrent := pCurrent^.pLeft;
+				END_WHILE
+				
+			IF NOT fbNode_Buffer._Empty THEN
+				fbNode_Buffer.Get(pTmp);
+				pTmp := pTmp^.pRight;
+				IF pTmp = 0 OR_ELSE pTmp = pPrevious THEN 
+					fbNode_Buffer.Get(pCurrent).Dequeue();
+					THIS^.pValues^.Insert_Generic(THIS^.pValues^._Count, pCurrent^.Data);
+					pPrevious := pCurrent;
+					pCurrent := 0;
+				ELSE
+					pCurrent := pTmp;
+					END_IF
+				END_IF
 			
 		T_BST_Traversal.Level_Order:
 			THIS^.pValues^.Insert_Generic(THIS^.pValues^._Count, pCurrent^.Data);
 			IF pCurrent^.pLeft <> 0 THEN fbNode_Buffer.Enqueue(pCurrent^.pLeft); END_IF
 			IF pCurrent^.pRight <> 0 THEN fbNode_Buffer.Enqueue(pCurrent^.pRight); END_IF
+			fbNode_Buffer.Get(pCurrent).Dequeue(bSuccess => bSuccess);
+			IF NOT bSuccess THEN pCurrent := 0; END_IF
 	ELSE
 		RETURN;
 		END_CASE
@@ -607,25 +630,40 @@ END_VAR
       <LineId Id="15" Count="2" />
       <LineId Id="37" Count="0" />
       <LineId Id="36" Count="0" />
-      <LineId Id="18" Count="2" />
-      <LineId Id="5" Count="0" />
+      <LineId Id="18" Count="1" />
       <LineId Id="22" Count="0" />
       <LineId Id="21" Count="0" />
-      <LineId Id="39" Count="1" />
+      <LineId Id="70" Count="0" />
       <LineId Id="23" Count="0" />
       <LineId Id="25" Count="0" />
-      <LineId Id="33" Count="1" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="71" Count="0" />
+      <LineId Id="88" Count="0" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="75" Count="2" />
+      <LineId Id="73" Count="0" />
       <LineId Id="38" Count="0" />
-      <LineId Id="41" Count="0" />
       <LineId Id="27" Count="0" />
-      <LineId Id="42" Count="3" />
+      <LineId Id="99" Count="1" />
+      <LineId Id="104" Count="1" />
+      <LineId Id="102" Count="1" />
+      <LineId Id="101" Count="0" />
+      <LineId Id="45" Count="0" />
       <LineId Id="28" Count="0" />
-      <LineId Id="46" Count="2" />
+      <LineId Id="110" Count="3" />
+      <LineId Id="125" Count="1" />
+      <LineId Id="129" Count="0" />
+      <LineId Id="131" Count="2" />
+      <LineId Id="135" Count="4" />
+      <LineId Id="134" Count="0" />
+      <LineId Id="128" Count="0" />
       <LineId Id="50" Count="0" />
       <LineId Id="29" Count="0" />
       <LineId Id="51" Count="0" />
       <LineId Id="53" Count="0" />
       <LineId Id="52" Count="0" />
+      <LineId Id="107" Count="0" />
+      <LineId Id="141" Count="0" />
       <LineId Id="30" Count="2" />
       <LineId Id="24" Count="0" />
     </LineIds>

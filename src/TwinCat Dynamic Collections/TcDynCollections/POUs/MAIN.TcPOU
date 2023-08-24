@@ -3,7 +3,9 @@
   <POU Name="MAIN" Id="{dc6abe44-dfc6-0eff-1900-3902669cc79c}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM INTERNAL MAIN
 VAR
+	rData : ARRAY[0..10] OF INT;
 	i,j : T_Position;
+	ipImm : I_Immutable_List;
 	Comp : T_Comparison;
 	bAdd, bRemove, bClear : BOOL;
 	fbArray : FB_Array(10);
@@ -14,6 +16,7 @@ VAR
 	fbMap : FB_Tree_Map;
 	fbDeque : FB_Deque;
 	Data : ARRAY[0..10] OF INT := [1,2,3,4,5,6,7,8,9,10];
+	
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -21,9 +24,18 @@ END_VAR
 
 IF bAdd THEN
 	bAdd := FALSE;
-	fbDeque
-		.Enqueue_At_Back(Data[0])
-		.Enqueue_At_Back(Data[1]);
+	fbSet._Traversal := T_BST_Traversal.Level_Order;
+	fbSet
+		.Insert(Data[0])
+		.Insert(Data[1])
+		.Insert(Data[2])
+		.Insert(Data[3]);
+	ipImm := fbSet.Get_Values();
+	ipImm
+		.Get(0, rData[0])
+		.Get(1, rData[1])
+		.Get(2, rData[2])
+		.Get(3, rData[3]);
 	END_IF
 
 IF bRemove THEN 
@@ -40,8 +52,13 @@ IF bClear THEN
       <LineId Id="158" Count="1" />
       <LineId Id="54" Count="0" />
       <LineId Id="126" Count="0" />
+      <LineId Id="226" Count="0" />
       <LineId Id="105" Count="0" />
       <LineId Id="186" Count="1" />
+      <LineId Id="202" Count="0" />
+      <LineId Id="227" Count="0" />
+      <LineId Id="204" Count="4" />
+      <LineId Id="228" Count="0" />
       <LineId Id="60" Count="1" />
       <LineId Id="96" Count="0" />
       <LineId Id="63" Count="0" />

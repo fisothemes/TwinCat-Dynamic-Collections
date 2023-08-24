@@ -1219,21 +1219,33 @@
               <v n="PropertyID">-1</v>
               <v n="MethodsLoaded">false</v>
               <d n="MethodList" t="Hashtable" ckt="Guid" cvt="UMLElementMethod">
-                <v>b2d9e6dd-534f-4c68-9d90-d87e61323911</v>
+                <v>c60f8d85-46cb-414f-92a9-87b66c62299a</v>
                 <o>
-                  <v n="MethodName">"Contains"</v>
+                  <v n="MethodName">"Insert_Generic"</v>
                   <v n="MethodBreakPointActive">false</v>
-                  <v n="MethodReturnType">"BOOL"</v>
+                  <v n="MethodReturnType">"I_List"</v>
                   <l n="MethodParameter" t="ArrayList" cet="UMLMethodParameter">
                     <o>
-                      <v n="ParameterName">"Item"</v>
-                      <v n="ParameterType">"__SYSTEM.AnyType"</v>
-                      <v n="ParameterParent">{b2d9e6dd-534f-4c68-9d90-d87e61323911}</v>
+                      <v n="ParameterName">"Index"</v>
+                      <v n="ParameterType">"T_Position"</v>
+                      <v n="ParameterParent">{c60f8d85-46cb-414f-92a9-87b66c62299a}</v>
                       <v n="ParameterTransfer">"in"</v>
+                    </o>
+                    <o>
+                      <v n="ParameterName">"Item"</v>
+                      <v n="ParameterType">"T_Generic"</v>
+                      <v n="ParameterParent">{c60f8d85-46cb-414f-92a9-87b66c62299a}</v>
+                      <v n="ParameterTransfer">"in"</v>
+                    </o>
+                    <o>
+                      <v n="ParameterName">"bSuccess"</v>
+                      <v n="ParameterType">"BOOL"</v>
+                      <v n="ParameterParent">{c60f8d85-46cb-414f-92a9-87b66c62299a}</v>
+                      <v n="ParameterTransfer">"out"</v>
                     </o>
                   </l>
                   <v n="MethodParent">{5a4a9b19-acd3-4f54-8771-b26459424443}</v>
-                  <v n="MethodObjectGuid">{b2d9e6dd-534f-4c68-9d90-d87e61323911}</v>
+                  <v n="MethodObjectGuid">{c60f8d85-46cb-414f-92a9-87b66c62299a}</v>
                   <v n="MethodStereotype">""</v>
                   <v n="MethodParameterLength">20</v>
                   <v n="MethodParameterTooLong">false</v>
@@ -1381,6 +1393,31 @@
                   <v n="MethodParameterLength">20</v>
                   <v n="MethodParameterTooLong">false</v>
                 </o>
+                <v>a948a97f-26dc-4c2d-9f9f-497da8ab533e</v>
+                <o>
+                  <v n="MethodName">"Append"</v>
+                  <v n="MethodBreakPointActive">false</v>
+                  <v n="MethodReturnType">"I_List"</v>
+                  <l n="MethodParameter" t="ArrayList" cet="UMLMethodParameter">
+                    <o>
+                      <v n="ParameterName">"Item"</v>
+                      <v n="ParameterType">"__SYSTEM.AnyType"</v>
+                      <v n="ParameterParent">{a948a97f-26dc-4c2d-9f9f-497da8ab533e}</v>
+                      <v n="ParameterTransfer">"in"</v>
+                    </o>
+                    <o>
+                      <v n="ParameterName">"bSuccess"</v>
+                      <v n="ParameterType">"BOOL"</v>
+                      <v n="ParameterParent">{a948a97f-26dc-4c2d-9f9f-497da8ab533e}</v>
+                      <v n="ParameterTransfer">"out"</v>
+                    </o>
+                  </l>
+                  <v n="MethodParent">{5a4a9b19-acd3-4f54-8771-b26459424443}</v>
+                  <v n="MethodObjectGuid">{a948a97f-26dc-4c2d-9f9f-497da8ab533e}</v>
+                  <v n="MethodStereotype">""</v>
+                  <v n="MethodParameterLength">20</v>
+                  <v n="MethodParameterTooLong">false</v>
+                </o>
                 <v>d4651b67-bdbd-47a6-b65a-856b6081014a</v>
                 <o>
                   <v n="MethodName">"Get_Generic"</v>
@@ -1412,33 +1449,21 @@
                   <v n="MethodParameterLength">20</v>
                   <v n="MethodParameterTooLong">false</v>
                 </o>
-                <v>37fc4f47-6bcc-4b7e-8ac0-c31304e3ca38</v>
+                <v>b2d9e6dd-534f-4c68-9d90-d87e61323911</v>
                 <o>
-                  <v n="MethodName">"Set_Generic"</v>
+                  <v n="MethodName">"Contains"</v>
                   <v n="MethodBreakPointActive">false</v>
-                  <v n="MethodReturnType">"I_List"</v>
+                  <v n="MethodReturnType">"BOOL"</v>
                   <l n="MethodParameter" t="ArrayList" cet="UMLMethodParameter">
                     <o>
-                      <v n="ParameterName">"Index"</v>
-                      <v n="ParameterType">"T_Position"</v>
-                      <v n="ParameterParent">{37fc4f47-6bcc-4b7e-8ac0-c31304e3ca38}</v>
-                      <v n="ParameterTransfer">"in"</v>
-                    </o>
-                    <o>
                       <v n="ParameterName">"Item"</v>
-                      <v n="ParameterType">"T_Generic"</v>
-                      <v n="ParameterParent">{37fc4f47-6bcc-4b7e-8ac0-c31304e3ca38}</v>
+                      <v n="ParameterType">"__SYSTEM.AnyType"</v>
+                      <v n="ParameterParent">{b2d9e6dd-534f-4c68-9d90-d87e61323911}</v>
                       <v n="ParameterTransfer">"in"</v>
-                    </o>
-                    <o>
-                      <v n="ParameterName">"bSuccess"</v>
-                      <v n="ParameterType">"BOOL"</v>
-                      <v n="ParameterParent">{37fc4f47-6bcc-4b7e-8ac0-c31304e3ca38}</v>
-                      <v n="ParameterTransfer">"out"</v>
                     </o>
                   </l>
                   <v n="MethodParent">{5a4a9b19-acd3-4f54-8771-b26459424443}</v>
-                  <v n="MethodObjectGuid">{37fc4f47-6bcc-4b7e-8ac0-c31304e3ca38}</v>
+                  <v n="MethodObjectGuid">{b2d9e6dd-534f-4c68-9d90-d87e61323911}</v>
                   <v n="MethodStereotype">""</v>
                   <v n="MethodParameterLength">20</v>
                   <v n="MethodParameterTooLong">false</v>
@@ -1630,58 +1655,33 @@
                   <v n="MethodParameterLength">20</v>
                   <v n="MethodParameterTooLong">false</v>
                 </o>
-                <v>c60f8d85-46cb-414f-92a9-87b66c62299a</v>
+                <v>37fc4f47-6bcc-4b7e-8ac0-c31304e3ca38</v>
                 <o>
-                  <v n="MethodName">"Insert_Generic"</v>
+                  <v n="MethodName">"Set_Generic"</v>
                   <v n="MethodBreakPointActive">false</v>
                   <v n="MethodReturnType">"I_List"</v>
                   <l n="MethodParameter" t="ArrayList" cet="UMLMethodParameter">
                     <o>
                       <v n="ParameterName">"Index"</v>
                       <v n="ParameterType">"T_Position"</v>
-                      <v n="ParameterParent">{c60f8d85-46cb-414f-92a9-87b66c62299a}</v>
+                      <v n="ParameterParent">{37fc4f47-6bcc-4b7e-8ac0-c31304e3ca38}</v>
                       <v n="ParameterTransfer">"in"</v>
                     </o>
                     <o>
                       <v n="ParameterName">"Item"</v>
                       <v n="ParameterType">"T_Generic"</v>
-                      <v n="ParameterParent">{c60f8d85-46cb-414f-92a9-87b66c62299a}</v>
+                      <v n="ParameterParent">{37fc4f47-6bcc-4b7e-8ac0-c31304e3ca38}</v>
                       <v n="ParameterTransfer">"in"</v>
                     </o>
                     <o>
                       <v n="ParameterName">"bSuccess"</v>
                       <v n="ParameterType">"BOOL"</v>
-                      <v n="ParameterParent">{c60f8d85-46cb-414f-92a9-87b66c62299a}</v>
+                      <v n="ParameterParent">{37fc4f47-6bcc-4b7e-8ac0-c31304e3ca38}</v>
                       <v n="ParameterTransfer">"out"</v>
                     </o>
                   </l>
                   <v n="MethodParent">{5a4a9b19-acd3-4f54-8771-b26459424443}</v>
-                  <v n="MethodObjectGuid">{c60f8d85-46cb-414f-92a9-87b66c62299a}</v>
-                  <v n="MethodStereotype">""</v>
-                  <v n="MethodParameterLength">20</v>
-                  <v n="MethodParameterTooLong">false</v>
-                </o>
-                <v>a948a97f-26dc-4c2d-9f9f-497da8ab533e</v>
-                <o>
-                  <v n="MethodName">"Append"</v>
-                  <v n="MethodBreakPointActive">false</v>
-                  <v n="MethodReturnType">"I_List"</v>
-                  <l n="MethodParameter" t="ArrayList" cet="UMLMethodParameter">
-                    <o>
-                      <v n="ParameterName">"Item"</v>
-                      <v n="ParameterType">"__SYSTEM.AnyType"</v>
-                      <v n="ParameterParent">{a948a97f-26dc-4c2d-9f9f-497da8ab533e}</v>
-                      <v n="ParameterTransfer">"in"</v>
-                    </o>
-                    <o>
-                      <v n="ParameterName">"bSuccess"</v>
-                      <v n="ParameterType">"BOOL"</v>
-                      <v n="ParameterParent">{a948a97f-26dc-4c2d-9f9f-497da8ab533e}</v>
-                      <v n="ParameterTransfer">"out"</v>
-                    </o>
-                  </l>
-                  <v n="MethodParent">{5a4a9b19-acd3-4f54-8771-b26459424443}</v>
-                  <v n="MethodObjectGuid">{a948a97f-26dc-4c2d-9f9f-497da8ab533e}</v>
+                  <v n="MethodObjectGuid">{37fc4f47-6bcc-4b7e-8ac0-c31304e3ca38}</v>
                   <v n="MethodStereotype">""</v>
                   <v n="MethodParameterLength">20</v>
                   <v n="MethodParameterTooLong">false</v>
@@ -2473,429 +2473,6 @@
               <v n="ARGBElementColor">0</v>
               <v n="ZOrder">73U</v>
             </o>
-            <v>c253b4c6-f215-4804-bbd2-782afbaba8b8</v>
-            <o>
-              <v n="DocumenationName">"I_Immutable_Map"</v>
-              <n n="AttributeTrigger" />
-              <v n="ExcludedFromBuild">false</v>
-              <v n="PropertiesLoaded">false</v>
-              <d n="Properties" t="Hashtable" />
-              <l n="AttributesArray" t="ArrayList" />
-              <v n="PropertyID">-1</v>
-              <v n="MethodsLoaded">false</v>
-              <d n="MethodList" t="Hashtable" ckt="Guid" cvt="UMLElementMethod">
-                <v>d786af39-d6ec-4ea0-930a-f214517e75c9</v>
-                <o>
-                  <v n="MethodName">"Get_Values"</v>
-                  <v n="MethodBreakPointActive">false</v>
-                  <v n="MethodReturnType">"I_Immutable_List"</v>
-                  <l n="MethodParameter" t="ArrayList" />
-                  <v n="MethodParent">{c253b4c6-f215-4804-bbd2-782afbaba8b8}</v>
-                  <v n="MethodObjectGuid">{d786af39-d6ec-4ea0-930a-f214517e75c9}</v>
-                  <v n="MethodStereotype">""</v>
-                  <v n="MethodParameterLength">20</v>
-                  <v n="MethodParameterTooLong">false</v>
-                </o>
-                <v>99f2e1d7-ff52-46a2-9b6c-967dade54509</v>
-                <o>
-                  <v n="MethodName">"Get_As_String"</v>
-                  <v n="MethodBreakPointActive">false</v>
-                  <v n="MethodReturnType">"I_Immutable_Map"</v>
-                  <l n="MethodParameter" t="ArrayList" cet="UMLMethodParameter">
-                    <o>
-                      <v n="ParameterName">"Key"</v>
-                      <v n="ParameterType">"__SYSTEM.AnyType"</v>
-                      <v n="ParameterParent">{99f2e1d7-ff52-46a2-9b6c-967dade54509}</v>
-                      <v n="ParameterTransfer">"in"</v>
-                    </o>
-                    <o>
-                      <v n="ParameterName">"sValue"</v>
-                      <v n="ParameterType">"REFERENCE TO STRING"</v>
-                      <v n="ParameterParent">{99f2e1d7-ff52-46a2-9b6c-967dade54509}</v>
-                      <v n="ParameterTransfer">"in"</v>
-                    </o>
-                    <o>
-                      <v n="ParameterName">"bSuccess"</v>
-                      <v n="ParameterType">"BOOL"</v>
-                      <v n="ParameterParent">{99f2e1d7-ff52-46a2-9b6c-967dade54509}</v>
-                      <v n="ParameterTransfer">"out"</v>
-                    </o>
-                  </l>
-                  <v n="MethodParent">{c253b4c6-f215-4804-bbd2-782afbaba8b8}</v>
-                  <v n="MethodObjectGuid">{99f2e1d7-ff52-46a2-9b6c-967dade54509}</v>
-                  <v n="MethodStereotype">""</v>
-                  <v n="MethodParameterLength">20</v>
-                  <v n="MethodParameterTooLong">false</v>
-                </o>
-                <v>b9d527a2-1195-4d27-a41d-1708e1ac26c0</v>
-                <o>
-                  <v n="MethodName">"Get_Keys"</v>
-                  <v n="MethodBreakPointActive">false</v>
-                  <v n="MethodReturnType">"I_Immutable_List"</v>
-                  <l n="MethodParameter" t="ArrayList" />
-                  <v n="MethodParent">{c253b4c6-f215-4804-bbd2-782afbaba8b8}</v>
-                  <v n="MethodObjectGuid">{b9d527a2-1195-4d27-a41d-1708e1ac26c0}</v>
-                  <v n="MethodStereotype">""</v>
-                  <v n="MethodParameterLength">20</v>
-                  <v n="MethodParameterTooLong">false</v>
-                </o>
-                <v>b063b61f-9773-4077-ba2d-830c1a3734dc</v>
-                <o>
-                  <v n="MethodName">"Contains"</v>
-                  <v n="MethodBreakPointActive">false</v>
-                  <v n="MethodReturnType">"BOOL"</v>
-                  <l n="MethodParameter" t="ArrayList" cet="UMLMethodParameter">
-                    <o>
-                      <v n="ParameterName">"Key"</v>
-                      <v n="ParameterType">"__SYSTEM.AnyType"</v>
-                      <v n="ParameterParent">{b063b61f-9773-4077-ba2d-830c1a3734dc}</v>
-                      <v n="ParameterTransfer">"in"</v>
-                    </o>
-                  </l>
-                  <v n="MethodParent">{c253b4c6-f215-4804-bbd2-782afbaba8b8}</v>
-                  <v n="MethodObjectGuid">{b063b61f-9773-4077-ba2d-830c1a3734dc}</v>
-                  <v n="MethodStereotype">""</v>
-                  <v n="MethodParameterLength">20</v>
-                  <v n="MethodParameterTooLong">false</v>
-                </o>
-                <v>c840e063-e505-4dab-8037-1b1fa0a97c7c</v>
-                <o>
-                  <v n="MethodName">"Get"</v>
-                  <v n="MethodBreakPointActive">false</v>
-                  <v n="MethodReturnType">"I_Immutable_Map"</v>
-                  <l n="MethodParameter" t="ArrayList" cet="UMLMethodParameter">
-                    <o>
-                      <v n="ParameterName">"Key"</v>
-                      <v n="ParameterType">"__SYSTEM.AnyType"</v>
-                      <v n="ParameterParent">{c840e063-e505-4dab-8037-1b1fa0a97c7c}</v>
-                      <v n="ParameterTransfer">"in"</v>
-                    </o>
-                    <o>
-                      <v n="ParameterName">"Value"</v>
-                      <v n="ParameterType">"__SYSTEM.AnyType"</v>
-                      <v n="ParameterParent">{c840e063-e505-4dab-8037-1b1fa0a97c7c}</v>
-                      <v n="ParameterTransfer">"in"</v>
-                    </o>
-                    <o>
-                      <v n="ParameterName">"bSuccess"</v>
-                      <v n="ParameterType">"BOOL"</v>
-                      <v n="ParameterParent">{c840e063-e505-4dab-8037-1b1fa0a97c7c}</v>
-                      <v n="ParameterTransfer">"out"</v>
-                    </o>
-                  </l>
-                  <v n="MethodParent">{c253b4c6-f215-4804-bbd2-782afbaba8b8}</v>
-                  <v n="MethodObjectGuid">{c840e063-e505-4dab-8037-1b1fa0a97c7c}</v>
-                  <v n="MethodStereotype">""</v>
-                  <v n="MethodParameterLength">20</v>
-                  <v n="MethodParameterTooLong">false</v>
-                </o>
-              </d>
-              <v n="MethodID">-1</v>
-              <v n="ActivityID">-1</v>
-              <v n="IecObjectSemantic">5</v>
-              <d n="MethodStereotypContainer" t="Hashtable" />
-              <o n="ElementVisualisation" t="ClassElementVisualisation">
-                <v n="ShowAttributes">true</v>
-                <v n="ShowMethods">false</v>
-                <a n="DockingPopulation" cet="Int32">AAAAAAAAAAAAAAAAAAAAAA==</a>
-                <v n="ColumnIndex">0</v>
-                <v n="RowIndex">0</v>
-                <v n="RepresentedElement">15</v>
-                <v n="IsElementVisible">true</v>
-                <v n="TopPosition">700</v>
-                <v n="LeftPosition">870</v>
-                <v n="WidthValue">127</v>
-                <v n="MinWidthValue">0</v>
-                <v n="Height">78</v>
-                <v n="MinHeight">0</v>
-                <v n="AutomaticLayout">true</v>
-                <d n="DockingPoints" t="Hashtable" />
-              </o>
-              <n n="StereotypeContainer" />
-              <v n="LibraryPath">""</v>
-              <v n="ObjectGuid">{c253b4c6-f215-4804-bbd2-782afbaba8b8}</v>
-              <v n="HasGraphicalRepresentation">true</v>
-              <v n="bIsVisualisationChanged">false</v>
-              <v n="IsType" t="UMLType">UMLInterfaceElement</v>
-              <v n="_MaxDoCycleCalls" t="Int16">32767</v>
-              <v n="DefaultCellSizeX">96</v>
-              <v n="DefaultCellSizeY">64</v>
-              <v n="IsDocumentation">false</v>
-              <v n="Area">{00000000-0000-0000-0000-000000000000}</v>
-              <v n="ParsedMethods">false</v>
-              <v n="ParsedProperties">false</v>
-              <v n="GeneratorId">0</v>
-              <v n="UserDefined">true</v>
-              <v n="ElementID">15</v>
-              <v n="ElementObjectGuid">{c253b4c6-f215-4804-bbd2-782afbaba8b8}</v>
-              <v n="ParentGuid">{a48f925e-57c7-4199-8f08-16bf7a74fabd}</v>
-              <v n="ContainerGuid">{00000000-0000-0000-0000-000000000000}</v>
-              <v n="ShowedStereotype">{00000000-0000-0000-0000-000000000000}</v>
-              <v n="ReplacewithImage">false</v>
-              <v n="AutomaticLayout">false</v>
-              <v n="PositionCounter">1L</v>
-              <v n="UMLPosition">-1L</v>
-              <v n="IsModified">false</v>
-              <v n="ARGBElementColor">0</v>
-              <v n="ZOrder">103U</v>
-            </o>
-            <v>f9536c24-1bd3-4fb2-a171-46822dfd61cd</v>
-            <o>
-              <v n="DocumenationName">"I_Queue"</v>
-              <n n="AttributeTrigger" />
-              <v n="ExcludedFromBuild">false</v>
-              <v n="PropertiesLoaded">false</v>
-              <d n="Properties" t="Hashtable" />
-              <l n="AttributesArray" t="ArrayList" cet="UMLElementAttribute">
-                <o>
-                  <v n="bIsAttribute">false</v>
-                  <v n="isInputVar">false</v>
-                  <v n="isOutputVar">false</v>
-                  <v n="isInoutVar">false</v>
-                  <v n="isLocalVar">false</v>
-                  <v n="bIsMethod">true</v>
-                  <v n="AttribtueName">"_Values"</v>
-                  <v n="AttributeConstraint">""</v>
-                  <v n="AttributeReturnType">"I_Immutable_List"</v>
-                  <v n="AttributeParent">{f9536c24-1bd3-4fb2-a171-46822dfd61cd}</v>
-                  <v n="AttributeObjectGuid">{71ca3185-dcda-4f03-80e1-7b80f3e3b521}</v>
-                  <v n="AttributeStereotype">"Property"</v>
-                </o>
-              </l>
-              <v n="PropertyID">-1</v>
-              <v n="MethodsLoaded">false</v>
-              <d n="MethodList" t="Hashtable" ckt="Guid" cvt="UMLElementMethod">
-                <v>44e77754-3e5a-4bc5-82f2-3db774fb86c4</v>
-                <o>
-                  <v n="MethodName">"Dequeue"</v>
-                  <v n="MethodBreakPointActive">false</v>
-                  <v n="MethodReturnType">"I_Queue"</v>
-                  <l n="MethodParameter" t="ArrayList" cet="UMLMethodParameter">
-                    <o>
-                      <v n="ParameterName">"bSuccess"</v>
-                      <v n="ParameterType">"BOOL"</v>
-                      <v n="ParameterParent">{44e77754-3e5a-4bc5-82f2-3db774fb86c4}</v>
-                      <v n="ParameterTransfer">"out"</v>
-                    </o>
-                  </l>
-                  <v n="MethodParent">{f9536c24-1bd3-4fb2-a171-46822dfd61cd}</v>
-                  <v n="MethodObjectGuid">{44e77754-3e5a-4bc5-82f2-3db774fb86c4}</v>
-                  <v n="MethodStereotype">""</v>
-                  <v n="MethodParameterLength">20</v>
-                  <v n="MethodParameterTooLong">false</v>
-                </o>
-                <v>5421b7f9-5371-4536-aba9-8e2cad20ffb5</v>
-                <o>
-                  <v n="MethodName">"Enqueue_At_Front"</v>
-                  <v n="MethodBreakPointActive">false</v>
-                  <v n="MethodReturnType">"I_Queue"</v>
-                  <l n="MethodParameter" t="ArrayList" cet="UMLMethodParameter">
-                    <o>
-                      <v n="ParameterName">"Item"</v>
-                      <v n="ParameterType">"__SYSTEM.AnyType"</v>
-                      <v n="ParameterParent">{5421b7f9-5371-4536-aba9-8e2cad20ffb5}</v>
-                      <v n="ParameterTransfer">"in"</v>
-                    </o>
-                    <o>
-                      <v n="ParameterName">"bSuccess"</v>
-                      <v n="ParameterType">"BOOL"</v>
-                      <v n="ParameterParent">{5421b7f9-5371-4536-aba9-8e2cad20ffb5}</v>
-                      <v n="ParameterTransfer">"out"</v>
-                    </o>
-                  </l>
-                  <v n="MethodParent">{f9536c24-1bd3-4fb2-a171-46822dfd61cd}</v>
-                  <v n="MethodObjectGuid">{5421b7f9-5371-4536-aba9-8e2cad20ffb5}</v>
-                  <v n="MethodStereotype">""</v>
-                  <v n="MethodParameterLength">20</v>
-                  <v n="MethodParameterTooLong">false</v>
-                </o>
-                <v>b8451697-28af-4cb0-9ba2-6a66052b5678</v>
-                <o>
-                  <v n="MethodName">"Enqueue_Generic"</v>
-                  <v n="MethodBreakPointActive">false</v>
-                  <v n="MethodReturnType">"I_Queue"</v>
-                  <l n="MethodParameter" t="ArrayList" cet="UMLMethodParameter">
-                    <o>
-                      <v n="ParameterName">"Item"</v>
-                      <v n="ParameterType">"T_Generic"</v>
-                      <v n="ParameterParent">{b8451697-28af-4cb0-9ba2-6a66052b5678}</v>
-                      <v n="ParameterTransfer">"in"</v>
-                    </o>
-                    <o>
-                      <v n="ParameterName">"bAt_Front"</v>
-                      <v n="ParameterType">"BOOL"</v>
-                      <v n="ParameterParent">{b8451697-28af-4cb0-9ba2-6a66052b5678}</v>
-                      <v n="ParameterTransfer">"in"</v>
-                    </o>
-                    <o>
-                      <v n="ParameterName">"bSuccess"</v>
-                      <v n="ParameterType">"BOOL"</v>
-                      <v n="ParameterParent">{b8451697-28af-4cb0-9ba2-6a66052b5678}</v>
-                      <v n="ParameterTransfer">"out"</v>
-                    </o>
-                  </l>
-                  <v n="MethodParent">{f9536c24-1bd3-4fb2-a171-46822dfd61cd}</v>
-                  <v n="MethodObjectGuid">{b8451697-28af-4cb0-9ba2-6a66052b5678}</v>
-                  <v n="MethodStereotype">""</v>
-                  <v n="MethodParameterLength">20</v>
-                  <v n="MethodParameterTooLong">false</v>
-                </o>
-                <v>ccf7169c-6b83-467c-9659-4c28c2b34ee5</v>
-                <o>
-                  <v n="MethodName">"Clear"</v>
-                  <v n="MethodBreakPointActive">false</v>
-                  <v n="MethodReturnType">"I_Queue"</v>
-                  <l n="MethodParameter" t="ArrayList" />
-                  <v n="MethodParent">{f9536c24-1bd3-4fb2-a171-46822dfd61cd}</v>
-                  <v n="MethodObjectGuid">{ccf7169c-6b83-467c-9659-4c28c2b34ee5}</v>
-                  <v n="MethodStereotype">""</v>
-                  <v n="MethodParameterLength">20</v>
-                  <v n="MethodParameterTooLong">false</v>
-                </o>
-                <v>3022459c-2f33-4d7c-8013-7431caf15cc1</v>
-                <o>
-                  <v n="MethodName">"Get"</v>
-                  <v n="MethodBreakPointActive">false</v>
-                  <v n="MethodReturnType">"I_Queue"</v>
-                  <l n="MethodParameter" t="ArrayList" cet="UMLMethodParameter">
-                    <o>
-                      <v n="ParameterName">"Item"</v>
-                      <v n="ParameterType">"__SYSTEM.AnyType"</v>
-                      <v n="ParameterParent">{3022459c-2f33-4d7c-8013-7431caf15cc1}</v>
-                      <v n="ParameterTransfer">"in"</v>
-                    </o>
-                    <o>
-                      <v n="ParameterName">"bSuccess"</v>
-                      <v n="ParameterType">"BOOL"</v>
-                      <v n="ParameterParent">{3022459c-2f33-4d7c-8013-7431caf15cc1}</v>
-                      <v n="ParameterTransfer">"out"</v>
-                    </o>
-                  </l>
-                  <v n="MethodParent">{f9536c24-1bd3-4fb2-a171-46822dfd61cd}</v>
-                  <v n="MethodObjectGuid">{3022459c-2f33-4d7c-8013-7431caf15cc1}</v>
-                  <v n="MethodStereotype">""</v>
-                  <v n="MethodParameterLength">20</v>
-                  <v n="MethodParameterTooLong">false</v>
-                </o>
-                <v>53f0061f-2417-441a-8570-f54d8c45845d</v>
-                <o>
-                  <v n="MethodName">"Get_Generic"</v>
-                  <v n="MethodBreakPointActive">false</v>
-                  <v n="MethodReturnType">"I_Queue"</v>
-                  <l n="MethodParameter" t="ArrayList" cet="UMLMethodParameter">
-                    <o>
-                      <v n="ParameterName">"Item"</v>
-                      <v n="ParameterType">"T_Generic"</v>
-                      <v n="ParameterParent">{53f0061f-2417-441a-8570-f54d8c45845d}</v>
-                      <v n="ParameterTransfer">"out"</v>
-                    </o>
-                    <o>
-                      <v n="ParameterName">"bSuccess"</v>
-                      <v n="ParameterType">"BOOL"</v>
-                      <v n="ParameterParent">{53f0061f-2417-441a-8570-f54d8c45845d}</v>
-                      <v n="ParameterTransfer">"out"</v>
-                    </o>
-                  </l>
-                  <v n="MethodParent">{f9536c24-1bd3-4fb2-a171-46822dfd61cd}</v>
-                  <v n="MethodObjectGuid">{53f0061f-2417-441a-8570-f54d8c45845d}</v>
-                  <v n="MethodStereotype">""</v>
-                  <v n="MethodParameterLength">20</v>
-                  <v n="MethodParameterTooLong">false</v>
-                </o>
-                <v>fa03c1d4-8514-46f0-9e36-be27681d256d</v>
-                <o>
-                  <v n="MethodName">"Reverse"</v>
-                  <v n="MethodBreakPointActive">false</v>
-                  <v n="MethodReturnType">"I_Queue"</v>
-                  <l n="MethodParameter" t="ArrayList" cet="UMLMethodParameter">
-                    <o>
-                      <v n="ParameterName">"bSuccess"</v>
-                      <v n="ParameterType">"BOOL"</v>
-                      <v n="ParameterParent">{fa03c1d4-8514-46f0-9e36-be27681d256d}</v>
-                      <v n="ParameterTransfer">"out"</v>
-                    </o>
-                  </l>
-                  <v n="MethodParent">{f9536c24-1bd3-4fb2-a171-46822dfd61cd}</v>
-                  <v n="MethodObjectGuid">{fa03c1d4-8514-46f0-9e36-be27681d256d}</v>
-                  <v n="MethodStereotype">""</v>
-                  <v n="MethodParameterLength">20</v>
-                  <v n="MethodParameterTooLong">false</v>
-                </o>
-                <v>82fb4f50-be81-4eba-a0ce-d751ed86a2b8</v>
-                <o>
-                  <v n="MethodName">"Enqueue"</v>
-                  <v n="MethodBreakPointActive">false</v>
-                  <v n="MethodReturnType">"I_Queue"</v>
-                  <l n="MethodParameter" t="ArrayList" cet="UMLMethodParameter">
-                    <o>
-                      <v n="ParameterName">"Item"</v>
-                      <v n="ParameterType">"__SYSTEM.AnyType"</v>
-                      <v n="ParameterParent">{82fb4f50-be81-4eba-a0ce-d751ed86a2b8}</v>
-                      <v n="ParameterTransfer">"in"</v>
-                    </o>
-                    <o>
-                      <v n="ParameterName">"bSuccess"</v>
-                      <v n="ParameterType">"BOOL"</v>
-                      <v n="ParameterParent">{82fb4f50-be81-4eba-a0ce-d751ed86a2b8}</v>
-                      <v n="ParameterTransfer">"out"</v>
-                    </o>
-                  </l>
-                  <v n="MethodParent">{f9536c24-1bd3-4fb2-a171-46822dfd61cd}</v>
-                  <v n="MethodObjectGuid">{82fb4f50-be81-4eba-a0ce-d751ed86a2b8}</v>
-                  <v n="MethodStereotype">""</v>
-                  <v n="MethodParameterLength">20</v>
-                  <v n="MethodParameterTooLong">false</v>
-                </o>
-              </d>
-              <v n="MethodID">-1</v>
-              <v n="ActivityID">-1</v>
-              <v n="IecObjectSemantic">5</v>
-              <d n="MethodStereotypContainer" t="Hashtable" />
-              <o n="ElementVisualisation" t="ClassElementVisualisation">
-                <v n="ShowAttributes">false</v>
-                <v n="ShowMethods">false</v>
-                <a n="DockingPopulation" cet="Int32">AAAAAAAAAAAAAAAAAAAAAA==</a>
-                <v n="ColumnIndex">0</v>
-                <v n="RowIndex">0</v>
-                <v n="RepresentedElement">8</v>
-                <v n="IsElementVisible">true</v>
-                <v n="TopPosition">360</v>
-                <v n="LeftPosition">480</v>
-                <v n="WidthValue">100</v>
-                <v n="MinWidthValue">0</v>
-                <v n="Height">88</v>
-                <v n="MinHeight">0</v>
-                <v n="AutomaticLayout">true</v>
-                <d n="DockingPoints" t="Hashtable" />
-              </o>
-              <n n="StereotypeContainer" />
-              <v n="LibraryPath">""</v>
-              <v n="ObjectGuid">{f9536c24-1bd3-4fb2-a171-46822dfd61cd}</v>
-              <v n="HasGraphicalRepresentation">true</v>
-              <v n="bIsVisualisationChanged">false</v>
-              <v n="IsType" t="UMLType">UMLInterfaceElement</v>
-              <v n="_MaxDoCycleCalls" t="Int16">32767</v>
-              <v n="DefaultCellSizeX">96</v>
-              <v n="DefaultCellSizeY">64</v>
-              <v n="IsDocumentation">false</v>
-              <v n="Area">{00000000-0000-0000-0000-000000000000}</v>
-              <v n="ParsedMethods">false</v>
-              <v n="ParsedProperties">false</v>
-              <v n="GeneratorId">0</v>
-              <v n="UserDefined">true</v>
-              <v n="ElementID">8</v>
-              <v n="ElementObjectGuid">{f9536c24-1bd3-4fb2-a171-46822dfd61cd}</v>
-              <v n="ParentGuid">{a48f925e-57c7-4199-8f08-16bf7a74fabd}</v>
-              <v n="ContainerGuid">{00000000-0000-0000-0000-000000000000}</v>
-              <v n="ShowedStereotype">{00000000-0000-0000-0000-000000000000}</v>
-              <v n="ReplacewithImage">false</v>
-              <v n="AutomaticLayout">false</v>
-              <v n="PositionCounter">1L</v>
-              <v n="UMLPosition">-1L</v>
-              <v n="IsModified">false</v>
-              <v n="ARGBElementColor">0</v>
-              <v n="ZOrder">58U</v>
-            </o>
             <v>d2a71742-8801-4823-a449-0b6085a7b77d</v>
             <o>
               <v n="DocumenationName">"I_Array"</v>
@@ -3242,6 +2819,429 @@
               <v n="IsModified">false</v>
               <v n="ARGBElementColor">0</v>
               <v n="ZOrder">69U</v>
+            </o>
+            <v>f9536c24-1bd3-4fb2-a171-46822dfd61cd</v>
+            <o>
+              <v n="DocumenationName">"I_Queue"</v>
+              <n n="AttributeTrigger" />
+              <v n="ExcludedFromBuild">false</v>
+              <v n="PropertiesLoaded">false</v>
+              <d n="Properties" t="Hashtable" />
+              <l n="AttributesArray" t="ArrayList" cet="UMLElementAttribute">
+                <o>
+                  <v n="bIsAttribute">false</v>
+                  <v n="isInputVar">false</v>
+                  <v n="isOutputVar">false</v>
+                  <v n="isInoutVar">false</v>
+                  <v n="isLocalVar">false</v>
+                  <v n="bIsMethod">true</v>
+                  <v n="AttribtueName">"_Values"</v>
+                  <v n="AttributeConstraint">""</v>
+                  <v n="AttributeReturnType">"I_Immutable_List"</v>
+                  <v n="AttributeParent">{f9536c24-1bd3-4fb2-a171-46822dfd61cd}</v>
+                  <v n="AttributeObjectGuid">{71ca3185-dcda-4f03-80e1-7b80f3e3b521}</v>
+                  <v n="AttributeStereotype">"Property"</v>
+                </o>
+              </l>
+              <v n="PropertyID">-1</v>
+              <v n="MethodsLoaded">false</v>
+              <d n="MethodList" t="Hashtable" ckt="Guid" cvt="UMLElementMethod">
+                <v>44e77754-3e5a-4bc5-82f2-3db774fb86c4</v>
+                <o>
+                  <v n="MethodName">"Dequeue"</v>
+                  <v n="MethodBreakPointActive">false</v>
+                  <v n="MethodReturnType">"I_Queue"</v>
+                  <l n="MethodParameter" t="ArrayList" cet="UMLMethodParameter">
+                    <o>
+                      <v n="ParameterName">"bSuccess"</v>
+                      <v n="ParameterType">"BOOL"</v>
+                      <v n="ParameterParent">{44e77754-3e5a-4bc5-82f2-3db774fb86c4}</v>
+                      <v n="ParameterTransfer">"out"</v>
+                    </o>
+                  </l>
+                  <v n="MethodParent">{f9536c24-1bd3-4fb2-a171-46822dfd61cd}</v>
+                  <v n="MethodObjectGuid">{44e77754-3e5a-4bc5-82f2-3db774fb86c4}</v>
+                  <v n="MethodStereotype">""</v>
+                  <v n="MethodParameterLength">20</v>
+                  <v n="MethodParameterTooLong">false</v>
+                </o>
+                <v>5421b7f9-5371-4536-aba9-8e2cad20ffb5</v>
+                <o>
+                  <v n="MethodName">"Enqueue_At_Front"</v>
+                  <v n="MethodBreakPointActive">false</v>
+                  <v n="MethodReturnType">"I_Queue"</v>
+                  <l n="MethodParameter" t="ArrayList" cet="UMLMethodParameter">
+                    <o>
+                      <v n="ParameterName">"Item"</v>
+                      <v n="ParameterType">"__SYSTEM.AnyType"</v>
+                      <v n="ParameterParent">{5421b7f9-5371-4536-aba9-8e2cad20ffb5}</v>
+                      <v n="ParameterTransfer">"in"</v>
+                    </o>
+                    <o>
+                      <v n="ParameterName">"bSuccess"</v>
+                      <v n="ParameterType">"BOOL"</v>
+                      <v n="ParameterParent">{5421b7f9-5371-4536-aba9-8e2cad20ffb5}</v>
+                      <v n="ParameterTransfer">"out"</v>
+                    </o>
+                  </l>
+                  <v n="MethodParent">{f9536c24-1bd3-4fb2-a171-46822dfd61cd}</v>
+                  <v n="MethodObjectGuid">{5421b7f9-5371-4536-aba9-8e2cad20ffb5}</v>
+                  <v n="MethodStereotype">""</v>
+                  <v n="MethodParameterLength">20</v>
+                  <v n="MethodParameterTooLong">false</v>
+                </o>
+                <v>b8451697-28af-4cb0-9ba2-6a66052b5678</v>
+                <o>
+                  <v n="MethodName">"Enqueue_Generic"</v>
+                  <v n="MethodBreakPointActive">false</v>
+                  <v n="MethodReturnType">"I_Queue"</v>
+                  <l n="MethodParameter" t="ArrayList" cet="UMLMethodParameter">
+                    <o>
+                      <v n="ParameterName">"Item"</v>
+                      <v n="ParameterType">"T_Generic"</v>
+                      <v n="ParameterParent">{b8451697-28af-4cb0-9ba2-6a66052b5678}</v>
+                      <v n="ParameterTransfer">"in"</v>
+                    </o>
+                    <o>
+                      <v n="ParameterName">"bAt_Front"</v>
+                      <v n="ParameterType">"BOOL"</v>
+                      <v n="ParameterParent">{b8451697-28af-4cb0-9ba2-6a66052b5678}</v>
+                      <v n="ParameterTransfer">"in"</v>
+                    </o>
+                    <o>
+                      <v n="ParameterName">"bSuccess"</v>
+                      <v n="ParameterType">"BOOL"</v>
+                      <v n="ParameterParent">{b8451697-28af-4cb0-9ba2-6a66052b5678}</v>
+                      <v n="ParameterTransfer">"out"</v>
+                    </o>
+                  </l>
+                  <v n="MethodParent">{f9536c24-1bd3-4fb2-a171-46822dfd61cd}</v>
+                  <v n="MethodObjectGuid">{b8451697-28af-4cb0-9ba2-6a66052b5678}</v>
+                  <v n="MethodStereotype">""</v>
+                  <v n="MethodParameterLength">20</v>
+                  <v n="MethodParameterTooLong">false</v>
+                </o>
+                <v>ccf7169c-6b83-467c-9659-4c28c2b34ee5</v>
+                <o>
+                  <v n="MethodName">"Clear"</v>
+                  <v n="MethodBreakPointActive">false</v>
+                  <v n="MethodReturnType">"I_Queue"</v>
+                  <l n="MethodParameter" t="ArrayList" />
+                  <v n="MethodParent">{f9536c24-1bd3-4fb2-a171-46822dfd61cd}</v>
+                  <v n="MethodObjectGuid">{ccf7169c-6b83-467c-9659-4c28c2b34ee5}</v>
+                  <v n="MethodStereotype">""</v>
+                  <v n="MethodParameterLength">20</v>
+                  <v n="MethodParameterTooLong">false</v>
+                </o>
+                <v>3022459c-2f33-4d7c-8013-7431caf15cc1</v>
+                <o>
+                  <v n="MethodName">"Get"</v>
+                  <v n="MethodBreakPointActive">false</v>
+                  <v n="MethodReturnType">"I_Queue"</v>
+                  <l n="MethodParameter" t="ArrayList" cet="UMLMethodParameter">
+                    <o>
+                      <v n="ParameterName">"Item"</v>
+                      <v n="ParameterType">"__SYSTEM.AnyType"</v>
+                      <v n="ParameterParent">{3022459c-2f33-4d7c-8013-7431caf15cc1}</v>
+                      <v n="ParameterTransfer">"in"</v>
+                    </o>
+                    <o>
+                      <v n="ParameterName">"bSuccess"</v>
+                      <v n="ParameterType">"BOOL"</v>
+                      <v n="ParameterParent">{3022459c-2f33-4d7c-8013-7431caf15cc1}</v>
+                      <v n="ParameterTransfer">"out"</v>
+                    </o>
+                  </l>
+                  <v n="MethodParent">{f9536c24-1bd3-4fb2-a171-46822dfd61cd}</v>
+                  <v n="MethodObjectGuid">{3022459c-2f33-4d7c-8013-7431caf15cc1}</v>
+                  <v n="MethodStereotype">""</v>
+                  <v n="MethodParameterLength">20</v>
+                  <v n="MethodParameterTooLong">false</v>
+                </o>
+                <v>53f0061f-2417-441a-8570-f54d8c45845d</v>
+                <o>
+                  <v n="MethodName">"Get_Generic"</v>
+                  <v n="MethodBreakPointActive">false</v>
+                  <v n="MethodReturnType">"I_Queue"</v>
+                  <l n="MethodParameter" t="ArrayList" cet="UMLMethodParameter">
+                    <o>
+                      <v n="ParameterName">"Item"</v>
+                      <v n="ParameterType">"T_Generic"</v>
+                      <v n="ParameterParent">{53f0061f-2417-441a-8570-f54d8c45845d}</v>
+                      <v n="ParameterTransfer">"out"</v>
+                    </o>
+                    <o>
+                      <v n="ParameterName">"bSuccess"</v>
+                      <v n="ParameterType">"BOOL"</v>
+                      <v n="ParameterParent">{53f0061f-2417-441a-8570-f54d8c45845d}</v>
+                      <v n="ParameterTransfer">"out"</v>
+                    </o>
+                  </l>
+                  <v n="MethodParent">{f9536c24-1bd3-4fb2-a171-46822dfd61cd}</v>
+                  <v n="MethodObjectGuid">{53f0061f-2417-441a-8570-f54d8c45845d}</v>
+                  <v n="MethodStereotype">""</v>
+                  <v n="MethodParameterLength">20</v>
+                  <v n="MethodParameterTooLong">false</v>
+                </o>
+                <v>fa03c1d4-8514-46f0-9e36-be27681d256d</v>
+                <o>
+                  <v n="MethodName">"Reverse"</v>
+                  <v n="MethodBreakPointActive">false</v>
+                  <v n="MethodReturnType">"I_Queue"</v>
+                  <l n="MethodParameter" t="ArrayList" cet="UMLMethodParameter">
+                    <o>
+                      <v n="ParameterName">"bSuccess"</v>
+                      <v n="ParameterType">"BOOL"</v>
+                      <v n="ParameterParent">{fa03c1d4-8514-46f0-9e36-be27681d256d}</v>
+                      <v n="ParameterTransfer">"out"</v>
+                    </o>
+                  </l>
+                  <v n="MethodParent">{f9536c24-1bd3-4fb2-a171-46822dfd61cd}</v>
+                  <v n="MethodObjectGuid">{fa03c1d4-8514-46f0-9e36-be27681d256d}</v>
+                  <v n="MethodStereotype">""</v>
+                  <v n="MethodParameterLength">20</v>
+                  <v n="MethodParameterTooLong">false</v>
+                </o>
+                <v>82fb4f50-be81-4eba-a0ce-d751ed86a2b8</v>
+                <o>
+                  <v n="MethodName">"Enqueue"</v>
+                  <v n="MethodBreakPointActive">false</v>
+                  <v n="MethodReturnType">"I_Queue"</v>
+                  <l n="MethodParameter" t="ArrayList" cet="UMLMethodParameter">
+                    <o>
+                      <v n="ParameterName">"Item"</v>
+                      <v n="ParameterType">"__SYSTEM.AnyType"</v>
+                      <v n="ParameterParent">{82fb4f50-be81-4eba-a0ce-d751ed86a2b8}</v>
+                      <v n="ParameterTransfer">"in"</v>
+                    </o>
+                    <o>
+                      <v n="ParameterName">"bSuccess"</v>
+                      <v n="ParameterType">"BOOL"</v>
+                      <v n="ParameterParent">{82fb4f50-be81-4eba-a0ce-d751ed86a2b8}</v>
+                      <v n="ParameterTransfer">"out"</v>
+                    </o>
+                  </l>
+                  <v n="MethodParent">{f9536c24-1bd3-4fb2-a171-46822dfd61cd}</v>
+                  <v n="MethodObjectGuid">{82fb4f50-be81-4eba-a0ce-d751ed86a2b8}</v>
+                  <v n="MethodStereotype">""</v>
+                  <v n="MethodParameterLength">20</v>
+                  <v n="MethodParameterTooLong">false</v>
+                </o>
+              </d>
+              <v n="MethodID">-1</v>
+              <v n="ActivityID">-1</v>
+              <v n="IecObjectSemantic">5</v>
+              <d n="MethodStereotypContainer" t="Hashtable" />
+              <o n="ElementVisualisation" t="ClassElementVisualisation">
+                <v n="ShowAttributes">false</v>
+                <v n="ShowMethods">false</v>
+                <a n="DockingPopulation" cet="Int32">AAAAAAAAAAAAAAAAAAAAAA==</a>
+                <v n="ColumnIndex">0</v>
+                <v n="RowIndex">0</v>
+                <v n="RepresentedElement">8</v>
+                <v n="IsElementVisible">true</v>
+                <v n="TopPosition">360</v>
+                <v n="LeftPosition">480</v>
+                <v n="WidthValue">100</v>
+                <v n="MinWidthValue">0</v>
+                <v n="Height">88</v>
+                <v n="MinHeight">0</v>
+                <v n="AutomaticLayout">true</v>
+                <d n="DockingPoints" t="Hashtable" />
+              </o>
+              <n n="StereotypeContainer" />
+              <v n="LibraryPath">""</v>
+              <v n="ObjectGuid">{f9536c24-1bd3-4fb2-a171-46822dfd61cd}</v>
+              <v n="HasGraphicalRepresentation">true</v>
+              <v n="bIsVisualisationChanged">false</v>
+              <v n="IsType" t="UMLType">UMLInterfaceElement</v>
+              <v n="_MaxDoCycleCalls" t="Int16">32767</v>
+              <v n="DefaultCellSizeX">96</v>
+              <v n="DefaultCellSizeY">64</v>
+              <v n="IsDocumentation">false</v>
+              <v n="Area">{00000000-0000-0000-0000-000000000000}</v>
+              <v n="ParsedMethods">false</v>
+              <v n="ParsedProperties">false</v>
+              <v n="GeneratorId">0</v>
+              <v n="UserDefined">true</v>
+              <v n="ElementID">8</v>
+              <v n="ElementObjectGuid">{f9536c24-1bd3-4fb2-a171-46822dfd61cd}</v>
+              <v n="ParentGuid">{a48f925e-57c7-4199-8f08-16bf7a74fabd}</v>
+              <v n="ContainerGuid">{00000000-0000-0000-0000-000000000000}</v>
+              <v n="ShowedStereotype">{00000000-0000-0000-0000-000000000000}</v>
+              <v n="ReplacewithImage">false</v>
+              <v n="AutomaticLayout">false</v>
+              <v n="PositionCounter">1L</v>
+              <v n="UMLPosition">-1L</v>
+              <v n="IsModified">false</v>
+              <v n="ARGBElementColor">0</v>
+              <v n="ZOrder">58U</v>
+            </o>
+            <v>c253b4c6-f215-4804-bbd2-782afbaba8b8</v>
+            <o>
+              <v n="DocumenationName">"I_Immutable_Map"</v>
+              <n n="AttributeTrigger" />
+              <v n="ExcludedFromBuild">false</v>
+              <v n="PropertiesLoaded">false</v>
+              <d n="Properties" t="Hashtable" />
+              <l n="AttributesArray" t="ArrayList" />
+              <v n="PropertyID">-1</v>
+              <v n="MethodsLoaded">false</v>
+              <d n="MethodList" t="Hashtable" ckt="Guid" cvt="UMLElementMethod">
+                <v>d786af39-d6ec-4ea0-930a-f214517e75c9</v>
+                <o>
+                  <v n="MethodName">"Get_Values"</v>
+                  <v n="MethodBreakPointActive">false</v>
+                  <v n="MethodReturnType">"I_Immutable_List"</v>
+                  <l n="MethodParameter" t="ArrayList" />
+                  <v n="MethodParent">{c253b4c6-f215-4804-bbd2-782afbaba8b8}</v>
+                  <v n="MethodObjectGuid">{d786af39-d6ec-4ea0-930a-f214517e75c9}</v>
+                  <v n="MethodStereotype">""</v>
+                  <v n="MethodParameterLength">20</v>
+                  <v n="MethodParameterTooLong">false</v>
+                </o>
+                <v>99f2e1d7-ff52-46a2-9b6c-967dade54509</v>
+                <o>
+                  <v n="MethodName">"Get_As_String"</v>
+                  <v n="MethodBreakPointActive">false</v>
+                  <v n="MethodReturnType">"I_Immutable_Map"</v>
+                  <l n="MethodParameter" t="ArrayList" cet="UMLMethodParameter">
+                    <o>
+                      <v n="ParameterName">"Key"</v>
+                      <v n="ParameterType">"__SYSTEM.AnyType"</v>
+                      <v n="ParameterParent">{99f2e1d7-ff52-46a2-9b6c-967dade54509}</v>
+                      <v n="ParameterTransfer">"in"</v>
+                    </o>
+                    <o>
+                      <v n="ParameterName">"sValue"</v>
+                      <v n="ParameterType">"REFERENCE TO STRING"</v>
+                      <v n="ParameterParent">{99f2e1d7-ff52-46a2-9b6c-967dade54509}</v>
+                      <v n="ParameterTransfer">"in"</v>
+                    </o>
+                    <o>
+                      <v n="ParameterName">"bSuccess"</v>
+                      <v n="ParameterType">"BOOL"</v>
+                      <v n="ParameterParent">{99f2e1d7-ff52-46a2-9b6c-967dade54509}</v>
+                      <v n="ParameterTransfer">"out"</v>
+                    </o>
+                  </l>
+                  <v n="MethodParent">{c253b4c6-f215-4804-bbd2-782afbaba8b8}</v>
+                  <v n="MethodObjectGuid">{99f2e1d7-ff52-46a2-9b6c-967dade54509}</v>
+                  <v n="MethodStereotype">""</v>
+                  <v n="MethodParameterLength">20</v>
+                  <v n="MethodParameterTooLong">false</v>
+                </o>
+                <v>b9d527a2-1195-4d27-a41d-1708e1ac26c0</v>
+                <o>
+                  <v n="MethodName">"Get_Keys"</v>
+                  <v n="MethodBreakPointActive">false</v>
+                  <v n="MethodReturnType">"I_Immutable_List"</v>
+                  <l n="MethodParameter" t="ArrayList" />
+                  <v n="MethodParent">{c253b4c6-f215-4804-bbd2-782afbaba8b8}</v>
+                  <v n="MethodObjectGuid">{b9d527a2-1195-4d27-a41d-1708e1ac26c0}</v>
+                  <v n="MethodStereotype">""</v>
+                  <v n="MethodParameterLength">20</v>
+                  <v n="MethodParameterTooLong">false</v>
+                </o>
+                <v>b063b61f-9773-4077-ba2d-830c1a3734dc</v>
+                <o>
+                  <v n="MethodName">"Contains"</v>
+                  <v n="MethodBreakPointActive">false</v>
+                  <v n="MethodReturnType">"BOOL"</v>
+                  <l n="MethodParameter" t="ArrayList" cet="UMLMethodParameter">
+                    <o>
+                      <v n="ParameterName">"Key"</v>
+                      <v n="ParameterType">"__SYSTEM.AnyType"</v>
+                      <v n="ParameterParent">{b063b61f-9773-4077-ba2d-830c1a3734dc}</v>
+                      <v n="ParameterTransfer">"in"</v>
+                    </o>
+                  </l>
+                  <v n="MethodParent">{c253b4c6-f215-4804-bbd2-782afbaba8b8}</v>
+                  <v n="MethodObjectGuid">{b063b61f-9773-4077-ba2d-830c1a3734dc}</v>
+                  <v n="MethodStereotype">""</v>
+                  <v n="MethodParameterLength">20</v>
+                  <v n="MethodParameterTooLong">false</v>
+                </o>
+                <v>c840e063-e505-4dab-8037-1b1fa0a97c7c</v>
+                <o>
+                  <v n="MethodName">"Get"</v>
+                  <v n="MethodBreakPointActive">false</v>
+                  <v n="MethodReturnType">"I_Immutable_Map"</v>
+                  <l n="MethodParameter" t="ArrayList" cet="UMLMethodParameter">
+                    <o>
+                      <v n="ParameterName">"Key"</v>
+                      <v n="ParameterType">"__SYSTEM.AnyType"</v>
+                      <v n="ParameterParent">{c840e063-e505-4dab-8037-1b1fa0a97c7c}</v>
+                      <v n="ParameterTransfer">"in"</v>
+                    </o>
+                    <o>
+                      <v n="ParameterName">"Value"</v>
+                      <v n="ParameterType">"__SYSTEM.AnyType"</v>
+                      <v n="ParameterParent">{c840e063-e505-4dab-8037-1b1fa0a97c7c}</v>
+                      <v n="ParameterTransfer">"in"</v>
+                    </o>
+                    <o>
+                      <v n="ParameterName">"bSuccess"</v>
+                      <v n="ParameterType">"BOOL"</v>
+                      <v n="ParameterParent">{c840e063-e505-4dab-8037-1b1fa0a97c7c}</v>
+                      <v n="ParameterTransfer">"out"</v>
+                    </o>
+                  </l>
+                  <v n="MethodParent">{c253b4c6-f215-4804-bbd2-782afbaba8b8}</v>
+                  <v n="MethodObjectGuid">{c840e063-e505-4dab-8037-1b1fa0a97c7c}</v>
+                  <v n="MethodStereotype">""</v>
+                  <v n="MethodParameterLength">20</v>
+                  <v n="MethodParameterTooLong">false</v>
+                </o>
+              </d>
+              <v n="MethodID">-1</v>
+              <v n="ActivityID">-1</v>
+              <v n="IecObjectSemantic">5</v>
+              <d n="MethodStereotypContainer" t="Hashtable" />
+              <o n="ElementVisualisation" t="ClassElementVisualisation">
+                <v n="ShowAttributes">true</v>
+                <v n="ShowMethods">false</v>
+                <a n="DockingPopulation" cet="Int32">AAAAAAAAAAAAAAAAAAAAAA==</a>
+                <v n="ColumnIndex">0</v>
+                <v n="RowIndex">0</v>
+                <v n="RepresentedElement">15</v>
+                <v n="IsElementVisible">true</v>
+                <v n="TopPosition">700</v>
+                <v n="LeftPosition">870</v>
+                <v n="WidthValue">127</v>
+                <v n="MinWidthValue">0</v>
+                <v n="Height">78</v>
+                <v n="MinHeight">0</v>
+                <v n="AutomaticLayout">true</v>
+                <d n="DockingPoints" t="Hashtable" />
+              </o>
+              <n n="StereotypeContainer" />
+              <v n="LibraryPath">""</v>
+              <v n="ObjectGuid">{c253b4c6-f215-4804-bbd2-782afbaba8b8}</v>
+              <v n="HasGraphicalRepresentation">true</v>
+              <v n="bIsVisualisationChanged">false</v>
+              <v n="IsType" t="UMLType">UMLInterfaceElement</v>
+              <v n="_MaxDoCycleCalls" t="Int16">32767</v>
+              <v n="DefaultCellSizeX">96</v>
+              <v n="DefaultCellSizeY">64</v>
+              <v n="IsDocumentation">false</v>
+              <v n="Area">{00000000-0000-0000-0000-000000000000}</v>
+              <v n="ParsedMethods">false</v>
+              <v n="ParsedProperties">false</v>
+              <v n="GeneratorId">0</v>
+              <v n="UserDefined">true</v>
+              <v n="ElementID">15</v>
+              <v n="ElementObjectGuid">{c253b4c6-f215-4804-bbd2-782afbaba8b8}</v>
+              <v n="ParentGuid">{a48f925e-57c7-4199-8f08-16bf7a74fabd}</v>
+              <v n="ContainerGuid">{00000000-0000-0000-0000-000000000000}</v>
+              <v n="ShowedStereotype">{00000000-0000-0000-0000-000000000000}</v>
+              <v n="ReplacewithImage">false</v>
+              <v n="AutomaticLayout">false</v>
+              <v n="PositionCounter">1L</v>
+              <v n="UMLPosition">-1L</v>
+              <v n="IsModified">false</v>
+              <v n="ARGBElementColor">0</v>
+              <v n="ZOrder">103U</v>
             </o>
             <v>d3e35027-6df2-4dcc-89a4-7518fca53cd4</v>
             <o>
