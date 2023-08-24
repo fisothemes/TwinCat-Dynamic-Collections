@@ -133,12 +133,12 @@ Count : T_Capacity;
 **Implementation:**
 ```js
 FOR i := 0 TO 5 DO
-    fbSet.Insert(i);
+    fbSet.Insert(arnItems[i]);
     END_FOR
 
 Count := fbSet._Count; // Value is 3
 
-fbSet._Traverse := T_BST_Traversal.In_Order; // will get the value in ascending order
+fbSet._Traversal := T_BST_Traversal.In_Order; // will get the values in ascending order
 
 ipItems := fbSet.Get_Values();
 ipItems
@@ -214,4 +214,4 @@ As always feel free to contribute or report issues.
 
 # ⚠ Important ⚠ 
 
-Be careful when storing `STRUCT`s or `FUNCTION BLOCK`s that contain `STRING`s or `WSTRING`s. You may not be able to retrieve them with any search operation method which includes keys to retrieve a value in a map. This is because strings are null delimited, so any junk characters after the null character are retained. Equality of `STRUCT`s and `FUNCTION BLOCK`s are checked using `MEMCMP`. For `FUNCTION BLOCK`s I recommend you store them using interfaces or pointers. For `STRUCT`s, clear any strings inside using `MEMSET` and set them to your chosen value before you store them. If you have questions I'm happy to answer them.
+Be careful when storing `STRUCT`s or `FUNCTION BLOCK`s that contain `STRING`s or `WSTRING`s. You may not be able to retrieve them with any search operation method that includes keys to retrieve a value in a map. This is because strings are null-terminated, so any junk characters after the null character are retained. Equality of `STRUCT`s and `FUNCTION BLOCK`s are checked using `MEMCMP`. For `FUNCTION BLOCK`s I recommend you store them using interfaces or pointers. For `STRUCT`s, clear any strings inside using `MEMSET` and set them to your chosen value before you store them. If you have questions I'm happy to answer them.
