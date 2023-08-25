@@ -316,7 +316,7 @@ END_VAR
 pTmp := THIS^.Search_Node(THIS^.pRoot, Key);
 bSuccess := pTmp <> 0;
 
-IF bSuccess THEN RETURN; END_IF
+IF NOT bSuccess THEN RETURN; END_IF
 
 Value := pTmp^.Value;
 THIS^.Clear_Error();]]></ST>
@@ -364,13 +364,13 @@ WHILE (NOT fbNode_Buffer._Empty) OR_ELSE pCurrent <> 0 DO
 				pCurrent := pCurrent^.pLeft;
 			ELSE
 				fbNode_Buffer.Get(pCurrent).Dequeue();
-				THIS^.pValues^.Insert_Generic(THIS^.pValues^._Count, pCurrent^.Key);
+				THIS^.pKeys^.Insert_Generic(THIS^.pKeys^._Count, pCurrent^.Key);
 				pCurrent := pCurrent^.pRight;
 				END_IF
 				
 		T_BST_Traversal.Pre_Order:
 			IF pCurrent <> 0 THEN 
-				THIS^.pValues^.Insert_Generic(THIS^.pValues^._Count, pCurrent^.Key);
+				THIS^.pKeys^.Insert_Generic(THIS^.pKeys^._Count, pCurrent^.Key);
 				IF pCurrent^.pRight <> 0 THEN fbNode_Buffer.Enqueue_At_Front(pCurrent^.pRight); END_IF
 				pCurrent := pCurrent^.pLeft;
 			ELSE
@@ -388,7 +388,7 @@ WHILE (NOT fbNode_Buffer._Empty) OR_ELSE pCurrent <> 0 DO
 				pTmp := pTmp^.pRight;
 				IF pTmp = 0 OR_ELSE pTmp = pPrevious THEN 
 					fbNode_Buffer.Get(pCurrent).Dequeue();
-					THIS^.pValues^.Insert_Generic(THIS^.pValues^._Count, pCurrent^.Key);
+					THIS^.pKeys^.Insert_Generic(THIS^.pKeys^._Count, pCurrent^.Key);
 					pPrevious := pCurrent;
 					pCurrent := 0;
 				ELSE
@@ -397,7 +397,7 @@ WHILE (NOT fbNode_Buffer._Empty) OR_ELSE pCurrent <> 0 DO
 				END_IF
 			
 		T_BST_Traversal.Level_Order:
-			THIS^.pValues^.Insert_Generic(THIS^.pValues^._Count, pCurrent^.Key);
+			THIS^.pKeys^.Insert_Generic(THIS^.pKeys^._Count, pCurrent^.Key);
 			IF pCurrent^.pLeft <> 0 THEN fbNode_Buffer.Enqueue(pCurrent^.pLeft); END_IF
 			IF pCurrent^.pRight <> 0 THEN fbNode_Buffer.Enqueue(pCurrent^.pRight); END_IF
 			fbNode_Buffer.Get(pCurrent).Dequeue(bSuccess => bSuccess);

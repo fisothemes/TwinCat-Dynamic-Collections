@@ -13,11 +13,11 @@ END_VAR]]></Declaration>
       <ST><![CDATA[F_GetVersion.iMajor := 1;
 F_GetVersion.iMinor := 0;
 F_GetVersion.iBuild := 1;
-F_GetVersion.iRevision := 9;
+F_GetVersion.iRevision := 10;
 ]]></ST>
     </Implementation>
     <LineIds Name="F_GetVersion">
-      <LineId Id="249" Count="3" />
+      <LineId Id="267" Count="3" />
       <LineId Id="2" Count="0" />
     </LineIds>
   </POU>

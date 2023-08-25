@@ -24,18 +24,10 @@ END_VAR
 
 IF bAdd THEN
 	bAdd := FALSE;
-	fbSet._Traversal := T_BST_Traversal.Level_Order;
-	fbSet
-		.Insert(Data[0])
-		.Insert(Data[1])
-		.Insert(Data[2])
-		.Insert(Data[3]);
-	ipImm := fbSet.Get_Values();
-	ipImm
-		.Get(0, rData[0])
-		.Get(1, rData[1])
-		.Get(2, rData[2])
-		.Get(3, rData[3]);
+	fbMap
+		.Insert(Data[0], Data[1])
+		.Get(Data[0], rData[0]);
+	
 	END_IF
 
 IF bRemove THEN 
@@ -45,20 +37,16 @@ IF bRemove THEN
 	
 IF bClear THEN 
 	bClear := FALSE;
-	fbSet.Clear();
+	fbMap.Clear();
 	END_IF]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
       <LineId Id="158" Count="1" />
       <LineId Id="54" Count="0" />
       <LineId Id="126" Count="0" />
-      <LineId Id="226" Count="0" />
-      <LineId Id="105" Count="0" />
-      <LineId Id="186" Count="1" />
-      <LineId Id="202" Count="0" />
-      <LineId Id="227" Count="0" />
-      <LineId Id="204" Count="4" />
-      <LineId Id="228" Count="0" />
+      <LineId Id="246" Count="0" />
+      <LineId Id="248" Count="1" />
+      <LineId Id="247" Count="0" />
       <LineId Id="60" Count="1" />
       <LineId Id="96" Count="0" />
       <LineId Id="63" Count="0" />
