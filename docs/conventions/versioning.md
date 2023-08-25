@@ -12,7 +12,7 @@ Versioning of this Library/Toolkit/API follows this format: `<Major>.<Release>.<
 
 * **Pre-release version**
 
-    The pre-release version number is incremented when a new version of the project is released that is not yet stable. This version may contain bugs or other issues that need to be fixed before it can be released to the public.
+    The pre-release version number is incremented when a new version of the project is released that is not yet stable. This version may contain bugs or other issues that need to be fixed before it can be released to the public. Resets after release version.
 
 * **Build number**
 
