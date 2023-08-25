@@ -18,6 +18,7 @@ Here are some of the features of Dynamic Collections:
 
   The takes advantage of interfaces and the ANY type to support new algorithms and for handling any datatype.
 
+Click [here](https://github.com/fisothemes/TwinCat-Dynamic-Collections/releases/tag/v1.0.2.11) for the latest pre-release.
 
 ## Function Blocks
 
