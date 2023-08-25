@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
   <POU Name="FB_Tree_Set_Test_Suite" Id="{a7ec9432-cc4e-056f-22ea-935141723e10}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_Tree_Set_Test_Suite  EXTENDS TcUnit.FB_TestSuite
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Tree_Set_Test_Suite EXTENDS TcUnit.FB_TestSuite
 VAR
 END_VAR
 ]]></Declaration>

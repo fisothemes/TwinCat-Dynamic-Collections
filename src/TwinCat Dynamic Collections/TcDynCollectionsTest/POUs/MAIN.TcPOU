@@ -10,7 +10,7 @@ VAR
 	fbStack_Test_Suite : FB_Stack_Test_Suite;
 	fbDeque_Test_Suite : FB_Deque_Test_Suite;
 	fbTree_Set_Test_Suite : FB_Tree_Set_Test_Suite;
-	// Add test for Tree Map
+	fbTree_Map_Test_Suite : FB_Tree_Map_Test_Suite;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[TcUnit.RUN();
