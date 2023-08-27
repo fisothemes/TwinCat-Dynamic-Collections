@@ -11,6 +11,7 @@ VAR
 	fbDeque_Test_Suite : FB_Deque_Test_Suite;
 	fbTree_Set_Test_Suite : FB_Tree_Set_Test_Suite;
 	fbTree_Map_Test_Suite : FB_Tree_Map_Test_Suite;
+	fbTree_Multiset_Test_Suite : FB_Tree_Multiset_Test_Suite;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[TcUnit.RUN();

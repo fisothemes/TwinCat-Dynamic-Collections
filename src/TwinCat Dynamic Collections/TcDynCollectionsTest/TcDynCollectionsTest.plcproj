@@ -50,6 +50,9 @@
     <Compile Include="POUs\Function Blocks\FB_Tree_Set_Test_Suite.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\Function Blocks\FB_Tree_Multiset_Test_Suite.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
