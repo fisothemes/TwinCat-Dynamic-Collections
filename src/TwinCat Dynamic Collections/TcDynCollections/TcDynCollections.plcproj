@@ -21,9 +21,9 @@
     <Title>TwinCat Dynamic Collections</Title>
     <Author>Goodwill Mzumala</Author>
     <DefaultNamespace>TcDynCollections</DefaultNamespace>
-    <ProjectVersion>1.0.2.13</ProjectVersion>
+    <ProjectVersion>1.0.2.14</ProjectVersion>
     <DocFormat>reStructuredText</DocFormat>
-    <Description>A library for handling collections of data dynamically.</Description>
+    <Description>A library for handling collections of data dynamically in TwinCAT.</Description>
     <CombineIds>true</CombineIds>
   </PropertyGroup>
   <ItemGroup>
@@ -173,6 +173,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\Function Blocks\Collections\FB_Tree_Map.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Function Blocks\Collections\FB_Tree_Multiset.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\Function Blocks\Collections\FB_Tree_Set.TcPOU">

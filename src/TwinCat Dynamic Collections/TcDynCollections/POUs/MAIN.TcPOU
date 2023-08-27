@@ -3,7 +3,7 @@
   <POU Name="MAIN" Id="{dc6abe44-dfc6-0eff-1900-3902669cc79c}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM INTERNAL MAIN
 VAR
-	Data : ARRAY[0..10] OF INT := [1,2,3,4,5,6,7,8,9,10];
+	Data : ARRAY[0..10] OF INT := [1,2,2,4,5,6,7,8,9,10];
 	rData : ARRAY[0..10] OF INT;
 	i,j : T_Position;
 	ipImm : I_Immutable_List;
@@ -15,10 +15,12 @@ VAR
 	fbSet : FB_Tree_Set;
 	fbMap : FB_Tree_Map;
 	fbDeque : FB_Deque;
+	fbMultiset : FB_Tree_Multiset;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[IF bAdd THEN
 	bAdd := FALSE;
+	FOR i := 0 TO 2 DO fbMultiset.Insert(Data[i]); END_FOR
 	END_IF
 
 IF bRemove THEN 
@@ -27,17 +29,21 @@ IF bRemove THEN
 	
 IF bClear THEN 
 	bClear := FALSE;
+	fbMultiset.Clear();
 	END_IF]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
       <LineId Id="54" Count="0" />
       <LineId Id="126" Count="0" />
-      <LineId Id="60" Count="1" />
+      <LineId Id="160" Count="0" />
+      <LineId Id="162" Count="0" />
+      <LineId Id="61" Count="0" />
       <LineId Id="96" Count="0" />
       <LineId Id="63" Count="0" />
       <LineId Id="68" Count="0" />
       <LineId Id="141" Count="0" />
       <LineId Id="143" Count="1" />
+      <LineId Id="164" Count="0" />
       <LineId Id="142" Count="0" />
     </LineIds>
   </POU>
