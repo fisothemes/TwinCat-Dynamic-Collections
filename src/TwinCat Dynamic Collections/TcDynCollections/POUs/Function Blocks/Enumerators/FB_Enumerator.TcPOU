@@ -4,7 +4,7 @@
     <Declaration><![CDATA[// Base function block for enumerators.
 {attribute 'enable_dynamic_creation'}
 {attribute 'no_explicit_call' := 'direct call for this function block is not allowed'}
-FUNCTION_BLOCK ABSTRACT FB_Enumerator IMPLEMENTS I_Enumerator
+FUNCTION_BLOCK INTERNAL ABSTRACT FB_Enumerator IMPLEMENTS I_Enumerator
 VAR
 	ipEnumerator : REFERENCE TO I_Enumerator;
 	Index : T_Position := -1;
