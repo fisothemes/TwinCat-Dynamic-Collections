@@ -281,3 +281,6 @@ src/TwinCat Dynamic Collections/TwinCat Dynamic Collections.tsproj.bak
 *.tmc
 src/TwinCat Dynamic Collections/_Boot/TwinCAT RT (x64)/Plc/Port_851.occ
 *.tclrs
+assets/files/LICENSE.txt
+assets/images/TwinCAT Dynamic Collections.png
+.Zeugwerk/
