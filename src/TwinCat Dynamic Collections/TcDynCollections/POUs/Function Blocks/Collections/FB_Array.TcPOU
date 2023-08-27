@@ -5,7 +5,7 @@
 {attribute 'enable_dynamic_creation'}
 {attribute 'no_assign'}
 {attribute 'no_explicit_call' := 'direct call for this function block is not allowed'}
-FUNCTION_BLOCK FINAL FB_Array EXTENDS FB_Collection IMPLEMENTS I_Array //, I_Enumerable, I_Copyable
+FUNCTION_BLOCK FB_Array EXTENDS FB_Collection IMPLEMENTS I_Array //, I_Enumerable, I_Copyable
 VAR
 	pBuffer : POINTER TO T_Generic;
 END_VAR]]></Declaration>

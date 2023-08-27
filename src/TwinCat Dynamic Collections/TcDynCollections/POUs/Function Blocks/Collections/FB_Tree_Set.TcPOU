@@ -6,7 +6,7 @@
 {attribute 'enable_dynamic_creation'}
 {attribute 'no_assign'}
 {attribute 'no_explicit_call' := 'direct call for this function block is not allowed'}
-FUNCTION_BLOCK FINAL FB_Tree_Set EXTENDS FB_Collection IMPLEMENTS I_Tree_Set //, I_Enumerable, I_Copyable
+FUNCTION_BLOCK FB_Tree_Set EXTENDS FB_Collection IMPLEMENTS I_Tree_Set //, I_Enumerable, I_Copyable
 VAR
 	pRoot : POINTER TO T_AVL_Node;
 	Traversal : T_BST_Traversal := T_BST_Traversal.In_Order; 

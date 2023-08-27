@@ -8,7 +8,7 @@
 {attribute 'enable_dynamic_creation'}
 {attribute 'no_assign'}
 {attribute 'no_explicit_call' := 'direct call for this function block is not allowed'}
-FUNCTION_BLOCK FINAL FB_List EXTENDS FB_Collection IMPLEMENTS I_List//, I_Enumerable, I_Copyable
+FUNCTION_BLOCK FB_List EXTENDS FB_Collection IMPLEMENTS I_List//, I_Enumerable, I_Copyable
 VAR
 	pHead, pTail, pLast_Accessed : POINTER TO T_List_Node;
 	Last_Accessed_Index : T_Position := -1;
