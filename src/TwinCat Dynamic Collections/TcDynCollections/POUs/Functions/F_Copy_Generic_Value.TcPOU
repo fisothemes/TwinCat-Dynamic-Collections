@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="F_Copy_Generic_Value" Id="{e2d1b219-bc63-0878-3737-9164dab75258}" SpecialFunc="None">
     <Declaration><![CDATA[// Copies the value of a generic from one location to another.
 // Returns TRUE, if successful.
@@ -17,11 +17,5 @@ F_Copy_Generic_Value := Tc2_System.MEMCPY(
 	Destination.pValue, Source.pValue, 
 	TO_UDINT(MIN(Source.diSize, Destination.diSize))) > 0;]]></ST>
     </Implementation>
-    <LineIds Name="F_Copy_Generic_Value">
-      <LineId Id="67" Count="0" />
-      <LineId Id="50" Count="0" />
-      <LineId Id="20" Count="0" />
-      <LineId Id="76" Count="1" />
-    </LineIds>
   </POU>
 </TcPlcObject>

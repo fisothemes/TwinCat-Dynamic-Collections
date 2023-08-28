@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <Itf Name="I_List" Id="{46566888-019a-0c55-336c-8af5a3e5983b}">
     <Declaration><![CDATA[// Interface for a list.
 INTERFACE I_List EXTENDS I_Collection

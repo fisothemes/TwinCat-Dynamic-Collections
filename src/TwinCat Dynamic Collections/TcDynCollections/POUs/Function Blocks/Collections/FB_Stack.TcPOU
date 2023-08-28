@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Stack" Id="{9a992fe7-0267-06d4-33ff-969f591448bf}" SpecialFunc="None">
     <Declaration><![CDATA[// A collection whose access/mutation of items is last-in, first-out.
 {attribute 'enable_dynamic_creation'}
@@ -134,40 +134,5 @@ THIS^.fbList.Reverse(bSuccess => bSuccess);
 THIS^._Error_Status :=  THIS^.fbList._Error_Status;]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="FB_Stack">
-      <LineId Id="9" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Stack._Values.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Stack.Clear">
-      <LineId Id="5" Count="3" />
-      <LineId Id="4" Count="0" />
-      <LineId Id="9" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Stack.Get">
-      <LineId Id="10" Count="3" />
-      <LineId Id="9" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Stack.Get_Generic">
-      <LineId Id="8" Count="3" />
-      <LineId Id="7" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Stack.Pop">
-      <LineId Id="7" Count="4" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Stack.Push">
-      <LineId Id="10" Count="4" />
-      <LineId Id="9" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Stack.Push_Generic">
-      <LineId Id="10" Count="4" />
-      <LineId Id="9" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Stack.Reverse">
-      <LineId Id="7" Count="3" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

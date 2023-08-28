@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Deque_Test_Suite" Id="{0478bdf5-3c05-0983-1c56-795a1b10c992}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Deque_Test_Suite EXTENDS TcUnit.FB_TestSuite
 VAR
@@ -218,81 +218,5 @@ END_VAR]]></Declaration>
 	TEST_FINISHED();]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="FB_Deque_Test_Suite">
-      <LineId Id="26" Count="4" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="31" Count="1" />
-    </LineIds>
-    <LineIds Name="FB_Deque_Test_Suite.Check_If_Back_Returns_Items_At_Back">
-      <LineId Id="5" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="20" Count="4" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Deque_Test_Suite.Check_If_Clear_Empties_Items">
-      <LineId Id="5" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="15" Count="4" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Deque_Test_Suite.Check_If_Dequeue_At_Back_Removes_Last_Item">
-      <LineId Id="5" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="21" Count="3" />
-      <LineId Id="26" Count="1" />
-      <LineId Id="25" Count="0" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="29" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Deque_Test_Suite.Check_If_Dequeue_At_Front_Removes_First_Item">
-      <LineId Id="5" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="18" Count="7" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Deque_Test_Suite.Check_If_Enqueue_At_Back_Adds_Items">
-      <LineId Id="5" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="20" Count="10" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Deque_Test_Suite.Check_If_Enqueue_At_Front_Adds_Items">
-      <LineId Id="5" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="31" Count="2" />
-      <LineId Id="35" Count="5" />
-      <LineId Id="42" Count="0" />
-      <LineId Id="41" Count="0" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Deque_Test_Suite.Check_If_Front_Returns_Items_At_Front">
-      <LineId Id="5" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="22" Count="4" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Deque_Test_Suite.Check_If_Reverse_Reverses_Order_Of_Items">
-      <LineId Id="5" Count="0" />
-      <LineId Id="19" Count="4" />
-      <LineId Id="26" Count="4" />
-      <LineId Id="24" Count="0" />
-      <LineId Id="31" Count="0" />
-      <LineId Id="8" Count="1" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

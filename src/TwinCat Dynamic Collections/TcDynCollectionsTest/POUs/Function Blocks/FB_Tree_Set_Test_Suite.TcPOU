@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Tree_Set_Test_Suite" Id="{a7ec9432-cc4e-056f-22ea-935141723e10}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Tree_Set_Test_Suite EXTENDS TcUnit.FB_TestSuite
 VAR
@@ -200,80 +200,5 @@ END_VAR]]></Declaration>
 	TEST_FINISHED();]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="FB_Tree_Set_Test_Suite">
-      <LineId Id="18" Count="4" />
-      <LineId Id="14" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Tree_Set_Test_Suite.Check_If_Clear_Empties_Items">
-      <LineId Id="5" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="13" Count="4" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Tree_Set_Test_Suite.Check_If_Contains_Returns_True_If_Item_In_Set">
-      <LineId Id="6" Count="0" />
-      <LineId Id="12" Count="0" />
-      <LineId Id="17" Count="4" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Tree_Set_Test_Suite.Check_If_Duplicate_Items_Cannot_Be_Inserted">
-      <LineId Id="6" Count="0" />
-      <LineId Id="12" Count="0" />
-      <LineId Id="20" Count="1" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="23" Count="1" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="26" Count="5" />
-      <LineId Id="19" Count="0" />
-      <LineId Id="34" Count="1" />
-      <LineId Id="37" Count="1" />
-      <LineId Id="36" Count="0" />
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Tree_Set_Test_Suite.Check_If_Get_Values_Returns_Values_In_Specified_Order">
-      <LineId Id="6" Count="0" />
-      <LineId Id="23" Count="2" />
-      <LineId Id="12" Count="0" />
-      <LineId Id="26" Count="1" />
-      <LineId Id="29" Count="4" />
-      <LineId Id="45" Count="0" />
-      <LineId Id="35" Count="1" />
-      <LineId Id="28" Count="0" />
-      <LineId Id="44" Count="0" />
-      <LineId Id="37" Count="0" />
-      <LineId Id="39" Count="4" />
-      <LineId Id="38" Count="0" />
-      <LineId Id="46" Count="0" />
-      <LineId Id="49" Count="2" />
-      <LineId Id="48" Count="0" />
-      <LineId Id="53" Count="0" />
-      <LineId Id="55" Count="9" />
-      <LineId Id="54" Count="0" />
-      <LineId Id="65" Count="0" />
-      <LineId Id="67" Count="9" />
-      <LineId Id="66" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Tree_Set_Test_Suite.Check_If_Insert_Adds_Items">
-      <LineId Id="6" Count="0" />
-      <LineId Id="21" Count="2" />
-      <LineId Id="25" Count="0" />
-      <LineId Id="12" Count="1" />
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Tree_Set_Test_Suite.Check_If_Remove_Removes_Items">
-      <LineId Id="6" Count="0" />
-      <LineId Id="12" Count="0" />
-      <LineId Id="23" Count="2" />
-      <LineId Id="27" Count="1" />
-      <LineId Id="26" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="29" Count="2" />
-      <LineId Id="22" Count="0" />
-      <LineId Id="5" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Immutable_Map" Id="{d3e2bba3-a292-0537-0b54-88799f7f3087}" SpecialFunc="None">
     <Declaration><![CDATA[// Collection that exposes only immutable methods and properties of a collection that implements I_Map.
 {attribute 'enable_dynamic_creation'}
@@ -166,62 +166,5 @@ THIS^._Count := THIS^.ipMap._Count;
 THIS^._Error_Status := THIS^.ipMap._Error_Status;]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="FB_Immutable_Map">
-      <LineId Id="37" Count="0" />
-      <LineId Id="14" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Immutable_Map._Count.Get">
-      <LineId Id="8" Count="2" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="11" Count="0" />
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Immutable_Map._Empty.Get">
-      <LineId Id="14" Count="4" />
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Immutable_Map._Error_Status.Get">
-      <LineId Id="5" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="6" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="11" Count="0" />
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Immutable_Map.Contains">
-      <LineId Id="7" Count="5" />
-      <LineId Id="17" Count="0" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Immutable_Map.Get">
-      <LineId Id="11" Count="0" />
-      <LineId Id="13" Count="1" />
-      <LineId Id="16" Count="1" />
-      <LineId Id="12" Count="0" />
-      <LineId Id="18" Count="1" />
-      <LineId Id="21" Count="0" />
-      <LineId Id="20" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Immutable_Map.Get_As_String">
-      <LineId Id="11" Count="0" />
-      <LineId Id="13" Count="1" />
-      <LineId Id="16" Count="1" />
-      <LineId Id="12" Count="0" />
-      <LineId Id="21" Count="0" />
-      <LineId Id="18" Count="0" />
-      <LineId Id="20" Count="0" />
-      <LineId Id="19" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Immutable_Map.Get_Keys">
-      <LineId Id="9" Count="7" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Immutable_Map.Get_Values">
-      <LineId Id="4" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="5" Count="4" />
-      <LineId Id="14" Count="0" />
-      <LineId Id="3" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

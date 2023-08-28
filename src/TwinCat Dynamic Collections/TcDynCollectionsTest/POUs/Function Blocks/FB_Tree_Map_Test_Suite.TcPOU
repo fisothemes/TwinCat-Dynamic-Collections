@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Tree_Map_Test_Suite" Id="{3e0b8c0c-852b-0076-1608-fd17583929f4}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Tree_Map_Test_Suite EXTENDS TcUnit.FB_TestSuite
 VAR
@@ -259,87 +259,5 @@ END_VAR]]></Declaration>
 	TEST_FINISHED();]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="FB_Tree_Map_Test_Suite">
-      <LineId Id="38" Count="5" />
-      <LineId Id="15" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Tree_Map_Test_Suite.Check_If_Clear_Empties_Items">
-      <LineId Id="5" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="15" Count="2" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Tree_Map_Test_Suite.Check_If_Contains_Returns_True_If_Key_In_Map">
-      <LineId Id="6" Count="0" />
-      <LineId Id="19" Count="5" />
-      <LineId Id="18" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Tree_Map_Test_Suite.Check_If_Get_Key_Values_Returns_Keys_In_Specified_Order">
-      <LineId Id="6" Count="0" />
-      <LineId Id="91" Count="5" />
-      <LineId Id="151" Count="0" />
-      <LineId Id="97" Count="9" />
-      <LineId Id="153" Count="0" />
-      <LineId Id="155" Count="7" />
-      <LineId Id="154" Count="0" />
-      <LineId Id="152" Count="0" />
-      <LineId Id="108" Count="1" />
-      <LineId Id="163" Count="0" />
-      <LineId Id="110" Count="8" />
-      <LineId Id="165" Count="7" />
-      <LineId Id="164" Count="0" />
-      <LineId Id="119" Count="1" />
-      <LineId Id="173" Count="0" />
-      <LineId Id="121" Count="9" />
-      <LineId Id="175" Count="7" />
-      <LineId Id="174" Count="0" />
-      <LineId Id="131" Count="2" />
-      <LineId Id="183" Count="0" />
-      <LineId Id="134" Count="7" />
-      <LineId Id="90" Count="0" />
-      <LineId Id="185" Count="7" />
-      <LineId Id="184" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Tree_Map_Test_Suite.Check_If_Insert_Adds_Items">
-      <LineId Id="6" Count="0" />
-      <LineId Id="20" Count="4" />
-      <LineId Id="19" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Tree_Map_Test_Suite.Check_If_Remove_Removes_Items">
-      <LineId Id="6" Count="0" />
-      <LineId Id="21" Count="9" />
-      <LineId Id="20" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Tree_Map_Test_Suite.Check_If_Update_Updates_Items">
-      <LineId Id="6" Count="0" />
-      <LineId Id="20" Count="3" />
-      <LineId Id="31" Count="1" />
-      <LineId Id="34" Count="0" />
-      <LineId Id="30" Count="0" />
-      <LineId Id="28" Count="0" />
-      <LineId Id="35" Count="0" />
-      <LineId Id="25" Count="0" />
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Tree_Map_Test_Suite.Check_If_Upsert_Updates_Items_Or_Adds_If_They_Dont_Exist">
-      <LineId Id="6" Count="0" />
-      <LineId Id="23" Count="0" />
-      <LineId Id="25" Count="0" />
-      <LineId Id="29" Count="0" />
-      <LineId Id="26" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="30" Count="2" />
-      <LineId Id="5" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

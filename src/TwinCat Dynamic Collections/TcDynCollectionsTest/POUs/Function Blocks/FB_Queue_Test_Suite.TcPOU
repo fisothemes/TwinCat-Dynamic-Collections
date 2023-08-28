@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Queue_Test_Suite" Id="{6ac15373-09e4-0cf9-2824-086310ba23da}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Queue_Test_Suite EXTENDS TcUnit.FB_TestSuite
 VAR
@@ -135,58 +135,5 @@ END_VAR]]></Declaration>
 	TEST_FINISHED();]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="FB_Queue_Test_Suite">
-      <LineId Id="14" Count="2" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="17" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Queue_Test_Suite.Check_If_Clear_Empties_Items">
-      <LineId Id="5" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="13" Count="4" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Queue_Test_Suite.Check_If_Dequeue_Removes_First_Item">
-      <LineId Id="5" Count="0" />
-      <LineId Id="18" Count="4" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Queue_Test_Suite.Check_If_Enqueue_Adds_Items">
-      <LineId Id="5" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="17" Count="2" />
-      <LineId Id="27" Count="0" />
-      <LineId Id="22" Count="0" />
-      <LineId Id="28" Count="3" />
-      <LineId Id="23" Count="0" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="33" Count="0" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Queue_Test_Suite.Check_If_Get_Returns_First_Item">
-      <LineId Id="5" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="20" Count="2" />
-      <LineId Id="30" Count="0" />
-      <LineId Id="29" Count="0" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Queue_Test_Suite.Check_If_Reverse_Reverses_Order_Of_Items">
-      <LineId Id="5" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="20" Count="2" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="23" Count="8" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

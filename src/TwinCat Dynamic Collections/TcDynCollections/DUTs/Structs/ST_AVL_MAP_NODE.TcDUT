@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <DUT Name="ST_AVL_MAP_NODE" Id="{f84d5cd2-25ff-03e1-324e-d4d34523fd09}">
     <Declaration><![CDATA[// Node for an AVL Tree Map.
 {attribute 'enable_dynamic_creation'}

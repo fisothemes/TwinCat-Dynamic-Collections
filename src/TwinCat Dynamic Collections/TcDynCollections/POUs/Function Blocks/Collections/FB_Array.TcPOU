@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Array" Id="{7432a012-b7d8-0e77-1c4b-8dc2f2af4694}" SpecialFunc="None">
     <Declaration><![CDATA[// Static array function block.
 {attribute 'enable_dynamic_creation'}
@@ -306,72 +306,5 @@ bSuccess := TRUE;
 THIS^.Clear_Error();]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="FB_Array">
-      <LineId Id="9" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Array.Contains">
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Array.FB_exit">
-      <LineId Id="10" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="42" Count="1" />
-      <LineId Id="31" Count="1" />
-      <LineId Id="38" Count="0" />
-      <LineId Id="34" Count="2" />
-      <LineId Id="39" Count="0" />
-      <LineId Id="37" Count="0" />
-      <LineId Id="13" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Array.FB_init">
-      <LineId Id="10" Count="0" />
-      <LineId Id="23" Count="1" />
-      <LineId Id="35" Count="0" />
-      <LineId Id="46" Count="0" />
-      <LineId Id="25" Count="0" />
-      <LineId Id="57" Count="0" />
-      <LineId Id="56" Count="0" />
-      <LineId Id="29" Count="0" />
-      <LineId Id="28" Count="0" />
-      <LineId Id="32" Count="1" />
-    </LineIds>
-    <LineIds Name="FB_Array.Get">
-      <LineId Id="11" Count="13" />
-      <LineId Id="10" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Array.Get_As_String">
-      <LineId Id="11" Count="27" />
-      <LineId Id="10" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Array.Get_Generic">
-      <LineId Id="14" Count="8" />
-      <LineId Id="13" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Array.Get_Type_At">
-      <LineId Id="11" Count="0" />
-      <LineId Id="13" Count="2" />
-      <LineId Id="12" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Array.Reverse">
-      <LineId Id="7" Count="8" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Array.Search">
-      <LineId Id="11" Count="10" />
-      <LineId Id="10" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Array.Set">
-      <LineId Id="11" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="12" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Array.Set_Generic">
-      <LineId Id="32" Count="10" />
-      <LineId Id="11" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Array.Swap">
-      <LineId Id="10" Count="8" />
-      <LineId Id="9" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

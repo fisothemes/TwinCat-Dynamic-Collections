@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Stack_Test_Suite" Id="{cc4e8044-127f-095b-005a-7d328f2e44e2}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Stack_Test_Suite EXTENDS TcUnit.FB_TestSuite
 VAR
@@ -136,49 +136,5 @@ END_VAR]]></Declaration>
 	TEST_FINISHED();]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="FB_Stack_Test_Suite">
-      <LineId Id="27" Count="3" />
-      <LineId Id="26" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Stack_Test_Suite.Check_If_Clear_Empties_Items">
-      <LineId Id="5" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="14" Count="4" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Stack_Test_Suite.Check_If_Get_Returns_Top_Item">
-      <LineId Id="5" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="21" Count="4" />
-      <LineId Id="20" Count="0" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Stack_Test_Suite.Check_If_Pop_Removes_Item">
-      <LineId Id="5" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="17" Count="4" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Stack_Test_Suite.Check_If_Push_Adds_Items">
-      <LineId Id="5" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="13" Count="11" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Stack_Test_Suite.Check_If_Reverse_Reverses_Order_Of_Items">
-      <LineId Id="5" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="20" Count="12" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

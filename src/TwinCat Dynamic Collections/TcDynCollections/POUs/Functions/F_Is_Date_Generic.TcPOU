@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="F_Is_Date_Generic" Id="{756e2fbc-6942-0648-37c7-3f6b4abd32bd}" SpecialFunc="None">
     <Declaration><![CDATA[// Checks if a generic is a date.
 FUNCTION F_Is_Date_Generic : BOOL
@@ -16,11 +16,5 @@ END_VAR
 		F_Is_Date_Generic := TRUE;
 END_CASE]]></ST>
     </Implementation>
-    <LineIds Name="F_Is_Date_Generic">
-      <LineId Id="39" Count="0" />
-      <LineId Id="15" Count="1" />
-      <LineId Id="37" Count="0" />
-      <LineId Id="7" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <DUT Name="T_AVL_Map_Node" Id="{074b8e2f-6a09-01a7-392c-4993822e0684}">
     <Declaration><![CDATA[TYPE T_AVL_Map_Node : ST_AVL_MAP_NODE; END_TYPE
 ]]></Declaration>

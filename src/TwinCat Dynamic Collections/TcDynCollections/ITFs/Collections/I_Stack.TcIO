@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <Itf Name="I_Stack" Id="{154dbc22-ff0e-03ac-018a-f60dfa7fd15f}">
     <Declaration><![CDATA[INTERFACE I_Stack EXTENDS I_Collection
 ]]></Declaration>

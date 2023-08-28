@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <DUT Name="T_BST_Traversal" Id="{60d1f50e-c0ff-08cd-1a06-0c77462f931d}">
     <Declaration><![CDATA[TYPE T_BST_Traversal : E_BINARY_SEARCH_TREE_TRAVERSAL; END_TYPE
 ]]></Declaration>

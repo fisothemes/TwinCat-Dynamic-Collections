@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Tree_Multiset" Id="{5c458448-e92e-0762-35b7-1f11cb4915d7}" SpecialFunc="None">
     <Declaration><![CDATA[// A collection similiar to a set except it allows for duplicate items. It is implemented using an iterative AVL Tree.
 // This data structure was implemented with the help of Max Goren's iterative AVL tree in C++. See Function Block's body for more details.
@@ -91,15 +91,5 @@ THIS^.Increment_Count();
 THIS^.Clear_Error(); ]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="FB_Tree_Multiset">
-      <LineId Id="14" Count="26" />
-      <LineId Id="9" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Tree_Multiset.Insert_Generic">
-      <LineId Id="132" Count="9" />
-      <LineId Id="178" Count="0" />
-      <LineId Id="143" Count="23" />
-      <LineId Id="17" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Immutable_Set" Id="{3afbf122-9852-03b8-0749-44fef68dc495}" SpecialFunc="None">
     <Declaration><![CDATA[// Collection that exposes only immutable methods and properties of a collection that implements I_Set.
 {attribute 'enable_dynamic_creation'}
@@ -99,40 +99,5 @@ THIS^._Count := THIS^.ipSet._Count;
 THIS^._Error_Status := THIS^.ipSet._Error_Status;]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="FB_Immutable_Set">
-      <LineId Id="29" Count="0" />
-      <LineId Id="14" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Immutable_Set._Count.Get">
-      <LineId Id="8" Count="2" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="11" Count="0" />
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Immutable_Set._Empty.Get">
-      <LineId Id="8" Count="2" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="11" Count="0" />
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Immutable_Set._Error_Status.Get">
-      <LineId Id="5" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="6" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="11" Count="0" />
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Immutable_Set.Contains">
-      <LineId Id="7" Count="6" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Immutable_Set.Get_Values">
-      <LineId Id="4" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="5" Count="4" />
-      <LineId Id="14" Count="0" />
-      <LineId Id="3" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

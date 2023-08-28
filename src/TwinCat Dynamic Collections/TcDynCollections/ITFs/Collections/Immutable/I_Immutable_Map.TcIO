@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <Itf Name="I_Immutable_Map" Id="{de4f4757-5f5c-0b05-0fcf-40bb010c74c0}">
     <Declaration><![CDATA[INTERFACE I_Immutable_Map EXTENDS I_Immutable_Collection
 ]]></Declaration>

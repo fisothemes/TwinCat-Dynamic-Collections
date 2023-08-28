@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="F_Compare_Generics" Id="{88e2168a-6d9e-046e-24d1-ef4a2c1da7ab}" SpecialFunc="None">
     <Declaration><![CDATA[// Compares generic value A to generic value B and returns the evaluation.
 FUNCTION F_Compare_Generics : T_Comparison
@@ -54,18 +54,5 @@ IF F_Matching_Generics(A, B) THEN
 bUndefined := TRUE;
 F_Compare_Generics := SEL(A.TypeClass > B.TypeClass, T_Comparison.Less, T_Comparison.Greater);]]></ST>
     </Implementation>
-    <LineIds Name="F_Compare_Generics">
-      <LineId Id="503" Count="19" />
-      <LineId Id="560" Count="1" />
-      <LineId Id="599" Count="0" />
-      <LineId Id="601" Count="0" />
-      <LineId Id="603" Count="0" />
-      <LineId Id="588" Count="6" />
-      <LineId Id="586" Count="1" />
-      <LineId Id="563" Count="0" />
-      <LineId Id="598" Count="0" />
-      <LineId Id="595" Count="0" />
-      <LineId Id="531" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

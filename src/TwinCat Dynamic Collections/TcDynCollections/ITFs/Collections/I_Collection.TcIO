@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <Itf Name="I_Collection" Id="{82e08ad2-ee44-0418-3680-12b433c6c8ec}">
     <Declaration><![CDATA[// Base interface for collections.
 INTERFACE I_Collection EXTENDS __SYSTEM.IQueryInterface 

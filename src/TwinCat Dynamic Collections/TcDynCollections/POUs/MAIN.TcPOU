@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="MAIN" Id="{dc6abe44-dfc6-0eff-1900-3902669cc79c}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM INTERNAL MAIN
 VAR
@@ -32,19 +32,5 @@ IF bClear THEN
 	fbMultiset.Clear();
 	END_IF]]></ST>
     </Implementation>
-    <LineIds Name="MAIN">
-      <LineId Id="54" Count="0" />
-      <LineId Id="126" Count="0" />
-      <LineId Id="160" Count="0" />
-      <LineId Id="162" Count="0" />
-      <LineId Id="61" Count="0" />
-      <LineId Id="96" Count="0" />
-      <LineId Id="63" Count="0" />
-      <LineId Id="68" Count="0" />
-      <LineId Id="141" Count="0" />
-      <LineId Id="143" Count="1" />
-      <LineId Id="164" Count="0" />
-      <LineId Id="142" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

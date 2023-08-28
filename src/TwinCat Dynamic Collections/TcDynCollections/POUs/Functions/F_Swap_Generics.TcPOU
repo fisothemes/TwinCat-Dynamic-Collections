@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="F_Swap_Generics" Id="{f8570796-5f2d-092a-0633-b7057c5ecd5e}" SpecialFunc="None">
     <Declaration><![CDATA[// Swaps generic A with B. Returns TRUE if successful.
 FUNCTION F_Swap_Generics : BOOL
@@ -18,12 +18,5 @@ A := B;
 B := Tmp;
 F_Swap_Generics := TRUE;]]></ST>
     </Implementation>
-    <LineIds Name="F_Swap_Generics">
-      <LineId Id="18" Count="0" />
-      <LineId Id="17" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="15" Count="1" />
-      <LineId Id="19" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>
