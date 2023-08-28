@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <Itf Name="I_Tree_Map" Id="{14451225-0556-0f35-2947-070bd85e3e19}">
     <Declaration><![CDATA[INTERFACE I_Tree_Map EXTENDS I_Map
 ]]></Declaration>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Enumerator" Id="{ee8772ce-6617-0b52-070a-f13c5094da30}" SpecialFunc="None">
     <Declaration><![CDATA[// Base function block for enumerators.
 {attribute 'enable_dynamic_creation'}
@@ -88,33 +88,5 @@ METHOD ABSTRACT Reset : I_Enumerator
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="FB_Enumerator">
-      <LineId Id="9" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Enumerator.Current">
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Enumerator.Current_As_String">
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Enumerator.Dispose">
-      <LineId Id="8" Count="1" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="10" Count="1" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Enumerator.FB_exit">
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Enumerator.FB_init">
-      <LineId Id="10" Count="1" />
-      <LineId Id="7" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Enumerator.Next">
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Enumerator.Reset">
-      <LineId Id="4" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

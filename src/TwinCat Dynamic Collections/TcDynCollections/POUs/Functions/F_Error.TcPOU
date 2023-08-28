@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="F_Error" Id="{207cb8cc-4fa1-0a9a-28d7-5108755938ba}" SpecialFunc="None">
     <Declaration><![CDATA[// Error Function: Passes error code and message to type ST_ERROR when bStatus = TRUE.  
 FUNCTION F_Error : T_Error
@@ -24,13 +24,5 @@ ELSE
 	
 F_Error := Tmp_Error;]]></ST>
     </Implementation>
-    <LineIds Name="F_Error">
-      <LineId Id="14" Count="0" />
-      <LineId Id="16" Count="0" />
-      <LineId Id="50" Count="1" />
-      <LineId Id="15" Count="0" />
-      <LineId Id="52" Count="3" />
-      <LineId Id="38" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

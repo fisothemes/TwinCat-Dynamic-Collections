@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="F_String_To_Any" Id="{30e6e8a2-5dce-0a4c-3a52-18efe047163e}" SpecialFunc="None">
     <Declaration><![CDATA[// Converts string to generic, returns TRUE if successful.
 FUNCTION F_String_To_Any : BOOL
@@ -130,29 +130,5 @@ CASE Value.TypeClass OF
 		pPointer^ := Tc2_Utilities.STRING_TO_PVOID(sValue);
 END_CASE]]></ST>
     </Implementation>
-    <LineIds Name="F_String_To_Any">
-      <LineId Id="7" Count="0" />
-      <LineId Id="147" Count="0" />
-      <LineId Id="146" Count="0" />
-      <LineId Id="35" Count="2" />
-      <LineId Id="39" Count="3" />
-      <LineId Id="44" Count="3" />
-      <LineId Id="49" Count="3" />
-      <LineId Id="54" Count="3" />
-      <LineId Id="59" Count="3" />
-      <LineId Id="64" Count="3" />
-      <LineId Id="69" Count="3" />
-      <LineId Id="74" Count="3" />
-      <LineId Id="79" Count="3" />
-      <LineId Id="84" Count="3" />
-      <LineId Id="89" Count="3" />
-      <LineId Id="94" Count="3" />
-      <LineId Id="99" Count="3" />
-      <LineId Id="104" Count="3" />
-      <LineId Id="109" Count="9" />
-      <LineId Id="120" Count="3" />
-      <LineId Id="125" Count="17" />
-      <LineId Id="34" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

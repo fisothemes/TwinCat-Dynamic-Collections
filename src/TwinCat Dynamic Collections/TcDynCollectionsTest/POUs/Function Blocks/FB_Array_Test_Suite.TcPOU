@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Array_Test_Suite" Id="{a8e907c8-d0d9-0fdc-3307-d7e77352be48}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Array_Test_Suite EXTENDS TcUnit.FB_TestSuite
 VAR
@@ -166,52 +166,5 @@ END_VAR
 	TEST_FINISHED();]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="FB_Array_Test_Suite">
-      <LineId Id="10" Count="0" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="11" Count="1" />
-    </LineIds>
-    <LineIds Name="FB_Array_Test_Suite.Create_Empty_Array_And_Array_With_Item_And_Check_Count">
-      <LineId Id="35" Count="0" />
-      <LineId Id="48" Count="0" />
-      <LineId Id="47" Count="0" />
-      <LineId Id="49" Count="0" />
-      <LineId Id="56" Count="2" />
-      <LineId Id="46" Count="0" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Array_Test_Suite.Set_And_Find_Item_Indices_Then_Get_Items">
-      <LineId Id="106" Count="2" />
-      <LineId Id="165" Count="3" />
-      <LineId Id="113" Count="0" />
-      <LineId Id="138" Count="0" />
-      <LineId Id="136" Count="1" />
-      <LineId Id="139" Count="0" />
-      <LineId Id="141" Count="1" />
-      <LineId Id="114" Count="21" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Array_Test_Suite.Set_Items_Reverse_The_Array_And_Get_Items">
-      <LineId Id="36" Count="0" />
-      <LineId Id="57" Count="0" />
-      <LineId Id="41" Count="0" />
-      <LineId Id="51" Count="0" />
-      <LineId Id="53" Count="1" />
-      <LineId Id="63" Count="1" />
-      <LineId Id="88" Count="0" />
-      <LineId Id="111" Count="0" />
-      <LineId Id="106" Count="4" />
-      <LineId Id="105" Count="0" />
-      <LineId Id="45" Count="0" />
-      <LineId Id="49" Count="0" />
-      <LineId Id="46" Count="0" />
-      <LineId Id="73" Count="3" />
-      <LineId Id="47" Count="0" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Array_Test_Suite.Set_Value_At_Index_To_Item_And_Get_Item">
-      <LineId Id="99" Count="22" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

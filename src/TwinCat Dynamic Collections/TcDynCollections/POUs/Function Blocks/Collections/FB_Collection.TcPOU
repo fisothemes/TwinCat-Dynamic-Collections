@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Collection" Id="{7742cad6-cf07-0c6e-381d-54d92eee7230}" SpecialFunc="None">
     <Declaration><![CDATA[// Abstract class/Function Block that all collections inherit.
 // Contains inheritable helper methods and base implementation
@@ -96,32 +96,5 @@ END_VAR
         <ST><![CDATA[THIS^._Count := THIS^._Count + 1;]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="FB_Collection">
-      <LineId Id="9" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Collection._Count.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Collection._Count.Set">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Collection._Empty.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Collection._Error_Status.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Collection._Error_Status.Set">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Collection.Clear_Error">
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Collection.Decrement_Count">
-      <LineId Id="5" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Collection.Increment_Count">
-      <LineId Id="5" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

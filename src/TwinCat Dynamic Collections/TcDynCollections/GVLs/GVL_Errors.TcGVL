@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <GVL Name="GVL_Errors" Id="{0580f4db-817e-08c0-0179-3af269cb376a}">
     <Declaration><![CDATA[{attribute 'qualified_only'}
 (* Error code are @ CmpErrors.Errors.<variable> from the CmpErrors2 Interfaces library.*)

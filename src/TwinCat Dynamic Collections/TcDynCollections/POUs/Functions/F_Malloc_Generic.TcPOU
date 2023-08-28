@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="F_Malloc_Generic" Id="{6c6e9db2-79b4-08ab-287d-97b12703691a}" SpecialFunc="None">
     <Declaration><![CDATA[// Allocates memory for T_Generic.
 FUNCTION F_Malloc_Generic : POINTER TO T_Generic
@@ -13,9 +13,5 @@ END_VAR]]></Declaration>
       <ST><![CDATA[Size := TO_UDINT(SIZEOF(T_Generic) * Count);
 F_Malloc_Generic := __NEW(BYTE, Size);]]></ST>
     </Implementation>
-    <LineIds Name="F_Malloc_Generic">
-      <LineId Id="12" Count="0" />
-      <LineId Id="7" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

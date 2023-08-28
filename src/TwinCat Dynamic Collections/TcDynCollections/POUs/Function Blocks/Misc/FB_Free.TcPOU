@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Free" Id="{2ad0b77a-f9a3-0b43-0aea-e6d8cc66dd56}" SpecialFunc="None">
     <Declaration><![CDATA[// Frees pointer when this instance of the FB leaves the scope;
 {attribute 'no_explicit_call' := 'direct call for this function block is not allowed'}
@@ -38,16 +38,5 @@ END_VAR
         <ST><![CDATA[THIS^._pValue REF= pValue;]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="FB_Free">
-      <LineId Id="9" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Free.FB_exit">
-      <LineId Id="17" Count="0" />
-      <LineId Id="12" Count="0" />
-      <LineId Id="6" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Free.FB_init">
-      <LineId Id="7" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

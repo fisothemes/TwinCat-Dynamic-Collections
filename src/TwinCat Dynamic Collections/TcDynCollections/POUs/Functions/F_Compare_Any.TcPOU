@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="F_Compare_Any" Id="{4016674c-f8d8-0eff-037e-3198817fead0}" SpecialFunc="None">
     <Declaration><![CDATA[// Compares value A to generic value B of any type and returns the evaluation.
 FUNCTION F_Compare_Any : T_Comparison
@@ -10,8 +10,5 @@ END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[F_Compare_Any := F_Compare_Generics(A, B);]]></ST>
     </Implementation>
-    <LineIds Name="F_Compare_Any">
-      <LineId Id="12" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

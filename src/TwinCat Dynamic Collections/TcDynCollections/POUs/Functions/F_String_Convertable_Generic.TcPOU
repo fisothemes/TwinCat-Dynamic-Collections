@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="F_String_Convertable_Generic" Id="{6c5f9e50-d2cc-0db5-0baf-aaed7aac5b03}" SpecialFunc="None">
     <Declaration><![CDATA[// Checks if value can be converted to string
 FUNCTION F_String_Convertable_Generic : BOOL
@@ -37,9 +37,5 @@ ELSE
 	RETURN;
 END_CASE]]></ST>
     </Implementation>
-    <LineIds Name="F_String_Convertable_Generic">
-      <LineId Id="79" Count="26" />
-      <LineId Id="7" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

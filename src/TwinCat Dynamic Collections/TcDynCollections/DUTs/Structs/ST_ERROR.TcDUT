@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <DUT Name="ST_ERROR" Id="{ac6f3ce2-2d8c-05ad-3aa6-047cfa96fba9}">
     <Declaration><![CDATA[// STRUCT used to contain error status information.
 {attribute 'enable_dynamic_creation'}

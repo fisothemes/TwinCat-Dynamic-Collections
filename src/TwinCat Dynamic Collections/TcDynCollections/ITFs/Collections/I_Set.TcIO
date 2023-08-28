@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <Itf Name="I_Set" Id="{cd766baf-6798-0e98-3cd7-371ae800be5e}">
     <Declaration><![CDATA[// Interface for a set collection.
 INTERFACE I_Set EXTENDS I_Collection

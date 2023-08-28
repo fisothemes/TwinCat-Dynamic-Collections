@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <Itf Name="I_Map" Id="{e0931a88-4ed8-09ea-153d-9dd89865a137}">
     <Declaration><![CDATA[// An interface for a collection that holds key/value pairs  
 INTERFACE I_Map EXTENDS I_Collection

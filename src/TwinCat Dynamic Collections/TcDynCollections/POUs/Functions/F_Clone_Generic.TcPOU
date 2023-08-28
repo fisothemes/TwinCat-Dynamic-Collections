@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="F_Clone_Generic" Id="{8435b42e-29bd-049d-3c6c-487c199f7343}" SpecialFunc="None">
     <Declaration><![CDATA[// Clones a generic.
 // NOTE: memory is allocated in the heap for the clone and is set to pValue. Dont forget to delete it when done. 
@@ -29,23 +29,5 @@ ELSE
 
 ]]></ST>
     </Implementation>
-    <LineIds Name="F_Clone_Generic">
-      <LineId Id="24" Count="0" />
-      <LineId Id="23" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="15" Count="0" />
-      <LineId Id="39" Count="0" />
-      <LineId Id="38" Count="0" />
-      <LineId Id="37" Count="0" />
-      <LineId Id="25" Count="0" />
-      <LineId Id="36" Count="0" />
-      <LineId Id="44" Count="0" />
-      <LineId Id="40" Count="0" />
-      <LineId Id="43" Count="0" />
-      <LineId Id="41" Count="1" />
-      <LineId Id="35" Count="0" />
-      <LineId Id="16" Count="0" />
-      <LineId Id="20" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

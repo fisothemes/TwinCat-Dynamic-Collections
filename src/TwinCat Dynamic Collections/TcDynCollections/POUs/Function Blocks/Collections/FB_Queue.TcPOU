@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Queue" Id="{13eadc58-7a50-0405-154b-84e7d6eef744}" SpecialFunc="None">
     <Declaration><![CDATA[// A collection whose access/mutation of items is first-in, first-out.
 {attribute 'enable_dynamic_creation'}
@@ -158,60 +158,5 @@ THIS^.fbList.Reverse(bSuccess => bSuccess);
 THIS^._Error_Status :=  THIS^.fbList._Error_Status;]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="FB_Queue">
-      <LineId Id="9" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Queue._Values.Get">
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Queue.Clear">
-      <LineId Id="5" Count="3" />
-      <LineId Id="4" Count="0" />
-      <LineId Id="9" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Queue.Dequeue">
-      <LineId Id="7" Count="0" />
-      <LineId Id="9" Count="3" />
-      <LineId Id="8" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Queue.Enqueue">
-      <LineId Id="9" Count="0" />
-      <LineId Id="11" Count="3" />
-      <LineId Id="10" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Queue.Enqueue_At_Front">
-      <LineId Id="12" Count="0" />
-      <LineId Id="14" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="10" Count="1" />
-      <LineId Id="9" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Queue.Enqueue_Generic">
-      <LineId Id="10" Count="0" />
-      <LineId Id="12" Count="0" />
-      <LineId Id="11" Count="0" />
-      <LineId Id="15" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="16" Count="0" />
-      <LineId Id="14" Count="0" />
-      <LineId Id="17" Count="0" />
-      <LineId Id="19" Count="0" />
-      <LineId Id="18" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Queue.Get">
-      <LineId Id="10" Count="4" />
-    </LineIds>
-    <LineIds Name="FB_Queue.Get_Generic">
-      <LineId Id="7" Count="0" />
-      <LineId Id="9" Count="2" />
-      <LineId Id="8" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Queue.Reverse">
-      <LineId Id="6" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="10" Count="0" />
-      <LineId Id="9" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

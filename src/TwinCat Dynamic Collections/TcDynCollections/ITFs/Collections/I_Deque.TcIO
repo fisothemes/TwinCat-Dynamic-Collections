@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <Itf Name="I_Deque" Id="{91ae1363-6f2f-0538-0f81-6b0e4f1a4878}">
     <Declaration><![CDATA[// Interface for a double ended queue - Deque
 INTERFACE I_Deque EXTENDS I_Collection

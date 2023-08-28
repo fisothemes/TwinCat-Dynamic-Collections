@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <Itf Name="I_Copyable" Id="{7f6e033b-e7fc-0728-1108-7638061053c6}">
     <Declaration><![CDATA[// Interface to apply a copyable attribute to a collection.
 INTERFACE I_Copyable EXTENDS __SYSTEM.IQueryInterface

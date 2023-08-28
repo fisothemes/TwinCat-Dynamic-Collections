@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="F_GetTitle" Id="{66038030-ca20-442e-b750-dd71120c33a7}" SpecialFunc="None">
     <Declaration><![CDATA[// This function has been automatically generated from the project information.
 {attribute 'signature_flag' := '1073741824'}
@@ -13,9 +13,5 @@ END_VAR]]></Declaration>
       <ST><![CDATA[F_GetTitle := "TwinCat Dynamic Collections";
 ]]></ST>
     </Implementation>
-    <LineIds Name="F_GetTitle">
-      <LineId Id="105" Count="0" />
-      <LineId Id="2" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

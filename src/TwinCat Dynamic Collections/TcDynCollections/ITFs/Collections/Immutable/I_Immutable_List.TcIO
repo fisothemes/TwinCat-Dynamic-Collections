@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <Itf Name="I_Immutable_List" Id="{06b68edb-8a76-0a45-125b-ee1050df5d45}">
     <Declaration><![CDATA[// Interface for an immutable list.
 INTERFACE I_Immutable_List EXTENDS I_Immutable_Collection

@@ -6,7 +6,7 @@
     <ProjectGuid>{b9f9d0eb-c791-4800-b43f-0927762498e9}</ProjectGuid>
     <SubObjectsSortedByName>True</SubObjectsSortedByName>
     <DownloadApplicationInfo>true</DownloadApplicationInfo>
-    <WriteProductVersion>true</WriteProductVersion>
+    <WriteProductVersion>false</WriteProductVersion>
     <GenerateTpy>false</GenerateTpy>
     <Name>TcDynCollectionsTest</Name>
     <ProgramVersion>3.1.4023.0</ProgramVersion>

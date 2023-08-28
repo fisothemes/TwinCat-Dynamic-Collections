@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Immutable_List" Id="{220e23e9-4352-0626-30cb-dc4b94c4bdc6}" SpecialFunc="None">
     <Declaration><![CDATA[// Collection that exposes only immutable methods and properties of a collection that implements I_List.
 {attribute 'enable_dynamic_creation'}
@@ -174,72 +174,5 @@ THIS^._Count:= THIS^.ipList._Count;
 THIS^._Error_Status := THIS^.ipList._Error_Status;]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="FB_Immutable_List">
-      <LineId Id="9" Count="0" />
-      <LineId Id="14" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Immutable_List._Count.Get">
-      <LineId Id="8" Count="2" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="11" Count="0" />
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Immutable_List._Empty.Get">
-      <LineId Id="8" Count="2" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="11" Count="0" />
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Immutable_List._Error_Status.Get">
-      <LineId Id="5" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="6" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="11" Count="0" />
-      <LineId Id="2" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Immutable_List.Contains">
-      <LineId Id="14" Count="2" />
-      <LineId Id="6" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="21" Count="0" />
-      <LineId Id="9" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Immutable_List.Get">
-      <LineId Id="11" Count="1" />
-      <LineId Id="24" Count="2" />
-      <LineId Id="10" Count="0" />
-      <LineId Id="14" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="35" Count="0" />
-      <LineId Id="15" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Immutable_List.Get_As_String">
-      <LineId Id="12" Count="0" />
-      <LineId Id="11" Count="0" />
-      <LineId Id="24" Count="2" />
-      <LineId Id="10" Count="0" />
-      <LineId Id="14" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="35" Count="0" />
-      <LineId Id="15" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Immutable_List.Get_Type_At">
-      <LineId Id="11" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="18" Count="2" />
-      <LineId Id="14" Count="3" />
-      <LineId Id="12" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Immutable_List.Search">
-      <LineId Id="11" Count="1" />
-      <LineId Id="24" Count="2" />
-      <LineId Id="10" Count="0" />
-      <LineId Id="14" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="35" Count="0" />
-      <LineId Id="15" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

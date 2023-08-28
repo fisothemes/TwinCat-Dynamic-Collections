@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Hash_Map" Id="{2f3dc51d-9a32-0b7c-3648-fa7ef11990ef}" SpecialFunc="None">
     <Declaration><![CDATA[// A collection of key value pairs items.
 {attribute 'enable_dynamic_creation'}
@@ -11,8 +11,5 @@ END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
-    <LineIds Name="FB_Hash_Map">
-      <LineId Id="9" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

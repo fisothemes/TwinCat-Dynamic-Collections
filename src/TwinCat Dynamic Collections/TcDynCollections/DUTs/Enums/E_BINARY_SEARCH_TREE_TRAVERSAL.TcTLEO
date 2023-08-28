@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <EnumerationTextList Name="E_BINARY_SEARCH_TREE_TRAVERSAL" Id="{3e0edefa-b709-0855-345d-bee12ed26c98}">
     <Declaration><![CDATA[// Methods for traversing a binary search tree.
 {attribute 'qualified_only'}

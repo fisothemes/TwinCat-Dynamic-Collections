@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <POU Name="F_Generic_To_LREAL" Id="{439f0157-15d5-059d-2145-b403b826d07f}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION F_Generic_To_LREAL : LREAL
 VAR_INPUT
@@ -127,9 +127,5 @@ CASE Value.TypeClass OF
 		F_Generic_To_LREAL := TO_LREAL(pLTime^);
 END_CASE]]></ST>
     </Implementation>
-    <LineIds Name="F_Generic_To_LREAL">
-      <LineId Id="34" Count="92" />
-      <LineId Id="7" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>

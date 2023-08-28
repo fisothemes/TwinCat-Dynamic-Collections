@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <Itf Name="I_Enumerable" Id="{d991723d-c59d-0fd8-04fd-3298c13d4437}">
     <Declaration><![CDATA[INTERFACE I_Enumerable EXTENDS __SYSTEM.IQueryInterface
 ]]></Declaration>

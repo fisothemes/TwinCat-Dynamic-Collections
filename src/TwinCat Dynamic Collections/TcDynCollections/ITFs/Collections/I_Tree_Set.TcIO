@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <Itf Name="I_Tree_Set" Id="{cfffa3b6-c0bb-0ecd-3db9-4d890602e0ac}">
     <Declaration><![CDATA[// Interface for a set implemented using a binary search tree.
 INTERFACE I_Tree_Set EXTENDS I_Set

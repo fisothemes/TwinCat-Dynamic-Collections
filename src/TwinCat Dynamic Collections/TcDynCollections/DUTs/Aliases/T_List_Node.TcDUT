@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+<TcPlcObject Version="1.1.0.1">
   <DUT Name="T_List_Node" Id="{820f3930-feac-0a03-1f4a-f34f8359ce38}">
     <Declaration><![CDATA[TYPE T_List_Node : ST_LIST_NODE; END_TYPE
 ]]></Declaration>
