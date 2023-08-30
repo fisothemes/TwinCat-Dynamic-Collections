@@ -90,13 +90,17 @@ END_VAR]]></Declaration>
       </Implementation>
     </Method>
     <Method Name="FB_exit" Id="{a821d335-2b1f-0418-2318-f2748130d064}">
-      <Declaration><![CDATA[METHOD FB_exit : BOOL
+      <Declaration><![CDATA[{attribute 'hide'}
+METHOD FB_exit : BOOL
 VAR_INPUT
 	bInCopyCode : BOOL; // if TRUE, the exit method is called for exiting an instance that is copied afterwards (online change).
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[THIS^.Clear();]]></ST>
+        <ST><![CDATA[// If this is an online change or this collection is empty then ignore. 
+IF bInCopyCode THEN RETURN; END_IF
+
+THIS^.Clear();]]></ST>
       </Implementation>
     </Method>
     <Method Name="Get" Id="{b8bbf96b-e911-05e0-15b2-8869381e2f3e}">
