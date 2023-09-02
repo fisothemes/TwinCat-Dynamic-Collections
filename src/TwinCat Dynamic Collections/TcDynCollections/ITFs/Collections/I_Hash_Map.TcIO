@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_Hash_Map" Id="{81aa7234-51b6-00c7-0021-2edc7d2797f6}">
+    <Declaration><![CDATA[// Interface for a set implemented using a hash table.
+INTERFACE I_Hash_Map EXTENDS I_Map
+]]></Declaration>
+    <Property Name="_Bucket_Count" Id="{0c832819-8da2-0c04-2b61-3e0e58a4afed}">
+      <Declaration><![CDATA[// Number of buckets in the hash map.
+PROPERTY _Bucket_Count : T_Capacity;]]></Declaration>
+      <Get Name="Get" Id="{e2d0ad33-60b5-0837-3daa-4728ea6d20bf}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Method Name="Resize" Id="{1dfc3ad2-aec7-0464-2bdf-39f3f3d45b7b}">
+      <Declaration><![CDATA[// Sets the number of buckets in the hash map.
+// Existing items are rehashed and redistributed into the new buckets.
+METHOD Resize : I_Hash_Map
+VAR_INPUT
+	Count : T_Capacity;
+END_VAR]]></Declaration>
+    </Method>
+  </Itf>
+</TcPlcObject>

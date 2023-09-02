@@ -42,7 +42,7 @@ END_VAR]]></Declaration>
     <Method Name="Get_Generic" Id="{6e074319-ab5b-0dae-163e-683d6b3f2fd2}">
       <Declaration><![CDATA[// Gets the value in its generic form associated with the specified key in its generic form without removing it from the map.
 // (** Use carefully as this contains the pointer of the actual value in the collection. **)
-// If you wish to use this it is recommeded you create a copy of the returned value using MEMMOVE or MEMCPY
+// If you wish to use this it is recommeded you create a copy of the returned value using MEMCPY
 METHOD Get_Generic : I_Map
 VAR_INPUT
 	Key : T_Generic; // Key used to identify stored value
