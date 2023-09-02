@@ -138,7 +138,8 @@ ELSE
       </Implementation>
     </Method>
     <Method Name="FB_exit" Id="{4d98b848-20dc-0165-2230-f60033d5b22e}">
-      <Declaration><![CDATA[METHOD FB_exit : BOOL
+      <Declaration><![CDATA[{attribute 'hide'}
+METHOD FB_exit : BOOL
 VAR_INPUT
 	bInCopyCode : BOOL; // if TRUE, the exit method is called for exiting an instance that is copied afterwards (online change).
 END_VAR
