@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="F_Murmur_Scramble" Id="{99c6c167-c9e9-0f61-2e7b-2fd41a003d69}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION INTERNAL F_Murmur_Scramble : DWORD
+VAR_INPUT
+	nK : DWORD;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[nK := nK * 16#CC9E2D51;
+nK := SHL(nK, 15) OR SHR(nK, 17);
+nK := nK * 16#1B873593;
+F_Murmur_Scramble := nK;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

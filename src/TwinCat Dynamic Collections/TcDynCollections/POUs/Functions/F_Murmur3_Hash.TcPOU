@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="F_Murmur3_Hash" Id="{462dba7b-e237-05e2-3c34-a3bea50a8560}" SpecialFunc="None">
+    <Declaration><![CDATA[// Generates a 32-bit hash code using MurmurHash3, created by Austin Appleby. Source: https://en.wikipedia.org/wiki/MurmurHash
+FUNCTION F_Murmur3_Hash : DWORD
+VAR_INPUT
+	Data : T_Generic;
+END_VAR
+VAR
+	i, nSize 	: UDINT;
+	nK, nHash 	: DWORD;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE Data.TypeClass OF
+	__SYSTEM.TYPE_CLASS.TYPE_STRING:
+		nSize := Tc2_Utilities.LEN2(Data.pValue);
+	__SYSTEM.TYPE_CLASS.TYPE_WSTRING:
+		nSize := Tc2_Utilities.WLEN2(Data.pValue)*2;
+ELSE
+		nSize := TO_UDINT(Data.diSize);
+END_CASE
+
+FOR i := SHR(nSize, 2) TO 1 BY -1 DO
+	MEMCPY(ADR(nK), Data.pValue, SIZEOF(DWORD));
+	Data.pValue := Data.pValue + SIZEOF(DWORD);
+	nHash := nHash XOR F_Murmur_Scramble(nK);
+	nHash := SHL(nHash,13) OR SHR(nHash,19);
+	nHash := nHash * 5 + 16#E6546B64;
+	END_FOR
+	
+nK := 0;
+FOR i := (nSize AND 3) TO 1 BY -1 DO
+	nK := SHL(nK,8);
+	nK := nK OR Data.pValue[i-1];
+	END_FOR
+
+nHash := nHash XOR F_Murmur_Scramble(nK);
+nHash := nHash XOR nSize;
+nHash := nHash XOR SHR(nHash, 16);
+nHash := nHash * 16#85EBCA6B;
+nHash := nHash XOR SHR(nHash, 13);
+nHash := nHash * 16#C2B2AE35;
+nHash := nHash XOR SHR(nHash, 16); 
+
+F_Murmur3_Hash := nHash;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

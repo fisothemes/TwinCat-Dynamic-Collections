@@ -48,6 +48,9 @@
     <Compile Include="DUTs\Aliases\T_Generic.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\Aliases\T_Hashset_Bucket_Node.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\Aliases\T_List_Node.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -75,11 +78,18 @@
     <Compile Include="DUTs\Structs\ST_ERROR.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\Structs\ST_HASHSET_BUCKET_NODE.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\Structs\ST_LIST_NODE.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\Structs\ST_MAP_ENTRY.TcDUT">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GVLs\GVL_Constants.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
     </Compile>
     <Compile Include="GVLs\GVL_Errors.TcGVL">
       <SubType>Code</SubType>
@@ -131,6 +141,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ITFs\Collections\I_Tree_Set.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITFs\Collections\I_Hash_Set.TcIO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ITFs\Enumerators\I_Enumerable.TcIO">
@@ -247,6 +260,12 @@
     <Compile Include="POUs\Functions\F_Matching_Generics.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\Functions\F_Murmur3_Hash.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Functions\F_Murmur_Scramble.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\Functions\F_String_Convertable_Generic.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -296,6 +315,7 @@
     <Folder Include="POUs\Function Blocks\Collections\Immutable" />
     <Folder Include="POUs\Function Blocks\Enumerators" />
     <Folder Include="POUs\Function Blocks\Misc" />
+    <Folder Include="POUs\Function Blocks\Specialised" />
     <Folder Include="POUs\Function Blocks\Wrappers" />
     <Folder Include="POUs\Functions" />
     <Folder Include="UML" />

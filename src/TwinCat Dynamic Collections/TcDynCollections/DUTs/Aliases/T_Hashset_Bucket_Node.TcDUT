@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="T_Hashset_Bucket_Node" Id="{a0ff24af-4a08-01d2-2f6f-dc5975761437}">
+    <Declaration><![CDATA[TYPE T_Hashset_Bucket_Node : ST_HASHSET_BUCKET_NODE; END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

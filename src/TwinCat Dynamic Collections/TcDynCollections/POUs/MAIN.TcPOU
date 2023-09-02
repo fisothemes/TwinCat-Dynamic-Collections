@@ -3,8 +3,9 @@
   <POU Name="MAIN" Id="{dc6abe44-dfc6-0eff-1900-3902669cc79c}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM INTERNAL MAIN
 VAR
-	Data : ARRAY[0..10] OF INT := [1,2,2,4,5,6,7,8,9,10];
-	rData : ARRAY[0..10] OF INT;
+	Data : ARRAY[0..10] OF DINT := [1,2,3,4,5,6,7,8,9,10];
+	rData: ARRAY[0..10] OF DINT;
+	Size : UDINT;
 	i,j : T_Position;
 	ipImm : I_Immutable_List;
 	bAdd, bRemove, bClear : BOOL;
@@ -13,6 +14,7 @@ VAR
 	fbList : FB_List;
 	fbQueue : FB_Queue;
 	fbSet : FB_Tree_Set;
+	fbHash_Set : FB_Hash_Set(3);
 	fbMap : FB_Tree_Map;
 	fbDeque : FB_Deque;
 	fbMultiset : FB_Tree_Multiset;
@@ -20,7 +22,6 @@ END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[IF bAdd THEN
 	bAdd := FALSE;
-	FOR i := 0 TO 2 DO fbMultiset.Insert(Data[i]); END_FOR
 	END_IF
 
 IF bRemove THEN 
@@ -29,7 +30,6 @@ IF bRemove THEN
 	
 IF bClear THEN 
 	bClear := FALSE;
-	fbMultiset.Clear();
 	END_IF]]></ST>
     </Implementation>
   </POU>

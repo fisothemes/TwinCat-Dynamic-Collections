@@ -270,6 +270,7 @@ __pycache__/
 *.tpy
 *.tsproj.bak
 LineIDs.dbg
+LineIDs.dbg.bak
 
 _Boot/
 _CompileInfo/

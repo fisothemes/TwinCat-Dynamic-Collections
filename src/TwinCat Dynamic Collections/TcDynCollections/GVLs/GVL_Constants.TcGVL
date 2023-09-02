@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <GVL Name="GVL_Constants" Id="{674ab930-e2b4-01a5-2532-7081e601ccda}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL CONSTANT
+	MIN_CAPACITY : DINT := 0;
+	MAX_CAPACITY : DINT := 2147483647;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>
