@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_Hash_Set_Test_Suite" Id="{0e6d6c11-80f0-0e7b-2126-f437be6d8ff5}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Hash_Set_Test_Suite EXTENDS TcUnit.FB_TestSuite
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Check_If_Clear_Empties_Items();
+Check_If_Contains_Returns_True_If_Item_In_Set();
+Check_If_Duplicate_Items_Cannot_Be_Inserted();
+Check_If_Get_Values_Returns_Values();
+Check_If_Insert_Adds_Items();
+Check_If_Remove_Removes_Items();]]></ST>
+    </Implementation>
+    <Method Name="Check_If_Clear_Empties_Items" Id="{bb61b5af-7666-0e50-1f0a-d526c74324e7}">
+      <Declaration><![CDATA[METHOD Check_If_Clear_Empties_Items
+VAR_INST
+	fbSet : FB_Hash_Set(0);
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Clear_Empties');
+	fbSet
+		.Insert(sItem)
+		.Insert(nItem)
+		.Clear();
+		
+	THIS^.AssertEquals_DINT(0, fbSet._Count, 'Set was not empty after inserting data.');
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Contains_Returns_True_If_Item_In_Set" Id="{9822f039-a0cd-0964-23fb-8c478c3b82e1}">
+      <Declaration><![CDATA[METHOD Check_If_Contains_Returns_True_If_Item_In_Set
+VAR_INST
+	fbSet : FB_Hash_Set(0);
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+	bResult : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Contains_Returns_True_If_Item_In_Set');
+
+	bResult := fbSet
+		.Insert(sItem)
+		.Insert(nItem)
+		.Contains(nItem);
+		
+	THIS^.AssertEquals_BOOL(TRUE, bResult, 'Failed to check if item is in set.');
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Duplicate_Items_Cannot_Be_Inserted" Id="{beb10d9c-6f44-01a5-1aa2-5a853736772b}">
+      <Declaration><![CDATA[METHOD Check_If_Duplicate_Items_Cannot_Be_Inserted
+VAR_INST
+	fbSet : FB_Hash_Set(0);
+	arnItems : ARRAY[0..5] OF DINT := [3,1,2,1,3,2];
+	i : DINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Duplicate_Items_Cannot_Be_Inserted');
+
+	FOR i := 0 TO 5 DO
+    	fbSet.Insert(arnItems[i]);
+    	END_FOR
+		
+	THIS^.AssertEquals_DINT(3, fbSet._Count, 'Set inserted duplicate items.');
+		
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Get_Values_Returns_Values" Id="{ff8b52ef-abae-0603-32de-289449ef4990}">
+      <Declaration><![CDATA[METHOD Check_If_Get_Values_Returns_Values
+VAR_INST
+	fbSet : FB_Hash_Set(0);
+	arnItems : ARRAY[0..3] OF DINT := [1,2,3,4];
+	arnReturned_Items : ARRAY[0..3] OF DINT;
+	arIndex : ARRAY[0..3] OF T_Position := [4(-1)];
+	ipItems : I_Immutable_List;
+	i : DINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Get_Values_Returns_Values');
+
+	FOR i := 0 TO 3 DO
+    	fbSet.Insert(arnItems[i]);
+    	END_FOR
+		
+	ipItems := fbSet.Get_Values();
+	ipItems
+		.Search(arnItems[0], index => arIndex[0])
+		.Search(arnItems[1], index => arIndex[1])
+		.Search(arnItems[2], index => arIndex[2])
+		.Search(arnItems[3], index => arIndex[3])
+		.Get(arIndex[0], arnReturned_Items[0])
+		.Get(arIndex[1], arnReturned_Items[1])
+		.Get(arIndex[2], arnReturned_Items[2])
+		.Get(arIndex[3], arnReturned_Items[3]);
+	THIS^.AssertEquals_DINT(1, arnReturned_Items[0],'');
+	THIS^.AssertEquals_DINT(2, arnReturned_Items[1],'');
+	THIS^.AssertEquals_DINT(3, arnReturned_Items[2],'');
+	THIS^.AssertEquals_DINT(4, arnReturned_Items[3],'');
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Insert_Adds_Items" Id="{6c0d1bcb-f646-0845-31a4-8410d5427b7f}">
+      <Declaration><![CDATA[METHOD Check_If_Insert_Adds_Items
+VAR_INST
+	fbSet : FB_Hash_Set(0);
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Insert_Adds_Items');
+	fbSet
+		.Insert(sItem)
+		.Insert(nItem);
+		
+	THIS^.AssertEquals_DINT(2, fbSet._Count, 'Failed to insert items into set.');
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Remove_Removes_Items" Id="{547ea403-ce40-0e82-1461-1e04f55db809}">
+      <Declaration><![CDATA[METHOD Check_If_Remove_Removes_Items
+VAR_INST
+	fbSet : FB_Hash_Set(0);
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+	fItem : LREAL := 37.4;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Remove_Removes_Items');
+
+	fbSet
+		.Insert(sItem)
+		.Insert(nItem)
+		.Insert(fItem)
+		.Remove(nItem);
+		
+	THIS^.AssertEquals_DINT(2, fbSet._Count, 'Failed to remove item in set.');
+	THIS^.AssertEquals_BOOL(TRUE, fbSet.Contains(sItem), 'Failed to remove item in set.');
+	THIS^.AssertEquals_BOOL(FALSE, fbSet.Contains(nItem), 'Failed to remove item in set.');
+	THIS^.AssertEquals_BOOL(TRUE, fbSet.Contains(fItem), 'Failed to remove item in set.');	
+
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>
