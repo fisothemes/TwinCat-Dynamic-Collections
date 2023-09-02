@@ -742,7 +742,7 @@ END_VAR]]></Declaration>
       </Implementation>
     </Method>
     <Method Name="Update" Id="{d9712660-e5bd-0573-13fe-b31adac2059e}">
-      <Declaration><![CDATA[// Updates the value an element with the provided key and value in the map.
+      <Declaration><![CDATA[// Updates the value at the provided key with the new value in the map.
 METHOD Update : I_Map
 VAR_INPUT
 	Key 	: ANY; // Key used to identify stored value
@@ -755,7 +755,24 @@ VAR
 	pTmp : POINTER TO T_AVL_Map_Node;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[Update := THIS^;
+        <ST><![CDATA[Update := THIS^.Update_Generic(Key, Value, bSuccess => bSuccess);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Update_Generic" Id="{5f71dd77-c818-070f-1ac2-aa5f9d7f80e4}">
+      <Declaration><![CDATA[// Updates the value at the provided key with the new value in their generic forms in the map.
+METHOD Update_Generic : I_Map
+VAR_INPUT
+	Key 	: T_Generic; // Key used to identify stored value
+	Value 	: T_Generic; // Value to store in map with key
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+VAR
+	pTmp : POINTER TO T_AVL_Map_Node;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Update_Generic := THIS^;
 
 pTmp := THIS^.Search_Node(THIS^.pRoot, Key);
 
