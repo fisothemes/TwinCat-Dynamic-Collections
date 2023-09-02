@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="T_Hashmap_Bucket_Node" Id="{75699d58-a158-0d87-3e7a-7773b888a364}">
+    <Declaration><![CDATA[TYPE T_Hashmap_Bucket_Node : ST_HASHMAP_BUCKET_NODE; END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
