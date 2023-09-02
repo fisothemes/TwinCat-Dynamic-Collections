@@ -97,8 +97,6 @@ VAR_INPUT
 	Count : T_Capacity;
 END_VAR
 VAR
-	pTmp_Buffer : POINTER TO BYTE;
-	Size : UDINT;
 	i : T_Capacity;
 END_VAR]]></Declaration>
       <Implementation>
