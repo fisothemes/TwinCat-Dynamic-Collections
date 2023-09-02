@@ -266,7 +266,7 @@ THIS^.Get_Generic(Key, Value => Tmp, bSuccess => bSuccess);
 IF NOT bSuccess THEN RETURN; END_IF
 
 IF NOT F_String_Convertable_Generic(Tmp) THEN 
-	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_NOT_SUPPORTED, 'No support for converting item at index to string.');
+	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_NOT_SUPPORTED, 'No support for converting value with key to string.');
 	RETURN;
 	END_IF
 	
@@ -316,10 +316,12 @@ END_VAR
 pTmp := THIS^.Search_Node(THIS^.pRoot, Key);
 bSuccess := pTmp <> 0;
 
+// Throw item not found error.
+THIS^._Error_Status := F_Error(NOT bSuccess, GVL_Errors.ERR_NO_OBJECT, 'Key not found.');
+
 IF NOT bSuccess THEN RETURN; END_IF
 
-Value := pTmp^.Value;
-THIS^.Clear_Error();]]></ST>
+Value := pTmp^.Value;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Get_Height" Id="{4116f697-9b5d-0613-3c8f-4e041dbbad46}" FolderPath="Internal\">
