@@ -51,6 +51,9 @@
     <Compile Include="DUTs\Aliases\T_Hashset_Bucket_Node.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\Aliases\T_Hashmap_Bucket_Node.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\Aliases\T_List_Node.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -79,6 +82,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\Structs\ST_HASHSET_BUCKET_NODE.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Structs\ST_HASHMAP_BUCKET_NODE.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\Structs\ST_LIST_NODE.TcDUT">
@@ -120,6 +126,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ITFs\Collections\I_Deque.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITFs\Collections\I_Hash_Map.TcIO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ITFs\Collections\I_List.TcIO">

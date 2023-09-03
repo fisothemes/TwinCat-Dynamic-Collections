@@ -13,9 +13,10 @@ VAR
 	fbArray_List : FB_Array_List(0);
 	fbList : FB_List;
 	fbQueue : FB_Queue;
-	fbSet : FB_Tree_Set;
+	fbTree_Set : FB_Tree_Set;
 	fbHash_Set : FB_Hash_Set(3);
-	fbMap : FB_Tree_Map;
+	fbTree_Map : FB_Tree_Map;
+	fbHash_Map : FB_Hash_Map(3);
 	fbDeque : FB_Deque;
 	fbMultiset : FB_Tree_Multiset;
 END_VAR]]></Declaration>
@@ -24,11 +25,11 @@ END_VAR]]></Declaration>
 	bAdd := FALSE;
 	END_IF
 
-IF bRemove THEN 
+IF bRemove THEN
 	bRemove := FALSE;
 	END_IF
 	
-IF bClear THEN 
+IF bClear THEN
 	bClear := FALSE;
 	END_IF]]></ST>
     </Implementation>
