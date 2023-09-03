@@ -21,7 +21,7 @@
     <Title>TwinCat Dynamic Collections</Title>
     <Author>Goodwill Mzumala</Author>
     <DefaultNamespace>TcDynCollections</DefaultNamespace>
-    <ProjectVersion>1.0.2.16</ProjectVersion>
+    <ProjectVersion>1.0.2.17</ProjectVersion>
     <DocFormat>reStructuredText</DocFormat>
     <Description>A library for handling collections of data dynamically in TwinCAT.</Description>
     <CombineIds>true</CombineIds>
