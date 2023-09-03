@@ -13,6 +13,7 @@ VAR
 	fbTree_Map_Test_Suite : FB_Tree_Map_Test_Suite;
 	fbTree_Multiset_Test_Suite : FB_Tree_Multiset_Test_Suite;
 	fbHash_Set_Test_Suite : FB_Hash_Set_Test_Suite;
+	fbHash_Map_Test_Suite : FB_Hash_Map_Test_Suite;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[TcUnit.RUN();
