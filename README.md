@@ -8,17 +8,17 @@ Here are some of the features of Dynamic Collections:
 
 * **Fast and efficient** 
 
-  The collections in the library use data structures and algorithms along with optimisations that make them well-suited for PLCs allowing for fast and efficient access to data.
+  The collections in the library use data structures and algorithms along with optimisations that make them well-suited for PLCs, allowing for fast and efficient access to data.
 
 * **Easy to use** 
 
-  The library provides a simple and intuitive interface for handling data.
+  Collections follow a simple and intuitive interface for handling data.
 
 * **Extendable** 
 
-  The takes advantage of interfaces and the ANY type to support new algorithms and for handling any datatype.
+  The library allows you to take advantage of interfaces, OOP principles, functions and internal types to allow you to create/extend/wrap functionally or even implement a data structure in your preferred algorithm. You can even optimise it for your particular use case e.g. choosing the number of buckets in a hash map/set.
 
-Click [here](https://github.com/fisothemes/TwinCat-Dynamic-Collections/releases/tag/v1.0.2.11) for the latest pre-release.
+**[Click here for releases/prerelease!](https://github.com/fisothemes/TwinCat-Dynamic-Collections/releases/)**
 
 ## Function Blocks
 
@@ -30,9 +30,13 @@ Click [here](https://github.com/fisothemes/TwinCat-Dynamic-Collections/releases/
 
 * 👍 **FB_List** - A doubly linked list with iterator hint optimisation. Essentially the linked list keeps track of the node it last accessed. Iteration starts from the closest node (head, tail or last accessed) to the access/mutation index. This should result in sequential access times of O(1) and similar times for access/mutation on the same index. Can store multiple types. Implements `I_List`.
 
-* 👍 **FB_Tree_Map** - A collection of key-value pair items implemented using an iterative AVL Tree. Keys and values can be retrieved as an immutable list (whose base is FB_ArrayList) via 4 traversal methods; Inorder, Preorder, Postorder and Level Order. Can store multiple types. Implements `I_Tree_Map` which inherits `I_Map`.
+* 👍 **FB_Hash_Map** - A collection of key-value pair items implemented using a hash table with closed addressing. The hash function uses [MurmurHash3](https://en.wikipedia.org/wiki/MurmurHash). Keys and values can be retrieved as an immutable list (whose base is FB_Array_List) in no particular order. Can store multiple types. Implements `I_Hash_Map` which inherits `I_Map`.
 
-* 👍 **FB_Tree_Set** - A collection that contains no duplicate items implemented using an iterative AVL Tree. Keys and values can be retrieved as an immutable list (whose base is FB_ArrayList) via 4 traversal methods; Inorder, Preorder, Postorder and Level Order. Can store multiple types. Implements `I_Tree_Set` which inherits `I_Set`.
+* 👍 **FB_Hash_Set** - A collection that contains no duplicate items implemented using an iterative AVL Tree. The hash function uses [MurmurHash3](https://en.wikipedia.org/wiki/MurmurHash). Keys and values can be retrieved as an immutable list (whose base is FB_ArrayList) in no particular order. Can store multiple types. Implements `I_Hash_Set` which inherits `I_Set`.
+
+* 👍 **FB_Tree_Map** - A collection of key-value pair items implemented using a hash table with closed addressing. Keys and values can be retrieved as an immutable list (whose base is FB_ArrayList) via 4 traversal methods; Inorder, Preorder, Postorder and Level Order. Can store multiple types. Implements `I_Tree_Map` which inherits `I_Map`.
+
+* 👍 **FB_Tree_Set** - A collection that contains no duplicate items implemented using an iterative AVL Tree. Keys and values can be retrieved as an immutable list (whose base is FB_Array_List) via 4 traversal methods; Inorder, Preorder, Postorder and Level Order. Can store multiple types. Implements `I_Tree_Set` which inherits `I_Set`.
 
 * 👍 **FB_Queue** - A collection whose access/mutation of items is first-in, first-out whose base is FB_List. Can store multiple types. Implements `I_Queue`.
 
@@ -48,8 +52,8 @@ Click [here](https://github.com/fisothemes/TwinCat-Dynamic-Collections/releases/
 
 **Declarations:** 
 ```js
-fbArray      : FB_Array(3);
-fbArray_List : FB_Array_List(0);
+fbArray      : FB_Array(3); // FB_Array(<number of items>)
+fbArray_List : FB_Array_List(0); // FB_Array_List(<number of initial items>)
 fbList       : FB_List; 
 
 sData   : STRING := 'Cats'; // variable that holds string data
@@ -206,13 +210,22 @@ FOR i := 0 TO fbTree_Map._Count - 1 DO
     END_FOR
 ```
 
+## Hash Map and Hash Set Declarations
+
+**Declarations:** 
+```js
+fbHash_Map : FB_Hash_Map(0); // FB_Hash_Map(<number of initial buckets>)
+fbHash_Set : FB_Hash_Set(0); // FB_Hash_Set(<number of initial buckets>)
+```
 # Developer Notes
 Version 1 (v1.x.x.x) is still a work in progress. It is not backward compatible with version 0 (v0.x.x.x). If you were using version 0 a new branch has been created for it and updates will only be for bug fixes. 
 
-Version 0 branch: [Click here!](https://github.com/fisothemes/TwinCat-Dynamic-Collections/tree/v0)
+**[Click here for the version 0 branch](https://github.com/fisothemes/TwinCat-Dynamic-Collections/tree/v0)**
 
 As always feel free to contribute or report issues.
 
 # ⚠ Important ⚠ 
+
+The internally used memory is allocated from the router memory pool and is generated via [_NEW](https://infosys.beckhoff.com/content/1033/tc3_plc_intro/2529171083.html?id=5409766235804740463) and released via [_DELETE](https://infosys.beckhoff.com/content/1033/tc3_plc_intro/2529160331.html?id=2289870734872430416) at runtime. [Please make sure you have enough router memory allocated for your use case.](https://infosys.beckhoff.com/content/1033/tf7xxx_tc3_vision/6797114507.html?id=5557377509594186908)
 
 Be careful when storing `STRUCT`s or `FUNCTION BLOCK`s that contain `STRING`s or `WSTRING`s. You may not be able to retrieve them with any search operation method that includes keys to retrieve a value in a map. This is because strings are null-terminated, so any junk characters after the null character are retained. Equality of `STRUCT`s and `FUNCTION BLOCK`s are checked using `MEMCMP`. For `FUNCTION BLOCK`s I recommend you store them using interfaces or pointers. For `STRUCT`s, clear any strings inside using `MEMSET` and set them to your chosen value before you store them. If you have questions I'm happy to answer them.
