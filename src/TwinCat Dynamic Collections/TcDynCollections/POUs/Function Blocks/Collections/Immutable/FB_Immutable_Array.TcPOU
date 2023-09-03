@@ -3,15 +3,14 @@
   <POU Name="FB_Immutable_Array" Id="{73f571b4-60ce-0a01-0a00-4968c563837d}" SpecialFunc="None">
     <Declaration><![CDATA[// Collection that exposes only immutable methods and properties of a collection that implements I_Array.
 {attribute 'enable_dynamic_creation'}
-FUNCTION_BLOCK FB_Immutable_Array EXTENDS FB_Collection IMPLEMENTS I_Immutable_Array
+FUNCTION_BLOCK FB_Immutable_Array IMPLEMENTS I_Immutable_Array
 VAR_INPUT
 	ipArray : I_Array;
 END_VAR
 VAR
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[IF THIS^.ipArray = 0 THEN RETURN; END_IF
-THIS^._Count := THIS^.ipArray._Count;]]></ST>
+      <ST><![CDATA[]]></ST>
     </Implementation>
     <Property Name="_Count" Id="{30f84f30-18a4-0cc7-1a47-0d61a5ae06d0}">
       <Declaration><![CDATA[// Number of items in the collection.
@@ -21,12 +20,8 @@ PROPERTY _Count : T_Capacity]]></Declaration>
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[IF THIS^.ipArray = 0 THEN 
-	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipArray is null.');
-	RETURN; 
-	END_IF
-	
-_Count := THIS^.Count := THIS^.ipArray._Count;]]></ST>
+          <ST><![CDATA[IF THIS^.ipArray = 0 THEN RETURN; END_IF
+_Count := THIS^.ipArray._Count;]]></ST>
         </Implementation>
       </Get>
     </Property>
@@ -38,11 +33,7 @@ PROPERTY _Empty : BOOL]]></Declaration>
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[IF THIS^.ipArray = 0 THEN 
-	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipArray is null.');
-	RETURN; 
-	END_IF
-	
+          <ST><![CDATA[IF THIS^.ipArray = 0 THEN _Empty := TRUE; RETURN; END_IF
 _Empty := THIS^.ipArray._Empty;]]></ST>
         </Implementation>
       </Get>
@@ -56,11 +47,10 @@ END_VAR
 ]]></Declaration>
         <Implementation>
           <ST><![CDATA[IF THIS^.ipArray = 0 THEN 
-	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipArray is null.');
+	_Error_Status := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipArray is null.');
 	RETURN; 
 	END_IF
-	
-_Error_Status := THIS^.Error := THIS^.ipArray._Error_Status;]]></ST>
+_Error_Status := THIS^.ipArray._Error_Status;]]></ST>
         </Implementation>
       </Get>
     </Property>
@@ -71,19 +61,14 @@ VAR_INPUT
 	Item : ANY; // Item to find in list
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF THIS^.ipArray = 0 THEN 
-	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipArray is null.');
-	RETURN; 
-	END_IF
+        <ST><![CDATA[IF THIS^.ipArray = 0 THEN RETURN; END_IF
 
-Contains := THIS^.ipArray.Contains(Item);
-THIS^._Count:= THIS^.ipArray._Count;
-THIS^._Error_Status := THIS^.ipArray._Error_Status;]]></ST>
+Contains := THIS^.ipArray.Contains(Item);]]></ST>
       </Implementation>
     </Method>
     <Method Name="Get" Id="{8878b48b-5cba-0b3e-2323-520ee798b27b}">
-      <Declaration><![CDATA[// Gets item from list at specified location without removing it.
-METHOD Get : I_Immutable_List
+      <Declaration><![CDATA[// Gets item from array at specified location without removing it.
+METHOD Get : I_Immutable_Array
 VAR_INPUT
 	Index : T_Position; // Location of item
 	Item : ANY;  // Variable to store returned item
@@ -94,19 +79,14 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Get := THIS^;
 
-IF THIS^.ipArray = 0 THEN 
-	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipArray is null.');
-	RETURN; 
-	END_IF
+IF THIS^.ipArray = 0 THEN RETURN; END_IF
 
-THIS^.ipArray.Get(Index, Item, bSuccess => bSuccess);
-THIS^._Count:= THIS^.ipArray._Count;
-THIS^._Error_Status := THIS^.ipArray._Error_Status;]]></ST>
+THIS^.ipArray.Get(Index, Item, bSuccess => bSuccess);]]></ST>
       </Implementation>
     </Method>
     <Method Name="Get_As_String" Id="{9f9c772d-35f0-0081-3a8f-d512bc65bb2d}">
       <Declaration><![CDATA[// Returns item as a string, if type to string conversion is supported.
-METHOD Get_As_String : I_Immutable_List
+METHOD Get_As_String : I_Immutable_Array
 VAR_INPUT
 	Index : T_Position; // Location of item
 	sItem : REFERENCE TO STRING; // Variable to store returned item.
@@ -117,14 +97,9 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Get_As_String := THIS^;
 
-IF THIS^.ipArray = 0 THEN 
-	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipArray is null.');
-	RETURN; 
-	END_IF
+IF THIS^.ipArray = 0 THEN RETURN; END_IF
 
-THIS^.ipArray.Get_As_String(Index, sItem, bSuccess => bSuccess);
-THIS^._Count:= THIS^.ipArray._Count;
-THIS^._Error_Status := THIS^.ipArray._Error_Status;]]></ST>
+THIS^.ipArray.Get_As_String(Index, sItem, bSuccess => bSuccess);]]></ST>
       </Implementation>
     </Method>
     <Method Name="Get_Type_At" Id="{dbad9845-3fa2-0db4-0223-3e0ba687e21c}">
@@ -141,19 +116,14 @@ END_VAR
       <Implementation>
         <ST><![CDATA[Get_Type_At := THIS^;
 
-IF THIS^.ipArray = 0 THEN 
-	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipArray is null.');
-	RETURN; 
-	END_IF
+IF THIS^.ipArray = 0 THEN RETURN; END_IF
 
-THIS^.ipArray.Get_Type_At(Index, Item_Type => Item_Type, bSuccess => bSuccess);
-THIS^._Count:= THIS^.ipArray._Count;
-THIS^._Error_Status := THIS^.ipArray._Error_Status;]]></ST>
+THIS^.ipArray.Get_Type_At(Index, Item_Type => Item_Type, bSuccess => bSuccess);]]></ST>
       </Implementation>
     </Method>
     <Method Name="Search" Id="{9a531ecc-dafc-07b8-03c3-7df3d3becae5}">
       <Declaration><![CDATA[// Find the location of an item in list.
-METHOD Search : I_Immutable_List
+METHOD Search : I_Immutable_Array
 VAR_INPUT
 	Item : ANY; // Item to find in list
 END_VAR
@@ -164,14 +134,9 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Search := THIS^;
 
-IF THIS^.ipArray = 0 THEN 
-	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipArray is null.');
-	RETURN; 
-	END_IF
+IF THIS^.ipArray = 0 THEN RETURN; END_IF
 
-THIS^.ipArray.Search(Item, Index => Index, bSuccess => bSuccess);
-THIS^._Count:= THIS^.ipArray._Count;
-THIS^._Error_Status := THIS^.ipArray._Error_Status;]]></ST>
+THIS^.ipArray.Search(Item, Index => Index, bSuccess => bSuccess);]]></ST>
       </Implementation>
     </Method>
   </POU>

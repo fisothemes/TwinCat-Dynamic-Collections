@@ -3,15 +3,15 @@
   <POU Name="FB_Immutable_Map" Id="{d3e2bba3-a292-0537-0b54-88799f7f3087}" SpecialFunc="None">
     <Declaration><![CDATA[// Collection that exposes only immutable methods and properties of a collection that implements I_Map.
 {attribute 'enable_dynamic_creation'}
-FUNCTION_BLOCK FB_Immutable_Map EXTENDS FB_Collection IMPLEMENTS I_Immutable_Set
+FUNCTION_BLOCK FB_Immutable_Map IMPLEMENTS I_Immutable_Map
 VAR_INPUT
 	ipMap : I_Map;
 END_VAR
-VAR
+VAR_STAT
+	fbDefault_Immutable_List : FB_Immutable_List;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[IF THIS^.ipMap = 0 THEN RETURN; END_IF
-THIS^._Count := THIS^.ipMap._Count;]]></ST>
+      <ST><![CDATA[]]></ST>
     </Implementation>
     <Property Name="_Count" Id="{974add15-0962-0243-21c7-cc18a1df32f7}">
       <Declaration><![CDATA[// Number of items in the collection.
@@ -21,12 +21,9 @@ PROPERTY _Count : T_Capacity]]></Declaration>
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[IF THIS^.ipMap = 0 THEN 
-	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipMap is null.');
-	RETURN; 
-	END_IF
+          <ST><![CDATA[IF THIS^.ipMap = 0 THEN RETURN; END_IF
 	
-_Count := THIS^.Count := THIS^.ipMap._Count;]]></ST>
+_Count := THIS^.ipMap._Count;]]></ST>
         </Implementation>
       </Get>
     </Property>
@@ -38,10 +35,7 @@ PROPERTY _Empty : BOOL]]></Declaration>
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[IF THIS^.ipMap = 0 THEN 
-	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipMap is null.');
-	RETURN; 
-	END_IF
+          <ST><![CDATA[IF THIS^.ipMap = 0 THEN _Empty := TRUE; RETURN; END_IF
 	
 _Empty := THIS^.ipMap._Empty;]]></ST>
         </Implementation>
@@ -56,11 +50,11 @@ END_VAR
 ]]></Declaration>
         <Implementation>
           <ST><![CDATA[IF THIS^.ipMap = 0 THEN 
-	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipMap is null.');
+	_Error_Status := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipMap is null.');
 	RETURN; 
 	END_IF
 	
-_Error_Status := THIS^.Error := THIS^.ipMap._Error_Status;]]></ST>
+_Error_Status := THIS^.ipMap._Error_Status;]]></ST>
         </Implementation>
       </Get>
     </Property>
@@ -71,14 +65,9 @@ VAR_INPUT
 	Key : ANY; // Key to find.
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF THIS^.ipMap = 0 THEN 
-	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipMap is null.');
-	RETURN; 
-	END_IF
+        <ST><![CDATA[IF THIS^.ipMap = 0 THEN RETURN; END_IF
 
-Contains := THIS^.ipMap.Contains(Key);
-THIS^._Count := THIS^.ipMap._Count;
-THIS^._Error_Status := THIS^.ipMap._Error_Status;]]></ST>
+Contains := THIS^.ipMap.Contains(Key);]]></ST>
       </Implementation>
     </Method>
     <Method Name="Get" Id="{8d4adc78-9b54-000c-33ad-cc3f5d8c12de}">
@@ -95,14 +84,9 @@ END_VAR
       <Implementation>
         <ST><![CDATA[Get := THIS^;
 
-IF THIS^.ipMap = 0 THEN 
-	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipMap is null.');
-	RETURN; 
-	END_IF
-	
-THIS^.ipMap.Get(Key, Value, bSuccess => bSuccess);
-THIS^._Count := THIS^.ipMap._Count;
-THIS^._Error_Status := THIS^.ipMap._Error_Status;]]></ST>
+IF THIS^.ipMap = 0 THEN RETURN; END_IF
+
+THIS^.ipMap.Get(Key, Value, bSuccess => bSuccess);]]></ST>
       </Implementation>
     </Method>
     <Method Name="Get_As_String" Id="{2bf148fe-73a5-0d68-3b17-b226a918596b}">
@@ -119,51 +103,35 @@ END_VAR
       <Implementation>
         <ST><![CDATA[Get_As_String := THIS^;
 
-IF THIS^.ipMap = 0 THEN 
-	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipMap is null.');
-	RETURN; 
-	END_IF
+IF THIS^.ipMap = 0 THEN RETURN; END_IF
 
-THIS^.ipMap.Get_As_String(Key, sValue, bSuccess => bSuccess);
-THIS^._Count := THIS^.ipMap._Count;
-THIS^._Error_Status := THIS^.ipMap._Error_Status;]]></ST>
+THIS^.ipMap.Get_As_String(Key, sValue, bSuccess => bSuccess);]]></ST>
       </Implementation>
     </Method>
     <Method Name="Get_Keys" Id="{cab7282f-89ba-0d64-2824-8cdca1fcc713}">
       <Declaration><![CDATA[// Gets an immutable list of the keys.
 METHOD Get_Keys : I_Immutable_List
 VAR
-	fbDefault_Immutable_List : FB_Immutable_List;
-END_VAR
-]]></Declaration>
+END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF THIS^.ipMap = 0 THEN 
-	Get_Values := fbDefault_Immutable_List;
-	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipMap is null.');
+	Get_Keys := THIS^.fbDefault_Immutable_List;
 	RETURN; 
 	END_IF
 
-Get_Values := THIS^.ipMap.Get_Values();
-THIS^._Count := THIS^.ipMap._Count;
-THIS^._Error_Status := THIS^.ipMap._Error_Status;]]></ST>
+Get_Keys := THIS^.ipMap.Get_Values();]]></ST>
       </Implementation>
     </Method>
     <Method Name="Get_Values" Id="{9c038bc9-09e8-09e9-3154-f3a01fee4387}">
       <Declaration><![CDATA[// Gets an immutable list of the values in the map.
-METHOD Get_Values : I_Immutable_List
-VAR
-	fbDefault_Immutable_List : FB_Immutable_List;
-END_VAR]]></Declaration>
+METHOD Get_Values : I_Immutable_List]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF THIS^.ipMap = 0 THEN 
-	Get_Values := fbDefault_Immutable_List;
-	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipMap is null.');
+	Get_Values := THIS^.fbDefault_Immutable_List;
 	RETURN; 
 	END_IF
 
-Get_Values := THIS^.ipMap.Get_Values();
-THIS^._Count := THIS^.ipMap._Count;
-THIS^._Error_Status := THIS^.ipMap._Error_Status;]]></ST>
+Get_Values := THIS^.ipMap.Get_Values();]]></ST>
       </Implementation>
     </Method>
   </POU>

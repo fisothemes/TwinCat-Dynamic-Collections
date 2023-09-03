@@ -5,13 +5,49 @@
 {attribute 'enable_dynamic_creation'}
 {attribute 'no_assign'}
 {attribute 'no_explicit_call' := 'direct call for this function block is not allowed'}
-FUNCTION_BLOCK FB_Queue EXTENDS FB_Collection IMPLEMENTS I_Queue//, I_Enumerable, I_Copyable
+FUNCTION_BLOCK FB_Queue IMPLEMENTS I_Queue//, I_Enumerable, I_Copyable
 VAR
 	fbList : FB_List := ();
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
+    <Property Name="_Count" Id="{7e00419f-b87d-0ec7-2a1a-dbee141a0374}">
+      <Declaration><![CDATA[// Number of items in the collection.
+PROPERTY _Count : T_Capacity]]></Declaration>
+      <Get Name="Get" Id="{97fed0bb-f355-0873-3883-9fe7a76d1e93}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_Count := THIS^.fbList._Count;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="_Empty" Id="{a1c9ba5f-c9f2-0357-2453-b47922f76ff9}">
+      <Declaration><![CDATA[// Checks if collection is empty.
+PROPERTY _Empty : BOOL]]></Declaration>
+      <Get Name="Get" Id="{39810a08-dd4c-0b71-0e08-fa5bd6f6f2d6}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_Empty := THIS^.fbList._Empty;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="_Error_Status" Id="{bd42d599-33bf-0aca-205b-394c9df46827}">
+      <Declaration><![CDATA[// Error status of the collection.
+PROPERTY _Error_Status : T_Error]]></Declaration>
+      <Get Name="Get" Id="{583f977b-88dc-0201-01dc-8e7238fed313}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_Error_Status := THIS^.fbList._Error_Status;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
     <Property Name="_Values" Id="{b6ab9f18-8907-0c33-2dde-39824895bb65}">
       <Declaration><![CDATA[// Gets an immutable list of the items in the queue.
 PROPERTY _Values : I_Immutable_List]]></Declaration>
@@ -31,10 +67,7 @@ METHOD Clear : I_Queue
       <Implementation>
         <ST><![CDATA[Clear := THIS^;
 
-THIS^.fbList.Clear();
-
-THIS^._Error_Status :=  THIS^.fbList._Error_Status;
-THIS^._Count := THIS^.fbList._Count;]]></ST>
+THIS^.fbList.Clear();]]></ST>
       </Implementation>
     </Method>
     <Method Name="Dequeue" Id="{632cafbf-45e3-0b80-010f-82eb45df36a0}">
@@ -47,10 +80,7 @@ END_VAR
       <Implementation>
         <ST><![CDATA[Dequeue := THIS^;
 
-THIS^.fbList.Remove_At(0, bSuccess => bSuccess);
-
-THIS^._Error_Status := THIS^.fbList._Error_Status;
-THIS^._Count := THIS^.fbList._Count;]]></ST>
+THIS^.fbList.Remove_At(0, bSuccess => bSuccess);]]></ST>
       </Implementation>
     </Method>
     <Method Name="Enqueue" Id="{1bbf37a9-730a-0c2b-0e44-e912b8799892}">
@@ -65,10 +95,7 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Enqueue := THIS^;
 
-THIS^.fbList.Insert_Generic(THIS^.fbList._Count, Item, bSuccess => bSuccess);
-
-THIS^._Error_Status :=  THIS^.fbList._Error_Status;
-THIS^._Count := THIS^.fbList._Count;]]></ST>
+THIS^.fbList.Insert_Generic(THIS^.fbList._Count, Item, bSuccess => bSuccess);]]></ST>
       </Implementation>
     </Method>
     <Method Name="Enqueue_At_Front" Id="{2b1bc775-8b54-0b0c-0503-f554d32ff1ff}">
@@ -83,10 +110,7 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Enqueue_At_Front := THIS^;
 
-THIS^.fbList.Insert_Generic(0, Item, bSuccess => bSuccess);
-
-THIS^._Error_Status :=  THIS^.fbList._Error_Status;
-THIS^._Count := THIS^.fbList._Count;]]></ST>
+THIS^.fbList.Insert_Generic(0, Item, bSuccess => bSuccess);]]></ST>
       </Implementation>
     </Method>
     <Method Name="Enqueue_Generic" Id="{4559d35d-dddb-04f5-3555-24c6cdac1f65}">
@@ -106,10 +130,7 @@ IF bAt_Front THEN
 	THIS^.fbList.Insert_Generic(0, Item, bSuccess => bSuccess);
 ELSE
 	THIS^.fbList.Insert_Generic(THIS^.fbList._Count, Item, bSuccess => bSuccess);
-	END_IF
-	
-THIS^._Error_Status :=  THIS^.fbList._Error_Status;
-THIS^._Count := THIS^.fbList._Count;]]></ST>
+	END_IF]]></ST>
       </Implementation>
     </Method>
     <Method Name="Get" Id="{07b030e2-3e18-044e-3db2-e43824ea14ab}">
@@ -124,9 +145,7 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Get := THIS^;
 
-THIS^.fbList.Get(0, Item, bSuccess => bSuccess);
-
-THIS^._Error_Status := THIS^.fbList._Error_Status;]]></ST>
+THIS^.fbList.Get(0, Item, bSuccess => bSuccess);]]></ST>
       </Implementation>
     </Method>
     <Method Name="Get_Generic" Id="{48b8e096-b1d3-034e-1505-452ed5475c9f}">
@@ -139,9 +158,7 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Get_Generic := THIS^;
 
-THIS^.fbList.Get_Generic(0, Item => Item, bSuccess => bSuccess);
-
-THIS^._Error_Status := THIS^.fbList._Error_Status;]]></ST>
+THIS^.fbList.Get_Generic(0, Item => Item, bSuccess => bSuccess);]]></ST>
       </Implementation>
     </Method>
     <Method Name="Reverse" Id="{2cafa4be-456d-064e-0a58-b0c3cd0ea39e}">
@@ -153,9 +170,7 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Reverse := THIS^;
 
-THIS^.fbList.Reverse(bSuccess => bSuccess);
-
-THIS^._Error_Status :=  THIS^.fbList._Error_Status;]]></ST>
+THIS^.fbList.Reverse(bSuccess => bSuccess);]]></ST>
       </Implementation>
     </Method>
   </POU>

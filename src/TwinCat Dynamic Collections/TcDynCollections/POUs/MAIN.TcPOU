@@ -10,18 +10,23 @@ VAR
 	ipImm : I_Immutable_List;
 	bAdd, bRemove, bClear : BOOL;
 	fbArray : FB_Array(10);
+	fbImm_Arr : FB_Immutable_Array;
+	fbImm_Map : FB_Immutable_Map;
+	fbImm_Set : FB_Immutable_Set;
 	fbArray_List : FB_Array_List(0);
 	fbList : FB_List;
 	fbQueue : FB_Queue;
+	fbStack : FB_Stack;
+	fbDeque : FB_Deque;
 	fbTree_Set : FB_Tree_Set;
 	fbHash_Set : FB_Hash_Set(3);
 	fbTree_Map : FB_Tree_Map;
 	fbHash_Map : FB_Hash_Map(3);
-	fbDeque : FB_Deque;
 	fbMultiset : FB_Tree_Multiset;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[IF bAdd THEN
+      <ST><![CDATA[Size := SIZEOF(fbDeque);
+IF bAdd THEN
 	bAdd := FALSE;
 	END_IF
 

@@ -20,7 +20,7 @@
 			</Tasks>
 		</System>
 		<Plc>
-			<Project GUID="{1C1CF391-AD49-4301-B41D-3891FAA7DC78}" Name="TcDynCollections" PrjFilePath="TcDynCollections\TcDynCollections.plcproj" TmcFilePath="TcDynCollections\TcDynCollections.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
+			<Project GUID="{1C1CF391-AD49-4301-B41D-3891FAA7DC78}" Name="TcDynCollections" PrjFilePath="TcDynCollections\TcDynCollections.plcproj" TmcFilePath="TcDynCollections\TcDynCollections.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x001e" SymbolicMapping="true">
 				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="TcDynCollections\TcDynCollections.tmc">
 					<Name>TcDynCollections Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>

@@ -3,15 +3,15 @@
   <POU Name="FB_Immutable_Set" Id="{3afbf122-9852-03b8-0749-44fef68dc495}" SpecialFunc="None">
     <Declaration><![CDATA[// Collection that exposes only immutable methods and properties of a collection that implements I_Set.
 {attribute 'enable_dynamic_creation'}
-FUNCTION_BLOCK FB_Immutable_Set EXTENDS FB_Collection IMPLEMENTS I_Immutable_Set
+FUNCTION_BLOCK FB_Immutable_Set IMPLEMENTS I_Immutable_Set
 VAR_INPUT
 	ipSet : I_Set;
 END_VAR
-VAR
+VAR_STAT
+	fbDefault_Immutable_List : FB_Immutable_List;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[IF THIS^.ipSet = 0 THEN RETURN; END_IF
-THIS^._Count := THIS^.ipSet._Count;]]></ST>
+      <ST><![CDATA[]]></ST>
     </Implementation>
     <Property Name="_Count" Id="{e75b6bd0-00bf-09b5-1d1e-a52e85bd879c}">
       <Declaration><![CDATA[// Number of items in the collection.
@@ -21,12 +21,9 @@ PROPERTY _Count : T_Capacity]]></Declaration>
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[IF THIS^.ipSet = 0 THEN 
-	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipSet is null.');
-	RETURN; 
-	END_IF
+          <ST><![CDATA[IF THIS^.ipSet = 0 THEN RETURN; END_IF
 	
-_Count := THIS^.Count := THIS^.ipSet._Count;]]></ST>
+_Count := THIS^.ipSet._Count;]]></ST>
         </Implementation>
       </Get>
     </Property>
@@ -38,10 +35,7 @@ PROPERTY _Empty : BOOL]]></Declaration>
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[IF THIS^.ipSet = 0 THEN 
-	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipSet is null.');
-	RETURN; 
-	END_IF
+          <ST><![CDATA[IF THIS^.ipSet = 0 THEN _Empty := TRUE; RETURN; END_IF
 	
 _Empty := THIS^.ipSet._Empty;]]></ST>
         </Implementation>
@@ -56,11 +50,11 @@ END_VAR
 ]]></Declaration>
         <Implementation>
           <ST><![CDATA[IF THIS^.ipSet = 0 THEN 
-	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipSet is null.');
+	_Error_Status := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipSet is null.');
 	RETURN; 
 	END_IF
 	
-_Error_Status := THIS^.Error := THIS^.ipSet._Error_Status;]]></ST>
+_Error_Status := THIS^.ipSet._Error_Status;]]></ST>
         </Implementation>
       </Get>
     </Property>
@@ -71,32 +65,23 @@ VAR_INPUT
 	Item : ANY; // Item to find.
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF THIS^.ipSet = 0 THEN 
-	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipSet is null.');
-	RETURN; 
-	END_IF
+        <ST><![CDATA[IF THIS^.ipSet = 0 THEN RETURN; END_IF
 
-Contains := THIS^.ipSet.Contains(Item);
-THIS^._Count := THIS^.ipSet._Count;
-THIS^._Error_Status := THIS^.ipSet._Error_Status;]]></ST>
+Contains := THIS^.ipSet.Contains(Item);]]></ST>
       </Implementation>
     </Method>
     <Method Name="Get_Values" Id="{7932ed8d-68b8-08c1-17c4-535dddfe387d}">
       <Declaration><![CDATA[// Gets an immutable list of the values in the set.
 METHOD Get_Values : I_Immutable_List
 VAR
-	fbDefault_Immutable_List : FB_Immutable_List;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF THIS^.ipSet = 0 THEN 
-	Get_Values := fbDefault_Immutable_List;
-	_Error_Status := THIS^.Error := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipSet is null.');
+	Get_Values := THIS^.fbDefault_Immutable_List;
 	RETURN; 
 	END_IF
 
-Get_Values := THIS^.ipSet.Get_Values();
-THIS^._Count := THIS^.ipSet._Count;
-THIS^._Error_Status := THIS^.ipSet._Error_Status;]]></ST>
+Get_Values := THIS^.ipSet.Get_Values();]]></ST>
       </Implementation>
     </Method>
   </POU>
