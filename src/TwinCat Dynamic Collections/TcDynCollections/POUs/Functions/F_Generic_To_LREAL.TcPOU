@@ -5,6 +5,10 @@
 VAR_INPUT
 	 Value : T_Generic;
 END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+	Error : T_Error := GVL_Errors.ERR_NO_ERROR;
+END_VAR
 VAR	
 	pBool			: POINTER TO BOOL;
     pByte			: POINTER TO BYTE;
@@ -32,7 +36,10 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[IF Value.pValue = 0 THEN RETURN; END_IF;
+      <ST><![CDATA[IF Value.pValue = 0 THEN 
+	Error := GVL_Errors.ERR_INVALID_REFERENCE;
+	RETURN;
+	END_IF;
 
 CASE Value.TypeClass OF 
 	__SYSTEM.TYPE_CLASS.TYPE_BOOL:
@@ -125,7 +132,12 @@ CASE Value.TypeClass OF
 	__SYSTEM.TYPE_CLASS.TYPE_LTIME:
 		pLTime := Value.pValue;
 		F_Generic_To_LREAL := TO_LREAL(pLTime^);
-END_CASE]]></ST>
+ELSE
+	Error := GVL_Errors.ERR_TYPE_MISMATCH;
+	RETURN;
+	END_CASE
+
+bSuccess := TRUE;]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>

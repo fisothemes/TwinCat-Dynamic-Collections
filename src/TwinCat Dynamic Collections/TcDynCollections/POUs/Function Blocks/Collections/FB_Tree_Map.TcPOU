@@ -231,7 +231,7 @@ THIS^.Get_Generic(Key, Value => Tmp, bSuccess => bSuccess);
 IF NOT bSuccess THEN RETURN; END_IF
 
 IF NOT F_Matching_Generics(Value, Tmp) THEN
-	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_TYPE_MISMATCH, 'Type mismatch.');
+	THIS^._Error_Status := GVL_Errors.ERR_TYPE_MISMATCH;
 	RETURN;
 	END_IF
 	
@@ -257,7 +257,7 @@ END_VAR]]></Declaration>
         <ST><![CDATA[Get_As_String := THIS^;
 
 IF NOT __ISVALIDREF(sValue) THEN 
-	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_INVALID_REFERENCE, 'Invalid reference.');
+	THIS^._Error_Status := GVL_Errors.ERR_INVALID_REFERENCE;
 	RETURN;
 	END_IF
 	
@@ -266,7 +266,7 @@ THIS^.Get_Generic(Key, Value => Tmp, bSuccess => bSuccess);
 IF NOT bSuccess THEN RETURN; END_IF
 
 IF NOT F_String_Convertable_Generic(Tmp) THEN 
-	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_NOT_SUPPORTED, 'No support for converting value with key to string.');
+	THIS^._Error_Status := GVL_Errors.ERR_INVALID_CONVERSION;
 	RETURN;
 	END_IF
 	
@@ -317,7 +317,7 @@ pTmp := THIS^.Search_Node(THIS^.pRoot, Key);
 bSuccess := pTmp <> 0;
 
 // Throw item not found error.
-THIS^._Error_Status := F_Error(NOT bSuccess, GVL_Errors.ERR_NO_OBJECT, 'Key not found.');
+THIS^._Error_Status := GVL_Errors.ERR_NO_KEY;
 
 IF NOT bSuccess THEN RETURN; END_IF
 
@@ -531,11 +531,11 @@ WHILE pCurrent <> 0 DO
 				bSuccess := TRUE;
 				THIS^.Clear_Error();
 			ELSE
-				THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_DUPLICATE, 'Duplicate key.');
+				THIS^._Error_Status := GVL_Errors.ERR_DUPLICATE_KEY;
 				END_IF
 			RETURN;
 	ELSE
-		THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_NOT_SUPPORTED, 'Invalid comparison.');
+		THIS^._Error_Status := GVL_Errors.ERR_INVALID_COMPARISON;
 		RETURN;
 		END_CASE
 	END_WHILE
@@ -616,7 +616,7 @@ pTmp := THIS^.Search_Node(THIS^.pRoot, Key);
 bSuccess := pTmp <> 0;
 
 IF NOT bSuccess THEN
-	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_NO_OBJECT, 'Key not found.');
+	THIS^._Error_Status := GVL_Errors.ERR_NO_KEY;
 	RETURN;
 	END_IF
 
@@ -779,7 +779,7 @@ pTmp := THIS^.Search_Node(THIS^.pRoot, Key);
 bSuccess := pTmp <> 0;
 
 IF NOT bSuccess THEN 
-	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_NO_OBJECT, 'Key not found.');
+	THIS^._Error_Status := GVL_Errors.ERR_NO_KEY;
 	RETURN;
 	END_IF
 	

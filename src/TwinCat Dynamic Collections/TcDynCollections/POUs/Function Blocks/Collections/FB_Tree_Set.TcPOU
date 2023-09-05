@@ -341,7 +341,7 @@ WHILE pCurrent <> 0 DO
 		T_Comparison.Greater : pCurrent := pCurrent^.pRight;
 		T_Comparison.Equal 	 : RETURN;
 	ELSE
-		THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_NOT_SUPPORTED, 'Invalid comparison.');
+		THIS^._Error_Status := GVL_Errors.ERR_INVALID_COMPARISON;
 		RETURN;
 		END_CASE
 	END_WHILE

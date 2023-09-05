@@ -7,16 +7,22 @@ FUNCTION F_Clone_Generic : T_Generic
 VAR_INPUT
 	Source : T_Generic;
 END_VAR
-VAR
-END_VAR
-]]></Declaration>
+VAR_OUTPUT
+	bSuccess : BOOL;
+	Error : T_Error := GVL_Errors.ERR_NO_ERROR;
+END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[F_Clone_Generic.diSize := Source.diSize;
 F_Clone_Generic.TypeClass := Source.TypeClass;
 
-IF Source.pValue = 0 OR_ELSE Source.diSize = 0 THEN RETURN; END_IF
+IF Source.pValue = 0 OR_ELSE Source.diSize = 0 THEN bSuccess := TRUE; RETURN; END_IF
 
 F_Clone_Generic.pValue := __NEW(BYTE, TO_UDINT(Source.diSize));
+
+IF F_Clone_Generic.pValue = 0 THEN
+	Error := GVL_Errors.ERR_MALLOC_FAILED;
+	RETURN;
+	END_IF
 
 CASE Source.TypeClass OF
 	T_Type.TYPE_STRING:
@@ -26,8 +32,8 @@ CASE Source.TypeClass OF
 ELSE
 	Tc2_System.MEMCPY(F_Clone_Generic.pValue, Source.pValue, TO_UDINT(Source.diSize));
 	END_CASE
-
-]]></ST>
+	
+bSuccess := TRUE;]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>

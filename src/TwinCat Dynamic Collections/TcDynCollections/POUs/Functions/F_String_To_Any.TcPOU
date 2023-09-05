@@ -1,11 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="F_String_To_Any" Id="{30e6e8a2-5dce-0a4c-3a52-18efe047163e}" SpecialFunc="None">
-    <Declaration><![CDATA[// Converts string to generic, returns TRUE if successful.
-FUNCTION F_String_To_Any : BOOL
+    <Declaration><![CDATA[// Converts string to generic.
+FUNCTION F_String_To_Any
 VAR_INPUT
 	sValue : REFERENCE TO STRING;
 	Value : ANY;
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+	Error : T_Error := GVL_Errors.ERR_NO_ERROR;
 END_VAR
 VAR
 	pBool			: POINTER TO BOOL;
@@ -34,9 +38,15 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[IF (Value.pValue = 0) OR_ELSE (NOT F_String_Convertable_Generic(Value)) OR_ELSE (NOT __ISVALIDREF(sValue)) THEN RETURN; END_IF;
+      <ST><![CDATA[IF (Value.pValue = 0) OR_ELSE (NOT __ISVALIDREF(sValue)) THEN 
+	Error := GVL_Errors.ERR_INVALID_REFERENCE;
+	RETURN; 
+	END_IF;
 
-F_String_To_Any := TRUE;
+IF NOT F_String_Convertable_Generic(Value) THEN
+	Error := GVL_Errors.ERR_INVALID_CONVERSION;
+	RETURN;
+	END_IF
 
 CASE Value.TypeClass OF 
 	__SYSTEM.TYPE_CLASS.TYPE_BOOL:
@@ -128,7 +138,9 @@ CASE Value.TypeClass OF
 	__SYSTEM.TYPE_CLASS.TYPE_POINTER:
 		pPointer := Value.pValue;
 		pPointer^ := Tc2_Utilities.STRING_TO_PVOID(sValue);
-END_CASE]]></ST>
+END_CASE
+
+bSuccess := TRUE;]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>

@@ -1,22 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="F_Swap_Generics" Id="{f8570796-5f2d-092a-0633-b7057c5ecd5e}" SpecialFunc="None">
-    <Declaration><![CDATA[// Swaps generic A with B. Returns TRUE if successful.
-FUNCTION F_Swap_Generics : BOOL
+    <Declaration><![CDATA[// Swaps generic A with B.
+FUNCTION F_Swap_Generics
 VAR_INPUT
 	A, B : REFERENCE TO T_Generic;
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+	Error : T_Error := GVL_Errors.ERR_NO_ERROR;
 END_VAR
 VAR
 	Tmp : T_Generic;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[IF NOT(__ISVALIDREF(A) AND_THEN __ISVALIDREF(B)) THEN RETURN; END_IF
+      <ST><![CDATA[IF NOT(__ISVALIDREF(A) AND_THEN __ISVALIDREF(B)) THEN 
+	Error := GVL_Errors.ERR_INVALID_REFERENCE;
+	RETURN;
+	END_IF
 
 Tmp := A;
 A := B;
 B := Tmp;
-F_Swap_Generics := TRUE;]]></ST>
+bSuccess := TRUE;]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>

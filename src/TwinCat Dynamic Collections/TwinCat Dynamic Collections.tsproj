@@ -1,5 +1,41 @@
 <?xml version="1.0"?>
 <TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.10">
+	<DataTypes>
+		<DataType>
+			<Name GUID="{B073CF73-80C5-46AC-8EBB-3CED003127D1}" PersistentType="true">ST_ERROR</Name>
+			<Comment><![CDATA[ STRUCT used to contain error status information.]]></Comment>
+			<BitSize>704</BitSize>
+			<SubItem>
+				<Name>nCODE</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000009}">DINT</Type>
+				<Comment><![CDATA[ Error code specific to the particular error.]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>bSTATUS</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<Comment><![CDATA[ Indicates if an error has occurred | TRUE = error, FALSE = no error]]></Comment>
+				<BitSize>8</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>sSOURCE</Name>
+				<Type GUID="{18071995-0000-0000-0000-000100000050}">STRING(80)</Type>
+				<Comment><![CDATA[ Textual information describing the error.]]></Comment>
+				<BitSize>648</BitSize>
+				<BitOffs>40</BitOffs>
+			</SubItem>
+			<Properties>
+				<Property>
+					<Name>plcAttribute_enable_dynamic_creation</Name>
+				</Property>
+			</Properties>
+			<Hides>
+				<Hide GUID="{ADFC57BB-5588-ED15-ABBB-75D41231D2E4}"/>
+			</Hides>
+		</DataType>
+	</DataTypes>
 	<Project ProjectGUID="{AA44BF3E-9AE7-4A37-9C2A-219EE971CF2F}" Target64Bit="true" ShowHideConfigurations="#x3c7">
 		<System>
 			<Settings MaxCpus="12" NonWinCpus="1" RouterMemory="67108864">

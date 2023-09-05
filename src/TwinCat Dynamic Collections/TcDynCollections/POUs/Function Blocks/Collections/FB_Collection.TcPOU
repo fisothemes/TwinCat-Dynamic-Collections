@@ -9,7 +9,7 @@
 FUNCTION_BLOCK ABSTRACT FB_Collection IMPLEMENTS I_Collection
 VAR
 	Count : T_Capacity;
-	Error : T_Error := (bStatus := FALSE, nCode := GVL_Errors.ERR_OK, sSource := 'No Error.');
+	Error : T_Error := GVL_Errors.ERR_NO_ERROR;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>

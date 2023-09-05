@@ -2,15 +2,19 @@
 <TcPlcObject Version="1.1.0.1">
   <POU Name="F_Delete_Generic" Id="{911ffbfa-b462-0780-231b-8d2a2e64e20f}" SpecialFunc="None">
     <Declaration><![CDATA[// Deletes a generic's value.
-FUNCTION F_Delete_Generic : BOOL
+FUNCTION F_Delete_Generic
 VAR_INPUT
 	Source : REFERENCE TO T_Generic;
 END_VAR
-VAR
-END_VAR
-]]></Declaration>
+VAR_OUTPUT
+	bSuccess : BOOL;
+	Error : T_Error := GVL_Errors.ERR_NO_ERROR;
+END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[IF (NOT __ISVALIDREF(Source)) THEN RETURN; END_IF
+      <ST><![CDATA[IF (NOT __ISVALIDREF(Source)) THEN 
+	Error := GVL_Errors.ERR_INVALID_REFERENCE;
+	RETURN;
+	END_IF
 
 CASE Tc2_System.F_CheckMemoryArea(Source.pValue, 1) OF
 	Tc2_System.E_TcMemoryArea.Dynamic: __DELETE(Source.pValue);
@@ -21,7 +25,7 @@ ELSE
 Source.diSize := 0;
 Source.TypeClass := T_Type.TYPE_NONE;
 
-F_Delete_Generic := TRUE;]]></ST>
+bSuccess := TRUE;]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>

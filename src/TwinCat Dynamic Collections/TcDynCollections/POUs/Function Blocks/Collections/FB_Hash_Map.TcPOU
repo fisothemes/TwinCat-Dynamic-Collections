@@ -191,7 +191,7 @@ THIS^.Get_Generic(Key, Value => Tmp, bSuccess => bSuccess);
 IF NOT bSuccess THEN RETURN; END_IF
 
 IF NOT F_Matching_Generics(Value, Tmp) THEN
-	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_TYPE_MISMATCH, 'Type mismatch.');
+	THIS^._Error_Status := GVL_Errors.ERR_TYPE_MISMATCH;
 	RETURN;
 	END_IF
 	
@@ -217,7 +217,7 @@ END_VAR]]></Declaration>
         <ST><![CDATA[Get_As_String := THIS^;
 
 IF NOT __ISVALIDREF(sValue) THEN 
-	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_INVALID_REFERENCE, 'Invalid reference.');
+	THIS^._Error_Status := GVL_Errors.ERR_INVALID_REFERENCE;
 	RETURN;
 	END_IF
 	
@@ -226,7 +226,7 @@ THIS^.Get_Generic(Key, Value => Tmp, bSuccess => bSuccess);
 IF NOT bSuccess THEN RETURN; END_IF
 
 IF NOT F_String_Convertable_Generic(Tmp) THEN 
-	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_NOT_SUPPORTED, 'No support for converting value with key to string.');
+	THIS^._Error_Status := GVL_Errors.ERR_INVALID_CONVERSION;
 	RETURN;
 	END_IF
 	
@@ -279,7 +279,7 @@ WHILE pCurrent <> 0 DO
 	END_WHILE
 	
 // Throw item not found error.
-THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_NO_OBJECT, 'Key not found.');]]></ST>
+THIS^._Error_Status := GVL_Errors.ERR_NO_KEY;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Get_Keys" Id="{c71a807a-c37d-0bc5-2f3b-085edd371d6d}">
@@ -395,11 +395,11 @@ WHILE pCurrent <> 0 DO
 				bSuccess := TRUE;
 				THIS^.Clear_Error();
 			ELSE
-				THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_DUPLICATE, 'Duplicate key.');
+				THIS^._Error_Status := GVL_Errors.ERR_DUPLICATE_KEY;
 			END_IF
 			RETURN;
 		T_Comparison.Invalid:
-			THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_NOT_SUPPORTED, 'Invalid comparison.');
+			THIS^._Error_Status := GVL_Errors.ERR_INVALID_COMPARISON;
 			RETURN;
 	ELSE
 		pCurrent := pCurrent^.pNext; 
@@ -466,7 +466,7 @@ WHILE pCurrent <> 0 DO
 	pCurrent := pCurrent^.pNext;
 	END_WHILE
 	
-THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_NO_OBJECT, 'Key not found.');]]></ST>
+THIS^._Error_Status := GVL_Errors.ERR_NO_KEY;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Resize" Id="{3038f656-0bf6-0624-2c6d-d113bb70bd72}">
@@ -552,14 +552,14 @@ WHILE pCurrent <> 0 DO
 			THIS^.Clear_Error();
 			RETURN;
 		T_Comparison.Invalid:
-			THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_NOT_SUPPORTED, 'Invalid comparison.');
+			THIS^._Error_Status := GVL_Errors.ERR_INVALID_COMPARISON;
 			RETURN;
 	ELSE
 		pCurrent := pCurrent^.pNext; 
 		END_CASE
 	END_WHILE
 	
-THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_NO_OBJECT, 'Key not found.');]]></ST>
+THIS^._Error_Status := GVL_Errors.ERR_NO_KEY;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Upsert" Id="{f71d8dd5-c34f-017f-0053-1331a08e20c5}">

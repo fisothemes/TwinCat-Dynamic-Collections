@@ -50,7 +50,7 @@ END_VAR
 ]]></Declaration>
         <Implementation>
           <ST><![CDATA[IF THIS^.ipMap = 0 THEN 
-	_Error_Status := F_Error(TRUE, GVL_Errors.ERR_INVALID_INTERFACE, 'The interface ipMap is null.');
+	_Error_Status := GVL_Errors.ERR_INVALID_INTERFACE;
 	RETURN; 
 	END_IF
 	

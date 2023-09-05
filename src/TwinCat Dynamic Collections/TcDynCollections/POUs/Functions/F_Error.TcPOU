@@ -18,8 +18,7 @@ IF bStatus THEN
 	Tmp_Error.nCODE := nCode; 
 	Tmp_Error.sSOURCE := sSource;
 ELSE 
-	Tmp_Error.nCODE := GVL_Errors.ERR_OK; 
-	Tmp_Error.sSOURCE := 'No Error.'; 
+	Tmp_Error := GVL_Errors.ERR_NO_ERROR; 
 	END_IF
 	
 F_Error := Tmp_Error;]]></ST>

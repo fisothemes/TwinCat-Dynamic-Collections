@@ -26,6 +26,7 @@ VAR
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[Size := SIZEOF(fbDeque);
+
 IF bAdd THEN
 	bAdd := FALSE;
 	END_IF

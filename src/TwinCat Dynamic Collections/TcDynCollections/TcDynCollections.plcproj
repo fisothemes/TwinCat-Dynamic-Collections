@@ -72,13 +72,13 @@
     <Compile Include="DUTs\Enums\E_COMPARISON.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\Enums\E_ERROR_CODE.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\Structs\ST_AVL_MAP_NODE.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\Structs\ST_AVL_NODE.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\Structs\ST_ERROR.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\Structs\ST_HASHSET_BUCKET_NODE.TcDUT">

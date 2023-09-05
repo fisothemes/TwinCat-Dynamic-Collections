@@ -2,18 +2,21 @@
 <TcPlcObject Version="1.1.0.1">
   <POU Name="F_Copy_Generic_Value" Id="{e2d1b219-bc63-0878-3737-9164dab75258}" SpecialFunc="None">
     <Declaration><![CDATA[// Copies the value of a generic from one location to another.
-// Returns TRUE, if successful.
-FUNCTION F_Copy_Generic_Value : BOOL
+FUNCTION F_Copy_Generic_Value
 VAR_INPUT
 	Source, Destination : REFERENCE TO T_Generic;
 END_VAR
-VAR
-END_VAR
-]]></Declaration>
+VAR_OUTPUT
+	bSuccess : BOOL;
+	Error : T_Error := GVL_Errors.ERR_NO_ERROR;
+END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[IF NOT( __ISVALIDREF(Source) OR_ELSE __ISVALIDREF(Destination)) THEN RETURN; END_IF
+      <ST><![CDATA[IF NOT( __ISVALIDREF(Source) OR_ELSE __ISVALIDREF(Destination)) THEN 
+	Error := GVL_Errors.ERR_INVALID_REFERENCE;
+	RETURN; 
+	END_IF
 
-F_Copy_Generic_Value := Tc2_System.MEMCPY(
+bSuccess := Tc2_System.MEMCPY(
 	Destination.pValue, Source.pValue, 
 	TO_UDINT(MIN(Source.diSize, Destination.diSize))) > 0;]]></ST>
     </Implementation>

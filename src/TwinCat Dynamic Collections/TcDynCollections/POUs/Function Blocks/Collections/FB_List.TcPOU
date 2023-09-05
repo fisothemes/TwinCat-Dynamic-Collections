@@ -124,7 +124,7 @@ THIS^.Get_Generic(Index, Item => Tmp, bSuccess => bSuccess);
 IF NOT bSuccess THEN RETURN; END_IF
 
 IF NOT F_Matching_Generics(Item, Tmp) THEN
-	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_TYPE_MISMATCH, 'Type mismatch.');
+	THIS^._Error_Status := GVL_Errors.ERR_TYPE_MISMATCH;
 	RETURN;
 	END_IF
 	
@@ -150,7 +150,7 @@ END_VAR]]></Declaration>
         <ST><![CDATA[Get_As_String := THIS^;
 
 IF NOT __ISVALIDREF(sItem) THEN 
-	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_INVALID_REFERENCE, 'Invalid reference.');
+	THIS^._Error_Status := GVL_Errors.ERR_INVALID_REFERENCE;
 	RETURN;
 	END_IF
 	
@@ -159,7 +159,7 @@ THIS^.Get_Generic(Index, Item => Tmp, bSuccess => bSuccess);
 IF NOT bSuccess THEN RETURN; END_IF
 	
 IF NOT F_String_Convertable_Generic(Tmp) THEN 
-	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_NOT_SUPPORTED, 'No support for converting item at index to string.');
+	THIS^._Error_Status := GVL_Errors.ERR_INVALID_CONVERSION;
 	RETURN;
 	END_IF
 	
@@ -198,7 +198,7 @@ END_VAR
 
 IF Index < 0 OR_ELSE Index >= THIS^._Count THEN
 	// Throw out of bounds error.
-	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_OUT_OF_LIMITS, 'Index out of bounds.');
+	THIS^._Error_Status := GVL_Errors.ERR_INDEX_OUT_OF_BOUNDS;
 	RETURN;
 	END_IF
 	
@@ -277,7 +277,7 @@ END_VAR]]></Declaration>
 
 IF Index < 0 OR_ELSE Index > THIS^._Count THEN
 	// Throw out of bounds error.
-	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_OUT_OF_LIMITS, 'Index out of bounds.');
+	THIS^._Error_Status := GVL_Errors.ERR_INDEX_OUT_OF_BOUNDS;
 	RETURN;
 	END_IF
 	
@@ -385,7 +385,7 @@ END_VAR]]></Declaration>
 
 IF Index < 0 OR_ELSE Index >= THIS^._Count THEN
 	// Throw out of bounds error.
-	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_OUT_OF_LIMITS, 'Index out of bounds.');
+	THIS^._Error_Status := GVL_Errors.ERR_INDEX_OUT_OF_BOUNDS;
 	RETURN;
 	END_IF
 
@@ -527,7 +527,7 @@ WHILE pTmp <> 0 DO
 	END_WHILE
 
 // Throw item not found error.
-THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_NO_OBJECT, 'Item not found.');]]></ST>
+THIS^._Error_Status := GVL_Errors.ERR_NO_ITEM;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Set" Id="{aa4fa2ad-ef36-02c7-2c97-6d9357bcd31c}">
@@ -565,7 +565,7 @@ END_VAR]]></Declaration>
 
 IF Index < 0 OR_ELSE Index >= THIS^._Count THEN
 	// Throw out of bounds error.
-	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_OUT_OF_LIMITS, 'Index out of bounds.');
+	THIS^._Error_Status := GVL_Errors.ERR_INDEX_OUT_OF_BOUNDS;
 	RETURN;
 	END_IF
 	
@@ -604,7 +604,7 @@ END_VAR]]></Declaration>
         <ST><![CDATA[Swap := THIS^;
 
 IF Index_A < 0 OR_ELSE Index_A >= THIS^._Count OR_ELSE Index_B < 0 OR_ELSE Index_B >= THIS^._Count THEN
-	THIS^._Error_Status := F_Error(TRUE, GVL_Errors.ERR_OUT_OF_LIMITS, 'Index out of bounds.');
+	THIS^._Error_Status := GVL_Errors.ERR_INDEX_OUT_OF_BOUNDS;
 	RETURN;
 	END_IF
 	
