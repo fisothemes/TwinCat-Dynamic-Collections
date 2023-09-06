@@ -11,18 +11,24 @@ VAR_OUTPUT
 	Error : T_Error := GVL_Errors.ERR_NO_ERROR;
 END_VAR
 VAR
+	i : T_Capacity;
 	Size : UDINT;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[Size := TO_UDINT(SIZEOF(T_Generic) * Count);
+      <ST><![CDATA[IF Count = 0 THEN bSuccess := TRUE; RETURN; END_IF
+
+Size := TO_UDINT(SIZEOF(T_Generic) * Count);
 F_Malloc_Generic := __NEW(BYTE, Size);
 
 IF F_Malloc_Generic = 0 THEN 
 	Error := GVL_Errors.ERR_MALLOC_FAILED;
 	RETURN;
 	END_IF
-	
-F_Malloc_Generic^.TypeClass := T_Type.TYPE_NONE;
+
+FOR i := 0 TO count - 1 DO
+	F_Malloc_Generic[i].TypeClass := T_Type.TYPE_NONE;
+	END_FOR
+
 bSuccess := TRUE;]]></ST>
     </Implementation>
   </POU>
