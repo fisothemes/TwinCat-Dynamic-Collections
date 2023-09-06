@@ -14,7 +14,7 @@ END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
-    <Folder Name="Protected" Id="{dafbf2f8-a1aa-0dc3-14ad-1bab7f8f36e0}" />
+    <Folder Name="Internal" Id="{dafbf2f8-a1aa-0dc3-14ad-1bab7f8f36e0}" />
     <Property Name="_Count" Id="{26b379f5-40ad-064d-3faf-8e917bdfeaae}">
       <Declaration><![CDATA[// Number of items in the collection.
 PROPERTY _Count : T_Capacity]]></Declaration>
@@ -69,7 +69,7 @@ END_VAR
         </Implementation>
       </Set>
     </Property>
-    <Method Name="Clear_Error" Id="{56214d32-03a5-05b7-267e-3a7bf0140f9b}" FolderPath="Protected\">
+    <Method Name="Clear_Error" Id="{56214d32-03a5-05b7-267e-3a7bf0140f9b}" FolderPath="Internal\">
       <Declaration><![CDATA[METHOD PROTECTED Clear_Error
 VAR_INPUT
 END_VAR
@@ -78,7 +78,7 @@ END_VAR
         <ST><![CDATA[THIS^._Error_Status := F_Error(0,0,'');]]></ST>
       </Implementation>
     </Method>
-    <Method Name="Decrement_Count" Id="{6870a1c1-1f8d-035b-002e-86525d99ae88}" FolderPath="Protected\">
+    <Method Name="Decrement_Count" Id="{6870a1c1-1f8d-035b-002e-86525d99ae88}" FolderPath="Internal\">
       <Declaration><![CDATA[// Decrement collection count by 1.
 METHOD PROTECTED Decrement_Count
 ]]></Declaration>
@@ -86,7 +86,7 @@ METHOD PROTECTED Decrement_Count
         <ST><![CDATA[THIS^._Count := THIS^._Count - 1;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="Increment_Count" Id="{b1768fd9-4b59-029a-30b3-52d595ca45fd}" FolderPath="Protected\">
+    <Method Name="Increment_Count" Id="{b1768fd9-4b59-029a-30b3-52d595ca45fd}" FolderPath="Internal\">
       <Declaration><![CDATA[// Increments collection count by 1
 METHOD PROTECTED Increment_Count
 VAR_INPUT
