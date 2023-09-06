@@ -133,7 +133,7 @@ CASE Value.TypeClass OF
 		pLTime := Value.pValue;
 		F_Generic_To_String := TO_STRING(pLTime^);
 ELSE
-	Error := GVL_Errors.ERR_TYPE_MISMATCH;
+	Error := GVL_Errors.ERR_INVALID_CONVERSION;
 	RETURN;
 	END_CASE
 	
