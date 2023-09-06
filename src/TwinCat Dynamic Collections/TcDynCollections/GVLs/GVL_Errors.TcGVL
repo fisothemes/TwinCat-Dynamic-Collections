@@ -4,19 +4,19 @@
     <Declaration><![CDATA[// Library errors
 {attribute 'qualified_only'}
 VAR_GLOBAL CONSTANT
-	ERR_NO_ERROR 			: T_Error := (bStatus := FALSE,	nCode := E_ERROR_CODE.ERR_OK, 				sSource := 'No Error.');
-	ERR_TYPE_MISMATCH 		: T_Error := (bStatus := TRUE,	nCode := E_ERROR_CODE.ERR_TYPE_MISMATCH, 	sSource := 'Type mismatch.');
-	ERR_SIZE_MISMATCH 		: T_Error := (bStatus := TRUE,	nCode := E_ERROR_CODE.ERR_SIZE_MISMATCH, 	sSource := 'Size mismatch.');
-	ERR_INVALID_REFERENCE 	: T_Error := (bStatus := TRUE,	nCode := E_ERROR_CODE.ERR_INVALID_REFERENCE,sSource := 'Invalid reference.');
-	ERR_INVALID_INTERFACE 	: T_Error := (bStatus := TRUE,	nCode := E_ERROR_CODE.ERR_INVALID_INTERFACE,sSource := 'Invalid interface.');
-	ERR_INVALID_CONVERSION	: T_Error := (bStatus := TRUE,	nCode := E_ERROR_CODE.ERR_NOT_SUPPORTED, 	sSource := 'Conversion not supported.');
-	ERR_INVALID_COMPARISON	: T_Error := (bStatus := TRUE,	nCode := E_ERROR_CODE.ERR_NOT_SUPPORTED, 	sSource := 'Invalid comparison.');
-	ERR_NO_KEY 				: T_Error := (bStatus := TRUE,	nCode := E_ERROR_CODE.ERR_NO_OBJECT,		sSource := 'Key not found.');
-	ERR_NO_ITEM 			: T_Error := (bStatus := TRUE,	nCode := E_ERROR_CODE.ERR_NO_OBJECT, 		sSource := 'Item not found.');
-	ERR_INDEX_OUT_OF_BOUNDS : T_Error := (bStatus := TRUE,	nCode := E_ERROR_CODE.ERR_OUT_OF_LIMITS, 	sSource := 'Index out of bounds.');
-	ERR_DUPLICATE_KEY 		: T_Error := (bStatus := TRUE,	nCode := E_ERROR_CODE.ERR_DUPLICATE, 		sSource := 'Duplicate key.');
-	ERR_DUPLICATE_ITEM 		: T_Error := (bStatus := TRUE,	nCode := E_ERROR_CODE.ERR_DUPLICATE, 		sSource := 'Duplicate item.');
-	ERR_MALLOC_FAILED 		: T_Error := (bStatus := TRUE,	nCode := E_ERROR_CODE.ERR_NO_MEMORY, 		sSource := 'Memory allocation failed.');
+	ERR_NO_ERROR 			: T_Error := (bStatus := FALSE,	nCode := E_ERROR_CODE.ERR_OK, 				sSource := 'No Error.'); // No Error.
+	ERR_TYPE_MISMATCH 		: T_Error := (bStatus := TRUE,	nCode := E_ERROR_CODE.ERR_TYPE_MISMATCH, 	sSource := 'Type mismatch.'); // Type mismatch.
+	ERR_SIZE_MISMATCH 		: T_Error := (bStatus := TRUE,	nCode := E_ERROR_CODE.ERR_SIZE_MISMATCH, 	sSource := 'Size mismatch.'); // Size mismatch.
+	ERR_INVALID_REFERENCE 	: T_Error := (bStatus := TRUE,	nCode := E_ERROR_CODE.ERR_INVALID_REFERENCE,sSource := 'Invalid reference.'); // Invalid reference.
+	ERR_INVALID_INTERFACE 	: T_Error := (bStatus := TRUE,	nCode := E_ERROR_CODE.ERR_INVALID_INTERFACE,sSource := 'Invalid interface.'); // Invalid interface.
+	ERR_INVALID_CONVERSION	: T_Error := (bStatus := TRUE,	nCode := E_ERROR_CODE.ERR_NOT_SUPPORTED, 	sSource := 'Conversion not supported.'); // Conversion not supported.
+	ERR_INVALID_COMPARISON	: T_Error := (bStatus := TRUE,	nCode := E_ERROR_CODE.ERR_NOT_SUPPORTED, 	sSource := 'Invalid comparison.'); // Invalid comparison.
+	ERR_NO_KEY 				: T_Error := (bStatus := TRUE,	nCode := E_ERROR_CODE.ERR_NO_OBJECT,		sSource := 'Key not found.'); // Key not found.'
+	ERR_NO_ITEM 			: T_Error := (bStatus := TRUE,	nCode := E_ERROR_CODE.ERR_NO_OBJECT, 		sSource := 'Item not found.'); // Item not found.
+	ERR_INDEX_OUT_OF_BOUNDS : T_Error := (bStatus := TRUE,	nCode := E_ERROR_CODE.ERR_OUT_OF_LIMITS, 	sSource := 'Index out of bounds.'); // Index out of bounds.
+	ERR_DUPLICATE_KEY 		: T_Error := (bStatus := TRUE,	nCode := E_ERROR_CODE.ERR_DUPLICATE, 		sSource := 'Duplicate key.'); // Duplicate key.
+	ERR_DUPLICATE_ITEM 		: T_Error := (bStatus := TRUE,	nCode := E_ERROR_CODE.ERR_DUPLICATE, 		sSource := 'Duplicate item.'); // Duplicate item.
+	ERR_MALLOC_FAILED 		: T_Error := (bStatus := TRUE,	nCode := E_ERROR_CODE.ERR_NO_MEMORY, 		sSource := 'Memory allocation failed.'); // Memory allocation failed.
 END_VAR
 
 
