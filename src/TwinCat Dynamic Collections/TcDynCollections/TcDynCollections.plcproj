@@ -81,6 +81,9 @@
     <Compile Include="DUTs\Structs\ST_AVL_NODE.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\Structs\ST_ERROR.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\Structs\ST_HASHSET_BUCKET_NODE.TcDUT">
       <SubType>Code</SubType>
     </Compile>

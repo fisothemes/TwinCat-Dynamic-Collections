@@ -60,8 +60,7 @@ END_VAR]]></Declaration>
 
 THIS^.Clear_Error();
 
-IF THIS^._Empty THEN RETURN; END_IF
-IF THIS^.pBuffer = 0 THEN RETURN; END_IF
+IF THIS^.pBuffer = 0 OR_ELSE THIS^._Empty THEN RETURN; END_IF
 
 FOR i := 0 TO THIS^._Count - 1 DO
 	F_Delete_Generic(THIS^.pBuffer[i]);
@@ -111,17 +110,8 @@ END_VAR]]></Declaration>
         <ST><![CDATA[// Return if it's an online change.
 IF bInCopyCode THEN RETURN; END_IF
 
-THIS^.FB_exit(0);
 THIS^.Resize(Initial_Capacity);
-THIS^._Count := Initial_Capacity;
-
-
-IF THIS^._Empty THEN RETURN; END_IF
-
-FOR i := 0 TO THIS^._Count - 1 DO
-	THIS^.pBuffer[i].TypeClass := T_Type.TYPE_NONE;
-	END_FOR
-]]></ST>
+THIS^._Count := THIS^._Capacity;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Get" Id="{20934437-0467-0cdc-3933-55d6c7b3490d}">
@@ -147,9 +137,7 @@ IF NOT F_Matching_Generics(Item, THIS^.pBuffer[Index]) THEN
 	RETURN;
 	END_IF
 	
-F_Copy_Generic_Value(THIS^.pBuffer[Index], Item);
-bSuccess := TRUE;
-THIS^.Clear_Error();]]></ST>
+F_Copy_Generic_Value(THIS^.pBuffer[Index], Item, bSuccess => bSuccess, Error => THIS^.Error);]]></ST>
       </Implementation>
     </Method>
     <Method Name="Get_As_String" Id="{2f8fd055-2049-0c08-2b6c-ee2c1309e778}">
@@ -267,32 +255,41 @@ VAR_INPUT
 END_VAR
 VAR_OUTPUT
 	bSuccess : BOOL;
+END_VAR
+VAR 
+	Tmp : T_Generic;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Insert_Generic := THIS^;
 
-IF THIS^._Count >= THIS^._Capacity THEN THIS^.Resize((THIS^._Count * 2) + 1); END_IF
+IF THIS^._Count >= THIS^._Capacity THEN 
+	// Increase capacity.
+	THIS^.Resize((THIS^._Count * 2) + 1, bSuccess => bSuccess);
+	IF NOT bSuccess THEN RETURN; END_IF
+	END_IF
 
 IF Index = THIS^._Count THEN 
-	// Add to back
-	THIS^.pBuffer[THIS^._Count] := F_Clone_Generic(Item);
+	// Add to back.
+	Tmp := F_Clone_Generic(Item, bSuccess => bSuccess, Error => THIS^.Error);
+	IF NOT bSuccess THEN RETURN; END_IF
+	THIS^.pBuffer[THIS^._Count] := Tmp;
 	THIS^.Increment_Count();
-	bSuccess := TRUE;
-	THIS^.Clear_Error();
 	RETURN;
 	END_IF
 
 IF Index < 0 OR_ELSE Index > THIS^._Count THEN
 	// Throw out of bounds error.
 	THIS^._Error_Status := GVL_Errors.ERR_INDEX_OUT_OF_BOUNDS;
+	bSuccess := FALSE;
 	RETURN;
 	END_IF
-	
+
+Tmp := F_Clone_Generic(Item, bSuccess => bSuccess, Error => Error);
+IF NOT bSuccess THEN RETURN; END_IF
+
 Tc2_System.MEMMOVE(ADR(THIS^.pBuffer[Index + 1]), ADR(THIS^.pBuffer[Index]), TO_UDINT((THIS^._Count - Index) * SIZEOF(T_Generic)));
-THIS^.pBuffer[Index] := F_Clone_Generic(Item);
-THIS^.Increment_Count();
-bSuccess := TRUE;
-THIS^.Clear_Error();]]></ST>
+THIS^.pBuffer[Index] := Tmp;
+THIS^.Increment_Count();]]></ST>
       </Implementation>
     </Method>
     <Method Name="Prepend" Id="{6942d5ce-717f-0f39-2ad2-1ff3cfdda608}">
@@ -321,14 +318,14 @@ VAR_OUTPUT
 	bSuccess : BOOL;
 END_VAR
 VAR
-	Tmp : T_Position;
+	Tmp : T_Position := -1;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Remove := THIS^;
 
 THIS^.Search(Item, Index => Tmp, bSuccess => bSuccess);
 IF NOT bSuccess THEN RETURN; END_IF 
-THIS^.Remove_At(0, bSuccess => bSuccess);]]></ST>
+THIS^.Remove_At(Tmp, bSuccess => bSuccess);]]></ST>
       </Implementation>
     </Method>
     <Method Name="Remove_At" Id="{117c3861-25d2-0160-3d69-18edd03785ee}">
@@ -347,7 +344,6 @@ IF Index < 0 OR_ELSE Index >= THIS^._Count THEN
 	THIS^._Error_Status := GVL_Errors.ERR_INDEX_OUT_OF_BOUNDS;
 	RETURN;
 	END_IF
-
 
 F_Delete_Generic(THIS^.pBuffer[Index]);	
 Tc2_System.MEMMOVE(ADR(THIS^.pBuffer[Index]), ADR(THIS^.pBuffer[Index+1]), TO_UDINT(SIZEOF(T_Generic)*(THIS^._Count - Index - 1)));
@@ -387,9 +383,14 @@ END_VAR]]></Declaration>
         <ST><![CDATA[Resize := THIS^;
 
 IF Size = 0 THEN THIS^.FB_exit(FALSE); bSuccess := TRUE; RETURN; END_IF
-IF THIS^.pBuffer = 0 THEN THIS^.pBuffer := F_Malloc_Generic(1); THIS^._Capacity := 1; END_IF
+IF THIS^.pBuffer = 0 THEN 
+	THIS^.pBuffer := F_Malloc_Generic(1, bSuccess => bSuccess, Error => THIS^.Error);
+	IF NOT bSuccess THEN RETURN; END_IF
+	THIS^._Capacity := 1;
+	END_IF
 
-pNew_Buffer := F_Malloc_Generic(Size);
+pNew_Buffer := F_Malloc_Generic(Size, bSuccess => bSuccess, Error => THIS^.Error);
+IF NOT bSuccess THEN RETURN; END_IF
 
 Tc2_System.MEMCPY(pNew_Buffer, THIS^.pBuffer, TO_UDINT(SIZEOF(T_Generic)*THIS^._Count));
 
@@ -401,10 +402,7 @@ IF Size < THIS^._Count THEN
 THIS^._Capacity := Size;
 
 __DELETE(THIS^.pBuffer);
-THIS^.pBuffer := pNew_Buffer;
-
-bSuccess := TRUE;
-THIS^.Clear_Error();]]></ST>
+THIS^.pBuffer := pNew_Buffer;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Reverse" Id="{f8e35049-a655-078f-2c60-697b8d500e6d}">
@@ -486,6 +484,9 @@ END_VAR
 VAR_OUTPUT
 	bSuccess : BOOL;
 END_VAR
+VAR
+	Tmp : T_Generic;
+END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[Set_Generic := THIS^;
@@ -495,11 +496,12 @@ IF Index < 0 OR_ELSE Index >= THIS^._Count THEN
 	RETURN;
 	END_IF
 	
-F_Delete_Generic(THIS^.pBuffer[Index]);
-THIS^.pBuffer[Index] := F_Clone_Generic(Item);
+Tmp := F_Clone_Generic(Item, bSuccess => bSuccess, Error => THIS^.Error);
 
-bSuccess := TRUE;
-THIS^.Clear_Error();]]></ST>
+IF NOT bSuccess THEN RETURN; END_IF
+
+F_Delete_Generic(THIS^.pBuffer[Index]);
+THIS^.pBuffer[Index] := Tmp;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Swap" Id="{16da1fbe-72ab-0f94-3671-e35e73671c00}">
