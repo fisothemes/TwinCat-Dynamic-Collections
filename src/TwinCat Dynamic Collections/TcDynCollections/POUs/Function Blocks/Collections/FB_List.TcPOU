@@ -125,12 +125,11 @@ IF NOT bSuccess THEN RETURN; END_IF
 
 IF NOT F_Matching_Generics(Item, Tmp) THEN
 	THIS^._Error_Status := GVL_Errors.ERR_TYPE_MISMATCH;
+	bSuccess := FALSE;
 	RETURN;
 	END_IF
 	
-F_Copy_Generic_Value(Tmp, Item);
-bSuccess := TRUE;
-THIS^.Clear_Error();]]></ST>
+F_Copy_Generic_Value(Tmp, Item, bSuccess => bSuccess, Error => THIS^.Error);]]></ST>
       </Implementation>
     </Method>
     <Method Name="Get_As_String" Id="{52b906eb-5600-0450-2660-7daf488c2076}">
@@ -149,19 +148,11 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Get_As_String := THIS^;
 
-IF NOT __ISVALIDREF(sItem) THEN 
-	THIS^._Error_Status := GVL_Errors.ERR_INVALID_REFERENCE;
-	RETURN;
-	END_IF
+IF NOT __ISVALIDREF(sItem) THEN THIS^._Error_Status := GVL_Errors.ERR_INVALID_REFERENCE; RETURN; END_IF
 	
 THIS^.Get_Generic(Index, Item => Tmp, bSuccess => bSuccess);
 
 IF NOT bSuccess THEN RETURN; END_IF
-	
-IF NOT F_String_Convertable_Generic(Tmp) THEN 
-	THIS^._Error_Status := GVL_Errors.ERR_INVALID_CONVERSION;
-	RETURN;
-	END_IF
 	
 CASE Tmp.TypeClass OF
 	T_Type.TYPE_STRING:
@@ -170,11 +161,8 @@ CASE Tmp.TypeClass OF
 	T_Type.TYPE_WSTRING:
 		Tc2_Utilities.WSTRING_TO_STRING2(ADR(sItem), Tmp.pValue, MIN(Tc2_Utilities.LEN2(ADR(sItem))+1, TO_UDINT(Tmp.diSize)));
 ELSE
-	sItem := F_Generic_To_String(Tmp);
-	END_CASE
-	
-bSuccess := TRUE;
-THIS^.Clear_Error();]]></ST>
+	sItem := F_Generic_To_String(Tmp, bSuccess => bSuccess, Error => THIS^.Error);
+	END_CASE]]></ST>
       </Implementation>
     </Method>
     <Method Name="Get_Generic" Id="{addd6381-b8ef-0e85-1d34-baa79b0c7141}">
@@ -282,7 +270,10 @@ IF Index < 0 OR_ELSE Index > THIS^._Count THEN
 	END_IF
 	
 pTmp := __NEW(ST_LIST_NODE);
-pTmp^.Data := F_Clone_Generic(Item);
+IF pTmp = 0 THEN THIS^._Error_Status := GVL_Errors.ERR_MALLOC_FAILED; RETURN; END_IF
+
+pTmp^.Data := F_Clone_Generic(Item, bSuccess => bSuccess, Error => THIS^.Error);
+IF NOT bSuccess THEN __DELETE(pTmp); RETURN; END_IF
 
 IF Index = 0 THEN
 	//...
@@ -307,9 +298,7 @@ ELSE
 	THIS^.pLast_Accessed := pTmp;
 	END_IF
 	
-THIS^.Increment_Count();
-bSuccess := TRUE;
-THIS^.Clear_Error();]]></ST>
+THIS^.Increment_Count();]]></ST>
       </Implementation>
     </Method>
     <Method Name="Iterate" Id="{dbfa44dc-2616-0dc3-0da0-669bcbfbc6d1}" FolderPath="Internal\">
@@ -363,7 +352,7 @@ END_VAR]]></Declaration>
 
 THIS^.Search(Item, Index => Tmp, bSuccess => bSuccess);
 IF NOT bSuccess THEN RETURN; END_IF 
-THIS^.Remove_At(0, bSuccess => bSuccess);]]></ST>
+THIS^.Remove_At(Tmp, bSuccess => bSuccess);]]></ST>
       </Implementation>
     </Method>
     <Method Name="Remove_At" Id="{ee0944b3-e733-0f32-31de-e04d1b5df91f}">
@@ -460,12 +449,15 @@ END_VAR]]></Declaration>
 IF Size = 0 THEN 
 	THIS^.Clear();
 ELSE
-	WHILE THIS^._Count > Size DO THIS^.Remove_At(THIS^._Count - 1); END_WHILE
-	WHILE THIS^._Count < Size DO THIS^.Insert_Generic(THIS^._Count, Tmp); END_WHILE
-	END_IF
-	
-bSuccess := TRUE;
-THIS^.Clear_Error();]]></ST>
+	WHILE THIS^._Count > Size DO 
+		THIS^.Remove_At(THIS^._Count - 1, bSuccess => bSuccess);
+		IF NOT bSuccess THEN RETURN; END_IF 
+		END_WHILE
+	WHILE THIS^._Count < Size DO 
+		THIS^.Insert_Generic(THIS^._Count, Tmp, bSuccess => bSuccess);
+		IF NOT bSuccess THEN RETURN; END_IF 
+		END_WHILE
+	END_IF]]></ST>
       </Implementation>
     </Method>
     <Method Name="Reverse" Id="{e63a0f73-f1bb-08a6-0ca1-52777c5f0814}">
@@ -480,7 +472,7 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Reverse := THIS^;
 
-IF THIS^._Empty THEN RETURN; END_IF
+IF THIS^._Empty THEN bSuccess := TRUE; THIS^.Clear_Error(); RETURN; END_IF
 
 pFront := THIS^.pHead;
 pBack := THIS^.pTail;
@@ -492,7 +484,6 @@ WHILE (pFront <> pBack) AND_THEN (pFront^.pPrevious <> pBack) DO
 	END_WHILE
 	
 bSuccess := TRUE;
-
 THIS^.Clear_Error();]]></ST>
       </Implementation>
     </Method>
@@ -559,6 +550,7 @@ VAR_OUTPUT
 END_VAR
 VAR
 	pTmp : POINTER TO T_List_Node;
+	Tmp : T_Generic;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Set_Generic := THIS^;
@@ -570,25 +562,34 @@ IF Index < 0 OR_ELSE Index >= THIS^._Count THEN
 	END_IF
 	
 IF Index = 0 THEN
+	Tmp := F_Clone_Generic(Item, bSuccess => bSuccess, Error => THIS^.Error);
+	IF NOT bSuccess THEN RETURN; END_IF
 	F_Delete_Generic(THIS^.pHead^.Data);
-	THIS^.pHead^.Data := F_Clone_Generic(Item);
+	THIS^.pHead^.Data := Tmp;
+	
 ELSIF Index = THIS^._Count - 1 THEN
+	Tmp := F_Clone_Generic(Item, bSuccess => bSuccess, Error => THIS^.Error);
+	IF NOT bSuccess THEN RETURN; END_IF
 	F_Delete_Generic(THIS^.pTail^.Data);
-	THIS^.pTail^.Data := F_Clone_Generic(Item);
+	THIS^.pTail^.Data := Tmp;
+	
 ELSIF Index = THIS^.Last_Accessed_Index THEN
+	Tmp := F_Clone_Generic(Item, bSuccess => bSuccess, Error => THIS^.Error);
+	IF NOT bSuccess THEN RETURN; END_IF
 	F_Delete_Generic(THIS^.pLast_Accessed^.Data);
-	THIS^.pLast_Accessed^.Data := F_Clone_Generic(Item);
+	THIS^.pLast_Accessed^.Data := Tmp;
+	 
 ELSE
+	Tmp := F_Clone_Generic(Item, bSuccess => bSuccess, Error => THIS^.Error);
+	IF NOT bSuccess THEN RETURN; END_IF
 	pTmp := THIS^.Closest_Node_Iterator(Index);
 	F_Delete_Generic(pTmp^.Data);
-	pTmp^.Data := F_Clone_Generic(Item);
+	pTmp^.Data := Tmp;
 
 	THIS^.Last_Accessed_Index := Index;
 	THIS^.pLast_Accessed := pTmp;
 	END_IF
-	
-bSuccess := TRUE;
-THIS^.Clear_Error();]]></ST>
+	]]></ST>
       </Implementation>
     </Method>
     <Method Name="Swap" Id="{fc8cded5-55a0-01c9-338b-3eb31966ba86}">
@@ -608,8 +609,7 @@ IF Index_A < 0 OR_ELSE Index_A >= THIS^._Count OR_ELSE Index_B < 0 OR_ELSE Index
 	RETURN;
 	END_IF
 	
-bSuccess := F_Swap_Generics(THIS^.Closest_Node_Iterator(Index_A)^.Data, THIS^.Closest_Node_Iterator(Index_B)^.Data);
-THIS^.Clear_Error();]]></ST>
+F_Swap_Generics(THIS^.Closest_Node_Iterator(Index_A)^.Data, THIS^.Closest_Node_Iterator(Index_B)^.Data, bSuccess => bSuccess, Error => THIS^.Error);]]></ST>
       </Implementation>
     </Method>
   </POU>
