@@ -264,11 +264,12 @@ END_VAR]]></Declaration>
 IF THIS^.pBuffer = 0 THEN THIS^._Error_Status := GVL_Errors.ERR_MALLOC_FAILED; RETURN; END_IF
 
 IF Index < 0 OR_ELSE Index >= THIS^._Count THEN THIS^._Error_Status :=  GVL_Errors.ERR_INDEX_OUT_OF_BOUNDS; RETURN; END_IF
-	
-F_Delete_Generic(THIS^.pBuffer[Index]);
+
 Tmp := F_Clone_Generic(Item, bSuccess => bSuccess, Error => THIS^.Error);
 
 IF NOT bSuccess THEN THIS^._Error_Status := GVL_Errors.ERR_MALLOC_FAILED; RETURN; END_IF
+
+F_Delete_Generic(THIS^.pBuffer[Index]);
 
 THIS^.pBuffer[Index] := Tmp;]]></ST>
       </Implementation>
@@ -292,9 +293,7 @@ IF Index_A < 0 OR_ELSE Index_A >= THIS^._Count OR_ELSE Index_B < 0 OR_ELSE Index
 	RETURN;
 	END_IF
 	
-F_Swap_Generics(THIS^.pBuffer[Index_A], THIS^.pBuffer[Index_B]);
-bSuccess := TRUE;
-THIS^.Clear_Error();]]></ST>
+F_Swap_Generics(THIS^.pBuffer[Index_A], THIS^.pBuffer[Index_B], bSuccess => bSuccess, Error => THIS^.Error);]]></ST>
       </Implementation>
     </Method>
   </POU>

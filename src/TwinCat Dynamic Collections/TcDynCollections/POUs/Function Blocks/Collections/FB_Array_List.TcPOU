@@ -501,6 +501,7 @@ Tmp := F_Clone_Generic(Item, bSuccess => bSuccess, Error => THIS^.Error);
 IF NOT bSuccess THEN RETURN; END_IF
 
 F_Delete_Generic(THIS^.pBuffer[Index]);
+
 THIS^.pBuffer[Index] := Tmp;]]></ST>
       </Implementation>
     </Method>
@@ -521,8 +522,7 @@ IF Index_A < 0 OR_ELSE Index_A >= THIS^._Count OR_ELSE Index_B < 0 OR_ELSE Index
 	RETURN;
 	END_IF
 	
-bSuccess := F_Swap_Generics(THIS^.pBuffer[Index_A], THIS^.pBuffer[Index_B]);
-THIS^.Clear_Error();]]></ST>
+bSuccess := F_Swap_Generics(THIS^.pBuffer[Index_A], THIS^.pBuffer[Index_B], bSuccess => bSuccess, Error => THIS^.Error);]]></ST>
       </Implementation>
     </Method>
   </POU>
