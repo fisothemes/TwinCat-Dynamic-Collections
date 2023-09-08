@@ -163,23 +163,17 @@ IF Index < 0 OR_ELSE Index >= THIS^._Count THEN
 	RETURN;
 	END_IF
 	
-IF NOT F_String_Convertable_Generic(THIS^.pBuffer[Index]) THEN 
-	THIS^._Error_Status := GVL_Errors.ERR_INVALID_CONVERSION;
-	RETURN;
-	END_IF
-	
 CASE THIS^.pBuffer[Index].TypeClass OF
 	T_Type.TYPE_STRING:
 		Tc2_Utilities.STRNCPY(ADR(sItem), THIS^.pBuffer[Index].pValue, MIN(Tc2_Utilities.LEN2(ADR(sItem))+1, TO_UDINT(THIS^.pBuffer[Index].diSize)));
+		THIS^.Clear_Error();
 
 	T_Type.TYPE_WSTRING:
 		Tc2_Utilities.WSTRING_TO_STRING2(ADR(sItem), THIS^.pBuffer[Index].pValue, MIN(Tc2_Utilities.LEN2(ADR(sItem))+1, TO_UDINT(THIS^.pBuffer[Index].diSize)));
+		THIS^.Clear_Error();
 ELSE
-	sItem := F_Generic_To_String(THIS^.pBuffer[Index]);
-	END_CASE
-	
-bSuccess := TRUE;
-THIS^.Clear_Error();]]></ST>
+	sItem := F_Generic_To_String(THIS^.pBuffer[Index], bSuccess => bSuccess, Error => THIS^.Error);
+	END_CASE]]></ST>
       </Implementation>
     </Method>
     <Method Name="Get_Generic" Id="{7e2591d8-e3e3-013a-3f6f-39f4740e0d2d}">

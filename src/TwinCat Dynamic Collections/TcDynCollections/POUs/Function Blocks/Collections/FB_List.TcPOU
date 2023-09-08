@@ -157,9 +157,11 @@ IF NOT bSuccess THEN RETURN; END_IF
 CASE Tmp.TypeClass OF
 	T_Type.TYPE_STRING:
 		Tc2_Utilities.STRNCPY(ADR(sItem), Tmp.pValue, MIN(Tc2_Utilities.LEN2(ADR(sItem))+1, TO_UDINT(Tmp.diSize)));
+		THIS^.Clear_Error();
 
 	T_Type.TYPE_WSTRING:
 		Tc2_Utilities.WSTRING_TO_STRING2(ADR(sItem), Tmp.pValue, MIN(Tc2_Utilities.LEN2(ADR(sItem))+1, TO_UDINT(Tmp.diSize)));
+		THIS^.Clear_Error();
 ELSE
 	sItem := F_Generic_To_String(Tmp, bSuccess => bSuccess, Error => THIS^.Error);
 	END_CASE]]></ST>
@@ -364,10 +366,8 @@ END_VAR
 VAR_OUTPUT
 	bSuccess : BOOL;
 END_VAR
-VAR_INST
-	pTmp, pp : POINTER TO T_List_Node;
-	i : T_Position;
-	MA : ARRAY[0..10] OF POINTER TO T_List_Node;
+VAR
+	pTmp : POINTER TO T_List_Node;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Remove_At := THIS^;
