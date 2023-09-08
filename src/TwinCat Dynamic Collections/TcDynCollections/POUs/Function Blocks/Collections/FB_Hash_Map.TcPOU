@@ -77,7 +77,9 @@ VAR
 	pCurrent : POINTER TO T_Hashmap_Bucket_Node;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[Index := THIS^.Hash(Key) MOD THIS^.Bucket_Count;
+        <ST><![CDATA[IF THIS^._Empty THEN RETURN; END_IF
+
+Index := THIS^.Hash(Key) MOD THIS^.Bucket_Count;
 
 pCurrent := THIS^.pBuckets[Index];
 
@@ -97,13 +99,22 @@ METHOD PROTECTED Create_Buckets : POINTER TO POINTER TO T_Hashmap_Bucket_Node
 VAR_INPUT
 	Count : T_Capacity;
 END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL := TRUE;
+	Error : T_Error := GVL_Errors.ERR_NO_ERROR;
+END_VAR
 VAR
 	i : T_Capacity;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF Count <= 0 THEN RETURN; END_IF
 
-Create_Buckets := __NEW(POINTER TO ST_HASHMAP_BUCKET_NODE, TO_UDINT(Count));]]></ST>
+Create_Buckets := __NEW(POINTER TO ST_HASHMAP_BUCKET_NODE, TO_UDINT(Count));
+
+IF Create_Buckets = 0 THEN
+	bSuccess := FALSE;
+	Error := GVL_Errors.ERR_MALLOC_FAILED;
+	END_IF]]></ST>
       </Implementation>
     </Method>
     <Method Name="Create_Node" Id="{34f68ee7-9a59-0bda-1c58-3bbcebe3817e}" FolderPath="Internal\">
@@ -112,11 +123,28 @@ METHOD PROTECTED Create_Node : POINTER TO ST_HASHMAP_BUCKET_NODE
 VAR_INPUT
 	Key, Value : T_Generic;
 END_VAR
-]]></Declaration>
+VAR_OUTPUT
+	bSuccess : BOOL;
+	Error : T_Error;
+END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Create_Node := __NEW(ST_HASHMAP_BUCKET_NODE);
-Create_Node^.Key := F_Clone_Generic(Key);
-Create_Node^.Value := F_Clone_Generic(Value);]]></ST>
+
+IF Create_Node = 0 THEN 
+	Error := GVL_Errors.ERR_MALLOC_FAILED;
+	RETURN;
+	END_IF
+
+Create_Node^.Key := F_Clone_Generic(Key, bSuccess => bSuccess, Error => Error);
+
+IF NOT bSuccess THEN __DELETE(Create_Node); RETURN; END_IF
+
+Create_Node^.Value := F_Clone_Generic(Value, bSuccess => bSuccess, Error => Error);
+
+IF NOT bSuccess THEN
+	F_Delete_Generic(Create_Node^.Key);
+	__DELETE(Create_Node);
+	END_IF]]></ST>
       </Implementation>
     </Method>
     <Method Name="Delete_Node" Id="{d7c626c2-ff30-0a7c-3c5e-c8cdab4f875c}" FolderPath="Internal\">
@@ -161,13 +189,16 @@ VAR_INPUT
 	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
 	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
 	Initial_Bucket_Count : T_Capacity; // Number of buckets you want to initialise the hash map with. Use 0 if you don't know.
+END_VAR
+VAR 
+	bSuccess : BOOL;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[// Return if it's an online change.
 IF bInCopyCode THEN RETURN; END_IF
 
-THIS^.pBuckets := THIS^.Create_Buckets(Initial_Bucket_Count);
-THIS^._Bucket_Count := SEL(Initial_Bucket_Count > 0,0,Initial_Bucket_Count);]]></ST>
+THIS^.pBuckets := THIS^.Create_Buckets(Initial_Bucket_Count, bSuccess => bSuccess, Error => THIS^.Error);
+THIS^._Bucket_Count := SEL(THIS^.pBuckets <> 0, 0,Initial_Bucket_Count);]]></ST>
       </Implementation>
     </Method>
     <Method Name="Get" Id="{974b2f1d-0409-00bd-1497-58fc20c1a257}">
@@ -195,9 +226,7 @@ IF NOT F_Matching_Generics(Value, Tmp) THEN
 	RETURN;
 	END_IF
 	
-F_Copy_Generic_Value(Tmp, Value);
-bSuccess := TRUE;
-THIS^.Clear_Error();]]></ST>
+F_Copy_Generic_Value(Tmp, Value, bSuccess => bSuccess, Error => THIS^.Error);]]></ST>
       </Implementation>
     </Method>
     <Method Name="Get_As_String" Id="{09c2aacc-bdca-077b-26d9-2e12e7f50475}">
@@ -224,24 +253,18 @@ IF NOT __ISVALIDREF(sValue) THEN
 THIS^.Get_Generic(Key, Value => Tmp, bSuccess => bSuccess);
 
 IF NOT bSuccess THEN RETURN; END_IF
-
-IF NOT F_String_Convertable_Generic(Tmp) THEN 
-	THIS^._Error_Status := GVL_Errors.ERR_INVALID_CONVERSION;
-	RETURN;
-	END_IF
 	
 CASE Tmp.TypeClass OF
 	T_Type.TYPE_STRING:
 		Tc2_Utilities.STRNCPY(ADR(sValue), Tmp.pValue, MIN(Tc2_Utilities.LEN2(ADR(sValue))+1, TO_UDINT(Tmp.diSize)));
+		THIS^.Clear_Error();
 
 	T_Type.TYPE_WSTRING:
 		Tc2_Utilities.WSTRING_TO_STRING2(ADR(sValue), Tmp.pValue, MIN(Tc2_Utilities.LEN2(ADR(sValue))+1, TO_UDINT(Tmp.diSize)));
+		THIS^.Clear_Error();
 ELSE
-	sValue := F_Generic_To_String(Tmp);
-	END_CASE
-	
-bSuccess := TRUE;
-THIS^.Clear_Error();]]></ST>
+	sValue := F_Generic_To_String(Tmp, bSuccess => bSuccess, Error => THIS^.Error);
+	END_CASE]]></ST>
       </Implementation>
     </Method>
     <Method Name="Get_Generic" Id="{73ec8e14-4da8-0c4e-1d68-069414250c6b}">
@@ -264,6 +287,8 @@ END_VAR
       <Implementation>
         <ST><![CDATA[Get_Generic := THIS^;
 
+IF THIS^._Empty THEN THIS^._Error_Status := GVL_Errors.ERR_NO_KEY; RETURN; END_IF
+
 Index := THIS^.Hash(Key) MOD THIS^.Bucket_Count;
 
 pCurrent := THIS^.pBuckets[Index];
@@ -278,7 +303,6 @@ WHILE pCurrent <> 0 DO
 	pCurrent := pCurrent^.pNext;
 	END_WHILE
 	
-// Throw item not found error.
 THIS^._Error_Status := GVL_Errors.ERR_NO_KEY;]]></ST>
       </Implementation>
     </Method>
@@ -298,6 +322,8 @@ fbImmutable_List(ipList := THIS^.pKeys^);
 Get_Keys := fbImmutable_List;
 
 THIS^.pKeys^.Clear();
+
+IF THIS^._Empty THEN RETURN; END_IF
 
 FOR i := 0 TO THIS^._Bucket_Count - 1 DO
 	pCurrent := THIS^.pBuckets[i];
@@ -324,6 +350,8 @@ fbImmutable_List(ipList := THIS^.pValues^);
 Get_Values := fbImmutable_List;
 
 pValues^.Clear();
+
+IF THIS^._Empty THEN RETURN; END_IF
 
 FOR i := 0 TO THIS^._Bucket_Count - 1 DO
 	pCurrent := THIS^.pBuckets[i];
@@ -372,6 +400,7 @@ END_VAR
 VAR
 	Index : T_Position;
 	pCurrent : POINTER TO T_Hashmap_Bucket_Node;
+	Tmp : T_Generic;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Insert_Generic := THIS^;
@@ -379,7 +408,8 @@ END_VAR]]></Declaration>
 IF TO_REAL(THIS^._Count) > (TO_REAL(THIS^._Bucket_Count) * THIS^.fLoad_Factor) OR_ELSE THIS^.Bucket_Count <= 0 THEN
 	// Increasing the bucket by 50% once the load factor is reached.
 	// Bitwise shifting is the same as multiplying by 1.5, this is done because no complicated casting is needed.
-	THIS^.Resize(SEL(THIS^._Bucket_Count > 1, 16, THIS^._Bucket_Count + SHR(THIS^._Bucket_Count, 1)));
+	THIS^.Resize(SEL(THIS^._Bucket_Count > 1, 16, THIS^._Bucket_Count + SHR(THIS^._Bucket_Count, 1)), bSuccess => bSuccess);
+	IF NOT bSuccess THEN RETURN; END_IF
 	END_IF
 
 Index := THIS^.Hash(Key) MOD THIS^._Bucket_Count;
@@ -390,10 +420,10 @@ WHILE pCurrent <> 0 DO
 	CASE F_Compare_Generics(Key, pCurrent^.Key) OF
 		T_Comparison.Equal:
 			IF bUpdate THEN
+				Tmp := F_Clone_Generic(Value, bSuccess => bSuccess, Error => THIS^.Error);
+				IF NOT bSuccess THEN RETURN; END_IF
 				F_Delete_Generic(pCurrent^.Value);
-				pCurrent^.Value := F_Clone_Generic(Value);
-				bSuccess := TRUE;
-				THIS^.Clear_Error();
+				pCurrent^.Value := Tmp;
 			ELSE
 				THIS^._Error_Status := GVL_Errors.ERR_DUPLICATE_KEY;
 			END_IF
@@ -406,13 +436,12 @@ WHILE pCurrent <> 0 DO
 		END_CASE
 	END_WHILE
 	
-pCurrent := THIS^.Create_Node(Key, Value);
+pCurrent := THIS^.Create_Node(Key, Value, bSuccess => bSuccess, Error => THIS^.Error);
+IF NOT bSuccess THEN RETURN; END_IF
 pCurrent^.pNext := THIS^.pBuckets[Index];
 THIS^.pBuckets[Index] := pCurrent;
 
-bSuccess := TRUE;
-THIS^.Increment_Count();
-THIS^.Clear_Error();]]></ST>
+THIS^.Increment_Count();]]></ST>
       </Implementation>
     </Method>
     <Method Name="Remove" Id="{94941d8e-1957-0a28-34f8-c6c6dd760c7d}">
@@ -443,6 +472,8 @@ VAR
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Remove_Generic := THIS^;
+
+IF THIS^._Empty THEN THIS^._Error_Status := GVL_Errors.ERR_NO_KEY; RETURN; END_IF
 
 Index := THIS^.Hash(Key) MOD THIS^.Bucket_Count;
 
@@ -477,6 +508,9 @@ METHOD Resize : I_Hash_Map
 VAR_INPUT
 	Count : T_Capacity;
 END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
 VAR
 	Hash : DWORD;
 	New_Index : T_Position;
@@ -487,10 +521,13 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Resize := THIS^;
 
-IF Count < 0 THEN RETURN; END_IF
-IF Count = 0 THEN THIS^.Clear(); RETURN; END_IF
+IF Count < 0 THEN THIS^._Error_Status := GVL_Errors.ERR_INDEX_OUT_OF_BOUNDS; RETURN; END_IF
+IF Count = 0 THEN THIS^.Clear(); bSuccess := TRUE; THIS^.Clear_Error(); RETURN; END_IF
+IF Count = THIS^._Bucket_Count THEN bSuccess := TRUE; THIS^.Clear_Error(); RETURN; END_IF
 
-pNew_Bucket := THIS^.Create_Buckets(Count);
+pNew_Bucket := THIS^.Create_Buckets(Count, bSuccess => bSuccess, Error => THIS^.Error);
+
+IF NOT bSuccess THEN RETURN; END_IF;
 
 FOR i := 0 TO THIS^._Bucket_Count - 1 DO
 	pCurrent := THIS^.pBuckets[i];
@@ -535,9 +572,12 @@ END_VAR
 VAR
 	Index : T_Position;
 	pCurrent : POINTER TO T_Hashmap_Bucket_Node;
+	Tmp : T_Generic;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Update_Generic := THIS^;
+
+IF THIS^._Empty THEN THIS^._Error_Status := GVL_Errors.ERR_NO_KEY; RETURN; END_IF
 
 Index := THIS^.Hash(Key) MOD THIS^.Bucket_Count;
 
@@ -546,10 +586,10 @@ pCurrent := THIS^.pBuckets[Index];
 WHILE pCurrent <> 0 DO
 	CASE F_Compare_Generics(Key, pCurrent^.Key) OF
 		T_Comparison.Equal:
+			Tmp := F_Clone_Generic(Value, bSuccess => bSuccess, Error => THIS^.Error);
+			IF NOT bSuccess THEN RETURN; END_IF;
 			F_Delete_Generic(pCurrent^.Value);
-			pCurrent^.Value := F_Clone_Generic(Value);
-			bSuccess := TRUE;
-			THIS^.Clear_Error();
+			pCurrent^.Value := Tmp;
 			RETURN;
 		T_Comparison.Invalid:
 			THIS^._Error_Status := GVL_Errors.ERR_INVALID_COMPARISON;

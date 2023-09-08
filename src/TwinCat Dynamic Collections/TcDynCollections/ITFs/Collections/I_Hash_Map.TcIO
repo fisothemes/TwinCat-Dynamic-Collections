@@ -17,6 +17,9 @@ PROPERTY _Bucket_Count : T_Capacity;]]></Declaration>
 METHOD Resize : I_Hash_Map
 VAR_INPUT
 	Count : T_Capacity;
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
 END_VAR]]></Declaration>
     </Method>
   </Itf>
