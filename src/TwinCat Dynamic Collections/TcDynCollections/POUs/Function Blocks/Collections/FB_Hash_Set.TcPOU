@@ -78,6 +78,8 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Index := THIS^.Hash(Item) MOD THIS^.Bucket_Count;
 
+IF THIS^._Empty THEN RETURN; END_IF
+
 pCurrent := THIS^.pBuckets[Index];
 
 WHILE pCurrent <> 0 DO
@@ -96,13 +98,22 @@ METHOD PROTECTED Create_Buckets : POINTER TO POINTER TO T_Hashset_Bucket_Node
 VAR_INPUT
 	Count : T_Capacity;
 END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL := TRUE;
+	Error : T_Error := GVL_Errors.ERR_NO_ERROR;
+END_VAR
 VAR
 	i : T_Capacity;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF Count <= 0 THEN RETURN; END_IF
 
-Create_Buckets := __NEW(POINTER TO ST_HASHSET_BUCKET_NODE, TO_UDINT(Count));]]></ST>
+Create_Buckets := __NEW(POINTER TO ST_HASHSET_BUCKET_NODE, TO_UDINT(Count));
+
+IF Create_Buckets = 0 THEN
+	bSuccess := FALSE;
+	Error := GVL_Errors.ERR_MALLOC_FAILED;
+	END_IF]]></ST>
       </Implementation>
     </Method>
     <Method Name="Create_Node" Id="{7e3fa978-6100-09d1-2773-a732398df83f}" FolderPath="Internal\">
@@ -111,10 +122,22 @@ METHOD PROTECTED Create_Node : POINTER TO ST_HASHSET_BUCKET_NODE
 VAR_INPUT
 	Item : T_Generic;
 END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+	Error : T_Error;
+END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[Create_Node := __NEW(ST_HASHSET_BUCKET_NODE);
-Create_Node^.Data := F_Clone_Generic(Item);]]></ST>
+
+IF Create_Node = 0 THEN 
+	Error := GVL_Errors.ERR_MALLOC_FAILED;
+	RETURN;
+	END_IF
+
+Create_Node^.Data := F_Clone_Generic(Item, bSuccess => bSuccess, Error => THIS^.Error);
+
+IF NOT bSuccess THEN __DELETE(Create_Node); END_IF]]></ST>
       </Implementation>
     </Method>
     <Method Name="Delete_Node" Id="{fc1d11f2-4141-05de-0d31-d1e0f6dd0bd8}" FolderPath="Internal\">
@@ -163,8 +186,8 @@ END_VAR]]></Declaration>
         <ST><![CDATA[// Return if it's an online change.
 IF bInCopyCode THEN RETURN; END_IF
 
-THIS^.pBuckets := THIS^.Create_Buckets(Initial_Bucket_Count);
-THIS^._Bucket_Count := SEL(Initial_Bucket_Count > 0,0,Initial_Bucket_Count);]]></ST>
+THIS^.pBuckets := THIS^.Create_Buckets(Initial_Bucket_Count, Error => THIS^.Error);
+THIS^._Bucket_Count := SEL(THIS^.pBuckets <> 0, 0,Initial_Bucket_Count);]]></ST>
       </Implementation>
     </Method>
     <Method Name="Get_Values" Id="{97fbfee6-0805-0a49-28f2-8ece5f5c9629}">
@@ -237,7 +260,8 @@ END_VAR]]></Declaration>
 IF TO_REAL(THIS^._Count) > (TO_REAL(THIS^.Bucket_Count) * THIS^.fLoad_Factor) OR_ELSE THIS^.Bucket_Count <= 0 THEN
 	// Increasing the bucket by 50% once the load factor is reached.
 	// Bitwise shifting is the same as multiplying by 1.5, this is done because no complicated casting is needed.
-	THIS^.Resize(SEL(THIS^.Bucket_Count > 1, 16, THIS^.Bucket_Count + SHR(THIS^.Bucket_Count, 1)));
+	THIS^.Resize(SEL(THIS^.Bucket_Count > 1, 16, THIS^.Bucket_Count + SHR(THIS^.Bucket_Count, 1)), bSuccess => bSuccess);
+	IF NOT bSuccess THEN RETURN; END_IF
 	END_IF
 	
 Index := THIS^.Hash(Item) MOD THIS^.Bucket_Count;
@@ -249,14 +273,14 @@ WHILE pCurrent <> 0 DO
 	pCurrent := pCurrent^.pNext;
 	END_WHILE
 	
-pCurrent := THIS^.Create_Node(Item);
+pCurrent := THIS^.Create_Node(Item, bSuccess => bSuccess, Error => Error);
+
+IF NOT bSuccess THEN RETURN; END_IF
+
 pCurrent^.pNext := THIS^.pBuckets[Index];
 THIS^.pBuckets[Index] := pCurrent;
 
-bSuccess := TRUE;
-THIS^.Increment_Count();
-THIS^.Clear_Error();
-]]></ST>
+THIS^.Increment_Count();]]></ST>
       </Implementation>
     </Method>
     <Method Name="Remove" Id="{b5b86855-d861-03eb-396c-3fa3a0ae6c60}">
@@ -287,6 +311,8 @@ VAR
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Remove_Generic := THIS^;
+
+IF THIS^._Empty THEN RETURN; END_IF
 
 Index := THIS^.Hash(Item) MOD THIS^.Bucket_Count;
 
@@ -319,6 +345,9 @@ METHOD Resize : I_Hash_Set
 VAR_INPUT
 	Count : T_Capacity;
 END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
 VAR
 	Hash : DWORD;
 	New_Index : T_Position;
@@ -329,10 +358,13 @@ END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Resize := THIS^;
 
-IF Count < 0 THEN RETURN; END_IF
-IF Count = 0 THEN THIS^.Clear(); RETURN; END_IF
+IF Count < 0 THEN THIS^._Error_Status := GVL_Errors.ERR_INDEX_OUT_OF_BOUNDS; RETURN; END_IF
+IF Count = 0 THEN THIS^.Clear(); bSuccess := TRUE; RETURN; END_IF
+IF Count = THIS^._Bucket_Count THEN bSuccess := TRUE; RETURN; END_IF
 
-pNew_Bucket := THIS^.Create_Buckets(Count);
+pNew_Bucket := THIS^.Create_Buckets(Count, bSuccess => bSuccess, Error => THIS^.Error);
+
+IF NOT bSuccess THEN RETURN; END_IF
 
 FOR i := 0 TO THIS^._Bucket_Count - 1 DO
 	pCurrent := THIS^.pBuckets[i];
