@@ -11,6 +11,7 @@ VAR
 	pRoot : POINTER TO T_AVL_Node;
 	Traversal : T_BST_Traversal := T_BST_Traversal.In_Order; 
 	pValues : POINTER TO FB_Array_List;
+	fbImmutable_Values_List : FB_Immutable_List;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[(*
@@ -100,7 +101,10 @@ METHOD Clear : I_Set]]></Declaration>
 
 THIS^.Clear_Node(THIS^.pRoot);
 
-IF THIS^.pValues <> 0 THEN  __DELETE(THIS^.pValues); END_IF
+IF THIS^.pValues <> 0 THEN
+	THIS^.fbImmutable_Values_List(ipList := 0);
+	__DELETE(THIS^.pValues);
+	END_IF
 
 THIS^.pRoot := 0;
 THIS^._Count := 0;]]></ST>
@@ -230,9 +234,6 @@ END_VAR
       <Declaration><![CDATA[// Gets an immutable list of the values in the set.
 {warning disable C0394}
 METHOD Get_Values : I_Immutable_List
-VAR_INST
-	fbImmutable_List : FB_Immutable_List;
-END_VAR
 VAR
 	pCurrent, pPrevious, pTmp : POINTER TO T_AVL_Node := THIS^.pRoot;
 	fbNode_Buffer : FB_Queue;
@@ -241,8 +242,8 @@ END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF THIS^.pValues = 0 THEN THIS^.pValues := __NEW(FB_Array_List(Initial_Capacity := 0)); END_IF
-fbImmutable_List(ipList := THIS^.pValues^);
-Get_Values := fbImmutable_List;
+THIS^.fbImmutable_Values_List(ipList := THIS^.pValues^);
+Get_Values := THIS^.fbImmutable_Values_List;
 
 THIS^.pValues^.Clear();
 

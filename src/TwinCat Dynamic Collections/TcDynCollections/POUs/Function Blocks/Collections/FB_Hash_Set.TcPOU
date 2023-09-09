@@ -11,6 +11,7 @@ VAR
 	pBuckets : POINTER TO POINTER TO T_Hashset_Bucket_Node; // Array of pointers to hash bucket node.
 	Bucket_Count : T_Capacity;
 	pValues : POINTER TO FB_Array_List;
+	fbImmutable_Values_List : FB_Immutable_List;
 END_VAR
 VAR CONSTANT
 	fLoad_Factor : REAL := 0.75;
@@ -59,8 +60,12 @@ FOR i := 0 TO THIS^._Bucket_Count - 1 DO
 		END_WHILE
 	END_FOR
 
+IF THIS^.pValues <> 0 THEN 
+	THIS^.fbImmutable_Values_List(ipList := 0);
+	__DELETE(THIS^.pValues);
+	END_IF
+
 __DELETE(THIS^.pBuckets);
-IF THIS^.pValues <> 0 THEN  __DELETE(THIS^.pValues); END_IF
 THIS^._Bucket_Count := 0;
 THIS^._Count := 0;]]></ST>
       </Implementation>
@@ -193,17 +198,14 @@ THIS^._Bucket_Count := SEL(THIS^.pBuckets <> 0, 0,Initial_Bucket_Count);]]></ST>
     <Method Name="Get_Values" Id="{97fbfee6-0805-0a49-28f2-8ece5f5c9629}">
       <Declaration><![CDATA[// Gets an immutable list of the values in the set.
 METHOD Get_Values : I_Immutable_List
-VAR_INST
-	fbImmutable_List : FB_Immutable_List;
-END_VAR
 VAR
 	i : T_Capacity;
 	pCurrent : POINTER TO T_Hashset_Bucket_Node;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF THIS^.pValues = 0 THEN THIS^.pValues := __NEW(FB_Array_List(Initial_Capacity := 0)); END_IF
-fbImmutable_List(ipList := THIS^.pValues^);
-Get_Values := fbImmutable_List;
+THIS^.fbImmutable_Values_List(ipList := THIS^.pValues^);
+Get_Values := THIS^.fbImmutable_Values_List;
 
 pValues^.Clear();
 

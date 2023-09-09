@@ -12,6 +12,8 @@ VAR
 	pRoot : POINTER TO T_AVL_Map_Node;
 	Traversal : T_BST_Traversal := T_BST_Traversal.In_Order; 
 	pKeys, pValues : POINTER TO FB_Array_List;
+	fbImmutable_Keys_List,
+	fbImmutable_Values_List : FB_Immutable_List;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[(*
@@ -102,8 +104,14 @@ METHOD Clear : I_Map
 
 THIS^.Clear_Node(THIS^.pRoot);
 
-IF THIS^.pKeys <> 0 THEN  __DELETE(THIS^.pKeys); END_IF
-IF THIS^.pValues <> 0 THEN  __DELETE(THIS^.pValues); END_IF
+IF THIS^.pKeys <> 0 THEN 
+	THIS^.fbImmutable_Keys_List(ipList := 0); 
+	__DELETE(THIS^.pKeys); END_IF
+
+IF THIS^.pValues <> 0 THEN
+	THIS^.fbImmutable_Values_List(ipList := 0);
+	__DELETE(THIS^.pValues);
+	END_IF
 
 THIS^.pRoot := 0;
 THIS^._Count := 0;]]></ST>
@@ -339,19 +347,17 @@ END_VAR
       <Declaration><![CDATA[// Gets an immutable list of the keys.
 {warning disable C0394}
 METHOD Get_Keys : I_Immutable_List
-VAR_INST
-	fbImmutable_List : FB_Immutable_List;
-END_VAR
 VAR
-	pCurrent, pPrevious, pTmp : POINTER TO T_AVL_Map_Node := THIS^.pRoot;
+	pCurrent : POINTER TO T_AVL_Map_Node := THIS^.pRoot;
+	pPrevious, pTmp : POINTER TO T_AVL_Map_Node;
 	fbNode_Buffer : FB_Queue;
 	bSuccess : BOOL;
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF THIS^.pKeys = 0 THEN THIS^.pKeys := __NEW(FB_Array_List(Initial_Capacity := 0)); END_IF
-fbImmutable_List(ipList := THIS^.pKeys^);
-Get_Keys := fbImmutable_List;
+THIS^.fbImmutable_Keys_List(ipList := THIS^.pKeys^);
+Get_Keys := THIS^.fbImmutable_Keys_List;
 
 THIS^.pKeys^.Clear();
 
@@ -414,19 +420,17 @@ WHILE (NOT fbNode_Buffer._Empty) OR_ELSE pCurrent <> 0 DO
       <Declaration><![CDATA[// Gets an immutable list of the values.
 {warning disable C0394}
 METHOD Get_Values : I_Immutable_List
-VAR_INST
-	fbImmutable_List : FB_Immutable_List;
-END_VAR
 VAR
-	pCurrent, pPrevious, pTmp : POINTER TO T_AVL_Map_Node := THIS^.pRoot;
+	pCurrent : POINTER TO T_AVL_Map_Node := THIS^.pRoot;
+	pPrevious, pTmp : POINTER TO T_AVL_Map_Node;
 	fbNode_Buffer : FB_Queue;
 	bSuccess : BOOL;
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF THIS^.pValues = 0 THEN THIS^.pValues := __NEW(FB_Array_List(Initial_Capacity := 0)); END_IF
-fbImmutable_List(ipList := THIS^.pValues^);
-Get_Values := fbImmutable_List;
+THIS^.fbImmutable_Values_List(ipList := THIS^.pValues^);
+Get_Values := THIS^.fbImmutable_Values_List;
 
 THIS^.pValues^.Clear();
 

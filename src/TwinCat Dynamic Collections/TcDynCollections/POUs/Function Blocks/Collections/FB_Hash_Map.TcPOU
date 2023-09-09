@@ -11,6 +11,8 @@ VAR
 	pBuckets : POINTER TO POINTER TO T_Hashmap_Bucket_Node; // Array of pointers to hash bucket node.
 	Bucket_Count : T_Capacity;
 	pKeys, pValues : POINTER TO FB_Array_List;
+	fbImmutable_Keys_List,
+	fbImmutable_Values_List : FB_Immutable_List;
 END_VAR
 VAR CONSTANT
 	fLoad_Factor : REAL := 0.75;
@@ -59,9 +61,17 @@ FOR i := 0 TO THIS^._Bucket_Count - 1 DO
 		END_WHILE
 	END_FOR
 
+IF THIS^.pKeys <> 0 THEN
+	THIS^.fbImmutable_Keys_List(ipList := 0);  
+	__DELETE(THIS^.pKeys); 
+	END_IF
+	
+IF THIS^.pValues <> 0 THEN 
+	THIS^.fbImmutable_Values_List(ipList := 0);
+	__DELETE(THIS^.pValues);
+	END_IF
+
 __DELETE(THIS^.pBuckets);
-IF THIS^.pKeys <> 0 THEN  __DELETE(THIS^.pKeys); END_IF
-IF THIS^.pValues <> 0 THEN  __DELETE(THIS^.pValues); END_IF
 THIS^._Bucket_Count := 0;
 THIS^._Count := 0;]]></ST>
       </Implementation>
@@ -309,17 +319,14 @@ THIS^._Error_Status := GVL_Errors.ERR_NO_KEY;]]></ST>
     <Method Name="Get_Keys" Id="{c71a807a-c37d-0bc5-2f3b-085edd371d6d}">
       <Declaration><![CDATA[// Gets an immutable list of the keys.
 METHOD Get_Keys : I_Immutable_List
-VAR_INST
-	fbImmutable_List : FB_Immutable_List;
-END_VAR
 VAR
 	i : T_Capacity;
 	pCurrent : POINTER TO T_Hashmap_Bucket_Node;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF THIS^.pKeys = 0 THEN THIS^.pKeys := __NEW(FB_Array_List(Initial_Capacity := 0)); END_IF
-fbImmutable_List(ipList := THIS^.pKeys^);
-Get_Keys := fbImmutable_List;
+THIS^.fbImmutable_Keys_List(ipList := THIS^.pKeys^);
+Get_Keys := THIS^.fbImmutable_Keys_List;
 
 THIS^.pKeys^.Clear();
 
@@ -337,17 +344,14 @@ FOR i := 0 TO THIS^._Bucket_Count - 1 DO
     <Method Name="Get_Values" Id="{a69d6282-139d-03b3-0ca1-a7e833350adf}">
       <Declaration><![CDATA[// Gets an immutable list of the values.
 METHOD Get_Values : I_Immutable_List
-VAR_INST
-	fbImmutable_List : FB_Immutable_List;
-END_VAR
 VAR
 	i : T_Capacity;
 	pCurrent : POINTER TO T_Hashmap_Bucket_Node;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[IF THIS^.pValues = 0 THEN THIS^.pValues := __NEW(FB_Array_List(Initial_Capacity := 0)); END_IF
-fbImmutable_List(ipList := THIS^.pValues^);
-Get_Values := fbImmutable_List;
+THIS^.fbImmutable_Values_List(ipList := THIS^.pValues^);
+Get_Values := THIS^.fbImmutable_Values_List;
 
 pValues^.Clear();
 
