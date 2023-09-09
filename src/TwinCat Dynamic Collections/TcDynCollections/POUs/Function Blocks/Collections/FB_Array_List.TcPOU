@@ -257,8 +257,8 @@ END_VAR]]></Declaration>
         <ST><![CDATA[Insert_Generic := THIS^;
 
 IF THIS^._Count >= THIS^._Capacity THEN 
-	// Increase capacity.
-	THIS^.Resize((THIS^._Count * 2) + 1, bSuccess => bSuccess);
+	// Increase capacity by 50% if it's greater than 1 else change to 16.
+	THIS^.Resize(SEL(THIS^._Count > 1, 16, THIS^._Count + SHR(THIS^._Count, 1)), bSuccess => bSuccess);
 	IF NOT bSuccess THEN RETURN; END_IF
 	END_IF
 
