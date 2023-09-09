@@ -25,7 +25,7 @@ VAR
 	fbMultiset : FB_Tree_Multiset;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[Size := SIZEOF(fbDeque);
+      <ST><![CDATA[Size := SIZEOF(fbList);
 
 IF bAdd THEN
 	bAdd := FALSE;
