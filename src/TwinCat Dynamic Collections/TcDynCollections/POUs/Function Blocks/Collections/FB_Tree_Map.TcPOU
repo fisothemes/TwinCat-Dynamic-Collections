@@ -134,8 +134,7 @@ END_VAR]]></Declaration>
 fbNode_Stack.Push(pRoot);
 
 WHILE NOT fbNode_Stack._Empty DO
-	fbNode_Stack.Get(pTmp);
-	fbNode_Stack.Pop();
+	fbNode_Stack.Get(pTmp).Pop();
 	
 	IF pTmp^.pRight <> 0 THEN fbNode_Stack.Push(pTmp^.pRight); END_IF
 	IF pTmp^.pLeft <> 0 THEN fbNode_Stack.Push(pTmp^.pLeft); END_IF
@@ -160,11 +159,29 @@ METHOD PROTECTED Create_Node : POINTER TO ST_AVL_MAP_NODE
 VAR_INPUT
 	Key, Value : T_Generic;
 END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+	Error : T_Error;
+END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[Create_Node := __NEW(ST_AVL_MAP_NODE);
-Create_Node^.Key := F_Clone_Generic(Key);
-Create_Node^.Value := F_Clone_Generic(Value);]]></ST>
+
+IF Create_Node = 0 THEN Error := GVL_Errors.ERR_MALLOC_FAILED; RETURN; END_IF
+
+Create_Node^.Key := F_Clone_Generic(Key, bSuccess => bSuccess, Error => Error);
+
+IF NOT bSuccess THEN 
+	__DELETE(Create_Node);
+	RETURN;
+	END_IF
+
+Create_Node^.Value := F_Clone_Generic(Value, bSuccess => bSuccess, Error => Error);
+
+IF NOT bSuccess THEN 
+	F_Delete_Generic(Create_Node^.Key);
+	__DELETE(Create_Node);
+	END_IF]]></ST>
       </Implementation>
     </Method>
     <Method Name="Delete_Node" Id="{417d91b1-8ed2-0c8d-2317-1f101853a501}" FolderPath="Internal\">
@@ -243,9 +260,7 @@ IF NOT F_Matching_Generics(Value, Tmp) THEN
 	RETURN;
 	END_IF
 	
-F_Copy_Generic_Value(Tmp, Value);
-bSuccess := TRUE;
-THIS^.Clear_Error();]]></ST>
+F_Copy_Generic_Value(Tmp, Value, bSuccess => bSuccess, Error => Error);]]></ST>
       </Implementation>
     </Method>
     <Method Name="Get_As_String" Id="{329e2689-e23c-0891-08ec-172f73c0584f}">
@@ -272,24 +287,18 @@ IF NOT __ISVALIDREF(sValue) THEN
 THIS^.Get_Generic(Key, Value => Tmp, bSuccess => bSuccess);
 
 IF NOT bSuccess THEN RETURN; END_IF
-
-IF NOT F_String_Convertable_Generic(Tmp) THEN 
-	THIS^._Error_Status := GVL_Errors.ERR_INVALID_CONVERSION;
-	RETURN;
-	END_IF
 	
 CASE Tmp.TypeClass OF
 	T_Type.TYPE_STRING:
 		Tc2_Utilities.STRNCPY(ADR(sValue), Tmp.pValue, MIN(Tc2_Utilities.LEN2(ADR(sValue))+1, TO_UDINT(Tmp.diSize)));
+		THIS^.Clear_Error();
 
 	T_Type.TYPE_WSTRING:
 		Tc2_Utilities.WSTRING_TO_STRING2(ADR(sValue), Tmp.pValue, MIN(Tc2_Utilities.LEN2(ADR(sValue))+1, TO_UDINT(Tmp.diSize)));
+		THIS^.Clear_Error();
 ELSE
-	sValue := F_Generic_To_String(Tmp);
-	END_CASE
-	
-bSuccess := TRUE;
-THIS^.Clear_Error();]]></ST>
+	sValue := F_Generic_To_String(Tmp, bSuccess => bSuccess, Error => THIS^.Error);
+	END_CASE]]></ST>
       </Implementation>
     </Method>
     <Method Name="Get_Balance" Id="{55dbc1de-460f-0e73-2e25-c4e34d60bb26}" FolderPath="Internal\">
@@ -324,10 +333,11 @@ END_VAR
 pTmp := THIS^.Search_Node(THIS^.pRoot, Key);
 bSuccess := pTmp <> 0;
 
-// Throw item not found error.
-THIS^._Error_Status := GVL_Errors.ERR_NO_KEY;
-
-IF NOT bSuccess THEN RETURN; END_IF
+IF NOT bSuccess THEN 
+	// Throw item not found error.
+	THIS^._Error_Status := GVL_Errors.ERR_NO_KEY;
+	RETURN; 
+	END_IF
 
 Value := pTmp^.Value;]]></ST>
       </Implementation>
@@ -516,6 +526,7 @@ VAR_OUTPUT
 END_VAR
 VAR
 	pCurrent, pPrevious : POINTER TO T_AVL_Map_Node;
+	Tmp : T_Generic;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Insert_Generic := THIS^;
@@ -530,10 +541,10 @@ WHILE pCurrent <> 0 DO
 		T_Comparison.Greater : pCurrent := pCurrent^.pRight;
 		T_Comparison.Equal 	 : 
 			IF bUpdate THEN
+				Tmp := F_Clone_Generic(Value, bSuccess => bSuccess, Error => THIS^.Error);
+				IF NOT bSuccess THEN RETURN; END_IF
 				F_Delete_Generic(pCurrent^.Value);
-				pCurrent^.Value := F_Clone_Generic(Value);
-				bSuccess := TRUE;
-				THIS^.Clear_Error();
+				pCurrent^.Value := Tmp;
 			ELSE
 				THIS^._Error_Status := GVL_Errors.ERR_DUPLICATE_KEY;
 				END_IF
@@ -544,7 +555,9 @@ WHILE pCurrent <> 0 DO
 		END_CASE
 	END_WHILE
 	
-pCurrent := THIS^.Create_Node(Key, Value);
+pCurrent := THIS^.Create_Node(Key, Value, bSuccess => bSuccess, Error => THIS^.Error);
+
+IF NOT bSuccess THEN RETURN; END_IF
 
 IF pPrevious = 0 THEN
 	THIS^.pRoot := pCurrent;
@@ -559,10 +572,7 @@ ELSE
 pCurrent^.pParent := pPrevious;
 	
 THIS^.Balance(pCurrent);
-
-bSuccess := TRUE;
-THIS^.Increment_Count();
-THIS^.Clear_Error();]]></ST>
+THIS^.Increment_Count();]]></ST>
       </Implementation>
     </Method>
     <Method Name="Move_Node" Id="{76c66d62-dc2d-0f9c-397d-e7b209547250}" FolderPath="Internal\">
@@ -774,6 +784,7 @@ VAR_OUTPUT
 END_VAR
 VAR
 	pTmp : POINTER TO T_AVL_Map_Node;
+	Tmp : T_Generic;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Update_Generic := THIS^;
@@ -787,9 +798,12 @@ IF NOT bSuccess THEN
 	RETURN;
 	END_IF
 	
+Tmp := F_Clone_Generic(Value, bSuccess => bSuccess, Error => THIS^.Error);
+
+IF NOT bSuccess THEN RETURN; END_IF
+
 F_Delete_Generic(pTmp^.Value);
-pTmp^.Value := F_Clone_Generic(Value);
-THIS^.Clear_Error();]]></ST>
+pTmp^.Value := Tmp;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Update_Height" Id="{737a5ec5-78a4-0fe0-3641-d0b8bfba7973}" FolderPath="Internal\">
