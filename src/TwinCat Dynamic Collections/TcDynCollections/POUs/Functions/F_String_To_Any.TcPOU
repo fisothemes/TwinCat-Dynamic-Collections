@@ -110,7 +110,7 @@ CASE Value.TypeClass OF
 		pLReal^ := TO_LREAL(sValue);
 		
     __SYSTEM.TYPE_CLASS.TYPE_STRING:
-		Tc2_Utilities.STRNCPY(Value.pValue, ADR(sValue), Value.diSize); 
+		Tc2_Utilities.STRNCPY(Value.pValue, ADR(sValue), TO_UDINT(Value.diSize)); 
 		
    __SYSTEM.TYPE_CLASS.TYPE_WSTRING:
    		Tc2_Utilities.STRING_TO_WSTRING2(Value.pValue, ADR(sValue), TO_UDINT(Value.diSize));
