@@ -153,10 +153,18 @@ METHOD PROTECTED Create_Node : POINTER TO ST_AVL_NODE
 VAR_INPUT
 	Item : T_Generic;
 END_VAR
-]]></Declaration>
+VAR_OUTPUT
+	bSuccess : BOOL;
+	Error : T_Error;
+END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Create_Node := __NEW(ST_AVL_NODE);
-Create_Node^.Data := F_Clone_Generic(Item);]]></ST>
+
+IF Create_Node = 0 THEN Error := GVL_Errors.ERR_MALLOC_FAILED; RETURN; END_IF
+
+Create_Node^.Data := F_Clone_Generic(Item, bSuccess => bSuccess, Error => Error);
+
+IF NOT bSuccess THEN __DELETE(Create_Node); RETURN; END_IF]]></ST>
       </Implementation>
     </Method>
     <Method Name="Delete_Node" Id="{08fe334e-8b10-02c0-2998-1d75606b87b6}" FolderPath="Internal\">
@@ -347,7 +355,9 @@ WHILE pCurrent <> 0 DO
 		END_CASE
 	END_WHILE
 
-pCurrent := THIS^.Create_Node(Item);
+pCurrent := THIS^.Create_Node(Item, bSuccess => bSuccess, Error => THIS^.Error);
+
+IF NOT bSuccess THEN RETURN; END_IF
 
 IF pPrevious = 0 THEN
 	THIS^.pRoot := pCurrent;
@@ -362,10 +372,7 @@ ELSE
 pCurrent^.pParent := pPrevious;
 	
 THIS^.Balance(pCurrent);
-
-bSuccess := TRUE;
-THIS^.Increment_Count();
-THIS^.Clear_Error(); ]]></ST>
+THIS^.Increment_Count();]]></ST>
       </Implementation>
     </Method>
     <Method Name="Move_Node" Id="{2aaa8daf-e951-0ffd-1650-bf0b29729a4f}" FolderPath="Internal\">
