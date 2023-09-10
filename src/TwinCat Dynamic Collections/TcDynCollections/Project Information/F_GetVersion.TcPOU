@@ -13,7 +13,7 @@ END_VAR]]></Declaration>
       <ST><![CDATA[F_GetVersion.iMajor := 1;
 F_GetVersion.iMinor := 0;
 F_GetVersion.iBuild := 3;
-F_GetVersion.iRevision := 19;
+F_GetVersion.iRevision := 20;
 ]]></ST>
     </Implementation>
   </POU>
