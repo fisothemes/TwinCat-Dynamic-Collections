@@ -38,6 +38,8 @@ Here are some of the features of Dynamic Collections:
 
 * 👍 **FB_Tree_Set** - A collection that contains no duplicate items implemented using an iterative AVL Tree. Keys and values can be retrieved as an immutable list (whose base is FB_Array_List) via 4 traversal methods; Inorder, Preorder, Postorder and Level Order. Can store multiple types. Implements `I_Tree_Set` which inherits `I_Set`.
 
+* 👍 **FB_Tree_Multiset** - A collection similar to a set except it allows for duplicate items implemented using an iterative AVL Tree. Keys and values can be retrieved as an immutable list (whose base is FB_Array_List) via 4 traversal methods; Inorder, Preorder, Postorder and Level Order. Can store multiple types. Implements `I_Tree_Set` which inherits `I_Set`.
+
 * 👍 **FB_Queue** - A collection whose access/mutation of items is first-in, first-out whose base is FB_List. Can store multiple types. Implements `I_Queue`.
 
 * 👍 **FB_Stack** - A collection whose access/mutation of items is last-in, first-out whose base is FB_List. Can store multiple types. Implements `I_Stack`.
