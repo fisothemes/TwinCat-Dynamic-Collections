@@ -70,7 +70,9 @@ WHILE pCurrent <> 0 DO
 		END_CASE
 	END_WHILE
 
-pCurrent := THIS^.Create_Node(Item);
+pCurrent := THIS^.Create_Node(Item, bSuccess => bSuccess, Error => THIS^.Error);
+
+IF NOT bSuccess THEN RETURN; END_IF
 
 IF pPrevious = 0 THEN
 	THIS^.pRoot := pCurrent;
@@ -85,10 +87,7 @@ ELSE
 pCurrent^.pParent := pPrevious;
 	
 THIS^.Balance(pCurrent);
-
-bSuccess := TRUE;
-THIS^.Increment_Count();
-THIS^.Clear_Error(); ]]></ST>
+THIS^.Increment_Count();]]></ST>
       </Implementation>
     </Method>
   </POU>
