@@ -1,233 +1,295 @@
-# TwinCAT Dynamic Collections
+# TwinCAT Dynamic Collections V2 Proposal
 
-A TwinCAT library for creating and manipulating dynamic collections of data in TwinCAT. It provides multiple data structures such as ArrayList (a dynamic array), List (a doubly linked list that is optimized for sequential access and mutation), Set, Map, Queue, Stack and more. Examples are in the project.
+## Reason for Version 2
 
-TwinCAT Dynamic Collections is written in Structured Text and is available under the MIT license. It is easy to use and can be integrated into any TwinCAT project.
+The purpose of the version 2 update is to improve error handling, optimise memory usage, enhance access control, and provide more robust iterability and queryability for existing data structures. These are the things a user of any collections library cares about. The design philosophy of version 2 differs from the previous version, iterability and queryability now lead the design decisions. This means new interfaces and features will have to be introduced and these break backward compatibility.
 
-Here are some of the features of Dynamic Collections:
+## Understanding the design notations
 
-* **Fast and efficient** 
+| Symbol      | Description                       |
+| ----------- | --------------------------------- |
+| I_          | Interface prefix                  |
+| FB_         | Function Block prefix             |
+| T_          | Alias type prefix                 |
+| E_          | Enum prefix                       |
+| ST_         | Struct prefix                     |
+| ~>          | Inheritance                       |
+| ->          | Returns                           |
+| =>          | Output variable/parameter         |
+| {set;}      | Setter accessor method            |
+| {get;}      | Getter accessor method            |
+| {get;set;}  | Getter and Setter accessor method |
+| {FINAL;}    | Final access specifier            |
+| {ABSTRACT;} | Abstact access specifier          |
 
-  The collections in the library use data structures and algorithms along with optimisations that make them well-suited for PLCs, allowing for fast and efficient access to data.
+### Notation Examples
 
-* **Easy to use** 
+```plaintext
+FB_ChildClass ~> FB_ParentClass : I_ChildInterface ~> I_ParentInterface
+	+ Method(arg : INT, e => : T_Error) -> STRING
+	+ Property : BOOL {get; set;}
+```
+This means that `FB_ChildClass` inherits from `FB_ParentClass`, and it also implements `I_ChildInterface`, which itself inherits from `I_ParentInterface`. The class has a method named `Method` that takes an `INT` parameter (`arg`) and an output parameter (`e`) of type `T_Error`, returning a `STRING`. Additionally, the class has a property named `Property` of type `BOOL` with both get and set accessor methods.
 
-  Collections follow a simple and intuitive interface for handling data.
+## Aliases
 
-* **Extendable** 
+| Identifier   | Asssignment               |
+| ------------ | ------------------------- |
+| T_Position   | LINT                      |
+| T_Size       | UDINT                     |
+| T_ErrorCode  | E_ErrorCode               |
+| T_Queryable  | __SYSTEM.IQueryInterface  |
+| T_Generic    | __SYSTEM.AnyType          |
+| T_TypeClass  | __SYSTEM.TYPE_CLASS       |
+| T_Error      | FB_Error                  |
 
-  The library allows you to take advantage of interfaces, OOP principles, functions and internal types to allow you to create/extend/wrap functionally or even implement a data structure in your preferred algorithm. You can even optimise it for your particular use case e.g. choosing the number of buckets in a hash map/set.
+## Error Handling
 
-**[Click here for releases/prerelease!](https://github.com/fisothemes/TwinCat-Dynamic-Collections/releases/)**
+The new approach to error handling involves representing errors as instances of classes that inherit from FB_Error. This allows for a more modular and extensible error-handling system, where specific error types can be created by inheriting from FB_Error and overriding the Code and Message properties.
 
-## Function Blocks
+```plaintext
+I_Error ~> T_Queryable
+	+ Code -> T_ErrorCode {get;}
+```
+This interface defines the standard structure for error objects within the collections library. It includes a `Code` property, representing the error code, which is of type `T_ErrorCode`.
 
-* 👍 **FB_Collection** - Abstract class/Function Block that all collections inherit, contains many methods and base implementation for methods and properties for creating a collection. Implements `I_Collection`.
+```plaintext
+FB_Error : I_Error
+	+ Code -> T_ErrorCode {get;}
+    + Message -> T_MaxString {get;}
+    + HasError -> BOOL {get;} {FINAL;}
+    + HasNoError -> BOOL {get;} {FINAL;}
+```
+`FB_Error` is the base class for representing errors in the library. It implements the `I_Error` interface and introduces additional properties.
 
-* 👍 **FB_Array** - An array that can store multiple datatypes whose size is fixed. Implements `I_Array`.
+ + The `Message` property provides a human-readable description of the error. 
+ + `HasError` and `HasNoError` are helper properties indicating the presence or absence of an error respectively. They're both marked as `FINAL` to prevent further modification in derived classes.
 
-* 👍 **FB_Array_List** - A dynamic array that can grow and shrink as needed. Can store multiple types. Implements `I_List`.
+```plaintext
+FB_MutableError ~> FB_Error
+	+ Code -> T_ErrorCode {get;set;}
+    + Message -> T_MaxString {get;set;}
+```
+`FB_MutableError` is a class that extends `FB_Error`, allowing modification of the error code and message after the error object is created. It introduces setter methods for both Code and Message, providing a mutable error representation for specific use cases. This class is useful when the error details need to be updated dynamically.
 
-* 👍 **FB_List** - A doubly linked list with iterator hint optimisation. Essentially the linked list keeps track of the node it last accessed. Iteration starts from the closest node (head, tail or last accessed) to the access/mutation index. This should result in sequential access times of O(1) and similar times for access/mutation on the same index. Can store multiple types. Implements `I_List`.
 
-* 👍 **FB_Hash_Map** - A collection of key-value pair items implemented using a hash table with closed addressing. The hash function uses [MurmurHash3](https://en.wikipedia.org/wiki/MurmurHash). Keys and values can be retrieved as an immutable list (whose base is FB_Array_List) in no particular order. Can store multiple types. Implements `I_Hash_Map` which inherits `I_Map`.
+## Iterability
 
-* 👍 **FB_Hash_Set** - A collection that contains no duplicate items implemented using an iterative AVL Tree. The hash function uses [MurmurHash3](https://en.wikipedia.org/wiki/MurmurHash). Keys and values can be retrieved as an immutable list (whose base is FB_ArrayList) in no particular order. Can store multiple types. Implements `I_Hash_Set` which inherits `I_Set`.
+Iterability is a critical aspect of the collections library, enabling efficient traversal and manipulation of data structures. This section introduces interfaces related to iterability and provides examples to illustrate their usage.
 
-* 👍 **FB_Tree_Map** - A collection of key-value pair items implemented using a hash table with closed addressing. Keys and values can be retrieved as an immutable list (whose base is FB_ArrayList) via 4 traversal methods; Inorder, Preorder, Postorder and Level Order. Can store multiple types. Implements `I_Tree_Map` which inherits `I_Map`.
+### Iteration Interfaces
 
-* 👍 **FB_Tree_Set** - A collection that contains no duplicate items implemented using an iterative AVL Tree. Keys and values can be retrieved as an immutable list (whose base is FB_Array_List) via 4 traversal methods; Inorder, Preorder, Postorder and Level Order. Can store multiple types. Implements `I_Tree_Set` which inherits `I_Set`.
+Overview
+```plaintext
+I_Iterable ~> T_Queryable
+  + Begin -> T_Position {get;}
+  + End -> T_Position {get;}
+```
+The `I_Iterable` interface defines the standard structure for indexable collections in the library. Collections implementing this interface provide methods to retrieve the starting index (`Begin`) and an ending index (`End`). This ensures a consistent and safe approach to iterating over elements in a for-loop, minimizing the risk of overflow or off-by-one errors.
 
-* 👍 **FB_Tree_Multiset** - A collection similar to a set except it allows for duplicate items implemented using an iterative AVL Tree. Keys and values can be retrieved as an immutable list (whose base is FB_Array_List) via 4 traversal methods; Inorder, Preorder, Postorder and Level Order. Can store multiple types. Implements `I_Tree_Set` which inherits `I_Set`.
-
-* 👍 **FB_Queue** - A collection whose access/mutation of items is first-in, first-out whose base is FB_List. Can store multiple types. Implements `I_Queue`.
-
-* 👍 **FB_Stack** - A collection whose access/mutation of items is last-in, first-out whose base is FB_List. Can store multiple types. Implements `I_Stack`.
-
-* 👍 **FB_Deque** - (Pronounced as 'deck') Double-Ended Queue. A collection that supports the insertion and removal of items at the front and back. Its base is FB_List. Can store multiple types. Implements `I_Deque`.
-
-## Interface UML
-
-![TwinCAT Collections Interface UML](./assets/images/TwinCAT%20Dynamic%20Collections%20Interface%20UML.jpg)
-
-## Simple List Examples 
-
-**Declarations:** 
+Example usage
 ```js
-fbArray      : FB_Array(3); // FB_Array(<number of items>)
-fbArray_List : FB_Array_List(0); // FB_Array_List(<number of initial items>)
-fbList       : FB_List; 
-
-sData   : STRING := 'Cats'; // variable that holds string data
-nData   : DINT := 1234567; // variable that holds 32-bit int data
-stData  : ST_DATA := (bMammals := TRUE, sDescription := 'Twin cats'); // variable that holds struct data
-
-// variable to store returned data same as, "bVar := TRUE"
-sRTNData    : STRING;
-nRTNData    : DINT;
-stRTNData   : ST_DATA; 
-
-Arr_Count,
-Arr_List_Count,
-List_Count : T_Capacity; // variables will hold the number of items in the collection
+FOR i := fbList.Begin TO fbList.End DO 
+    // Do something with element at index 'i'
+END_FOR
 ```
 
-**Implementation:**
-```js
-fbArray
-    .Set(0, sData)
-    .Set(1, nData)
-    .Set(2, stData)
-    .Reverse()
-    .Get(2, sRTNData)
-    .Get(1, nRTNData)
-    .Get(0, stRTNData);
-Arr_Count := fbArray._Count;
+### Enumerable
 
-fbArray_List
-    .Append(sData)
-    .Append(nData)
-    .Append(stData)
-    .Swap(0,2)
-    .Get(2, sRTNData)
-    .Get(1, nRTNData)
-    .Get(0, stRTNData);
-Arr_List_Count := fbArray_List._Count;
+Overview
+```plaintext
+I_Enumerable ~> T_Queryable
+  + GetEnumerator(ipEnumerator : REFERENCE TO I_Enumerator,  e => : T_Error) -> I_Enumerable
 
-fbList
-    .Prepend(sData)
-    .Prepend(nData)
-    .Prepend(stData)
-    .Get(2, sRTNData)
-    .Get(1, nRTNData)
-    .Get(0, stRTNData);
+I_Enumerator ~> T_Queryable
+  + Next(e => : T_Error) -> BOOL
+  + Reset(e => : T_Error) 
+  + Dispose()
+```
+The `I_Enumerable` interface introduces a more generalized approach to iteration, suitable for collections that may not be indexable but can be iterated over. It defines a method `GetEnumerator` that takes a reference to an enumerator interface (`ipEnumerator`). The `I_Enumerator` interface, in turn, specifies methods for advancing to the next element (`Next`), resetting the enumerator (`Reset`), and releasing resources (`Dispose`).
 
-List_Count := fbList._Count;
+Example usage
+```plaintext
+I_ListEnumerator ~> I_Enumerator
+  + Current(Item : ANY, e => : T_Error)
+
+I_KeyValueEnumerator ~> I_Enumerator
+  + Current(Key : ANY, Value : ANY, e => : T_Error)
 ```
 
-## Simple Queue and Stack Examples 
-
 ```js
-FOR i := 0 TO 2 DO
-    fbQueue.Enqueue(i);
-    END_FOR
+VAR
+    ipValues : I_ListEnumerator;
+    ipEntries : I_KeyValueEnumerator;
+    sKey : STRING; 
+    nValue : INT;
+END_VAR
+```
+```js
+fbArrayList.GetEnumerator(ipValues);
+WHILE ipValues.Next() DO 
+    ipValues.Current(nValue);
+    // Do something with value.
+END_WHILE
 
-fbQueue.Reverse();
-
-WHILE NOT fbQueue._Empty DO
-    fbQueue.Get(Values[j]).Dequeue();
-    fbStack.Push(Values[j]);
-    j := j + 1;
-    END_WHILE
-
-WHILE NOT fbStack._Empty DO
-    fbStack.Get(Values[k]).Pop();
-    k := k + 1;
-    END_WHILE
+fbHashMap.GetEnumerator(ipEntries);
+WHILE ipEntries.Next() DO 
+    ipEntries.Current(sKey, nValue);
+    // Do something with key and value.
+END_WHILE
 ```
 
-## Simple Tree Set Example
+The examples showcase the use of `I_Enumerable` and `I_Enumerator` interfaces in a while-loop scenario. `I_ListEnumerator` and `I_KeyValueEnumerator` inherit from I_Enumerator, providing specific methods to access the current item in the iteration (`Current`). This allows for a flexible and standardised approach to traversing elements in various types of collections, whether they are indexable or not.
 
-**Declarations:** 
-```js
-fbSet : FB_Tree_Set; 
 
-arnData,
-arnItems : ARRAY[0..5] OF DINT := [3,1,2,1,3,2];
-ipItems : I_Immutable_List;
-Count : T_Capacity;
+## Functional Interfaces
+
+Functional interfaces provide a mechanism for performing operations on elements within a collection, facilitating advanced queries and transformations.
+
+Base Functional Interfaces
+```plaintext
+I_Predicate ~> T_Queryable
+I_Consumer ~> T_Queryable
+I_Function ~> T_Queryable
+I_Supplier ~> T_Queryable
 ```
-**Implementation:**
-```js
-FOR i := 0 TO 5 DO
-    fbSet.Insert(arnItems[i]);
-    END_FOR
+The base functional interfaces define the fundamental building blocks for querying and manipulating data within the collections library. Each interface serves a specific purpose: `I_Predicate` for filtering, `I_Consumer` for consuming elements, `I_Function` for transforming elements, and `I_Supplier` for providing new elements.
 
-Count := fbSet._Count; // Value is 3
-
-fbSet._Traversal := T_BST_Traversal.In_Order; // will get the values in ascending order
-
-ipItems := fbSet.Get_Values();
-ipItems
-    .Get(0, arnItems[0])
-    .Get(1, arnItems[1])
-    .Get(2, arnItems[2]);
+Extended Functional Interfaces
 ```
+I_UnaryPredicate ~> I_Predicate
+  + Evaluate(Item : T_Generic, bBusy => : BOOL, e => : T_Error) -> BOOL
 
-## Simple Tree Map Example 
+I_BiPredicate ~> I_Predicate
+  + Evaluate(Item1 : T_Generic, Item2 : T_Generic, bBusy => : BOOL, e => : T_Error) -> BOOL
 
-**Declarations:** 
-```js
+I_UnaryConsumer ~> I_Consumer
+  + Consume(Item : T_Generic, bBusy => : BOOL, e => : T_Error)
 
-fbTree_Map : FB_Tree_Map;
-ipKeys     : I_Immutable_List;
-ipValues   : I_Immutable_List;
+I_BiConsumer ~> I_Consumer
+  + Consume(Item1 : T_Generic, Item2 : T_Generic, bBusy => : BOOL, e => : T_Error)
 
-arKeys        : ARRAY[0..6] OF WSTRING := ["qwerty","play","thomas","jerry","perry","sarah"];
-arValues      : ARRAY[0..6] OF WSTRING := ["Cats","Dogs","Ravens","Mollies","Anaconda","Cow"]
-arUpdate      : ARRAY[0..1] OF WSTRING := ["Python", ""];
-arRTNData     : ARRAY[0..6] OF WSTRING; // Array to store values retrieved using a key
-arTravData    : ARRAY[0..1] OF ARRAY[0..9] OF STRING; // array containg all keys and values
-rmvdVal       : WSTRING;
+I_UnaryFunction ~> I_Function
+  + Invoke(Input : T_Generic,  bBusy => : BOOL, e => : T_Error) -> T_Generic
+
+I_UnarySupplier ~> I_Supplier
+  + Supply(bBusy => : BOOL, e => : T_Error) -> T_Generic
 ```
-**Implementation:**
-```js
-// Insert data into map
-fbTree_Map
-       .Insert(arKeys[0], arValues[0])
-       .Insert(arKeys[1], arValues[1])
-       .Insert(arKeys[2], arValues[2])
-       .Insert(arKeys[3], arValues[3])
-       .Insert(arKeys[4], arValues[4])
-       .Insert(arKeys[5], arValues[5]);
+The extended functional interfaces refine the basic operations, introducing unary and binary versions to handle one or two elements, respectively. These interfaces provide more flexibility for creating sophisticated queries and transformations.
 
-// Retrieve data using keys
-fbTree_Map
-       .Get(arKeys[0], arRTNData[0])
-       .Get(arKeys[1], arRTNData[1])
-       .Get(arKeys[2], arRTNData[2])
-       .Get(arKeys[3], arRTNData[3])
-       .Get(arKeys[4], arRTNData[4])
-       .Get(arKeys[5], arRTNData[5]);
+### I_Predicate
 
-// Update a values of keys
-fbTree_Map
-       .Update(arKeys[1], arUpdate[0])
-       .Update(arKeys[2], arUpdate[0]);
-
-// Get and remove
-fbTree_Map
-       .Get(arKeys[3], rmvdVal)
-       .Remove(arKeys[3]);
-
-// Retrieve all keys and values
-fbTree_Map._Traversal := T_BST_Traversal.Inorder; // Sets traversal method in which keys/values are to be retrieved.
-ipKeys := fbTree_Map.Get_Keys();
-ipValues := fbTree_Map.Get_Values();
-FOR i := 0 TO fbTree_Map._Count - 1 DO 
-    ipKeys
-        .Get_As_String(i, arTravData[0][i]);
-    ipValues
-        .Get_As_String(i, arTravData[1][i]); 
-    END_FOR
+Example Usage of `I_UnaryPredicate`:
+```plaintext
+FB_EvenNumberPredicate : I_UnaryPredicate ~> I_Predicate
+  + Evaluate(Item : T_Generic, bBusy => : BOOL, e => : T_Error) -> BOOL
 ```
 
-## Hash Map and Hash Set Declarations
-
-**Declarations:** 
 ```js
-fbHash_Map : FB_Hash_Map(0); // FB_Hash_Map(<number of initial buckets>)
-fbHash_Set : FB_Hash_Set(0); // FB_Hash_Set(<number of initial buckets>)
+VAR
+    fbEvensList : FB_List;
+    fbIsEven : FB_EvenNumberPredicate;
+END_VAR
 ```
-# Developer Notes
-Version 1 (v1.x.x.x) is still a work in progress. It is not backward compatible with version 0 (v0.x.x.x). If you were using version 0 a new branch has been created for it and updates will only be for bug fixes. 
 
-**[Click here for the version 0 branch](https://github.com/fisothemes/TwinCat-Dynamic-Collections/tree/v0)**
+```js
+fbList.Filter(fbIsEven, fbEvenList);
+```
+Here, a unary predicate (`FB_EvenNumberPredicate`) is used to filter elements/items from `fbList` that satisfy the condition defined in the `Evaluate` method. The filtered elements are stored in `fbEvensList`.
 
-As always feel free to contribute or report issues.
+Example Usage of `I_BiPredicate`:
+```plaintext
+FB_DogLoverPredicate : I_BiPredicate ~> I_Predicate
+  + Evaluate(Item1 : T_Generic, Item2 : T_Generic, bBusy => : BOOL, e => : T_Error) -> BOOL
+```
 
-# ⚠ Important ⚠ 
+```js
+VAR
+    fbDogLovers : FB_TreeMap;
+    fbIsDogLover : FB_DogLoverPredicate ;
+END_VAR
+```
 
-The internally used memory is allocated from the router memory pool and is generated via [_NEW](https://infosys.beckhoff.com/content/1033/tc3_plc_intro/2529171083.html?id=5409766235804740463) and released via [_DELETE](https://infosys.beckhoff.com/content/1033/tc3_plc_intro/2529160331.html?id=2289870734872430416) at runtime. [Please make sure you have enough router memory allocated for your use case.](https://infosys.beckhoff.com/content/1033/tf7xxx_tc3_vision/6797114507.html?id=5557377509594186908)
+```js
+fbAnimalLoversMap.Filter(fbIsDogLover, fbDogLovers);
+```
+In this example, a binary predicate (`FB_DogLoverPredicate`) is used to filter elements from `fbAnimalLoversMap`. The Evaluate method defines a condition based on two items (`Item1` and `Item2`). The filtered elements are stored in `fbDogLovers`.
 
-Be careful when storing `STRUCT`s or `FUNCTION BLOCK`s that contain `STRING`s or `WSTRING`s. You may not be able to retrieve them with any search operation method that includes keys to retrieve a value in a map. This is because strings are null-terminated, so any junk characters after the null character are retained. Equality of `STRUCT`s and `FUNCTION BLOCK`s are checked using `MEMCMP`. For `FUNCTION BLOCK`s I recommend you store them using interfaces or pointers. For `STRUCT`s, clear any strings inside using `MEMSET` and set them to your chosen value before you store them. If you have questions I'm happy to answer them.
+### I_UnaryConsumer
+
+Example Usage of `I_UnaryConsumer`:
+```plaintext
+FB_PrintConsumer : I_UnaryConsumer ~> I_Consumer
+  + Consume(Item : T_Generic, bBusy => : BOOL, e => : T_Error)
+```
+
+```js
+VAR
+    bPrintAll : BOOL;
+    fbPrintItem : FB_PrintConsumer;
+END_VAR
+```
+
+```js
+IF bPrintAll THEN 
+    fbList.ForEach(fbPrintItem, bBusy => bPrintAll);
+END_IF
+```
+Here, a unary consumer (`FB_PrintConsumer`) is used to consume elements from `fbList` using the `Consume` method. The `ForEach` method iterates over each element in the list, applying the consumer to each element.
+
+### I_BiConsumer
+
+Example Usage of `I_BiConsumer`:
+```plaintext
+FB_PrintKeyValueConsumer : I_BiConsumer ~> I_Consumer
+  + Consume(Item1 : T_Generic, Item2 : T_Generic, bBusy => : BOOL, e => : T_Error)
+```
+
+```js
+VAR
+    bPrintAll : BOOL;
+    fbPrintKeyValuePair : FB_PrintKeyValueConsumer;
+END_VAR
+```
+
+```js
+IF bPrintAll THEN 
+    fbMap.ForEach(fbPrintKeyValuePair, bBusy => bPrintAll);
+END_IF
+```
+In this example, a binary consumer (`FB_PrintKeyValueConsumer`) is used to consume key-value pairs from `fbMap` using the `Consume` method. The `ForEach` method iterates over each key-value pair in the map, applying the consumer to each pair.
+
+### I_UnaryFunction
+
+Example Usage of `I_UnaryFunction`
+```plaintext
+FB_SquareFunction : I_UnaryFunction ~> I_Function
+  + Invoke(Input : T_Generic, bBusy => : BOOL, e => : T_Error) -> T_Generic
+```
+```js
+VAR
+    fbSquare : FB_SquareFunction;
+    fbSquaredList : FB_List; // Assume a list of numbers
+END_VAR
+```
+```js
+fbList.Map(fbSquare, fbSquaredList);
+```
+Here, a unary function (`FB_SquareFunction`) is used to square elements from fbList using the `Invoke` method. The `Map` method applies the function to each element in the list, creating a new list with the squared values.
+
+### I_UnarySupplier
+Example Usage of `I_UnarySupplier`
+```plaintext
+FB_RandomNumberSupplier : I_UnarySupplier ~> I_Supplier
+  + Supply(bBusy => : BOOL, e => : T_Error) -> T_Generic
+```
+```js
+VAR
+    fbRandomNumber : FB_RandomNumberSupplier;
+    fbNewList : FB_List;
+END_VAR
+```
+```js
+fbNewList.Generate(fbRandomNumber, 5);
+```
+Here, a unary supplier (`FB_RandomNumberSupplier`) is used to supply random numbers using the `Supply` method. The `Generate` method of `fbNewList` utilizes the supplier to populate the list with 5 randomly generated numbers.
