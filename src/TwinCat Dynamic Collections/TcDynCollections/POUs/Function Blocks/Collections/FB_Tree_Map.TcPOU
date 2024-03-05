@@ -620,6 +620,7 @@ VAR_OUTPUT
 	bSuccess : BOOL;
 END_VAR
 VAR
+	pPrevious : POINTER TO T_AVL_Map_Node;
 	pTmp : POINTER TO T_AVL_Map_Node;
 END_VAR]]></Declaration>
       <Implementation>
@@ -632,10 +633,11 @@ bSuccess := pTmp <> 0;
 IF NOT bSuccess THEN
 	THIS^._Error_Status := GVL_Errors.ERR_NO_KEY;
 	RETURN;
-	END_IF
+END_IF
 
+pPrevious := pTmp^.pParent;	
 THIS^.Remove_Node(pTmp);
-THIS^.Balance(pTmp);
+THIS^.Balance(pPrevious);
 
 THIS^.Decrement_Count();
 THIS^.Clear_Error();
