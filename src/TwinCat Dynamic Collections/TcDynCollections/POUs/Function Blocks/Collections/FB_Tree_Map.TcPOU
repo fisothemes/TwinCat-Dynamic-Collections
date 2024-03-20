@@ -583,7 +583,9 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF pDestination^.pParent = 0 THEN
+        <ST><![CDATA[IF pDestination = 0 OR_ELSE pSource = 0 THEN RETURN; END_IF 
+
+IF pDestination^.pParent = 0 THEN
 	THIS^.pRoot := pSource;
 ELSIF pDestination = pDestination^.pParent^.pLeft THEN
 	pDestination^.pParent^.pLeft := pSource;
@@ -593,8 +595,7 @@ ELSE
 	
 IF pSource <> 0 THEN
 	pSource^.pParent := pDestination^.pParent;
-	END_IF
-]]></ST>
+	END_IF]]></ST>
       </Implementation>
     </Method>
     <Method Name="Remove" Id="{09343105-dbcd-0203-11b1-ef067a0963db}">
@@ -617,7 +618,7 @@ VAR_INPUT
 	Key : T_Generic; // Key used to identify stored value
 END_VAR
 VAR_OUTPUT
-	bSuccess : BOOL;
+	bSuccess : BOOL; // Indicates whether operation was successful. Success = TRUE, Failure = FALSE
 END_VAR
 VAR
 	pTmp : POINTER TO T_AVL_Map_Node;
@@ -627,40 +628,41 @@ END_VAR]]></Declaration>
 
 pTmp := THIS^.Search_Node(THIS^.pRoot, Key);
 
-bSuccess := pTmp <> 0;
-
-IF NOT bSuccess THEN
+IF pTmp = 0 THEN
 	THIS^._Error_Status := GVL_Errors.ERR_NO_KEY;
 	RETURN;
 	END_IF
 
-THIS^.Remove_Node(pTmp);
-THIS^.Balance(pTmp);
+THIS^.Balance(THIS^.Remove_Node(pTmp));
 
 THIS^.Decrement_Count();
 THIS^.Clear_Error();
 
-IF THIS^._Empty THEN THIS^.pRoot := 0; END_IF]]></ST>
+IF THIS^._Empty THEN THIS^.pRoot := 0; END_IF
+
+bSuccess := TRUE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Remove_Node" Id="{af88455b-88f3-0a73-0f3b-559151760fed}" FolderPath="Internal\">
-      <Declaration><![CDATA[// Finds and removes a node from a tree/sub-tree.
-METHOD PROTECTED Remove_Node
+      <Declaration><![CDATA[// Finds and removes a node from a tree/sub-tree and returns the new root of the tree/subtree.
+METHOD PROTECTED Remove_Node : POINTER TO T_AVL_Map_Node
 VAR_INPUT
-	pNode : POINTER TO T_AVL_Map_Node;
+	pNode : REFERENCE TO POINTER TO T_AVL_Map_Node;
 END_VAR
 VAR
-	pTmp, pSuccessor : POINTER TO T_AVL_Map_Node;
+	pSuccessor : POINTER TO T_AVL_Map_Node;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[pTmp := pNode;
+        <ST><![CDATA[IF (NOT __ISVALIDREF(pNode)) OR_ELSE pNode = 0 THEN RETURN; END_IF 
 
 IF pNode^.pLeft = 0 THEN
 	THIS^.Move_Node(pNode, pNode^.pRight);
+	Remove_Node := pNode^.pRight;
 ELSIF pNode^.pRight = 0 THEN 
 	THIS^.Move_Node(pNode, pNode^.pLeft);
+	Remove_Node := pNode^.pLeft;
 ELSE
-	pSuccessor := THIS^.Find_Minimum_Node(pNode^.pRight);
+	Remove_Node := pSuccessor := THIS^.Find_Minimum_Node(pNode^.pRight);
 	IF pSuccessor^.pParent <> pNode THEN 
 		THIS^.Move_Node(pSuccessor, pSuccessor^.pRight);
 		pSuccessor^.pRight := pNode^.pRight;
@@ -671,7 +673,7 @@ ELSE
 	pSuccessor^.pLeft^.pParent := pSuccessor;
 	END_IF
 
-THIS^.Delete_Node(pTmp);]]></ST>
+THIS^.Delete_Node(pNode);]]></ST>
       </Implementation>
     </Method>
     <Method Name="Rotate_Left" Id="{e95d8be2-2206-063f-0cbf-6e39c452db5f}" FolderPath="Internal\">

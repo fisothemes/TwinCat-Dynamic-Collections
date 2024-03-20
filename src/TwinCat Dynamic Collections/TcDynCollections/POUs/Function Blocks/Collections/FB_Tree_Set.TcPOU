@@ -383,7 +383,9 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF pDestination^.pParent = 0 THEN
+        <ST><![CDATA[IF pDestination = 0 OR_ELSE pSource = 0 THEN RETURN; END_IF 
+
+IF pDestination^.pParent = 0 THEN
 	THIS^.pRoot := pSource;
 ELSIF pDestination = pDestination^.pParent^.pLeft THEN
 	pDestination^.pParent^.pLeft := pSource;
@@ -429,34 +431,36 @@ pTmp := THIS^.Search_Node(THIS^.pRoot, Item);
 
 IF pTmp = 0 THEN RETURN; END_IF
 
-THIS^.Remove_Node(pTmp);
-THIS^.Balance(pTmp);
+THIS^.Balance(THIS^.Remove_Node(pTmp));
 
-bSuccess := TRUE;
 THIS^.Decrement_Count();
 THIS^.Clear_Error();
 
-IF THIS^._Empty THEN THIS^.pRoot := 0; END_IF]]></ST>
+IF THIS^._Empty THEN THIS^.pRoot := 0; END_IF
+
+bSuccess := TRUE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Remove_Node" Id="{f8c0b73d-df0b-01cc-0943-45282e56f537}" FolderPath="Internal\">
-      <Declaration><![CDATA[// Finds and removes a node from a tree/sub-tree.
-METHOD PROTECTED Remove_Node
+      <Declaration><![CDATA[// Finds and removes a node from a tree/sub-tree and returns the new root of the tree/subtree.
+METHOD PROTECTED Remove_Node : POINTER TO T_AVL_Node
 VAR_INPUT
-	pNode : POINTER TO T_AVL_Node;
+	pNode : REFERENCE TO POINTER TO T_AVL_Node;
 END_VAR
 VAR
-	pTmp, pSuccessor : POINTER TO T_AVL_Node;
+	pSuccessor : POINTER TO T_AVL_Node;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[pTmp := pNode;
+        <ST><![CDATA[IF (NOT __ISVALIDREF(pNode)) OR_ELSE pNode = 0 THEN RETURN; END_IF 
 
 IF pNode^.pLeft = 0 THEN
 	THIS^.Move_Node(pNode, pNode^.pRight);
+	Remove_Node := pNode^.pRight;
 ELSIF pNode^.pRight = 0 THEN 
 	THIS^.Move_Node(pNode, pNode^.pLeft);
+	Remove_Node := pNode^.pLeft;
 ELSE
-	pSuccessor := THIS^.Find_Minimum_Node(pNode^.pRight);
+	Remove_Node := pSuccessor := THIS^.Find_Minimum_Node(pNode^.pRight);
 	IF pSuccessor^.pParent <> pNode THEN 
 		THIS^.Move_Node(pSuccessor, pSuccessor^.pRight);
 		pSuccessor^.pRight := pNode^.pRight;
@@ -467,7 +471,7 @@ ELSE
 	pSuccessor^.pLeft^.pParent := pSuccessor;
 	END_IF
 
-THIS^.Delete_Node(pTmp);]]></ST>
+THIS^.Delete_Node(pNode);]]></ST>
       </Implementation>
     </Method>
     <Method Name="Rotate_Left" Id="{5e628c58-cfc1-00a9-25f1-c245de014963}" FolderPath="Internal\">
