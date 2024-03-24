@@ -204,7 +204,7 @@ fbTree_Map
 fbTree_Map._Traversal := T_BST_Traversal.Inorder; // Sets traversal method in which keys/values are to be retrieved.
 ipKeys := fbTree_Map.Get_Keys();
 ipValues := fbTree_Map.Get_Values();
-FOR i := 0 TO fbTree_Map._Count - 1 DO 
+FOR i := ipKeys._Begin TO ipKeys._End DO 
     ipKeys
         .Get_As_String(i, arTravData[0][i]);
     ipValues
