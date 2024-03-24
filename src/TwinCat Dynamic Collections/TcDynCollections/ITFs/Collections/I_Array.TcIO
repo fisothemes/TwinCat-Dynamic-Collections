@@ -4,6 +4,20 @@
     <Declaration><![CDATA[// Interface for a static array.
 INTERFACE I_Array EXTENDS I_Collection
 ]]></Declaration>
+    <Property Name="_Begin" Id="{cd5ae7e8-0cb7-0227-358a-d6072233549a}">
+      <Declaration><![CDATA[// Index of the first element.
+PROPERTY _Begin : T_Position]]></Declaration>
+      <Get Name="Get" Id="{c2a94db4-c1cc-0b8a-20c5-0c959a425973}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="_End" Id="{4e4643cf-8bc4-0705-1a2f-f19d620401fe}">
+      <Declaration><![CDATA[// Index of the last element.
+PROPERTY _End : T_Position]]></Declaration>
+      <Get Name="Get" Id="{1f4763b3-dbe2-094c-0851-740b18c0c6ee}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
     <Method Name="Contains" Id="{b8832831-361b-0743-2d41-3ef7680718ad}">
       <Declaration><![CDATA[// Checks if item is contained in array.
 METHOD Contains : BOOL

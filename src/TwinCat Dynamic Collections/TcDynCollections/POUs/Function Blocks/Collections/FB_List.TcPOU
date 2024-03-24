@@ -8,7 +8,7 @@
 {attribute 'enable_dynamic_creation'}
 {attribute 'no_assign'}
 {attribute 'no_explicit_call' := 'direct call for this function block is not allowed'}
-FUNCTION_BLOCK FB_List EXTENDS FB_Collection IMPLEMENTS I_List//, I_Enumerable, I_Copyable
+FUNCTION_BLOCK FB_List EXTENDS FB_Collection IMPLEMENTS I_List, I_Iterable//, I_Enumerable, I_Copyable
 VAR
 	pHead, pTail, pLast_Accessed : POINTER TO T_List_Node;
 	Last_Accessed_Index : T_Position := -1;
@@ -17,6 +17,30 @@ END_VAR]]></Declaration>
       <ST><![CDATA[]]></ST>
     </Implementation>
     <Folder Name="Internal" Id="{f1a4dbb5-4494-000f-0ffb-7997f7a89e00}" />
+    <Property Name="_Begin" Id="{5f751032-f278-0e1e-34da-a4632387a180}">
+      <Declaration><![CDATA[// Index of the first element.
+PROPERTY _Begin : T_Position]]></Declaration>
+      <Get Name="Get" Id="{92fc758e-8e68-0222-097a-e691af09a58a}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_Begin := 0;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="_End" Id="{5f8b204e-79fd-0600-23cc-a0e702090fe5}">
+      <Declaration><![CDATA[// Index of the last element.
+PROPERTY _End : T_Position]]></Declaration>
+      <Get Name="Get" Id="{46f26b88-ae3e-0d05-11fe-a680d5f69cc7}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_End := TO_DINT(THIS^._Count) - 1;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
     <Method Name="Append" Id="{4fc84931-a6ae-08e7-36de-592518bdadd3}">
       <Declaration><![CDATA[// Adds an item to the end of the list.
 METHOD Append : I_List

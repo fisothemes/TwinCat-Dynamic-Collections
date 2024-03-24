@@ -3,7 +3,7 @@
   <POU Name="FB_Immutable_List" Id="{220e23e9-4352-0626-30cb-dc4b94c4bdc6}" SpecialFunc="None">
     <Declaration><![CDATA[// Collection that exposes only immutable methods and properties of a collection that implements I_List.
 {attribute 'enable_dynamic_creation'}
-FUNCTION_BLOCK FB_Immutable_List IMPLEMENTS I_Immutable_List
+FUNCTION_BLOCK FB_Immutable_List IMPLEMENTS I_Immutable_List, I_Iterable
 VAR_INPUT
 	ipList : I_List;
 END_VAR
@@ -12,6 +12,18 @@ END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
+    <Property Name="_Begin" Id="{92207b48-1c7e-052f-361b-9758d0c8e12d}">
+      <Declaration><![CDATA[// Index of the first element.
+PROPERTY _Begin : T_Position]]></Declaration>
+      <Get Name="Get" Id="{32205f63-0231-075c-2d59-081222e30b0e}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_Begin := 0;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
     <Property Name="_Count" Id="{3fde1b6b-a6e6-0058-32dd-40a19f857027}">
       <Declaration><![CDATA[// Number of items in the collection.
 PROPERTY _Count : T_Capacity]]></Declaration>
@@ -37,6 +49,18 @@ END_VAR
           <ST><![CDATA[IF THIS^.ipList = 0 THEN _Empty := TRUE; RETURN; END_IF
 	
 _Empty := THIS^.ipList._Empty;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="_End" Id="{768f4f4d-05ee-0069-211d-f8b5b8cd62fe}">
+      <Declaration><![CDATA[// Index of the last element.
+PROPERTY _End : T_Position]]></Declaration>
+      <Get Name="Get" Id="{c6ab8748-9c3d-05f5-3c6d-fe2bcfcc2b91}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_End := TO_DINT(THIS^._Count) - 1;]]></ST>
         </Implementation>
       </Get>
     </Property>

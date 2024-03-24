@@ -4,6 +4,20 @@
     <Declaration><![CDATA[// Interface for a list.
 INTERFACE I_List EXTENDS I_Collection
 ]]></Declaration>
+    <Property Name="_Begin" Id="{7481a6d8-072c-09fd-220e-703bd3bd918e}">
+      <Declaration><![CDATA[// Index of the first element.
+PROPERTY _Begin : T_Position]]></Declaration>
+      <Get Name="Get" Id="{e1cab879-f7e3-0325-02aa-372e98c56413}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="_End" Id="{934e0946-8f08-056a-32bf-441d38883175}">
+      <Declaration><![CDATA[// Index of the last element.
+PROPERTY _End : T_Position]]></Declaration>
+      <Get Name="Get" Id="{8cf8a269-af83-0f4d-316f-6ad786052675}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
     <Method Name="Append" Id="{b5545aee-8b95-0f2c-2b82-71ec520c8f46}">
       <Declaration><![CDATA[// Adds an item to the end of the list.
 METHOD Append : I_List

@@ -5,13 +5,37 @@
 {attribute 'enable_dynamic_creation'}
 {attribute 'no_assign'}
 {attribute 'no_explicit_call' := 'direct call for this function block is not allowed'}
-FUNCTION_BLOCK FB_Array EXTENDS FB_Collection IMPLEMENTS I_Array //, I_Enumerable, I_Copyable
+FUNCTION_BLOCK FB_Array EXTENDS FB_Collection IMPLEMENTS I_Array, I_Iterable //, I_Enumerable, I_Copyable
 VAR
 	pBuffer : POINTER TO T_Generic;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
+    <Property Name="_Begin" Id="{b74e99db-b2fb-0bb1-33b0-cf7c6b963f96}">
+      <Declaration><![CDATA[// Index of the first element.
+PROPERTY _Begin : T_Position]]></Declaration>
+      <Get Name="Get" Id="{f27e093b-17aa-05d9-0f2b-e8c25acd7a12}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_Begin := 0;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="_End" Id="{25a9ea61-542c-0d22-3c33-302131a27727}">
+      <Declaration><![CDATA[// Index of the last element.
+PROPERTY _End : T_Position]]></Declaration>
+      <Get Name="Get" Id="{1dd98d53-87e8-06dc-2805-a629f5cba32f}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_End := TO_DINT(THIS^._Count) - 1;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
     <Method Name="Contains" Id="{335eaf07-5e94-0c80-1cbd-38a03a0ac891}">
       <Declaration><![CDATA[// Checks if item is contained in array.
 METHOD Contains : BOOL

@@ -5,7 +5,7 @@
 {attribute 'enable_dynamic_creation'}
 {attribute 'no_assign'}
 {attribute 'no_explicit_call' := 'direct call for this function block is not allowed'}
-FUNCTION_BLOCK FB_Array_List EXTENDS FB_Collection IMPLEMENTS I_Array_List//, I_Enumerable, I_Copyable
+FUNCTION_BLOCK FB_Array_List EXTENDS FB_Collection IMPLEMENTS I_Array_List, I_Iterable//, I_Enumerable, I_Copyable
 VAR
 	pBuffer : POINTER TO T_Generic;
 	Capacity : T_Capacity;
@@ -13,6 +13,18 @@ END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
+    <Property Name="_Begin" Id="{452a98be-81b3-0838-3a57-5198d1bcb8df}">
+      <Declaration><![CDATA[// Index of the first element.
+PROPERTY _Begin : T_Position]]></Declaration>
+      <Get Name="Get" Id="{8ed92476-1c39-020f-008a-ff1d5b797763}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_Begin := 0;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
     <Property Name="_Capacity" Id="{b2e77887-a303-0a7c-32b2-2dc7214f6a40}">
       <Declaration><![CDATA[// Size of the storage space currently allocated for the array list.
 PROPERTY FINAL _Capacity : T_Capacity]]></Declaration>
@@ -33,6 +45,18 @@ END_VAR
           <ST><![CDATA[THIS^.Capacity := _Capacity;]]></ST>
         </Implementation>
       </Set>
+    </Property>
+    <Property Name="_End" Id="{4c9c0f03-0ce1-0f71-19a3-33908ab076c6}">
+      <Declaration><![CDATA[// Index of the last element.
+PROPERTY _End : T_Position]]></Declaration>
+      <Get Name="Get" Id="{c9db604c-1be0-0620-1dab-46a056ac279f}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_End := TO_DINT(THIS^._Count) - 1;]]></ST>
+        </Implementation>
+      </Get>
     </Property>
     <Method Name="Append" Id="{e00fa025-7623-0844-0d20-c53ad23cd352}">
       <Declaration><![CDATA[// Adds an item to the end of the list.

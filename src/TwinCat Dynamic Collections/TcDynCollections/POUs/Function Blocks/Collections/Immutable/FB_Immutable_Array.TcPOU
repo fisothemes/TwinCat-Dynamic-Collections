@@ -3,7 +3,7 @@
   <POU Name="FB_Immutable_Array" Id="{73f571b4-60ce-0a01-0a00-4968c563837d}" SpecialFunc="None">
     <Declaration><![CDATA[// Collection that exposes only immutable methods and properties of a collection that implements I_Array.
 {attribute 'enable_dynamic_creation'}
-FUNCTION_BLOCK FB_Immutable_Array IMPLEMENTS I_Immutable_Array
+FUNCTION_BLOCK FB_Immutable_Array IMPLEMENTS I_Immutable_Array, I_Iterable
 VAR_INPUT
 	ipArray : I_Array;
 END_VAR
@@ -12,6 +12,18 @@ END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
+    <Property Name="_Begin" Id="{6d6a04fe-08b3-0371-2da5-5214a59b1a0b}">
+      <Declaration><![CDATA[// Index of the first element.
+PROPERTY _Begin : T_Position]]></Declaration>
+      <Get Name="Get" Id="{fd4518a9-0c36-0c12-2fd3-231911788de3}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_Begin := 0;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
     <Property Name="_Count" Id="{30f84f30-18a4-0cc7-1a47-0d61a5ae06d0}">
       <Declaration><![CDATA[// Number of items in the collection.
 PROPERTY _Count : T_Capacity]]></Declaration>
@@ -35,6 +47,18 @@ END_VAR
         <Implementation>
           <ST><![CDATA[IF THIS^.ipArray = 0 THEN _Empty := TRUE; RETURN; END_IF
 _Empty := THIS^.ipArray._Empty;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="_End" Id="{ac9b80f1-d2ea-02e0-13ff-35a97f8ae98a}">
+      <Declaration><![CDATA[// Index of the last element.
+PROPERTY _End : T_Position]]></Declaration>
+      <Get Name="Get" Id="{74452c24-1636-0024-34d4-ce9d912ccca8}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_End := TO_DINT(THIS^._Count) - 1;]]></ST>
         </Implementation>
       </Get>
     </Property>

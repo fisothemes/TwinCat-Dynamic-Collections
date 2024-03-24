@@ -4,6 +4,20 @@
     <Declaration><![CDATA[// Interface for an immutable array.
 INTERFACE I_Immutable_Array EXTENDS I_Immutable_Collection
 ]]></Declaration>
+    <Property Name="_Begin" Id="{a7e11838-6892-0b0c-2d28-a4ae0b84eb3b}">
+      <Declaration><![CDATA[// Index of the first element.
+PROPERTY _Begin : T_Position]]></Declaration>
+      <Get Name="Get" Id="{a0311419-27b3-07c4-083f-e9d11c345028}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="_End" Id="{a8c7bc32-11d4-05dc-1f7d-868df4f363c7}">
+      <Declaration><![CDATA[// Index of the last element.
+PROPERTY _End : T_Position]]></Declaration>
+      <Get Name="Get" Id="{2d1ca9be-bc2e-0e9f-2610-cf8852127dbc}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
     <Method Name="Contains" Id="{7972bd38-585d-001c-1f22-1332255bb95f}">
       <Declaration><![CDATA[// Checks if item is contained in array.
 METHOD Contains : BOOL

@@ -21,7 +21,7 @@
     <Title>TwinCat Dynamic Collections</Title>
     <Author>Goodwill Mzumala</Author>
     <DefaultNamespace>TcDynCollections</DefaultNamespace>
-    <ProjectVersion>1.0.4.23</ProjectVersion>
+    <ProjectVersion>1.0.4.24</ProjectVersion>
     <DocFormat>reStructuredText</DocFormat>
     <Description>A library for handling collections of data dynamically in TwinCAT.</Description>
     <CombineIds>true</CombineIds>
@@ -162,6 +162,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ITFs\Enumerators\I_Enumerator.TcIO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ITFs\Iterable\I_Iterable.TcIO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ITFs\Misc\I_Copyable.TcIO">
@@ -320,6 +323,7 @@
     <Folder Include="ITFs\Collections\Immutable" />
     <Folder Include="ITFs\Enumerators" />
     <Folder Include="ITFs\Misc" />
+    <Folder Include="ITFs\Iterable" />
     <Folder Include="POUs" />
     <Folder Include="POUs\Examples" />
     <Folder Include="POUs\Function Blocks" />

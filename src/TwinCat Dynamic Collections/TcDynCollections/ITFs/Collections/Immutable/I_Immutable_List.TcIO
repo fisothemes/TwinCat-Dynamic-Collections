@@ -4,6 +4,20 @@
     <Declaration><![CDATA[// Interface for an immutable list.
 INTERFACE I_Immutable_List EXTENDS I_Immutable_Collection
 ]]></Declaration>
+    <Property Name="_Begin" Id="{aaeeb2e1-b285-0c5f-0dbc-d5df781571a3}">
+      <Declaration><![CDATA[// Index of the first element.
+PROPERTY _Begin : T_Position]]></Declaration>
+      <Get Name="Get" Id="{4e2297ff-c645-02b4-34b4-cd9ea55198db}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="_End" Id="{844b8ef7-b517-049c-3c35-e43ade0f7a40}">
+      <Declaration><![CDATA[// Index of the last element.
+PROPERTY _End : T_Position]]></Declaration>
+      <Get Name="Get" Id="{a2186c43-6bee-0611-1757-9fa4c7c83090}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
     <Method Name="Contains" Id="{6b004137-d7bc-04e1-0420-33618d82fb2e}">
       <Declaration><![CDATA[(* Checks if item is contained in list *)
 METHOD Contains : BOOL

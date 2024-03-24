@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <Itf Name="I_Iterable" Id="{1bb73574-f693-03e6-321d-522590609df2}">
+    <Declaration><![CDATA[// Interface that defines the standard structure for indexable collections
+INTERFACE I_Iterable EXTENDS __SYSTEM.IQueryInterface
+]]></Declaration>
+    <Property Name="_Begin" Id="{73321905-0f2e-0407-00aa-91048e6eff82}">
+      <Declaration><![CDATA[// Index of the first element.
+PROPERTY _Begin : T_Position]]></Declaration>
+      <Get Name="Get" Id="{8d8c254e-4b6e-0859-2854-cb761631fcfe}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="_End" Id="{fd9a7466-3c98-02f5-23f1-a7caf2aecf29}">
+      <Declaration><![CDATA[// Index of the last element.
+PROPERTY _End : T_Position]]></Declaration>
+      <Get Name="Get" Id="{0fcaa15c-f86d-066b-2610-50d35d581457}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+  </Itf>
+</TcPlcObject>
