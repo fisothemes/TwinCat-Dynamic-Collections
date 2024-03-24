@@ -12,8 +12,50 @@ Check_If_Update_Updates_Items();
 Check_If_Upsert_Updates_Items_Or_Adds_If_They_Dont_Exist();
 Check_If_Remove_Removes_Items();
 Check_If_Contains_Returns_True_If_Key_In_Map();
-Check_If_Get_Key_Values_Returns_Keys_In_Specified_Order();]]></ST>
+Check_If_Get_Key_Values_Returns_Keys_In_Specified_Order();
+Check_If_Balanced_After_Removing_From_Left_Heavy_Tree();]]></ST>
     </Implementation>
+    <Method Name="Check_If_Balanced_After_Removing_From_Left_Heavy_Tree" Id="{3267de7c-a6e0-08e5-328b-452c8fa4f138}">
+      <Declaration><![CDATA[METHOD Check_If_Balanced_After_Removing_From_Left_Heavy_Tree
+VAR_INST
+	fbMap : FB_Tree_Map;
+	i, j : INT;
+	arnKeys, arnValues : ARRAY[0..2] OF INT;
+	ipKeys, ipValues : I_Immutable_List;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Balanced_After_Removing_From_Left_Heavy_Tree');
+	FOR i := 4 TO 1 BY -1 DO fbMap.Insert(i,i); END_FOR
+
+	j := 3;
+	fbMap._Traversal := T_BST_Traversal.Level_Order;
+	ipKeys := fbMap.Remove(j).Get_Keys();
+	ipValues := fbMap.Get_Values();
+	
+	ipKeys
+		.Get(0, arnKeys[0])
+		.Get(1, arnKeys[1])
+		.Get(2, arnKeys[2]);
+
+	ipValues
+		.Get(0, arnValues[0])
+		.Get(1, arnValues[1])
+		.Get(2, arnValues[2]);
+			
+	THIS^.AssertEquals_DINT(3, fbMap._Count, 'Incorrect number of items retrieved after removing root item.');
+	
+	THIS^.AssertEquals_INT(2, arnKeys[0], 'First key in level-order traversal is incorrect.');
+	THIS^.AssertEquals_INT(1, arnKeys[1], 'Second key in level-order traversal is incorrect.');
+	THIS^.AssertEquals_INT(4, arnKeys[2], 'Third key in level-order traversal is incorrect.');
+	
+	THIS^.AssertEquals_INT(2, arnValues[0], 'First value in level-order traversal is incorrect.');
+	THIS^.AssertEquals_INT(1, arnValues[1], 'Second value in level-order traversal is incorrect.');
+	THIS^.AssertEquals_INT(4, arnValues[2], 'Third value in level-order traversal is incorrect.');
+
+TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
     <Method Name="Check_If_Clear_Empties_Items" Id="{7ef0bd11-59da-0fc3-3d4f-1fc02544aa8d}">
       <Declaration><![CDATA[METHOD Check_If_Clear_Empties_Items
 VAR_INST

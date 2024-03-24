@@ -73,24 +73,22 @@ VAR_INPUT
     pNode : POINTER TO T_AVL_Map_Node;
 END_VAR
 VAR 
-	pTmp : POINTER TO T_AVL_Map_Node;
     Balance_Factor : T_Position;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[WHILE pNode <> 0 AND_THEN pNode^.pParent <> 0 DO
-	pTmp := pNode^.pParent;
+        <ST><![CDATA[WHILE pNode <> 0 DO
+	THIS^.Update_Height(pNode);
 	
-	THIS^.Update_Height(pTmp);
+	Balance_Factor := THIS^.Get_Balance(pNode);
 	
-	IF THIS^.Get_Balance(pTmp) < -1 THEN
-		IF THIS^.Get_Balance(pTmp^.pRight) > 0 THEN THIS^.Rotate_Right(pTmp^.pRight); END_IF
-		THIS^.Rotate_Left(pTmp);
-		
-	ELSIF THIS^.Get_Balance(pTmp) > 1 THEN
-		IF THIS^.Get_Balance(pTmp^.pLeft) < 0 THEN THIS^.Rotate_Left(pTmp^.pLeft); END_IF
-		THIS^.Rotate_Right(pTmp);
+	IF Balance_Factor < -1 THEN
+		IF THIS^.Get_Balance(pNode^.pRight) > 0 THEN THIS^.Rotate_Right(pNode^.pRight); END_IF
+		THIS^.Rotate_Left(pNode);
+	ELSIF Balance_Factor > 1 THEN
+		IF THIS^.Get_Balance(pNode^.pLeft) < 0 THEN THIS^.Rotate_Left(pNode^.pLeft); END_IF
+		THIS^.Rotate_Right(pNode);
 		END_IF
-	
+		
 	pNode := pNode^.pParent;
 	END_WHILE]]></ST>
       </Implementation>
@@ -815,7 +813,8 @@ VAR_INPUT
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[pNode^.Height := 1 + MAX(THIS^.Get_Height(pNode^.pLeft), THIS^.Get_Height(pNode^.pRight));]]></ST>
+        <ST><![CDATA[IF pNode = 0 THEN RETURN; END_IF
+pNode^.Height := 1 + MAX(THIS^.Get_Height(pNode^.pLeft), THIS^.Get_Height(pNode^.pRight));]]></ST>
       </Implementation>
     </Method>
     <Method Name="Upsert" Id="{8aa218e3-a545-0da1-0329-59aadb46039b}">
