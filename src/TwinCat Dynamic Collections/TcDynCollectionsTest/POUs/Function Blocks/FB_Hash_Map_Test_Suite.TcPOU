@@ -63,7 +63,6 @@ VAR_INST
 	arnReturned_Keys,
 	arnReturned_Values : ARRAY[0..3] OF DINT;
 	arIndex : ARRAY[0..3] OF T_Position := [4(-1)];
-	ipKeys, ipValues : I_Immutable_List;
 	i : DINT;
 END_VAR]]></Declaration>
       <Implementation>
@@ -73,12 +72,12 @@ END_VAR]]></Declaration>
     	fbMap.Insert(arnItems[i], arnItems[i]);
     	END_FOR
 
-	ipKeys := fbMap.Get_Keys();
-	ipKeys
+	fbMap.Get_Keys()
 		.Search(arnItems[0], index => arIndex[0])
 		.Search(arnItems[1], index => arIndex[1])
 		.Search(arnItems[2], index => arIndex[2])
-		.Search(arnItems[3], index => arIndex[3])
+		.Search(arnItems[3], index => arIndex[3]);
+	fbMap.Get_Keys()
 		.Get(arIndex[0], arnReturned_Keys[0])
 		.Get(arIndex[1], arnReturned_Keys[1])
 		.Get(arIndex[2], arnReturned_Keys[2])
@@ -88,10 +87,10 @@ END_VAR]]></Declaration>
 	THIS^.AssertEquals_DINT(3, arnReturned_Keys[2],'');
 	THIS^.AssertEquals_DINT(4, arnReturned_Keys[3],'');
 	
-	ipValues := fbMap.Get_Values();
-	ipValues
+	fbMap.Get_Values()
 		.Get(arIndex[0], arnReturned_Values[0])
-		.Get(arIndex[1], arnReturned_Values[1])
+		.Get(arIndex[1], arnReturned_Values[1]);
+	fbMap.Get_Values()
 		.Get(arIndex[2], arnReturned_Values[2])
 		.Get(arIndex[3], arnReturned_Values[3]);
 	THIS^.AssertEquals_DINT(1, arnReturned_Values[0],'');

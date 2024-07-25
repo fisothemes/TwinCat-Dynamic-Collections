@@ -13,6 +13,7 @@ VAR
 	pKeys, pValues : POINTER TO FB_Array_List;
 	fbImmutable_Keys_List,
 	fbImmutable_Values_List : FB_Immutable_List;
+	bKeys_Updated, bValues_Updated : BOOL := TRUE;
 END_VAR
 VAR CONSTANT
 	fLoad_Factor : REAL := 0.75;
@@ -73,7 +74,8 @@ IF THIS^.pValues <> 0 THEN
 
 __DELETE(THIS^.pBuckets);
 THIS^._Bucket_Count := 0;
-THIS^._Count := 0;]]></ST>
+THIS^._Count := 0;
+THIS^.bKeys_Updated := THIS^.bValues_Updated := TRUE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Contains" Id="{a099ae06-62f8-0a71-241c-5aed1350e38b}">
@@ -328,6 +330,8 @@ END_VAR]]></Declaration>
 THIS^.fbImmutable_Keys_List(ipList := THIS^.pKeys^);
 Get_Keys := THIS^.fbImmutable_Keys_List;
 
+IF NOT THIS^.bKeys_Updated THEN RETURN; END_IF
+
 THIS^.pKeys^.Clear();
 
 IF THIS^._Empty THEN RETURN; END_IF
@@ -338,7 +342,9 @@ FOR i := 0 TO THIS^._Bucket_Count - 1 DO
 		pKeys^.Insert_Generic(pKeys^._Count, pCurrent^.Key);
 		pCurrent := pCurrent^.pNext;
 		END_WHILE
-	END_FOR]]></ST>
+	END_FOR
+	
+THIS^.bKeys_Updated := FALSE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Get_Values" Id="{a69d6282-139d-03b3-0ca1-a7e833350adf}">
@@ -353,6 +359,8 @@ END_VAR]]></Declaration>
 THIS^.fbImmutable_Values_List(ipList := THIS^.pValues^);
 Get_Values := THIS^.fbImmutable_Values_List;
 
+IF NOT THIS^.bValues_Updated THEN RETURN; END_IF
+
 pValues^.Clear();
 
 IF THIS^._Empty THEN RETURN; END_IF
@@ -363,7 +371,9 @@ FOR i := 0 TO THIS^._Bucket_Count - 1 DO
 		pValues^.Insert_Generic(pValues^._Count, pCurrent^.Value);
 		pCurrent := pCurrent^.pNext;
 		END_WHILE
-	END_FOR]]></ST>
+	END_FOR
+	
+THIS^.bValues_Updated := FALSE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Hash" Id="{943b32f4-3ec0-0dba-184f-be2efe0f1301}" FolderPath="Internal\">
@@ -428,6 +438,7 @@ WHILE pCurrent <> 0 DO
 				IF NOT bSuccess THEN RETURN; END_IF
 				F_Delete_Generic(pCurrent^.Value);
 				pCurrent^.Value := Tmp;
+				THIS^.bValues_Updated := TRUE;
 			ELSE
 				THIS^._Error_Status := GVL_Errors.ERR_DUPLICATE_KEY;
 			END_IF
@@ -445,7 +456,8 @@ IF NOT bSuccess THEN RETURN; END_IF
 pCurrent^.pNext := THIS^.pBuckets[Index];
 THIS^.pBuckets[Index] := pCurrent;
 
-THIS^.Increment_Count();]]></ST>
+THIS^.Increment_Count();
+THIS^.bKeys_Updated := THIS^.bValues_Updated := TRUE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Remove" Id="{94941d8e-1957-0a28-34f8-c6c6dd760c7d}">
@@ -493,6 +505,7 @@ WHILE pCurrent <> 0 DO
 		THIS^.Delete_Node(pCurrent);
 		bSuccess := TRUE;
 		THIS^.Decrement_Count();
+		THIS^.bKeys_Updated := THIS^.bValues_Updated := TRUE;
 		THIS^.Clear_Error();
 		RETURN;
 		END_IF
@@ -594,6 +607,7 @@ WHILE pCurrent <> 0 DO
 			IF NOT bSuccess THEN RETURN; END_IF;
 			F_Delete_Generic(pCurrent^.Value);
 			pCurrent^.Value := Tmp;
+			THIS^.bValues_Updated := TRUE;
 			RETURN;
 		T_Comparison.Invalid:
 			THIS^._Error_Status := GVL_Errors.ERR_INVALID_COMPARISON;
