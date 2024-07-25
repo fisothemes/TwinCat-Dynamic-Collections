@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_ORDERED_HASHMAP_BUCKET_NODE" Id="{c6631827-51b0-0cd6-14ae-bfcdfde30b44}">
+    <Declaration><![CDATA[{attribute 'enable_dynamic_creation'}
+TYPE ST_ORDERED_HASHMAP_BUCKET_NODE EXTENDS ST_MAP_ENTRY:
+STRUCT
+	pNext,
+	pBefore,
+	pAfter 	: POINTER TO ST_ORDERED_HASHSET_BUCKET_NODE;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

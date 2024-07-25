@@ -90,10 +90,16 @@
     <Compile Include="DUTs\Structs\ST_HASHMAP_BUCKET_NODE.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\Structs\ST_ORDERED_HASHSET_BUCKET_NODE.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\Structs\ST_LIST_NODE.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\Structs\ST_MAP_ENTRY.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\Structs\ST_ORDERED_HASHMAP_BUCKET_NODE.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="GVLs\GVL_Constants.TcGVL">

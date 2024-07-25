@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Refactors>
+  <Renames>
+    <RenamedType>
+      <Type guid="82a69cb7-08db-42ae-9364-532fc7a2ae98">ST_ORDERED_HASHSET_NODE</Type>
+      <From>ST_HASHSET_BUCKET_NODE_1</From>
+      <To>ST_ORDERED_HASHSET_BUCKET_NODE</To>
+    </RenamedType>
+    <RenamedType>
+      <Type guid="da7febb6-fcf9-4fd7-a0b3-875c0744d73c">ST_ORDERED_HASHSET_BUCKET_NODE_1</Type>
+      <From>ST_ORDERED_HASHSET_BUCKET_NODE_1</From>
+      <To>ST_ORDERED_HASHMAP_BUCKET_NODE</To>
+    </RenamedType>
+  </Renames>
+</Refactors>
