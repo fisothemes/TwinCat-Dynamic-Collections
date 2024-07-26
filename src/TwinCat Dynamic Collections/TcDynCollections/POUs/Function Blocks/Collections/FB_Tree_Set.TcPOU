@@ -12,6 +12,7 @@ VAR
 	Traversal : T_BST_Traversal := T_BST_Traversal.In_Order; 
 	pValues : POINTER TO FB_Array_List;
 	fbImmutable_Values_List : FB_Immutable_List;
+	bValues_Updated : BOOL;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[(*
@@ -60,7 +61,11 @@ END_VAR
 END_VAR
 ]]></Declaration>
         <Implementation>
-          <ST><![CDATA[THIS^.Traversal := _Traversal;]]></ST>
+          <ST><![CDATA[IF THIS^.Traversal <> _Traversal THEN 
+	THIS^.bValues_Updated := TRUE;
+	END_IF
+
+THIS^.Traversal := _Traversal;]]></ST>
         </Implementation>
       </Set>
     </Property>
@@ -105,7 +110,8 @@ IF THIS^.pValues <> 0 THEN
 	END_IF
 
 THIS^.pRoot := 0;
-THIS^._Count := 0;]]></ST>
+THIS^._Count := 0;
+THIS^.bValues_Updated := TRUE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Clear_Node" Id="{e0d018bd-ec22-0b04-2e46-bc385286cd59}" FolderPath="Internal\">
@@ -251,6 +257,8 @@ END_VAR
 THIS^.fbImmutable_Values_List(ipList := THIS^.pValues^);
 Get_Values := THIS^.fbImmutable_Values_List;
 
+IF NOT THIS^.bValues_Updated THEN RETURN; END_IF
+
 THIS^.pValues^.Clear();
 
 IF pCurrent = 0 THEN RETURN; END_IF
@@ -303,9 +311,11 @@ WHILE (NOT fbNode_Buffer._Empty) OR_ELSE pCurrent <> 0 DO
 			fbNode_Buffer.Get(pCurrent).Dequeue(bSuccess => bSuccess);
 			IF NOT bSuccess THEN pCurrent := 0; END_IF
 	ELSE
-		RETURN;
+		EXIT;
 		END_CASE
-	END_WHILE]]></ST>
+	END_WHILE
+	
+THIS^.bValues_Updated := FALSE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Insert" Id="{e111174b-6aa3-0457-0ad2-38df956adc5f}">
@@ -370,7 +380,8 @@ ELSE
 pCurrent^.pParent := pPrevious;
 	
 THIS^.Balance(pCurrent);
-THIS^.Increment_Count();]]></ST>
+THIS^.Increment_Count();
+THIS^.bValues_Updated := TRUE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Move_Node" Id="{2aaa8daf-e951-0ffd-1650-bf0b29729a4f}" FolderPath="Internal\">
@@ -436,7 +447,8 @@ THIS^.Clear_Error();
 
 IF THIS^._Empty THEN THIS^.pRoot := 0; END_IF
 
-bSuccess := TRUE;]]></ST>
+bSuccess := TRUE;
+THIS^.bValues_Updated := TRUE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Remove_Node" Id="{f8c0b73d-df0b-01cc-0943-45282e56f537}" FolderPath="Internal\">

@@ -125,7 +125,6 @@ VAR_INST
 	fbSet : FB_Tree_Set;
 	arnItems : ARRAY[0..3] OF DINT := [1,2,3,4];
 	arnIn_Order, arnPre_Order, arnPost_Order, arnLevel_Order : ARRAY[0..3] OF DINT;
-	ipItems : I_Immutable_List;
 	i : DINT;
 END_VAR
 // Checked using: https://www.cs.usfca.edu/~galles/visualization/AVLtree.html
@@ -138,10 +137,10 @@ END_VAR
     	END_FOR
 		
 	fbSet._Traversal := T_BST_Traversal.In_Order;
-	ipItems := fbSet.Get_Values();
-	ipItems
+	fbSet.Get_Values()
 		.Get(0, arnIn_Order[0])
-		.Get(1, arnIn_Order[1])
+		.Get(1, arnIn_Order[1]);
+	fbSet.Get_Values()
 		.Get(2, arnIn_Order[2])
 		.Get(3, arnIn_Order[3]);
 	THIS^.AssertEquals_DINT(1, arnIn_Order[0],'Failed to get item with in-order traversal.');
@@ -150,10 +149,10 @@ END_VAR
 	THIS^.AssertEquals_DINT(4, arnIn_Order[3],'Failed to get item with in-order traversal.');
 	
 	fbSet._Traversal := T_BST_Traversal.Pre_Order;
-	ipItems := fbSet.Get_Values();
-	ipItems
+	fbSet.Get_Values()
 		.Get(0, arnPre_Order[0])
-		.Get(1, arnPre_Order[1])
+		.Get(1, arnPre_Order[1]);
+	fbSet.Get_Values()
 		.Get(2, arnPre_Order[2])
 		.Get(3, arnPre_Order[3]);
 	THIS^.AssertEquals_DINT(2, arnPre_Order[0],'Failed to get item with pre-order traversal.');
@@ -162,10 +161,10 @@ END_VAR
 	THIS^.AssertEquals_DINT(4, arnPre_Order[3],'Failed to get item with pre-order traversal.');
 	
 	fbSet._Traversal := T_BST_Traversal.Post_Order; 
-	ipItems := fbSet.Get_Values();
-	ipItems
+	fbSet.Get_Values()
 		.Get(0, arnPost_Order[0])
-		.Get(1, arnPost_Order[1])
+		.Get(1, arnPost_Order[1]);
+	fbSet.Get_Values()
 		.Get(2, arnPost_Order[2])
 		.Get(3, arnPost_Order[3]);
 	THIS^.AssertEquals_DINT(1, arnPost_Order[0],'Failed to get item with post-order traversal.');
@@ -174,10 +173,10 @@ END_VAR
 	THIS^.AssertEquals_DINT(2, arnPost_Order[3],'Failed to get item with post-order traversal.');
 	
 	fbSet._Traversal := T_BST_Traversal.Level_Order; // will get the values in ascending order
-	ipItems := fbSet.Get_Values();
-	ipItems
+	fbSet.Get_Values()
 		.Get(0, arnLevel_Order[0])
-		.Get(1, arnLevel_Order[1])
+		.Get(1, arnLevel_Order[1]);
+	fbSet.Get_Values()
 		.Get(2, arnLevel_Order[2])
 		.Get(3, arnLevel_Order[3]);
 	THIS^.AssertEquals_DINT(2, arnLevel_Order[0],'Failed to get item with level-order traversal.');

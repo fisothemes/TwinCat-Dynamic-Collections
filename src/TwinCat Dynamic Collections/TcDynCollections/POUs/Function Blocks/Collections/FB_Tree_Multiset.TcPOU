@@ -87,7 +87,8 @@ ELSE
 pCurrent^.pParent := pPrevious;
 	
 THIS^.Balance(pCurrent);
-THIS^.Increment_Count();]]></ST>
+THIS^.Increment_Count();
+THIS^.bValues_Updated := TRUE;]]></ST>
       </Implementation>
     </Method>
   </POU>
