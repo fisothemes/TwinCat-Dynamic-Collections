@@ -81,7 +81,6 @@ VAR_INST
 	arnItems : ARRAY[0..3] OF DINT := [1,2,3,4];
 	arnReturned_Items : ARRAY[0..3] OF DINT;
 	arIndex : ARRAY[0..3] OF T_Position := [4(-1)];
-	ipItems : I_Immutable_List;
 	i : DINT;
 END_VAR]]></Declaration>
       <Implementation>
@@ -91,12 +90,12 @@ END_VAR]]></Declaration>
     	fbSet.Insert(arnItems[i]);
     	END_FOR
 		
-	ipItems := fbSet.Get_Values();
-	ipItems
+	fbSet.Get_Values()
 		.Search(arnItems[0], index => arIndex[0])
 		.Search(arnItems[1], index => arIndex[1])
 		.Search(arnItems[2], index => arIndex[2])
-		.Search(arnItems[3], index => arIndex[3])
+		.Search(arnItems[3], index => arIndex[3]);
+	fbSet.Get_Values()
 		.Get(arIndex[0], arnReturned_Items[0])
 		.Get(arIndex[1], arnReturned_Items[1])
 		.Get(arIndex[2], arnReturned_Items[2])

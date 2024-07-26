@@ -25,7 +25,7 @@ VAR
 	fbMultiset : FB_Tree_Multiset;
 END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[Size := SIZEOF(fbHash_Map);
+      <ST><![CDATA[Size := SIZEOF(fbHash_Set);
 
 IF bAdd THEN
 	bAdd := FALSE;

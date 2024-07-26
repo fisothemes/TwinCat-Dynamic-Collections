@@ -12,6 +12,7 @@ VAR
 	Bucket_Count : T_Capacity;
 	pValues : POINTER TO FB_Array_List;
 	fbImmutable_Values_List : FB_Immutable_List;
+	bValues_Updated : BOOL := TRUE;
 END_VAR
 VAR CONSTANT
 	fLoad_Factor : REAL := 0.75;
@@ -67,7 +68,8 @@ IF THIS^.pValues <> 0 THEN
 
 __DELETE(THIS^.pBuckets);
 THIS^._Bucket_Count := 0;
-THIS^._Count := 0;]]></ST>
+THIS^._Count := 0;
+THIS^.bValues_Updated := TRUE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Contains" Id="{ef6205dd-24ce-0fb9-0ed5-cc55cea7e040}">
@@ -207,6 +209,8 @@ END_VAR]]></Declaration>
 THIS^.fbImmutable_Values_List(ipList := THIS^.pValues^);
 Get_Values := THIS^.fbImmutable_Values_List;
 
+IF NOT THIS^.bValues_Updated THEN RETURN; END_IF 
+
 pValues^.Clear();
 
 FOR i := 0 TO THIS^._Bucket_Count - 1 DO
@@ -215,7 +219,9 @@ FOR i := 0 TO THIS^._Bucket_Count - 1 DO
 		pValues^.Insert_Generic(pValues^._Count, pCurrent^.Data);
 		pCurrent := pCurrent^.pNext;
 		END_WHILE
-	END_FOR]]></ST>
+	END_FOR
+	
+THIS^.bValues_Updated := FALSE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Hash" Id="{271654d1-9aa5-06c6-22b9-a001da8489ec}" FolderPath="Internal\">
@@ -282,7 +288,8 @@ IF NOT bSuccess THEN RETURN; END_IF
 pCurrent^.pNext := THIS^.pBuckets[Index];
 THIS^.pBuckets[Index] := pCurrent;
 
-THIS^.Increment_Count();]]></ST>
+THIS^.Increment_Count();
+THIS^.bValues_Updated := TRUE;]]></ST>
       </Implementation>
     </Method>
     <Method Name="Remove" Id="{b5b86855-d861-03eb-396c-3fa3a0ae6c60}">
@@ -330,6 +337,7 @@ WHILE pCurrent <> 0 DO
 		THIS^.Delete_Node(pCurrent);
 		bSuccess := TRUE;
 		THIS^.Decrement_Count();
+		THIS^.bValues_Updated := TRUE;
 		THIS^.Clear_Error();
 		RETURN;
 		END_IF
