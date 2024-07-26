@@ -103,7 +103,6 @@ VAR_INST
 	fbMap : FB_Tree_Map;
 	arnItems : ARRAY[0..3] OF DINT := [1,2,3,4];
 	arnIn_Order, arnPre_Order, arnPost_Order, arnLevel_Order : ARRAY[0..3] OF DINT;
-	ipKeys, ipValues : I_Immutable_List;
 	i : DINT;
 END_VAR
 // Checked using: https://www.cs.usfca.edu/~galles/visualization/AVLtree.html
@@ -116,11 +115,10 @@ END_VAR
     	END_FOR
 		
 	fbMap._Traversal := T_BST_Traversal.In_Order;
-	ipKeys := fbMap.Get_Keys();
-	ipValues := fbMap.Get_Values();
-	ipKeys
+	fbMap.Get_Keys()
 		.Get(0, arnIn_Order[0])
-		.Get(1, arnIn_Order[1])
+		.Get(1, arnIn_Order[1]);
+	fbMap.Get_Keys()
 		.Get(2, arnIn_Order[2])
 		.Get(3, arnIn_Order[3]);
 	THIS^.AssertEquals_DINT(1, arnIn_Order[0],'Failed to get key with in-order traversal.');
@@ -128,9 +126,10 @@ END_VAR
 	THIS^.AssertEquals_DINT(3, arnIn_Order[2],'Failed to get key with in-order traversal.');
 	THIS^.AssertEquals_DINT(4, arnIn_Order[3],'Failed to get key with in-order traversal.');
 	
-	ipValues
+	fbMap.Get_Values()
 		.Get(0, arnIn_Order[0])
-		.Get(1, arnIn_Order[1])
+		.Get(1, arnIn_Order[1]);
+	fbMap.Get_Values()
 		.Get(2, arnIn_Order[2])
 		.Get(3, arnIn_Order[3]);
 	THIS^.AssertEquals_DINT(1, arnIn_Order[0],'Failed to get values with in-order traversal.');
@@ -139,20 +138,20 @@ END_VAR
 	THIS^.AssertEquals_DINT(4, arnIn_Order[3],'Failed to get values with in-order traversal.');
 	
 	fbMap._Traversal := T_BST_Traversal.Pre_Order;
-	ipKeys := fbMap.Get_Keys();
-	ipValues := fbMap.Get_Values();
-	ipKeys
+	fbMap.Get_Keys()
 		.Get(0, arnPre_Order[0])
-		.Get(1, arnPre_Order[1])
+		.Get(1, arnPre_Order[1]);
+	fbMap.Get_Keys()
 		.Get(2, arnPre_Order[2])
 		.Get(3, arnPre_Order[3]);
 	THIS^.AssertEquals_DINT(2, arnPre_Order[0],'Failed to get key with pre-order traversal.');
 	THIS^.AssertEquals_DINT(1, arnPre_Order[1],'Failed to get key with pre-order traversal.');
 	THIS^.AssertEquals_DINT(3, arnPre_Order[2],'Failed to get key with pre-order traversal.');
 	THIS^.AssertEquals_DINT(4, arnPre_Order[3],'Failed to get key with pre-order traversal.');
-	ipValues
+	fbMap.Get_Values()
 		.Get(0, arnPre_Order[0])
-		.Get(1, arnPre_Order[1])
+		.Get(1, arnPre_Order[1]);
+	fbMap.Get_Values()
 		.Get(2, arnPre_Order[2])
 		.Get(3, arnPre_Order[3]);
 	THIS^.AssertEquals_DINT(2, arnPre_Order[0],'Failed to get value with pre-order traversal.');
@@ -161,20 +160,20 @@ END_VAR
 	THIS^.AssertEquals_DINT(4, arnPre_Order[3],'Failed to get value with pre-order traversal.');
 	
 	fbMap._Traversal := T_BST_Traversal.Post_Order; 
-	ipKeys := fbMap.Get_Keys();
-	ipValues := fbMap.Get_Values();
-	ipKeys
+	fbMap.Get_Keys()
 		.Get(0, arnPost_Order[0])
-		.Get(1, arnPost_Order[1])
+		.Get(1, arnPost_Order[1]);
+	fbMap.Get_Keys()
 		.Get(2, arnPost_Order[2])
 		.Get(3, arnPost_Order[3]);
 	THIS^.AssertEquals_DINT(1, arnPost_Order[0],'Failed to get key with post-order traversal.');
 	THIS^.AssertEquals_DINT(4, arnPost_Order[1],'Failed to get key with post-order traversal.');
 	THIS^.AssertEquals_DINT(3, arnPost_Order[2],'Failed to get key with post-order traversal.');
 	THIS^.AssertEquals_DINT(2, arnPost_Order[3],'Failed to get key with post-order traversal.');
-	ipValues
+	fbMap.Get_Values()
 		.Get(0, arnPost_Order[0])
-		.Get(1, arnPost_Order[1])
+		.Get(1, arnPost_Order[1]);
+	fbMap.Get_Values()
 		.Get(2, arnPost_Order[2])
 		.Get(3, arnPost_Order[3]);
 	THIS^.AssertEquals_DINT(1, arnPost_Order[0],'Failed to get value with post-order traversal.');
@@ -183,20 +182,20 @@ END_VAR
 	THIS^.AssertEquals_DINT(2, arnPost_Order[3],'Failed to get value with post-order traversal.');
 	
 	fbMap._Traversal := T_BST_Traversal.Level_Order; // will get the values in ascending order
-	ipKeys := fbMap.Get_Keys();
-	ipValues := fbMap.Get_Values();
-	ipKeys
+	fbMap.Get_Keys()
 		.Get(0, arnLevel_Order[0])
-		.Get(1, arnLevel_Order[1])
+		.Get(1, arnLevel_Order[1]);
+	fbMap.Get_Keys()
 		.Get(2, arnLevel_Order[2])
 		.Get(3, arnLevel_Order[3]);
 	THIS^.AssertEquals_DINT(2, arnLevel_Order[0],'Failed to get item with level-order traversal.');
 	THIS^.AssertEquals_DINT(1, arnLevel_Order[1],'Failed to get item with level-order traversal.');
 	THIS^.AssertEquals_DINT(3, arnLevel_Order[2],'Failed to get item with level-order traversal.');
 	THIS^.AssertEquals_DINT(4, arnLevel_Order[3],'Failed to get item with level-order traversal.');
-	ipValues
+	fbMap.Get_Values()
 		.Get(0, arnLevel_Order[0])
-		.Get(1, arnLevel_Order[1])
+		.Get(1, arnLevel_Order[1]);
+	fbMap.Get_Values()
 		.Get(2, arnLevel_Order[2])
 		.Get(3, arnLevel_Order[3]);
 	THIS^.AssertEquals_DINT(2, arnLevel_Order[0],'Failed to get value with level-order traversal.');
