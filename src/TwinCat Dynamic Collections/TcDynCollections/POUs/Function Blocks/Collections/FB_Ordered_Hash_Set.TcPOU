@@ -1,0 +1,417 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_Ordered_Hash_Set" Id="{07e293cd-5be0-0645-2e17-9ec53fc8fd22}" SpecialFunc="None">
+    <Declaration><![CDATA[// A collection that stores no duplicate items and whose insertion order is preserved.
+// Implemented using hash table with closed addressing.
+{attribute 'enable_dynamic_creation'}
+{attribute 'no_assign'}
+{attribute 'no_explicit_call' := 'direct call for this function block is not allowed'}
+FUNCTION_BLOCK FB_Ordered_Hash_Set EXTENDS FB_Collection IMPLEMENTS I_Hash_Set
+VAR
+	pBuckets : POINTER TO POINTER TO ST_ORDERED_HASHSET_BUCKET_NODE; // Array of pointers to hash bucket node.
+	pHead, pTail : POINTER TO ST_ORDERED_HASHSET_BUCKET_NODE;
+	Bucket_Count : T_Capacity;
+	pValues : POINTER TO FB_Array_List;
+	fbImmutable_Values_List : FB_Immutable_List;
+	bValues_Updated : BOOL := TRUE;
+END_VAR
+VAR CONSTANT
+	fLoad_Factor : REAL := 0.75;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="Internal" Id="{baf01396-9107-0811-1a6c-3a4ba60da798}" />
+    <Property Name="_Bucket_Count" Id="{8230df81-789d-0b7f-2e2d-41c2702bf9de}">
+      <Declaration><![CDATA[// Number of buckets in the hash set.
+PROPERTY _Bucket_Count : T_Capacity;]]></Declaration>
+      <Get Name="Get" Id="{009f1b03-dd45-0364-246a-863b0ed1524f}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_Bucket_Count := THIS^.Bucket_Count;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{4ac75eeb-abe5-0ce5-0a1d-e6cb85e630ef}">
+        <Declaration><![CDATA[PROTECTED 
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.Bucket_Count := _Bucket_Count; ]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Clear" Id="{4b9c3b29-0f2d-0218-392d-43c3a0f47c84}">
+      <Declaration><![CDATA[// Empties/Clears/Deletes every item in the set.
+METHOD Clear : I_Set
+VAR
+	i : T_Capacity;
+	pCurrent, pNext : POINTER TO T_Hashset_Bucket_Node;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Clear := THIS^;
+
+FOR i := 0 TO THIS^._Bucket_Count - 1 DO
+	pCurrent := THIS^.pBuckets[i];
+	WHILE pCurrent <> 0 DO
+		pNext := pCurrent^.pNext;
+		THIS^.Delete_Node(pCurrent);
+		pCurrent := pNext;
+		END_WHILE
+	END_FOR
+
+IF THIS^.pValues <> 0 THEN 
+	THIS^.fbImmutable_Values_List(ipList := 0);
+	__DELETE(THIS^.pValues);
+	END_IF
+
+__DELETE(THIS^.pBuckets);
+THIS^._Bucket_Count := 0;
+THIS^._Count := 0;
+THIS^.pHead := THIS^.pTail := 0;
+THIS^.bValues_Updated := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Contains" Id="{4bea6d72-0005-0e50-0f68-2ab08f8dc25e}">
+      <Declaration><![CDATA[// Checks if item is contained in set.
+METHOD Contains : BOOL
+VAR_INPUT
+	Item : ANY; // Item to find.
+END_VAR
+VAR
+	Index : T_Position;
+	pCurrent : POINTER TO ST_ORDERED_HASHSET_BUCKET_NODE;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Index := THIS^.Hash(Item) MOD THIS^.Bucket_Count;
+
+IF THIS^._Empty THEN RETURN; END_IF
+
+pCurrent := THIS^.pBuckets[Index];
+
+WHILE pCurrent <> 0 DO
+	IF F_Compare_Generics(Item, pCurrent^.Data) = T_Comparison.Equal THEN 
+		Contains := TRUE;
+		THIS^.Clear_Error();
+		RETURN; 
+		END_IF
+	pCurrent := pCurrent^.pNext;
+	END_WHILE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Create_Buckets" Id="{53c8f359-caa4-0f97-3785-220a797ef0ec}" FolderPath="Internal\">
+      <Declaration><![CDATA[// Creates buckets and initialises them since user defined types can't be created as arrays dynamically using __NEW(...).
+METHOD PROTECTED Create_Buckets : POINTER TO POINTER TO ST_ORDERED_HASHSET_BUCKET_NODE
+VAR_INPUT
+	Count : T_Capacity;
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL := TRUE;
+	Error : T_Error := GVL_Errors.ERR_NO_ERROR;
+END_VAR
+VAR
+	i : T_Capacity;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF Count <= 0 THEN RETURN; END_IF
+
+Create_Buckets := __NEW(POINTER TO ST_ORDERED_HASHSET_BUCKET_NODE, TO_UDINT(Count));
+
+IF Create_Buckets = 0 THEN
+	bSuccess := FALSE;
+	Error := GVL_Errors.ERR_MALLOC_FAILED;
+	END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Create_Node" Id="{90dba8c3-1f8e-0006-1780-ea6145f778ef}" FolderPath="Internal\">
+      <Declaration><![CDATA[// Creates a new node in dynamic memory with a clone of the generic item as it data.
+METHOD PROTECTED Create_Node : POINTER TO ST_ORDERED_HASHSET_BUCKET_NODE
+VAR_INPUT
+	Item : T_Generic;
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+	Error : T_Error;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Create_Node := __NEW(ST_ORDERED_HASHSET_BUCKET_NODE);
+
+IF Create_Node = 0 THEN 
+	Error := GVL_Errors.ERR_MALLOC_FAILED;
+	RETURN;
+	END_IF
+
+Create_Node^.Data := F_Clone_Generic(Item, bSuccess => bSuccess, Error => THIS^.Error);
+
+IF NOT bSuccess THEN __DELETE(Create_Node); END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Delete_Node" Id="{ce80e408-4815-075d-3698-8b47ee57ed59}" FolderPath="Internal\">
+      <Declaration><![CDATA[// Safety deletes node.
+// If the node and/or it's value/data is in dynamic memory it/they will be deleted.
+METHOD PROTECTED Delete_Node
+VAR_INPUT
+	pNode : REFERENCE TO POINTER TO ST_ORDERED_HASHSET_BUCKET_NODE;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF (pNode = 0) THEN RETURN; END_IF 
+
+F_Delete_Generic(pNode^.Data);
+
+CASE Tc2_System.F_CheckMemoryArea(pNode, 1) OF
+	Tc2_System.E_TcMemoryArea.Dynamic: __DELETE(pNode);
+ELSE
+	pNode := 0;
+	END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FB_exit" Id="{92f9acb6-94a1-07fc-09ed-a161f61896df}">
+      <Declaration><![CDATA[{attribute 'hide'}
+METHOD FB_exit : BOOL
+VAR_INPUT
+	bInCopyCode : BOOL; // if TRUE, the exit method is called for exiting an instance that is copied afterwards (online change).
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Return if it's an online change.
+IF bInCopyCode THEN RETURN; END_IF
+
+THIS^.Clear();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FB_init" Id="{35af7c07-754d-0c54-0675-9fc1b733884b}">
+      <Declaration><![CDATA[{attribute 'hide'}
+METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	Initial_Bucket_Count : T_Capacity; // Number of buckets you want to initialise the hash set with. Use 0 if you don't know.
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Return if it's an online change.
+IF bInCopyCode THEN RETURN; END_IF
+
+THIS^.pBuckets := THIS^.Create_Buckets(Initial_Bucket_Count, Error => THIS^.Error);
+THIS^._Bucket_Count := SEL(THIS^.pBuckets <> 0, 0,Initial_Bucket_Count);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_Values" Id="{f9bdbc52-9b93-0f24-31dd-e2b7168adcde}">
+      <Declaration><![CDATA[// Gets an immutable list of the values in the set.
+METHOD Get_Values : I_Immutable_List
+VAR
+	i : T_Capacity;
+	pCurrent : POINTER TO ST_ORDERED_HASHSET_BUCKET_NODE;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF THIS^.pValues = 0 THEN THIS^.pValues := __NEW(FB_Array_List(Initial_Capacity := 0)); END_IF
+THIS^.fbImmutable_Values_List(ipList := THIS^.pValues^);
+Get_Values := THIS^.fbImmutable_Values_List;
+
+IF NOT THIS^.bValues_Updated THEN RETURN; END_IF 
+
+pValues^.Clear();
+
+pCurrent := THIS^.pHead;
+WHILE pCurrent <> 0 DO
+	pValues^.Insert_Generic(pValues^._Count, pCurrent^.Data);
+	pCurrent := pCurrent^.pAfter;
+	END_WHILE
+	
+THIS^.bValues_Updated := FALSE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Hash" Id="{62830f74-aef2-0231-12ab-6879f7737e02}" FolderPath="Internal\">
+      <Declaration><![CDATA[// Wrapper for murmur3 hash function that generates a value that fits in the upperage of DINT to avoid negative values due to integer overflow.
+METHOD PROTECTED Hash : T_Capacity
+VAR_INPUT
+	Data : T_Generic;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Hash := TO_DINT(F_Murmur3_Hash(Data) MOD TO_DWORD(GVL_Constants.MAX_CAPACITY));]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Insert" Id="{67f5dab8-44c9-01e3-1191-15ed2c7a3e95}">
+      <Declaration><![CDATA[// Insert item into set.
+METHOD Insert : I_Set
+VAR_INPUT
+	Item : ANY; // Data to insert
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL; // Indicates whether operation was successful. Success = TRUE, Failure = FALSE
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Insert := THIS^.Insert_Generic(Item, bSuccess => bSuccess);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Insert_Generic" Id="{29cff15f-d953-0f6d-0ceb-760e93f29d11}">
+      <Declaration><![CDATA[// Adds new generic item at into set.
+// The set will store a copy of the generic item so as to not modify the original value outside it's scope.
+METHOD Insert_Generic : I_Set
+VAR_INPUT
+	Item : T_Generic; // Item to store
+END_VAR
+VAR_OUTPUT
+	bSuccess 	: BOOL; // Indicates whether operation was successful. Success = TRUE, Failure = FALSE
+END_VAR
+VAR
+	Index : T_Position;
+	pCurrent : POINTER TO ST_ORDERED_HASHSET_BUCKET_NODE;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Insert_Generic := THIS^;
+
+IF TO_REAL(THIS^._Count) > (TO_REAL(THIS^.Bucket_Count) * THIS^.fLoad_Factor) OR_ELSE THIS^.Bucket_Count <= 0 THEN
+	// Increasing the bucket by 50% once the load factor is reached.
+	// Bitwise shifting is the same as multiplying by 1.5, this is done because no complicated casting is needed.
+	THIS^.Resize(SEL(THIS^.Bucket_Count > 1, 16, THIS^.Bucket_Count + SHR(THIS^.Bucket_Count, 1)), bSuccess => bSuccess);
+	IF NOT bSuccess THEN RETURN; END_IF
+	END_IF
+	
+Index := THIS^.Hash(Item) MOD THIS^.Bucket_Count;
+
+pCurrent := THIS^.pBuckets[Index];
+
+WHILE pCurrent <> 0 DO
+	IF F_Compare_Generics(Item, pCurrent^.Data) = T_Comparison.Equal THEN RETURN; END_IF
+	pCurrent := pCurrent^.pNext;
+	END_WHILE
+	
+pCurrent := THIS^.Create_Node(Item, bSuccess => bSuccess, Error => Error);
+
+IF NOT bSuccess THEN RETURN; END_IF
+
+pCurrent^.pNext := THIS^.pBuckets[Index];
+THIS^.pBuckets[Index] := pCurrent;
+
+IF THIS^.pHead = 0 THEN 
+	THIS^.pHead := THIS^.pTail := pCurrent;
+ELSE
+	THIS^.pTail^.pAfter := pCurrent;
+	pCurrent^.pBefore := THIS^.pTail;
+	THIS^.pTail := pCurrent;
+	END_IF
+
+THIS^.Increment_Count();
+THIS^.bValues_Updated := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Remove" Id="{a1c5c78c-70c9-0dcb-3f47-91e401ead553}">
+      <Declaration><![CDATA[// Removes item from the set.
+METHOD Remove : I_Set
+VAR_INPUT
+	Item : ANY; // Data to remove
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL; // Indicates whether operation was successful. Success = TRUE, Failure = FALSE
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Remove := THIS^.Remove_Generic(Item, bSuccess => bSuccess);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Remove_Generic" Id="{c8db774d-9048-083d-173f-4af85f936fa6}">
+      <Declaration><![CDATA[// Removes generic item from the set.
+METHOD Remove_Generic : I_Set
+VAR_INPUT
+	Item : T_Generic; // Data to remove
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL; // Indicates whether operation was successful. Success = TRUE, Failure = FALSE
+END_VAR
+VAR
+	Index : T_Position;
+	pCurrent, pPrevious : POINTER TO ST_ORDERED_HASHSET_BUCKET_NODE;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Remove_Generic := THIS^;
+
+IF THIS^._Empty THEN RETURN; END_IF
+
+Index := THIS^.Hash(Item) MOD THIS^.Bucket_Count;
+
+pCurrent := THIS^.pBuckets[Index];
+
+WHILE pCurrent <> 0 DO
+	IF F_Compare_Generics(Item, pCurrent^.Data) = T_Comparison.Equal THEN
+		IF pPrevious <> 0 THEN 
+			pPrevious^.pNext := pCurrent^.pNext;
+		ELSE
+			THIS^.pBuckets[Index] := pCurrent^.pNext;
+			END_IF
+		
+		IF pCurrent = THIS^.pHead THEN 
+			IF THIS^.pHead = THIS^.pTail THEN THIS^.pTail := 0; END_IF
+			THIS^.pHead := pCurrent^.pAfter;
+			THIS^.pHead^.pBefore := 0;
+		ELSIF pCurrent = THIS^.pTail THEN 
+			THIS^.pTail := pCurrent^.pBefore;
+			THIS^.pTail^.pAfter := 0;
+		ELSE
+			pCurrent^.pBefore^.pAfter := pCurrent^.pAfter;
+			pCurrent^.pAfter^.pBefore := pCurrent^.pBefore;
+			END_IF
+
+		THIS^.Delete_Node(pCurrent);
+		bSuccess := TRUE;
+		THIS^.Decrement_Count();
+		THIS^.bValues_Updated := TRUE;
+		THIS^.Clear_Error();
+		RETURN;
+		END_IF
+		
+	pPrevious := pCurrent;
+	pCurrent := pCurrent^.pNext;
+	END_WHILE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Resize" Id="{7f35c590-cc39-082d-1f0d-a5ae8c13fa91}">
+      <Declaration><![CDATA[// Sets the number of buckets in the hash set.
+// Existing items are rehashed and redistributed into the new buckets.
+// Note that of the count is 0 the hashtable is cleared.
+METHOD Resize : I_Hash_Set
+VAR_INPUT
+	Count : T_Capacity;
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+VAR
+	Hash : DWORD;
+	New_Index : T_Position;
+	i : T_Capacity;
+	pCurrent, pNext : POINTER TO T_Hashset_Bucket_Node;
+	pNew_Bucket : POINTER TO POINTER TO T_Hashset_Bucket_Node;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Resize := THIS^;
+
+IF Count < 0 THEN THIS^._Error_Status := GVL_Errors.ERR_INDEX_OUT_OF_BOUNDS; RETURN; END_IF
+IF Count = 0 THEN THIS^.Clear(); bSuccess := TRUE; RETURN; END_IF
+IF Count = THIS^._Bucket_Count THEN bSuccess := TRUE; RETURN; END_IF
+
+pNew_Bucket := THIS^.Create_Buckets(Count, bSuccess => bSuccess, Error => THIS^.Error);
+
+IF NOT bSuccess THEN RETURN; END_IF
+
+FOR i := 0 TO THIS^._Bucket_Count - 1 DO
+	pCurrent := THIS^.pBuckets[i];
+	WHILE pCurrent <> 0 DO
+		pNext := pCurrent^.pNext;
+		New_Index := THIS^.Hash(pCurrent^.Data) MOD Count;
+		pCurrent^.pNext := pNew_Bucket[New_Index];
+		pNew_Bucket[New_Index] := pCurrent;
+		pCurrent := pNext;
+		END_WHILE
+	END_FOR
+	
+__DELETE(THIS^.pBuckets);
+THIS^.pBuckets := pNew_Bucket;
+THIS^._Bucket_Count := Count;]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

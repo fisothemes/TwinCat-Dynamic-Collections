@@ -32,6 +32,9 @@
     <Compile Include="POUs\Function Blocks\FB_Array_Test_Suite.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\Function Blocks\FB_Ordered_Hash_Set_Test_Suite.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\Function Blocks\FB_List_Test_Suite.TcPOU">
       <SubType>Code</SubType>
     </Compile>
