@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_Ordered_Hash_Map_Test_Suite" Id="{c8c52bf4-910e-0a9f-3392-08f415beaf1f}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Ordered_Hash_Map_Test_Suite EXTENDS TcUnit.FB_TestSuite
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Check_If_Clear_Empties_Items();
+Check_If_Insert_Adds_Items();
+Check_If_Update_Updates_Items();
+Check_If_Upsert_Updates_Items_Or_Adds_If_They_Dont_Exist();
+Check_If_Remove_Removes_Items();
+Check_If_Contains_Returns_True_If_Key_In_Map();
+Check_If_Get_Key_Values_Returns_Keys_Values();]]></ST>
+    </Implementation>
+    <Method Name="Check_If_Clear_Empties_Items" Id="{8a72a642-1165-01ad-124b-5108d75fc1b9}">
+      <Declaration><![CDATA[METHOD Check_If_Clear_Empties_Items
+VAR_INST
+	fbMap : FB_Ordered_Hash_Map(0);
+	sKey : STRING := 'I love cats';
+	nValue : INT := 42;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Clear_Empties');
+	fbMap
+		.Insert(sKey, nValue)
+		.Clear();
+		
+	THIS^.AssertEquals_DINT(0, fbMap._Count, 'Map was not empty after inserting data.');
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Contains_Returns_True_If_Key_In_Map" Id="{282f3c17-3ea0-02dc-22f3-bbab7edff988}">
+      <Declaration><![CDATA[METHOD Check_If_Contains_Returns_True_If_Key_In_Map
+VAR_INST
+	fbMap : FB_Ordered_Hash_Map(0);
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+	bResult : BOOL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Contains_Returns_True_If_Key_In_Map');
+
+	bResult := fbMap
+		.Insert(sItem, nItem)
+		.Insert(nItem, sItem)
+		.Contains(nItem);
+		
+	THIS^.AssertEquals_BOOL(TRUE, bResult, 'Failed to check if item is in map.');
+
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Get_Key_Values_Returns_Keys_Values" Id="{9b2fe4d6-8aa7-0b9f-3c72-fac0e4cb8861}">
+      <Declaration><![CDATA[METHOD Check_If_Get_Key_Values_Returns_Keys_Values
+VAR_INST
+	fbMap : FB_Ordered_Hash_Map(0);
+	arnItems : ARRAY[0..3] OF DINT := [1,2,3,4];
+	arnReturned_Keys,
+	arnReturned_Values : ARRAY[0..3] OF DINT;
+	i : DINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Get_Key_Values_Returns_Keys_Values');
+
+	FOR i := 0 TO 3 DO
+    	fbMap.Insert(arnItems[i], arnItems[i]);
+    	END_FOR
+		
+	fbMap.Get_Keys()
+		.Get(0, arnReturned_Keys[0])
+		.Get(1, arnReturned_Keys[1]);
+	fbMap.Get_Keys()
+		.Get(2, arnReturned_Keys[2])
+		.Get(3, arnReturned_Keys[3]);
+	THIS^.AssertEquals_DINT(1, arnReturned_Keys[0],'');
+	THIS^.AssertEquals_DINT(2, arnReturned_Keys[1],'');
+	THIS^.AssertEquals_DINT(3, arnReturned_Keys[2],'');
+	THIS^.AssertEquals_DINT(4, arnReturned_Keys[3],'');
+	
+	fbMap.Get_Values()
+		.Get(0, arnReturned_Values[0])
+		.Get(1, arnReturned_Values[1]);
+	fbMap.Get_Values()
+		.Get(2, arnReturned_Values[2])
+		.Get(3, arnReturned_Values[3]);
+	THIS^.AssertEquals_DINT(1, arnReturned_Values[0],'');
+	THIS^.AssertEquals_DINT(2, arnReturned_Values[1],'');
+	THIS^.AssertEquals_DINT(3, arnReturned_Values[2],'');
+	THIS^.AssertEquals_DINT(4, arnReturned_Values[3],'');
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Insert_Adds_Items" Id="{21bb95d5-af1b-0873-07aa-582cd3dbf721}">
+      <Declaration><![CDATA[METHOD Check_If_Insert_Adds_Items
+VAR_INST
+	fbMap : FB_Ordered_Hash_Map(0);
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Insert_Adds_Items');
+
+	fbMap
+		.Insert(sItem, nItem)
+		.Insert(nItem, sItem);
+		
+	THIS^.AssertEquals_DINT(2, fbMap._Count, 'Failed to insert items into map.');
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Remove_Removes_Items" Id="{f9b5d31b-4082-0e5d-2848-d633a321ea5d}">
+      <Declaration><![CDATA[METHOD Check_If_Remove_Removes_Items
+VAR_INST
+	fbMap : FB_Ordered_Hash_Map(0);
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+	fItem : LREAL := 37.4;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Remove_Removes_Items');
+
+	fbMap
+		.Insert(sItem, nItem)
+		.Insert(nItem, fItem)
+		.Insert(fItem, sItem)
+		.Remove(nItem);
+		
+	THIS^.AssertEquals_DINT(2, fbMap._Count, 'Failed to remove item in set.');
+	THIS^.AssertEquals_BOOL(TRUE, fbMap.Contains(sItem), 'Failed to remove item in set.');
+	THIS^.AssertEquals_BOOL(FALSE, fbMap.Contains(nItem), 'Failed to remove item in set.');
+	THIS^.AssertEquals_BOOL(TRUE, fbMap.Contains(fItem), 'Failed to remove item in set.');	
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Update_Updates_Items" Id="{1dcb6bcc-158f-0c1a-2771-f6f16cfe7929}">
+      <Declaration><![CDATA[METHOD Check_If_Update_Updates_Items
+VAR_INST
+	fbMap : FB_Ordered_Hash_Map(0);
+	sItem : STRING := 'I love cats';
+	nItem : INT := 42;
+	fItem : LREAL := 37.4;
+	fNew_Item : LREAL := 3.14;
+	fR_Item,
+	fR_Updated_Item : LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Update_Updates_Items');
+	fbMap
+		.Insert(sItem, nItem)
+		.Insert(nItem, fItem)
+		.Insert(fItem, sItem)
+		.Get(nItem, fR_Item)
+		.Update(nItem, fNew_Item)
+		.Get(nItem, fR_Updated_Item);
+	
+	THIS^.AssertEquals_LREAL(37.4, fR_Item, 0.0001, 'Failed to get value to be updated in map.');
+	THIS^.AssertEquals_LREAL(3.14, fR_Updated_Item, 0.0001, 'Failed to get updated value in map.');
+		
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Upsert_Updates_Items_Or_Adds_If_They_Dont_Exist" Id="{397bad8b-58c0-0ba6-327d-f1d2c30f3b2b}">
+      <Declaration><![CDATA[METHOD Check_If_Upsert_Updates_Items_Or_Adds_If_They_Dont_Exist
+VAR_INST
+	fbMap : FB_Ordered_Hash_Map(0);
+	nItem : INT := 42;
+	fItem : LREAL := 37.4;
+	fNew_Item : LREAL := 3.14;
+	fR_Item,
+	fR_Updated_Item : LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Upsert_Updates_Items_Or_Adds_If_They_Dont_Exist');
+	fbMap
+		.Upsert(nItem, fItem)
+		.Get(nItem, fR_Item)
+		.Upsert(nItem, fNew_Item)
+		.Get(nItem, fR_Updated_Item);
+		
+	THIS^.AssertEquals_LREAL(37.4, fR_Item, 0.0001, 'Failed to insert key value in map.');
+	THIS^.AssertEquals_LREAL(3.14, fR_Updated_Item, 0.0001, 'Failed to update value in map.');
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

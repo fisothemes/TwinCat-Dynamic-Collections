@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1">
   <POU Name="FB_Ordered_Hash_Set" Id="{07e293cd-5be0-0645-2e17-9ec53fc8fd22}" SpecialFunc="None">
-    <Declaration><![CDATA[// A collection that stores no duplicate items and whose insertion order is preserved.
+    <Declaration><![CDATA[// A collection that stores unique items while preserving their insertion order.
 // Implemented using hash table with closed addressing.
 {attribute 'enable_dynamic_creation'}
 {attribute 'no_assign'}
@@ -48,7 +48,7 @@ END_VAR
 METHOD Clear : I_Set
 VAR
 	i : T_Capacity;
-	pCurrent, pNext : POINTER TO T_Hashset_Bucket_Node;
+	pCurrent, pNext : POINTER TO ST_ORDERED_HASHSET_BUCKET_NODE;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Clear := THIS^;
@@ -383,8 +383,8 @@ VAR
 	Hash : DWORD;
 	New_Index : T_Position;
 	i : T_Capacity;
-	pCurrent, pNext : POINTER TO T_Hashset_Bucket_Node;
-	pNew_Bucket : POINTER TO POINTER TO T_Hashset_Bucket_Node;
+	pCurrent, pNext : POINTER TO ST_ORDERED_HASHSET_BUCKET_NODE;
+	pNew_Bucket : POINTER TO POINTER TO ST_ORDERED_HASHSET_BUCKET_NODE;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[Resize := THIS^;

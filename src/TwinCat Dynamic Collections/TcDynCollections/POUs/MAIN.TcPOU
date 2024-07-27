@@ -21,8 +21,9 @@ VAR
 	fbTree_Set : FB_Tree_Set;
 	fbHash_Set : FB_Hash_Set(3);
 	fbOrdered_Hash_Set : FB_Ordered_Hash_Set(3);
+	fbOrdered_Hash_Map : FB_Ordered_Hash_Map(0);
 	fbTree_Map : FB_Tree_Map;
-	fbHash_Map : FB_Hash_Map(3);
+	fbHash_Map : FB_Hash_Map(0);
 	fbMultiset : FB_Tree_Multiset;
 END_VAR]]></Declaration>
     <Implementation>

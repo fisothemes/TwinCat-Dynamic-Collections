@@ -1,0 +1,659 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_Ordered_Hash_Map" Id="{39673384-09f6-0dfa-0658-e729dc120aef}" SpecialFunc="None">
+    <Declaration><![CDATA[// A collection that stores key-value pairs while preserving their insertion order.
+// Implemented using hash table with closed addressing.
+{attribute 'enable_dynamic_creation'}
+{attribute 'no_assign'}
+{attribute 'no_explicit_call' := 'direct call for this function block is not allowed'}
+FUNCTION_BLOCK FB_Ordered_Hash_Map EXTENDS FB_Collection IMPLEMENTS I_Hash_Map
+VAR
+	pBuckets : POINTER TO POINTER TO ST_ORDERED_HASHMAP_BUCKET_NODE; // Array of pointers to hash bucket node.
+	pHead, pTail : POINTER TO ST_ORDERED_HASHMAP_BUCKET_NODE;
+	Bucket_Count : T_Capacity;
+	pKeys, pValues : POINTER TO FB_Array_List;
+	fbImmutable_Keys_List,
+	fbImmutable_Values_List : FB_Immutable_List;
+	bKeys_Updated, bValues_Updated : BOOL := TRUE;
+END_VAR
+VAR CONSTANT
+	fLoad_Factor : REAL := 0.75;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Folder Name="Internal" Id="{dacabe16-eba3-06eb-015b-a7fef49065cd}" />
+    <Property Name="_Bucket_Count" Id="{37562d56-3cd1-08b7-1597-0aa0384803f9}">
+      <Declaration><![CDATA[// Number of buckets in the hash map.
+PROPERTY _Bucket_Count : T_Capacity;]]></Declaration>
+      <Get Name="Get" Id="{3eae9caf-986a-0a4a-3063-badaab6ab4e9}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_Bucket_Count := THIS^.Bucket_Count;]]></ST>
+        </Implementation>
+      </Get>
+      <Set Name="Set" Id="{a1f3e721-3e2a-057f-3017-63ff8ee823a1}">
+        <Declaration><![CDATA[PROTECTED 
+VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[THIS^.Bucket_Count := _Bucket_Count; ]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+    <Method Name="Clear" Id="{0ec7fa34-cf27-047e-3526-9a3bf37fa446}">
+      <Declaration><![CDATA[// Empties/Clears/Deletes every item in the map.
+METHOD Clear : I_Map
+VAR
+	i : T_Capacity;
+	pCurrent, pNext : POINTER TO ST_ORDERED_HASHMAP_BUCKET_NODE;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Clear := THIS^;
+
+FOR i := 0 TO THIS^._Bucket_Count - 1 DO
+	pCurrent := THIS^.pBuckets[i];
+	WHILE pCurrent <> 0 DO
+		pNext := pCurrent^.pNext;
+		THIS^.Delete_Node(pCurrent);
+		pCurrent := pNext;
+		END_WHILE
+	END_FOR
+
+IF THIS^.pKeys <> 0 THEN
+	THIS^.fbImmutable_Keys_List(ipList := 0);  
+	__DELETE(THIS^.pKeys); 
+	END_IF
+	
+IF THIS^.pValues <> 0 THEN 
+	THIS^.fbImmutable_Values_List(ipList := 0);
+	__DELETE(THIS^.pValues);
+	END_IF
+
+__DELETE(THIS^.pBuckets);
+THIS^._Bucket_Count := 0;
+THIS^._Count := 0;
+THIS^.pHead := THIS^.pTail := 0;
+THIS^.bKeys_Updated := THIS^.bValues_Updated := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Contains" Id="{625218ff-9918-0261-2649-4dd90692ed59}">
+      <Declaration><![CDATA[// Checks if key is contained in the map.
+METHOD Contains : BOOL
+VAR_INPUT
+	Key : ANY; // Key to find.
+END_VAR
+VAR
+	Index : T_Position;
+	pCurrent : POINTER TO ST_ORDERED_HASHMAP_BUCKET_NODE;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF THIS^._Empty THEN RETURN; END_IF
+
+Index := THIS^.Hash(Key) MOD THIS^.Bucket_Count;
+
+pCurrent := THIS^.pBuckets[Index];
+
+WHILE pCurrent <> 0 DO
+	IF F_Compare_Generics(Key, pCurrent^.Key) = T_Comparison.Equal THEN 
+		Contains := TRUE;
+		THIS^.Clear_Error();
+		RETURN; 
+		END_IF
+	pCurrent := pCurrent^.pNext;
+	END_WHILE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Create_Buckets" Id="{101235f0-1d5d-04f9-3358-e048b30b8d7f}" FolderPath="Internal\">
+      <Declaration><![CDATA[// Creates buckets and initialises them since user defined types can't be created as arrays dynamically using __NEW(...).
+METHOD PROTECTED Create_Buckets : POINTER TO POINTER TO ST_ORDERED_HASHMAP_BUCKET_NODE
+VAR_INPUT
+	Count : T_Capacity;
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL := TRUE;
+	Error : T_Error := GVL_Errors.ERR_NO_ERROR;
+END_VAR
+VAR
+	i : T_Capacity;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF Count <= 0 THEN RETURN; END_IF
+
+Create_Buckets := __NEW(POINTER TO ST_ORDERED_HASHMAP_BUCKET_NODE, TO_UDINT(Count));
+
+IF Create_Buckets = 0 THEN
+	bSuccess := FALSE;
+	Error := GVL_Errors.ERR_MALLOC_FAILED;
+	END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Create_Node" Id="{8e86bec3-79ca-0b1f-3868-e9229ba425c1}" FolderPath="Internal\">
+      <Declaration><![CDATA[// Creates a new node in dynamic memory with a clone of the generic item as it data.
+METHOD PROTECTED Create_Node : POINTER TO ST_ORDERED_HASHMAP_BUCKET_NODE
+VAR_INPUT
+	Key, Value : T_Generic;
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+	Error : T_Error;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Create_Node := __NEW(ST_ORDERED_HASHMAP_BUCKET_NODE);
+
+IF Create_Node = 0 THEN 
+	Error := GVL_Errors.ERR_MALLOC_FAILED;
+	RETURN;
+	END_IF
+
+Create_Node^.Key := F_Clone_Generic(Key, bSuccess => bSuccess, Error => Error);
+
+IF NOT bSuccess THEN __DELETE(Create_Node); RETURN; END_IF
+
+Create_Node^.Value := F_Clone_Generic(Value, bSuccess => bSuccess, Error => Error);
+
+IF NOT bSuccess THEN
+	F_Delete_Generic(Create_Node^.Key);
+	__DELETE(Create_Node);
+	END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Delete_Node" Id="{f514fb46-752e-03bf-3ef4-8b07327c0e6c}" FolderPath="Internal\">
+      <Declaration><![CDATA[// Safety deletes node.
+// If the node and/or it's value/data is in dynamic memory it/they will be deleted.
+METHOD PROTECTED Delete_Node
+VAR_INPUT
+	pNode : REFERENCE TO POINTER TO ST_ORDERED_HASHMAP_BUCKET_NODE;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF (pNode = 0) THEN RETURN; END_IF 
+
+F_Delete_Generic(pNode^.Key);
+F_Delete_Generic(pNode^.Value);
+
+CASE Tc2_System.F_CheckMemoryArea(pNode, 1) OF
+	Tc2_System.E_TcMemoryArea.Dynamic: __DELETE(pNode);
+ELSE
+	pNode := 0;
+	END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FB_exit" Id="{c103b810-61fd-026b-0d2f-7be7a8adb941}">
+      <Declaration><![CDATA[{attribute 'hide'}
+METHOD FB_exit : BOOL
+VAR_INPUT
+	bInCopyCode : BOOL; // if TRUE, the exit method is called for exiting an instance that is copied afterwards (online change).
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Return if it's an online change.
+IF bInCopyCode THEN RETURN; END_IF
+
+THIS^.Clear();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FB_init" Id="{412dacbe-1ab5-0870-3daa-282c6c8620fd}">
+      <Declaration><![CDATA[{attribute 'hide'}
+METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+	Initial_Bucket_Count : T_Capacity; // Number of buckets you want to initialise the hash map with. Use 0 if you don't know.
+END_VAR
+VAR 
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[// Return if it's an online change.
+IF bInCopyCode THEN RETURN; END_IF
+
+THIS^.pBuckets := THIS^.Create_Buckets(Initial_Bucket_Count, bSuccess => bSuccess, Error => THIS^.Error);
+THIS^._Bucket_Count := SEL(THIS^.pBuckets <> 0, 0,Initial_Bucket_Count);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get" Id="{db3dd4a8-44b9-0e65-2f26-bb116470ab90}">
+      <Declaration><![CDATA[// Gets the value associated with the specified key without removing it from the map.
+METHOD Get : I_Map
+VAR_INPUT
+	Key : ANY; // Key used to identify stored value
+	Value : ANY; // Variable to store requested data 
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+VAR
+	Tmp : T_Generic;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get := THIS^;
+
+THIS^.Get_Generic(Key, Value => Tmp, bSuccess => bSuccess);
+
+IF NOT bSuccess THEN RETURN; END_IF
+
+IF NOT F_Matching_Generics(Value, Tmp) THEN
+	THIS^._Error_Status := GVL_Errors.ERR_TYPE_MISMATCH;
+	RETURN;
+	END_IF
+	
+F_Copy_Generic_Value(Tmp, Value, bSuccess => bSuccess, Error => THIS^.Error);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_As_String" Id="{d4986f1f-8361-0fdd-3577-94ec9e931dcc}">
+      <Declaration><![CDATA[// Returns value as a string, if type to string conversion is supported.
+METHOD Get_As_String : I_Map
+VAR_INPUT
+	Key : ANY; // Key used to identify stored value
+	sValue : REFERENCE TO STRING; // Variable to store returned item.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+VAR
+	Tmp : T_Generic;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get_As_String := THIS^;
+
+IF NOT __ISVALIDREF(sValue) THEN 
+	THIS^._Error_Status := GVL_Errors.ERR_INVALID_REFERENCE;
+	RETURN;
+	END_IF
+	
+THIS^.Get_Generic(Key, Value => Tmp, bSuccess => bSuccess);
+
+IF NOT bSuccess THEN RETURN; END_IF
+	
+CASE Tmp.TypeClass OF
+	T_Type.TYPE_STRING:
+		Tc2_Utilities.STRNCPY(ADR(sValue), Tmp.pValue, MIN(Tc2_Utilities.LEN2(ADR(sValue))+1, TO_UDINT(Tmp.diSize)));
+		THIS^.Clear_Error();
+
+	T_Type.TYPE_WSTRING:
+		Tc2_Utilities.WSTRING_TO_STRING2(ADR(sValue), Tmp.pValue, MIN(Tc2_Utilities.LEN2(ADR(sValue))+1, TO_UDINT(Tmp.diSize)));
+		THIS^.Clear_Error();
+ELSE
+	sValue := F_Generic_To_String(Tmp, bSuccess => bSuccess, Error => THIS^.Error);
+	END_CASE]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_Generic" Id="{c3f58b18-20a5-0c48-3a71-8aed4e532f6f}">
+      <Declaration><![CDATA[// Gets the value in its generic form associated with the specified key in its generic form without removing it from the map.
+// (** Use carefully as this contains the pointer of the actual value in the collection. **)
+// If you wish to use this it is recommeded you create a copy of the returned value using MEMCPY
+METHOD Get_Generic : I_Map
+VAR_INPUT
+	Key : T_Generic; // Key used to identify stored value
+END_VAR
+VAR_OUTPUT
+	Value : T_Generic; // Variable to store requested data 
+	bSuccess : BOOL;
+END_VAR
+VAR
+	Index : T_Position;
+	pCurrent : POINTER TO ST_ORDERED_HASHMAP_BUCKET_NODE;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Get_Generic := THIS^;
+
+IF THIS^._Empty THEN THIS^._Error_Status := GVL_Errors.ERR_NO_KEY; RETURN; END_IF
+
+Index := THIS^.Hash(Key) MOD THIS^.Bucket_Count;
+
+pCurrent := THIS^.pBuckets[Index];
+
+WHILE pCurrent <> 0 DO
+	IF F_Compare_Generics(Key, pCurrent^.Key) = T_Comparison.Equal THEN
+		Value := pCurrent^.Value;
+		bSuccess := TRUE;
+		THIS^.Clear_Error();
+		RETURN; 
+		END_IF
+	pCurrent := pCurrent^.pNext;
+	END_WHILE
+	
+THIS^._Error_Status := GVL_Errors.ERR_NO_KEY;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_Keys" Id="{91642ef5-c082-0f35-3cf9-b2fd702dfb77}">
+      <Declaration><![CDATA[// Gets an immutable list of the keys.
+METHOD Get_Keys : I_Immutable_List
+VAR
+	i : T_Capacity;
+	pCurrent : POINTER TO ST_ORDERED_HASHMAP_BUCKET_NODE;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF THIS^.pKeys = 0 THEN THIS^.pKeys := __NEW(FB_Array_List(Initial_Capacity := 0)); END_IF
+THIS^.fbImmutable_Keys_List(ipList := THIS^.pKeys^);
+Get_Keys := THIS^.fbImmutable_Keys_List;
+
+IF NOT THIS^.bKeys_Updated THEN RETURN; END_IF
+
+THIS^.pKeys^.Clear();
+
+IF THIS^._Empty THEN RETURN; END_IF
+
+pCurrent := THIS^.pHead;
+WHILE pCurrent <> 0 DO
+	pKeys^.Insert_Generic(pKeys^._Count, pCurrent^.Key);
+	pCurrent := pCurrent^.pAfter;
+	END_WHILE
+	
+THIS^.bKeys_Updated := FALSE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Get_Values" Id="{8bbbf599-615c-0a48-0f90-9619e79db9f3}">
+      <Declaration><![CDATA[// Gets an immutable list of the values.
+METHOD Get_Values : I_Immutable_List
+VAR
+	i : T_Capacity;
+	pCurrent : POINTER TO ST_ORDERED_HASHMAP_BUCKET_NODE;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF THIS^.pValues = 0 THEN THIS^.pValues := __NEW(FB_Array_List(Initial_Capacity := 0)); END_IF
+THIS^.fbImmutable_Values_List(ipList := THIS^.pValues^);
+Get_Values := THIS^.fbImmutable_Values_List;
+
+IF NOT THIS^.bValues_Updated THEN RETURN; END_IF
+
+pValues^.Clear();
+
+IF THIS^._Empty THEN RETURN; END_IF
+
+pCurrent := THIS^.pHead;
+WHILE pCurrent <> 0 DO
+	pValues^.Insert_Generic(pValues^._Count, pCurrent^.Value);
+	pCurrent := pCurrent^.pAfter;
+	END_WHILE
+	
+THIS^.bValues_Updated := FALSE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Hash" Id="{42a2ce6d-97ea-0638-1e51-19fc0f83536e}" FolderPath="Internal\">
+      <Declaration><![CDATA[// Wrapper for murmur3 hash function that generates a value that fits in the upperage of DINT to avoid negative values due to integer overflow.
+METHOD PROTECTED Hash : T_Capacity
+VAR_INPUT
+	Data : T_Generic;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Hash := TO_DINT(F_Murmur3_Hash(Data) MOD TO_DWORD(GVL_Constants.MAX_CAPACITY));]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Insert" Id="{d91ad14c-fc2a-01ae-301c-2f1fdaa6c066}">
+      <Declaration><![CDATA[// Insert an element with the provided key and value to the map.
+METHOD Insert : I_Map
+VAR_INPUT
+	Key : ANY; // Key used to identify stored value
+	Value : ANY; // Value to store in map with key
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Insert := THIS^.Insert_Generic(Key, Value, FALSE, bSuccess => bSuccess);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Insert_Generic" Id="{8f2eb0d7-16c0-08fd-3db0-a0ec8028de84}">
+      <Declaration><![CDATA[// Insert an element with the provided key and value in their generic forms to the map.
+METHOD Insert_Generic : I_Map
+VAR_INPUT
+	Key : T_Generic; // Key used to identify stored value
+	Value : T_Generic; // Value to store in map with key
+	bUpdate : BOOL; // If this is true the value will be updated if the key already exists.
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+VAR
+	Index : T_Position;
+	pCurrent : POINTER TO ST_ORDERED_HASHMAP_BUCKET_NODE;
+	Tmp : T_Generic;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Insert_Generic := THIS^;
+
+IF TO_REAL(THIS^._Count) > (TO_REAL(THIS^._Bucket_Count) * THIS^.fLoad_Factor) OR_ELSE THIS^.Bucket_Count <= 0 THEN
+	// Increasing the bucket by 50% once the load factor is reached.
+	// Bitwise shifting is the same as multiplying by 1.5, this is done because no complicated casting is needed.
+	THIS^.Resize(SEL(THIS^._Bucket_Count > 1, 16, THIS^._Bucket_Count + SHR(THIS^._Bucket_Count, 1)), bSuccess => bSuccess);
+	IF NOT bSuccess THEN RETURN; END_IF
+	END_IF
+
+Index := THIS^.Hash(Key) MOD THIS^._Bucket_Count;
+
+pCurrent := THIS^.pBuckets[Index];
+
+WHILE pCurrent <> 0 DO
+	CASE F_Compare_Generics(Key, pCurrent^.Key) OF
+		T_Comparison.Equal:
+			IF bUpdate THEN
+				Tmp := F_Clone_Generic(Value, bSuccess => bSuccess, Error => THIS^.Error);
+				IF NOT bSuccess THEN RETURN; END_IF
+				F_Delete_Generic(pCurrent^.Value);
+				pCurrent^.Value := Tmp;
+				THIS^.bValues_Updated := TRUE;
+			ELSE
+				THIS^._Error_Status := GVL_Errors.ERR_DUPLICATE_KEY;
+			END_IF
+			RETURN;
+		T_Comparison.Invalid:
+			THIS^._Error_Status := GVL_Errors.ERR_INVALID_COMPARISON;
+			RETURN;
+	ELSE
+		pCurrent := pCurrent^.pNext; 
+		END_CASE
+	END_WHILE
+	
+pCurrent := THIS^.Create_Node(Key, Value, bSuccess => bSuccess, Error => THIS^.Error);
+
+IF NOT bSuccess THEN RETURN; END_IF
+
+pCurrent^.pNext := THIS^.pBuckets[Index];
+THIS^.pBuckets[Index] := pCurrent;
+
+IF THIS^.pHead = 0 THEN 
+	THIS^.pHead := THIS^.pTail := pCurrent;
+ELSE
+	THIS^.pTail^.pAfter := pCurrent;
+	pCurrent^.pBefore := THIS^.pTail;
+	THIS^.pTail := pCurrent;
+	END_IF
+
+THIS^.Increment_Count();
+THIS^.bKeys_Updated := THIS^.bValues_Updated := TRUE;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Remove" Id="{16c98975-db14-0ce4-029b-c5657a6721f2}">
+      <Declaration><![CDATA[// Removes value with the specified key from the map.
+METHOD Remove : I_Map
+VAR_INPUT
+	Key : ANY; // Key used to identify stored value
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Remove := THIS^.Remove_Generic(Key, bSuccess => bSuccess);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Remove_Generic" Id="{7a9ca662-f253-03a7-048f-c1d323cdc0fa}">
+      <Declaration><![CDATA[// Removes value with the specified key in its generic form from the map.
+METHOD Remove_Generic : I_Map
+VAR_INPUT
+	Key : T_Generic; // Key used to identify stored value
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+VAR
+	Index : T_Position;
+	pCurrent, pPrevious : POINTER TO ST_ORDERED_HASHMAP_BUCKET_NODE;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Remove_Generic := THIS^;
+
+IF THIS^._Empty THEN THIS^._Error_Status := GVL_Errors.ERR_NO_KEY; RETURN; END_IF
+
+Index := THIS^.Hash(Key) MOD THIS^.Bucket_Count;
+
+pCurrent := THIS^.pBuckets[Index];
+
+WHILE pCurrent <> 0 DO
+	IF F_Compare_Generics(Key, pCurrent^.Key) = T_Comparison.Equal THEN
+		IF pPrevious <> 0 THEN 
+			pPrevious^.pNext := pCurrent^.pNext;
+		ELSE
+			THIS^.pBuckets[Index] := pCurrent^.pNext;
+			END_IF
+			
+		IF pCurrent = THIS^.pHead THEN 
+			IF THIS^.pHead = THIS^.pTail THEN THIS^.pTail := 0; END_IF
+			THIS^.pHead := pCurrent^.pAfter;
+			THIS^.pHead^.pBefore := 0;
+		ELSIF pCurrent = THIS^.pTail THEN 
+			THIS^.pTail := pCurrent^.pBefore;
+			THIS^.pTail^.pAfter := 0;
+		ELSE
+			pCurrent^.pBefore^.pAfter := pCurrent^.pAfter;
+			pCurrent^.pAfter^.pBefore := pCurrent^.pBefore;
+			END_IF
+			
+		THIS^.Delete_Node(pCurrent);
+		bSuccess := TRUE;
+		THIS^.Decrement_Count();
+		THIS^.bKeys_Updated := THIS^.bValues_Updated := TRUE;
+		THIS^.Clear_Error();
+		RETURN;
+		END_IF
+		
+	pPrevious := pCurrent;
+	pCurrent := pCurrent^.pNext;
+	END_WHILE
+	
+THIS^._Error_Status := GVL_Errors.ERR_NO_KEY;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Resize" Id="{b90bd314-e467-08ca-18af-26d3bb359f22}">
+      <Declaration><![CDATA[// Sets the number of buckets in the hash map.
+// Existing items are rehashed and redistributed into the new buckets.
+// Note that of the count is 0 the hashtable is cleared.
+METHOD Resize : I_Hash_Map
+VAR_INPUT
+	Count : T_Capacity;
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+VAR
+	Hash : DWORD;
+	New_Index : T_Position;
+	i : T_Capacity;
+	pCurrent, pNext : POINTER TO ST_ORDERED_HASHMAP_BUCKET_NODE;
+	pNew_Bucket : POINTER TO POINTER TO ST_ORDERED_HASHMAP_BUCKET_NODE;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Resize := THIS^;
+
+IF Count < 0 THEN THIS^._Error_Status := GVL_Errors.ERR_INDEX_OUT_OF_BOUNDS; RETURN; END_IF
+IF Count = 0 THEN THIS^.Clear(); bSuccess := TRUE; THIS^.Clear_Error(); RETURN; END_IF
+IF Count = THIS^._Bucket_Count THEN bSuccess := TRUE; THIS^.Clear_Error(); RETURN; END_IF
+
+pNew_Bucket := THIS^.Create_Buckets(Count, bSuccess => bSuccess, Error => THIS^.Error);
+
+IF NOT bSuccess THEN RETURN; END_IF;
+
+FOR i := 0 TO THIS^._Bucket_Count - 1 DO
+	pCurrent := THIS^.pBuckets[i];
+	WHILE pCurrent <> 0 DO
+		pNext := pCurrent^.pNext;
+		New_Index := THIS^.Hash(pCurrent^.Key) MOD Count;
+		pCurrent^.pNext := pNew_Bucket[New_Index];
+		pNew_Bucket[New_Index] := pCurrent;
+		pCurrent := pNext;
+		END_WHILE
+	END_FOR
+	
+__DELETE(THIS^.pBuckets);
+THIS^.pBuckets := pNew_Bucket;
+THIS^._Bucket_Count := Count;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Update" Id="{616c182f-f17f-0072-0cbd-25407c77188e}">
+      <Declaration><![CDATA[// Updates the value at the provided key with the new value in the map.
+METHOD Update : I_Map
+VAR_INPUT
+	Key 	: ANY; // Key used to identify stored value
+	Value 	: ANY; // Value to store in map with key
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Update := THIS^.Update_Generic(Key, Value, bSuccess => bSuccess);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Update_Generic" Id="{9a3481ed-c7b2-0932-2189-1eb54e9c2318}">
+      <Declaration><![CDATA[// Updates the value at the provided key with the new value in their generic forms in the map.
+METHOD Update_Generic : I_Map
+VAR_INPUT
+	Key 	: T_Generic; // Key used to identify stored value
+	Value 	: T_Generic; // Value to store in map with key
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR
+VAR
+	Index : T_Position;
+	pCurrent : POINTER TO ST_ORDERED_HASHMAP_BUCKET_NODE;
+	Tmp : T_Generic;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Update_Generic := THIS^;
+
+IF THIS^._Empty THEN THIS^._Error_Status := GVL_Errors.ERR_NO_KEY; RETURN; END_IF
+
+Index := THIS^.Hash(Key) MOD THIS^.Bucket_Count;
+
+pCurrent := THIS^.pBuckets[Index];
+
+WHILE pCurrent <> 0 DO
+	CASE F_Compare_Generics(Key, pCurrent^.Key) OF
+		T_Comparison.Equal:
+			Tmp := F_Clone_Generic(Value, bSuccess => bSuccess, Error => THIS^.Error);
+			IF NOT bSuccess THEN RETURN; END_IF;
+			F_Delete_Generic(pCurrent^.Value);
+			pCurrent^.Value := Tmp;
+			THIS^.bValues_Updated := TRUE;
+			RETURN;
+		T_Comparison.Invalid:
+			THIS^._Error_Status := GVL_Errors.ERR_INVALID_COMPARISON;
+			RETURN;
+	ELSE
+		pCurrent := pCurrent^.pNext; 
+		END_CASE
+	END_WHILE
+	
+THIS^._Error_Status := GVL_Errors.ERR_NO_KEY;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Upsert" Id="{50436c0d-0414-088d-3255-87b0b32d45f5}">
+      <Declaration><![CDATA[// Updates a value in the map for a given key. If the key doesnt exist, it will be inserted.
+METHOD Upsert : I_Map
+VAR_INPUT
+	Key 	: ANY; // Key used to identify stored value
+	Value 	: ANY; // Value to store in map with key
+END_VAR
+VAR_OUTPUT
+	bSuccess : BOOL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[Upsert := THIS^.Insert_Generic(Key, Value, TRUE, bSuccess => bSuccess);]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>
