@@ -276,7 +276,7 @@ _Boot/
 _CompileInfo/
 
 # Twinpack
-.Zeugwerk/
+.Zeugwerk/libraries
 
 assets/files/LICENSE.txt
 assets/images/TwinCAT Dynamic Collections.png
