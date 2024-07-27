@@ -46,6 +46,10 @@ Here are some of the features of Dynamic Collections:
 
 * 👍 **FB_Deque** - (Pronounced as 'deck') Double-Ended Queue. A collection that supports the insertion and removal of items at the front and back. Its base is FB_List. Can store multiple types. Implements `I_Deque`.
 
+* 👍 **FB_Ordered_Hash_Set** -  A collection that maintains unique items while preserving their insertion order. Implemented using a hash table with closed addressing. Can store multiple types. Implements `I_Hash_Set`.
+
+* 👍 **FB_Ordered_Hash_Map** - A collection that maintains key-value pairs with unique keys while preserving their insertion order. Implemented using a hash table with closed addressing. Can store multiple types. Implements `I_Hash_Map`.
+
 ## Interface UML
 
 ![TwinCAT Collections Interface UML](./assets/images/TwinCAT%20Dynamic%20Collections%20Interface%20UML.jpg)
