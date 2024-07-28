@@ -1,0 +1,6 @@
+- name: User guide
+  href: userguide/
+- name: Conventions
+  href: conventions/
+- name: API Reference
+  href: reference/

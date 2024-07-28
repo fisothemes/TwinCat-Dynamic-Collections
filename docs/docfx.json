@@ -1,0 +1,43 @@
+{
+  "build": {
+    "content": [
+      {
+        "files": [
+          "reference/**.md",
+          "reference/**/toc.yml", 
+        ]
+      },
+      {
+        "files": [
+          "userguide/*.md",
+          "userguide/toc.yml",
+          "conventions/*.md",
+          "conventions/toc.yml",		  
+          "toc.yml",
+          "*.md"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": ["images/**"]
+      }
+    ],
+    "dest": "html",
+    "globalMetadataFiles": [
+      "metadata.json"
+    ],
+    "fileMetadataFiles": [],
+    "template": [
+        "default",
+        "modern",
+        "template"
+    ],
+    "postProcessors": [],
+    "markdownEngineName": "markdig",
+    "noLangKeyword": false,
+    "keepFileLink": false,
+    "cleanupCacheHistory": false,
+    "disableGitFeatures": false
+  }
+}

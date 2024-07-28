@@ -1,0 +1,27 @@
+name: Documentation
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'docs/**'
+      - 'src/**'
+  pull_request:
+  workflow_dispatch:
+jobs:
+  Build:
+    name: Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build
+        uses: Zeugwerk/zkdoc-action@1.0.0
+        with:
+          username: ${{ secrets.ACTIONS_ZGWK_USERNAME }}
+          password: ${{ secrets.ACTIONS_ZGWK_PASSWORD }}
+          filepath: "src/TwinCat Dynamic Collections/TcDynCollections/TcDynCollections.plcproj"
+          doc-folder: "docs"
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          publish_dir: archive/docs/html
