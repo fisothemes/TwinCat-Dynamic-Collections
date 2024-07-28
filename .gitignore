@@ -276,7 +276,10 @@ _Boot/
 _CompileInfo/
 
 # Twinpack
-.Zeugwerk/libraries
-
+/src/.Zeugwerk/libraries
 assets/files/LICENSE.txt
 assets/images/TwinCAT Dynamic Collections.png
+
+# Github Pages
+gh-pages
+gh-pages.pub
