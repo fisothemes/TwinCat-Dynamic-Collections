@@ -1,0 +1,303 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>FB_Deque </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="FB_Deque ">
+      
+      
+      <link rel="icon" href="../../../../../favicon.ico">
+      <link rel="stylesheet" href="../../../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../../toc.html">
+      
+      
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/c777b71de9e588c27137754a11f518dad545b25c/docs/reference/TcDynCollections/POUs/Function Blocks/Collections/FB_Deque.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+  </head>
+
+  <script type="module" src="./../../../../../public/docfx.min.js"></script>
+
+  <script>
+    const theme = localStorage.getItem('theme') || 'auto'
+    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+  </script>
+
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../../../index.html">
+            <img id="logo" class="svg" src="../../../../../logo.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="TcDynCollections.FB_Deque">
+<h1 id="fb_deque">FB_Deque</h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="FB_Deque.html">TcDynCollections</a></dd></dl>
+  
+  </div>
+<dl class="typelist implements"><dt>Implements</dt><dd>
+<div><a class="xref" href="../../../ITFs/Collections/I_Deque.html">I_Deque</a></div>
+<div><a class="xref" href="../../../ITFs/Collections/I_Collection.html">I_Collection</a></div>
+<div>__SYSTEM.IQueryInterface</div>
+</dd></dl>
+<div class="codewrapper">
+    <pre><code class="lang-st hljs">{attribute 'enable_dynamic_creation'}
+{attribute 'no_assign'}
+{attribute 'no_explicit_call' := 'direct call for this function block is not allowed'}
+FUNCTION_BLOCK FB_Deque IMPLEMENTS TcDynCollections.I_Deque, TcDynCollections.I_Collection, __SYSTEM.IQueryInterface
+</code></pre></div>
+<h2 class="section" id="properties">Properties</h2>
+<h3 id="TcDynCollections_FB_Deque__Count" data-uid="TcDynCollections.FB_Deque._Count">
+_Count
+</h3><a name="_Count"></a>
+<div class="codewrapper">
+    <pre><code class="lang-st hljs">PROPERTY _Count : T_Capacity
+</code></pre></div>
+<h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt> <a class="xref" href="../../../DUTs/Aliases/T_Capacity.html">T_Capacity</a></dt>
+    <dd></dd>
+  </dl>
+<h3 id="TcDynCollections_FB_Deque__Empty" data-uid="TcDynCollections.FB_Deque._Empty">
+_Empty
+</h3><a name="_Empty"></a>
+<div class="codewrapper">
+    <pre><code class="lang-st hljs">PROPERTY _Empty : BOOL
+</code></pre></div>
+<h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt>BOOL</dt>
+    <dd></dd>
+  </dl>
+<h3 id="TcDynCollections_FB_Deque__Error_Status" data-uid="TcDynCollections.FB_Deque._Error_Status">
+_Error_Status
+</h3><a name="_Error_Status"></a>
+<div class="codewrapper">
+    <pre><code class="lang-st hljs">PROPERTY _Error_Status : T_Error
+</code></pre></div>
+<h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt> <a class="xref" href="../../../DUTs/Aliases/T_Error.html">T_Error</a></dt>
+    <dd></dd>
+  </dl>
+<h3 id="TcDynCollections_FB_Deque__Values" data-uid="TcDynCollections.FB_Deque._Values">
+_Values
+</h3><a name="_Values"></a>
+<div class="codewrapper">
+    <pre><code class="lang-st hljs">PROPERTY _Values : I_Immutable_List
+</code></pre></div>
+<h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt> <a class="xref" href="../../../ITFs/Collections/Immutable/I_Immutable_List.html">I_Immutable_List</a></dt>
+    <dd></dd>
+  </dl>
+<h2 class="section" id="methods">Methods</h2>
+<h3 id="TcDynCollections.FB.Deque_Back" data-uid="TcDynCollections.FB_Deque.Back">
+Back
+</h3><a name="Back"></a>
+<div class="codewrapper">
+    <pre><code class="lang-st hljs">METHOD Back (
+ Item : ANY) : I_Deque
+</code></pre></div>
+<h4 class="section">Inputs</h4><dl class="parameters">
+<a name="Item"></a><dt><code>Item</code> ANY<dd><p></p></dd></dl>
+<h4 class="section">Outputs</h4><dl class="parameters">
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt> <a class="xref" href="../../../ITFs/Collections/I_Deque.html">I_Deque</a></dt>
+    <dd></dd>
+  </dl>
+<h3 id="TcDynCollections.FB.Deque_Clear" data-uid="TcDynCollections.FB_Deque.Clear">
+Clear
+</h3><a name="Clear"></a>
+<div class="codewrapper">
+    <pre><code class="lang-st hljs">METHOD Clear () : I_Deque
+</code></pre></div>
+<h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt> <a class="xref" href="../../../ITFs/Collections/I_Deque.html">I_Deque</a></dt>
+    <dd></dd>
+  </dl>
+<h3 id="TcDynCollections.FB.Deque_Dequeue_At_Back" data-uid="TcDynCollections.FB_Deque.Dequeue_At_Back">
+Dequeue_At_Back
+</h3><a name="Dequeue_At_Back"></a>
+<div class="codewrapper">
+    <pre><code class="lang-st hljs">METHOD Dequeue_At_Back () : I_Deque
+</code></pre></div>
+<h4 class="section">Outputs</h4><dl class="parameters">
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt> <a class="xref" href="../../../ITFs/Collections/I_Deque.html">I_Deque</a></dt>
+    <dd></dd>
+  </dl>
+<h3 id="TcDynCollections.FB.Deque_Dequeue_At_Front" data-uid="TcDynCollections.FB_Deque.Dequeue_At_Front">
+Dequeue_At_Front
+</h3><a name="Dequeue_At_Front"></a>
+<div class="codewrapper">
+    <pre><code class="lang-st hljs">METHOD Dequeue_At_Front () : I_Deque
+</code></pre></div>
+<h4 class="section">Outputs</h4><dl class="parameters">
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt> <a class="xref" href="../../../ITFs/Collections/I_Deque.html">I_Deque</a></dt>
+    <dd></dd>
+  </dl>
+<h3 id="TcDynCollections.FB.Deque_Enqueue_At_Back" data-uid="TcDynCollections.FB_Deque.Enqueue_At_Back">
+Enqueue_At_Back
+</h3><a name="Enqueue_At_Back"></a>
+<div class="codewrapper">
+    <pre><code class="lang-st hljs">METHOD Enqueue_At_Back (
+ Item : ANY) : I_Deque
+</code></pre></div>
+<h4 class="section">Inputs</h4><dl class="parameters">
+<a name="Item"></a><dt><code>Item</code> ANY<dd><p></p></dd></dl>
+<h4 class="section">Outputs</h4><dl class="parameters">
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt> <a class="xref" href="../../../ITFs/Collections/I_Deque.html">I_Deque</a></dt>
+    <dd></dd>
+  </dl>
+<h3 id="TcDynCollections.FB.Deque_Enqueue_At_Front" data-uid="TcDynCollections.FB_Deque.Enqueue_At_Front">
+Enqueue_At_Front
+</h3><a name="Enqueue_At_Front"></a>
+<div class="codewrapper">
+    <pre><code class="lang-st hljs">METHOD Enqueue_At_Front (
+ Item : ANY) : I_Deque
+</code></pre></div>
+<h4 class="section">Inputs</h4><dl class="parameters">
+<a name="Item"></a><dt><code>Item</code> ANY<dd><p></p></dd></dl>
+<h4 class="section">Outputs</h4><dl class="parameters">
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt> <a class="xref" href="../../../ITFs/Collections/I_Deque.html">I_Deque</a></dt>
+    <dd></dd>
+  </dl>
+<h3 id="TcDynCollections.FB.Deque_Enqueue_Generic" data-uid="TcDynCollections.FB_Deque.Enqueue_Generic">
+Enqueue_Generic
+</h3><a name="Enqueue_Generic"></a>
+<div class="codewrapper">
+    <pre><code class="lang-st hljs">METHOD Enqueue_Generic (
+ Item : T_Generic,
+ bAt_Front : BOOL) : I_Deque
+</code></pre></div>
+<h4 class="section">Inputs</h4><dl class="parameters">
+<a name="Item"></a><dt><code>Item</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a><dd><p></p></dd><a name="bAt_Front"></a><dt><code>bAt_Front</code> BOOL<dd><p></p></dd></dl>
+<h4 class="section">Outputs</h4><dl class="parameters">
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt> <a class="xref" href="../../../ITFs/Collections/I_Deque.html">I_Deque</a></dt>
+    <dd></dd>
+  </dl>
+<h3 id="TcDynCollections.FB.Deque_Front" data-uid="TcDynCollections.FB_Deque.Front">
+Front
+</h3><a name="Front"></a>
+<div class="codewrapper">
+    <pre><code class="lang-st hljs">METHOD Front (
+ Item : ANY) : I_Deque
+</code></pre></div>
+<h4 class="section">Inputs</h4><dl class="parameters">
+<a name="Item"></a><dt><code>Item</code> ANY<dd><p></p></dd></dl>
+<h4 class="section">Outputs</h4><dl class="parameters">
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt> <a class="xref" href="../../../ITFs/Collections/I_Deque.html">I_Deque</a></dt>
+    <dd></dd>
+  </dl>
+<h3 id="TcDynCollections.FB.Deque_Reverse" data-uid="TcDynCollections.FB_Deque.Reverse">
+Reverse
+</h3><a name="Reverse"></a>
+<div class="codewrapper">
+    <pre><code class="lang-st hljs">METHOD Reverse () : I_Deque
+</code></pre></div>
+<h4 class="section">Outputs</h4><dl class="parameters">
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt> <a class="xref" href="../../../ITFs/Collections/I_Deque.html">I_Deque</a></dt>
+    <dd></dd>
+  </dl>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/c777b71de9e588c27137754a11f518dad545b25c/docs/reference/TcDynCollections/POUs/Function Blocks/Collections/FB_Deque.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Documentation powered by <a href="https://github.com/Zeugwerk/zkdoc-action">zkdoc</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
