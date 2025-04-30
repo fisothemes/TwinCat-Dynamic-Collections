@@ -283,3 +283,6 @@ assets/images/TwinCAT Dynamic Collections.png
 # Github Pages
 gh-pages
 gh-pages.pub
+
+# TwinCAT Dynamic Collections
+builds/
