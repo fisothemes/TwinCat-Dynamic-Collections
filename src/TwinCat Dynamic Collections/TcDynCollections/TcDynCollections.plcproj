@@ -21,7 +21,7 @@
     <Title>TwinCat Dynamic Collections</Title>
     <Author>Goodwill Mzumala</Author>
     <DefaultNamespace>TcDynCollections</DefaultNamespace>
-    <ProjectVersion>1.0.6.32</ProjectVersion>
+    <ProjectVersion>1.0.7</ProjectVersion>
     <DocFormat>reStructuredText</DocFormat>
     <Description>A library for handling collections of data dynamically in TwinCAT.</Description>
     <CombineIds>true</CombineIds>
@@ -366,8 +366,14 @@
     </PlaceholderReference>
   </ItemGroup>
   <ItemGroup>
-    <LibraryReference Include="Tc2_Utilities,3.3.38.0,Beckhoff Automation GmbH">
+    <LibraryReference Include="Tc2_Utilities,newest,Beckhoff Automation GmbH">
       <Namespace>Tc2_Utilities</Namespace>
+      <Parameters>
+        <Parameter xmlns="">
+          <Key>CMAXCHARACTERS</Key>
+          <Value>10000</Value>
+        </Parameter>
+      </Parameters>
     </LibraryReference>
   </ItemGroup>
   <ItemGroup>
