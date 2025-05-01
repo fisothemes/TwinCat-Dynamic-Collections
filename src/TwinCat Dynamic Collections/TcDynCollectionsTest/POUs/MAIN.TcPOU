@@ -3,19 +3,19 @@
   <POU Name="MAIN" Id="{17732e83-93d3-4e32-896f-74d26e2dd9ab}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-	fbArray_List_Test_Suite : FB_Array_List_Test_Suite;
-	fbList_Test_Suite : FB_List_Test_Suite;
-	fbArray_Test_Suite : FB_Array_Test_Suite;
-	fbQueue_Test_Suite : FB_Queue_Test_Suite;
-	fbStack_Test_Suite : FB_Stack_Test_Suite;
-	fbDeque_Test_Suite : FB_Deque_Test_Suite;
-	fbTree_Set_Test_Suite : FB_Tree_Set_Test_Suite;
-	fbTree_Map_Test_Suite : FB_Tree_Map_Test_Suite;
-	fbTree_Multiset_Test_Suite : FB_Tree_Multiset_Test_Suite;
-	fbHash_Set_Test_Suite : FB_Hash_Set_Test_Suite;
-	fbHash_Map_Test_Suite : FB_Hash_Map_Test_Suite;
-	fbOrdered_Hash_Set_Test_Suite : FB_Ordered_Hash_Set_Test_Suite;
-	fbOrdered_Hash_Map_Test_Suite : FB_Ordered_Hash_Map_Test_Suite;
+	fbArray_List_Test_Suite 		: FB_Array_List_Test_Suite;
+	fbList_Test_Suite 				: FB_List_Test_Suite;
+	fbArray_Test_Suite 				: FB_Array_Test_Suite;
+	fbQueue_Test_Suite 				: FB_Queue_Test_Suite;
+	fbStack_Test_Suite 				: FB_Stack_Test_Suite;
+	fbDeque_Test_Suite 				: FB_Deque_Test_Suite;
+	fbTree_Set_Test_Suite 			: FB_Tree_Set_Test_Suite;
+	fbTree_Map_Test_Suite 			: FB_Tree_Map_Test_Suite;
+	fbTree_Multiset_Test_Suite 		: FB_Tree_Multiset_Test_Suite;
+	fbHash_Set_Test_Suite 			: FB_Hash_Set_Test_Suite;
+	fbHash_Map_Test_Suite 			: FB_Hash_Map_Test_Suite;
+	fbOrdered_Hash_Set_Test_Suite 	: FB_Ordered_Hash_Set_Test_Suite;
+	fbOrdered_Hash_Map_Test_Suite 	: FB_Ordered_Hash_Map_Test_Suite;
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[TcUnit.RUN();
