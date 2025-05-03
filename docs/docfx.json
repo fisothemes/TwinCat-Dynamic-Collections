@@ -10,9 +10,7 @@
       {
         "files": [
           "userguide/*.md",
-          "userguide/toc.yml",
-          "conventions/*.md",
-          "conventions/toc.yml",		  
+          "userguide/toc.yml",	  
           "toc.yml",
           "*.md"
         ]
