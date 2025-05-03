@@ -16,7 +16,7 @@
       
       
       
-      <meta name="docfx:docurl" content="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/c777b71de9e588c27137754a11f518dad545b25c/docs/reference/TcDynCollections/POUs/Function Blocks/Collections/FB_Tree_Multiset.md/#L1">
+      <meta name="docfx:docurl" content="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/d0f9d954b5c30454964b482961250ddf5939eeab/docs/reference/TcDynCollections/POUs/Function Blocks/Collections/FB_Tree_Multiset.md/#L1">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -87,42 +87,14 @@
     <dl><dt>Namespace</dt><dd><a class="xref" href="FB_Tree_Multiset.html">TcDynCollections</a></dd></dl>
   
   </div>
-<dl class="typelist inheritance"><dt>Inheritance</dt><dd>
+<dl class="typelist inheritance"><dt>Extends</dt><dd>
 <div><a class="xref" href="FB_Collection.html">TcDynCollections.FB_Collection</a></div>
 <div><a class="xref" href="FB_Tree_Set.html">TcDynCollections.FB_Tree_Set</a></div>
 <div><a class="xref" href="FB_Tree_Multiset.html">FB_Tree_Multiset</a></div>
 </dd></dl>
-<dl class="typelist implements"><dt>Inherited Properties</dt><dd>
-<div><a class="xref" href="FB_Tree_Set.html#_Traversal">_Traversal</a></div>
-<div><a class="xref" href="FB_Collection.html#_Count">_Count</a></div>
-<div><a class="xref" href="FB_Collection.html#_Empty">_Empty</a></div>
-<div><a class="xref" href="FB_Collection.html#_Error_Status">_Error_Status</a></div>
-</dd></dl>
 <dl class="typelist implements"><dt>Inherited Methods</dt><dd>
-<div><a class="xref" href="FB_Tree_Set.html#Balance">Balance</a></div>
-<div><a class="xref" href="FB_Tree_Set.html#Clear">Clear</a></div>
 <div><a class="xref" href="FB_Tree_Set.html#Clear_Node">Clear_Node</a></div>
-<div><a class="xref" href="FB_Tree_Set.html#Contains">Contains</a></div>
-<div><a class="xref" href="FB_Tree_Set.html#Create_Node">Create_Node</a></div>
-<div><a class="xref" href="FB_Tree_Set.html#Delete_Node">Delete_Node</a></div>
-<div><a class="xref" href="FB_Tree_Set.html#FB_exit">FB_exit</a></div>
-<div><a class="xref" href="FB_Tree_Set.html#Find_Minimum_Node">Find_Minimum_Node</a></div>
-<div><a class="xref" href="FB_Tree_Set.html#Get_Balance">Get_Balance</a></div>
-<div><a class="xref" href="FB_Tree_Set.html#Get_Height">Get_Height</a></div>
 <div><a class="xref" href="FB_Tree_Set.html#Get_Values">Get_Values</a></div>
-<div><a class="xref" href="FB_Tree_Set.html#Insert">Insert</a></div>
-<div><a class="xref" href="FB_Tree_Set.html#Insert_Generic">Insert_Generic</a></div>
-<div><a class="xref" href="FB_Tree_Set.html#Move_Node">Move_Node</a></div>
-<div><a class="xref" href="FB_Tree_Set.html#Remove">Remove</a></div>
-<div><a class="xref" href="FB_Tree_Set.html#Remove_Generic">Remove_Generic</a></div>
-<div><a class="xref" href="FB_Tree_Set.html#Remove_Node">Remove_Node</a></div>
-<div><a class="xref" href="FB_Tree_Set.html#Rotate_Left">Rotate_Left</a></div>
-<div><a class="xref" href="FB_Tree_Set.html#Rotate_Right">Rotate_Right</a></div>
-<div><a class="xref" href="FB_Tree_Set.html#Search_Node">Search_Node</a></div>
-<div><a class="xref" href="FB_Tree_Set.html#Update_Height">Update_Height</a></div>
-<div><a class="xref" href="FB_Collection.html#Clear_Error">Clear_Error</a></div>
-<div><a class="xref" href="FB_Collection.html#Decrement_Count">Decrement_Count</a></div>
-<div><a class="xref" href="FB_Collection.html#Increment_Count">Increment_Count</a></div>
 </dd></dl>
 <dl class="typelist implements"><dt>Implements</dt><dd>
 <div><a class="xref" href="../../../ITFs/Collections/I_Tree_Set.html">I_Tree_Set</a></div>
@@ -131,10 +103,7 @@
 <div>__SYSTEM.IQueryInterface</div>
 </dd></dl>
 <div class="codewrapper">
-    <pre><code class="lang-st hljs">{attribute 'enable_dynamic_creation'}
-{attribute 'no_assign'}
-{attribute 'no_explicit_call' := 'direct call for this function block is not allowed'}
-FUNCTION_BLOCK FB_Tree_Multiset EXTENDS TcDynCollections.FB_Tree_Set IMPLEMENTS TcDynCollections.I_Tree_Set, TcDynCollections.I_Set, TcDynCollections.I_Collection, __SYSTEM.IQueryInterface
+    <pre><code class="lang-st hljs">FUNCTION_BLOCK FB_Tree_Multiset EXTENDS TcDynCollections.FB_Tree_Set IMPLEMENTS TcDynCollections.I_Tree_Set, TcDynCollections.I_Set, TcDynCollections.I_Collection, __SYSTEM.IQueryInterface
 </code></pre></div>
 <h2 class="section" id="methods">Methods</h2>
 <h3 id="TcDynCollections.FB.Tree.Multiset_Insert_Generic" data-uid="TcDynCollections.FB_Tree_Multiset.Insert_Generic">
@@ -145,9 +114,9 @@ Insert_Generic
  Item : T_Generic) : I_Set
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Item"></a><dt><code>Item</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a><dd><p></p></dd></dl>
+<a name="Item"></a><dt><code>Item</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a></dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../ITFs/Collections/I_Set.html">I_Set</a></dt>
@@ -157,7 +126,7 @@ Insert_Generic
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/c777b71de9e588c27137754a11f518dad545b25c/docs/reference/TcDynCollections/POUs/Function Blocks/Collections/FB_Tree_Multiset.md/#L1" class="edit-link">Edit this page</a>
+          <a href="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/d0f9d954b5c30454964b482961250ddf5939eeab/docs/reference/TcDynCollections/POUs/Function Blocks/Collections/FB_Tree_Multiset.md/#L1" class="edit-link">Edit this page</a>
         </div>
 
         <div class="next-article d-print-none border-top" id="nextArticle"></div>

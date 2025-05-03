@@ -1,6 +1,9 @@
 ### YamlMime:XRefMap
 sorted: true
 references:
+- uid: TcDynCollections
+  name: TcDynCollections
+  href: reference/TcDynCollections.html
 - uid: TcDynCollections.Collections Interfaces
   name: Collections Interfaces
   href: reference/TcDynCollections/UML/Collections%20Interfaces.html

@@ -16,7 +16,7 @@
       
       
       
-      <meta name="docfx:docurl" content="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/c777b71de9e588c27137754a11f518dad545b25c/docs/reference/TcDynCollections/POUs/Function Blocks/Collections/FB_Tree_Map.md/#L1">
+      <meta name="docfx:docurl" content="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/d0f9d954b5c30454964b482961250ddf5939eeab/docs/reference/TcDynCollections/POUs/Function Blocks/Collections/FB_Tree_Map.md/#L1">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -87,19 +87,9 @@
     <dl><dt>Namespace</dt><dd><a class="xref" href="FB_Tree_Map.html">TcDynCollections</a></dd></dl>
   
   </div>
-<dl class="typelist inheritance"><dt>Inheritance</dt><dd>
+<dl class="typelist inheritance"><dt>Extends</dt><dd>
 <div><a class="xref" href="FB_Collection.html">TcDynCollections.FB_Collection</a></div>
 <div><a class="xref" href="FB_Tree_Map.html">FB_Tree_Map</a></div>
-</dd></dl>
-<dl class="typelist implements"><dt>Inherited Properties</dt><dd>
-<div><a class="xref" href="FB_Collection.html#_Count">_Count</a></div>
-<div><a class="xref" href="FB_Collection.html#_Empty">_Empty</a></div>
-<div><a class="xref" href="FB_Collection.html#_Error_Status">_Error_Status</a></div>
-</dd></dl>
-<dl class="typelist implements"><dt>Inherited Methods</dt><dd>
-<div><a class="xref" href="FB_Collection.html#Clear_Error">Clear_Error</a></div>
-<div><a class="xref" href="FB_Collection.html#Decrement_Count">Decrement_Count</a></div>
-<div><a class="xref" href="FB_Collection.html#Increment_Count">Increment_Count</a></div>
 </dd></dl>
 <dl class="typelist implements"><dt>Implements</dt><dd>
 <div><a class="xref" href="../../../ITFs/Collections/I_Tree_Map.html">I_Tree_Map</a></div>
@@ -108,10 +98,7 @@
 <div>__SYSTEM.IQueryInterface</div>
 </dd></dl>
 <div class="codewrapper">
-    <pre><code class="lang-st hljs">{attribute 'enable_dynamic_creation'}
-{attribute 'no_assign'}
-{attribute 'no_explicit_call' := 'direct call for this function block is not allowed'}
-FUNCTION_BLOCK FB_Tree_Map EXTENDS TcDynCollections.FB_Collection IMPLEMENTS TcDynCollections.I_Tree_Map, TcDynCollections.I_Map, TcDynCollections.I_Collection, __SYSTEM.IQueryInterface
+    <pre><code class="lang-st hljs">FUNCTION_BLOCK FB_Tree_Map EXTENDS TcDynCollections.FB_Collection IMPLEMENTS TcDynCollections.I_Tree_Map, TcDynCollections.I_Map, TcDynCollections.I_Collection, __SYSTEM.IQueryInterface
 </code></pre></div>
 <h2 class="section" id="properties">Properties</h2>
 <h3 id="TcDynCollections_FB_Tree_Map__Traversal" data-uid="TcDynCollections.FB_Tree_Map._Traversal">
@@ -134,7 +121,7 @@ Balance
  pNode : POINTER TO T_AVL_Map_Node)
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="pNode"></a><dt><code>pNode</code> POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Map_Node.html">T_AVL_Map_Node</a><dd><p></p></dd></dl>
+<a name="pNode"></a><dt><code>pNode</code> POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Map_Node.html">T_AVL_Map_Node</a></dt><dd><p></p></dd></dl>
 <h3 id="TcDynCollections.FB.Tree.Map_Clear" data-uid="TcDynCollections.FB_Tree_Map.Clear">
 Clear
 </h3><a name="Clear"></a>
@@ -150,12 +137,11 @@ Clear
 Clear_Node
 </h3><a name="Clear_Node"></a>
 <div class="codewrapper">
-    <pre><code class="lang-st hljs">{warning disable C0394}
-METHOD PROTECTED Clear_Node (
+    <pre><code class="lang-st hljs">METHOD PROTECTED Clear_Node (
  pRoot : POINTER TO T_AVL_Map_Node)
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="pRoot"></a><dt><code>pRoot</code> POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Map_Node.html">T_AVL_Map_Node</a><dd><p></p></dd></dl>
+<a name="pRoot"></a><dt><code>pRoot</code> POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Map_Node.html">T_AVL_Map_Node</a></dt><dd><p></p></dd></dl>
 <h3 id="TcDynCollections.FB.Tree.Map_Contains" data-uid="TcDynCollections.FB_Tree_Map.Contains">
 Contains
 </h3><a name="Contains"></a>
@@ -164,7 +150,7 @@ Contains
  Key : ANY) : BOOL
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Key"></a><dt><code>Key</code> ANY<dd><p></p></dd></dl>
+<a name="Key"></a><dt><code>Key</code> ANY</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt>BOOL</dt>
@@ -179,9 +165,9 @@ Create_Node
  Value : T_Generic) : POINTER TO ST_AVL_MAP_NODE
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Key"></a><dt><code>Key</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a><dd><p></p></dd><a name="Value"></a><dt><code>Value</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a><dd><p></p></dd></dl>
+<a name="Key"></a><dt><code>Key</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a></dt><dd><p></p></dd><a name="Value"></a><dt><code>Value</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a></dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd><a name="Error"></a><dt><code>Error</code> <a class="xref" href="../../../DUTs/Aliases/T_Error.html">T_Error</a><dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd><a name="Error"></a><dt><code>Error</code> <a class="xref" href="../../../DUTs/Aliases/T_Error.html">T_Error</a></dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt>POINTER TO <a class="xref" href="../../../DUTs/Structs/ST_AVL_MAP_NODE.html">ST_AVL_MAP_NODE</a></dt>
@@ -195,7 +181,7 @@ Delete_Node
  pNode : REFERENCE TO POINTER TO T_AVL_Map_Node)
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="pNode"></a><dt><code>pNode</code> REFERENCE TO POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Map_Node.html">T_AVL_Map_Node</a><dd><p></p></dd></dl>
+<a name="pNode"></a><dt><code>pNode</code> REFERENCE TO POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Map_Node.html">T_AVL_Map_Node</a></dt><dd><p></p></dd></dl>
 <h3 id="TcDynCollections.FB.Tree.Map_Find_Minimum_Node" data-uid="TcDynCollections.FB_Tree_Map.Find_Minimum_Node">
 Find_Minimum_Node
 </h3><a name="Find_Minimum_Node"></a>
@@ -204,7 +190,7 @@ Find_Minimum_Node
  pNode : POINTER TO T_AVL_Map_Node) : POINTER TO T_AVL_Node
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="pNode"></a><dt><code>pNode</code> POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Map_Node.html">T_AVL_Map_Node</a><dd><p></p></dd></dl>
+<a name="pNode"></a><dt><code>pNode</code> POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Map_Node.html">T_AVL_Map_Node</a></dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt>POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Node.html">T_AVL_Node</a></dt>
@@ -219,9 +205,9 @@ Get
  Value : ANY) : I_Map
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Key"></a><dt><code>Key</code> ANY<dd><p></p></dd><a name="Value"></a><dt><code>Value</code> ANY<dd><p></p></dd></dl>
+<a name="Key"></a><dt><code>Key</code> ANY</dt><dd><p></p></dd><a name="Value"></a><dt><code>Value</code> ANY</dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../ITFs/Collections/I_Map.html">I_Map</a></dt>
@@ -236,9 +222,9 @@ Get_As_String
  sValue : REFERENCE TO STRING) : I_Map
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Key"></a><dt><code>Key</code> ANY<dd><p></p></dd><a name="sValue"></a><dt><code>sValue</code> REFERENCE TO STRING<dd><p></p></dd></dl>
+<a name="Key"></a><dt><code>Key</code> ANY</dt><dd><p></p></dd><a name="sValue"></a><dt><code>sValue</code> REFERENCE TO STRING</dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../ITFs/Collections/I_Map.html">I_Map</a></dt>
@@ -252,7 +238,7 @@ Get_Balance
  pNode : POINTER TO T_AVL_Map_Node) : T_Position
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="pNode"></a><dt><code>pNode</code> POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Map_Node.html">T_AVL_Map_Node</a><dd><p></p></dd></dl>
+<a name="pNode"></a><dt><code>pNode</code> POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Map_Node.html">T_AVL_Map_Node</a></dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../DUTs/Aliases/T_Position.html">T_Position</a></dt>
@@ -266,9 +252,9 @@ Get_Generic
  Key : T_Generic) : I_Map
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Key"></a><dt><code>Key</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a><dd><p></p></dd></dl>
+<a name="Key"></a><dt><code>Key</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a></dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="Value"></a><dt><code>Value</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a><dd><p></p></dd><a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="Value"></a><dt><code>Value</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a></dt><dd><p></p></dd><a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../ITFs/Collections/I_Map.html">I_Map</a></dt>
@@ -282,7 +268,7 @@ Get_Height
  pNode : POINTER TO T_AVL_Map_Node) : T_Position
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="pNode"></a><dt><code>pNode</code> POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Map_Node.html">T_AVL_Map_Node</a><dd><p></p></dd></dl>
+<a name="pNode"></a><dt><code>pNode</code> POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Map_Node.html">T_AVL_Map_Node</a></dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../DUTs/Aliases/T_Position.html">T_Position</a></dt>
@@ -292,8 +278,7 @@ Get_Height
 Get_Keys
 </h3><a name="Get_Keys"></a>
 <div class="codewrapper">
-    <pre><code class="lang-st hljs">{warning disable C0394}
-METHOD Get_Keys () : I_Immutable_List
+    <pre><code class="lang-st hljs">METHOD Get_Keys () : I_Immutable_List
 </code></pre></div>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
@@ -304,8 +289,7 @@ METHOD Get_Keys () : I_Immutable_List
 Get_Values
 </h3><a name="Get_Values"></a>
 <div class="codewrapper">
-    <pre><code class="lang-st hljs">{warning disable C0394}
-METHOD Get_Values () : I_Immutable_List
+    <pre><code class="lang-st hljs">METHOD Get_Values () : I_Immutable_List
 </code></pre></div>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
@@ -321,9 +305,9 @@ Insert
  Value : ANY) : I_Map
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Key"></a><dt><code>Key</code> ANY<dd><p></p></dd><a name="Value"></a><dt><code>Value</code> ANY<dd><p></p></dd></dl>
+<a name="Key"></a><dt><code>Key</code> ANY</dt><dd><p></p></dd><a name="Value"></a><dt><code>Value</code> ANY</dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../ITFs/Collections/I_Map.html">I_Map</a></dt>
@@ -339,9 +323,9 @@ Insert_Generic
  bUpdate : BOOL) : I_Map
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Key"></a><dt><code>Key</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a><dd><p></p></dd><a name="Value"></a><dt><code>Value</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a><dd><p></p></dd><a name="bUpdate"></a><dt><code>bUpdate</code> BOOL<dd><p></p></dd></dl>
+<a name="Key"></a><dt><code>Key</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a></dt><dd><p></p></dd><a name="Value"></a><dt><code>Value</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a></dt><dd><p></p></dd><a name="bUpdate"></a><dt><code>bUpdate</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../ITFs/Collections/I_Map.html">I_Map</a></dt>
@@ -356,7 +340,7 @@ Move_Node
  pSource : POINTER TO T_AVL_Map_Node)
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="pDestination"></a><dt><code>pDestination</code> POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Map_Node.html">T_AVL_Map_Node</a><dd><p></p></dd><a name="pSource"></a><dt><code>pSource</code> POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Map_Node.html">T_AVL_Map_Node</a><dd><p></p></dd></dl>
+<a name="pDestination"></a><dt><code>pDestination</code> POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Map_Node.html">T_AVL_Map_Node</a></dt><dd><p></p></dd><a name="pSource"></a><dt><code>pSource</code> POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Map_Node.html">T_AVL_Map_Node</a></dt><dd><p></p></dd></dl>
 <h3 id="TcDynCollections.FB.Tree.Map_Remove" data-uid="TcDynCollections.FB_Tree_Map.Remove">
 Remove
 </h3><a name="Remove"></a>
@@ -365,9 +349,9 @@ Remove
  Key : ANY) : I_Map
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Key"></a><dt><code>Key</code> ANY<dd><p></p></dd></dl>
+<a name="Key"></a><dt><code>Key</code> ANY</dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../ITFs/Collections/I_Map.html">I_Map</a></dt>
@@ -381,9 +365,9 @@ Remove_Generic
  Key : T_Generic) : I_Map
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Key"></a><dt><code>Key</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a><dd><p></p></dd></dl>
+<a name="Key"></a><dt><code>Key</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a></dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../ITFs/Collections/I_Map.html">I_Map</a></dt>
@@ -397,7 +381,7 @@ Remove_Node
  pNode : REFERENCE TO POINTER TO T_AVL_Map_Node) : POINTER TO T_AVL_Map_Node
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="pNode"></a><dt><code>pNode</code> REFERENCE TO POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Map_Node.html">T_AVL_Map_Node</a><dd><p></p></dd></dl>
+<a name="pNode"></a><dt><code>pNode</code> REFERENCE TO POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Map_Node.html">T_AVL_Map_Node</a></dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt>POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Map_Node.html">T_AVL_Map_Node</a></dt>
@@ -411,7 +395,7 @@ Rotate_Left
  pX : POINTER TO T_AVL_Map_Node)
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="pX"></a><dt><code>pX</code> POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Map_Node.html">T_AVL_Map_Node</a><dd><p></p></dd></dl>
+<a name="pX"></a><dt><code>pX</code> POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Map_Node.html">T_AVL_Map_Node</a></dt><dd><p></p></dd></dl>
 <h3 id="TcDynCollections.FB.Tree.Map_Rotate_Right" data-uid="TcDynCollections.FB_Tree_Map.Rotate_Right">
 Rotate_Right
 </h3><a name="Rotate_Right"></a>
@@ -420,7 +404,7 @@ Rotate_Right
  pX : POINTER TO T_AVL_Map_Node)
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="pX"></a><dt><code>pX</code> POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Map_Node.html">T_AVL_Map_Node</a><dd><p></p></dd></dl>
+<a name="pX"></a><dt><code>pX</code> POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Map_Node.html">T_AVL_Map_Node</a></dt><dd><p></p></dd></dl>
 <h3 id="TcDynCollections.FB.Tree.Map_Search_Node" data-uid="TcDynCollections.FB_Tree_Map.Search_Node">
 Search_Node
 </h3><a name="Search_Node"></a>
@@ -430,7 +414,7 @@ Search_Node
  Key : T_Generic) : POINTER TO T_AVL_Map_Node
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="pNode"></a><dt><code>pNode</code> POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Map_Node.html">T_AVL_Map_Node</a><dd><p></p></dd><a name="Key"></a><dt><code>Key</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a><dd><p></p></dd></dl>
+<a name="pNode"></a><dt><code>pNode</code> POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Map_Node.html">T_AVL_Map_Node</a></dt><dd><p></p></dd><a name="Key"></a><dt><code>Key</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a></dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt>POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Map_Node.html">T_AVL_Map_Node</a></dt>
@@ -445,9 +429,9 @@ Update
  Value : ANY) : I_Map
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Key"></a><dt><code>Key</code> ANY<dd><p></p></dd><a name="Value"></a><dt><code>Value</code> ANY<dd><p></p></dd></dl>
+<a name="Key"></a><dt><code>Key</code> ANY</dt><dd><p></p></dd><a name="Value"></a><dt><code>Value</code> ANY</dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../ITFs/Collections/I_Map.html">I_Map</a></dt>
@@ -462,9 +446,9 @@ Update_Generic
  Value : T_Generic) : I_Map
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Key"></a><dt><code>Key</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a><dd><p></p></dd><a name="Value"></a><dt><code>Value</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a><dd><p></p></dd></dl>
+<a name="Key"></a><dt><code>Key</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a></dt><dd><p></p></dd><a name="Value"></a><dt><code>Value</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a></dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../ITFs/Collections/I_Map.html">I_Map</a></dt>
@@ -478,7 +462,7 @@ Update_Height
  pNode : POINTER TO T_AVL_Map_Node)
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="pNode"></a><dt><code>pNode</code> POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Map_Node.html">T_AVL_Map_Node</a><dd><p></p></dd></dl>
+<a name="pNode"></a><dt><code>pNode</code> POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_AVL_Map_Node.html">T_AVL_Map_Node</a></dt><dd><p></p></dd></dl>
 <h3 id="TcDynCollections.FB.Tree.Map_Upsert" data-uid="TcDynCollections.FB_Tree_Map.Upsert">
 Upsert
 </h3><a name="Upsert"></a>
@@ -488,9 +472,9 @@ Upsert
  Value : ANY) : I_Map
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Key"></a><dt><code>Key</code> ANY<dd><p></p></dd><a name="Value"></a><dt><code>Value</code> ANY<dd><p></p></dd></dl>
+<a name="Key"></a><dt><code>Key</code> ANY</dt><dd><p></p></dd><a name="Value"></a><dt><code>Value</code> ANY</dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../ITFs/Collections/I_Map.html">I_Map</a></dt>
@@ -500,7 +484,7 @@ Upsert
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/c777b71de9e588c27137754a11f518dad545b25c/docs/reference/TcDynCollections/POUs/Function Blocks/Collections/FB_Tree_Map.md/#L1" class="edit-link">Edit this page</a>
+          <a href="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/d0f9d954b5c30454964b482961250ddf5939eeab/docs/reference/TcDynCollections/POUs/Function Blocks/Collections/FB_Tree_Map.md/#L1" class="edit-link">Edit this page</a>
         </div>
 
         <div class="next-article d-print-none border-top" id="nextArticle"></div>

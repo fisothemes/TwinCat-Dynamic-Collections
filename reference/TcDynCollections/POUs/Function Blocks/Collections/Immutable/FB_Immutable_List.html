@@ -16,7 +16,7 @@
       
       
       
-      <meta name="docfx:docurl" content="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/c777b71de9e588c27137754a11f518dad545b25c/docs/reference/TcDynCollections/POUs/Function Blocks/Collections/Immutable/FB_Immutable_List.md/#L1">
+      <meta name="docfx:docurl" content="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/d0f9d954b5c30454964b482961250ddf5939eeab/docs/reference/TcDynCollections/POUs/Function Blocks/Collections/Immutable/FB_Immutable_List.md/#L1">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -95,12 +95,11 @@
 <div>__SYSTEM.IQueryInterface</div>
 </dd></dl>
 <div class="codewrapper">
-    <pre><code class="lang-st hljs">{attribute 'enable_dynamic_creation'}
-FUNCTION_BLOCK FB_Immutable_List IMPLEMENTS TcDynCollections.I_Immutable_List, TcDynCollections.I_Iterable, TcDynCollections.I_Immutable_Collection, TcDynCollections.I_Collection, __SYSTEM.IQueryInterface (
+    <pre><code class="lang-st hljs">FUNCTION_BLOCK FB_Immutable_List IMPLEMENTS TcDynCollections.I_Immutable_List, TcDynCollections.I_Iterable, TcDynCollections.I_Immutable_Collection, TcDynCollections.I_Collection, __SYSTEM.IQueryInterface (
  ipList : I_List)
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="ipList"></a><dt><code>ipList</code> <a class="xref" href="../../../../ITFs/Collections/I_List.html">I_List</a><dd><p></p></dd></dl>
+<a name="ipList"></a><dt><code>ipList</code> <a class="xref" href="../../../../ITFs/Collections/I_List.html">I_List</a></dt><dd><p></p></dd></dl>
 <h2 class="section" id="properties">Properties</h2>
 <h3 id="TcDynCollections_FB_Immutable_List__Begin" data-uid="TcDynCollections.FB_Immutable_List._Begin">
 _Begin
@@ -166,7 +165,7 @@ Contains
  Item : ANY) : BOOL
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Item"></a><dt><code>Item</code> ANY<dd><p></p></dd></dl>
+<a name="Item"></a><dt><code>Item</code> ANY</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt>BOOL</dt>
@@ -181,9 +180,9 @@ Get
  Item : ANY) : I_Immutable_List
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Index"></a><dt><code>Index</code> <a class="xref" href="../../../../DUTs/Aliases/T_Position.html">T_Position</a><dd><p></p></dd><a name="Item"></a><dt><code>Item</code> ANY<dd><p></p></dd></dl>
+<a name="Index"></a><dt><code>Index</code> <a class="xref" href="../../../../DUTs/Aliases/T_Position.html">T_Position</a></dt><dd><p></p></dd><a name="Item"></a><dt><code>Item</code> ANY</dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../../ITFs/Collections/Immutable/I_Immutable_List.html">I_Immutable_List</a></dt>
@@ -198,9 +197,9 @@ Get_As_String
  sItem : REFERENCE TO STRING) : I_Immutable_List
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Index"></a><dt><code>Index</code> <a class="xref" href="../../../../DUTs/Aliases/T_Position.html">T_Position</a><dd><p></p></dd><a name="sItem"></a><dt><code>sItem</code> REFERENCE TO STRING<dd><p></p></dd></dl>
+<a name="Index"></a><dt><code>Index</code> <a class="xref" href="../../../../DUTs/Aliases/T_Position.html">T_Position</a></dt><dd><p></p></dd><a name="sItem"></a><dt><code>sItem</code> REFERENCE TO STRING</dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../../ITFs/Collections/Immutable/I_Immutable_List.html">I_Immutable_List</a></dt>
@@ -214,9 +213,9 @@ Get_Type_At
  Index : T_Position) : I_Immutable_List
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Index"></a><dt><code>Index</code> <a class="xref" href="../../../../DUTs/Aliases/T_Position.html">T_Position</a><dd><p></p></dd></dl>
+<a name="Index"></a><dt><code>Index</code> <a class="xref" href="../../../../DUTs/Aliases/T_Position.html">T_Position</a></dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="Item_Type"></a><dt><code>Item_Type</code> <a class="xref" href="../../../../DUTs/Aliases/T_Type.html">T_Type</a><dd><p></p></dd><a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="Item_Type"></a><dt><code>Item_Type</code> <a class="xref" href="../../../../DUTs/Aliases/T_Type.html">T_Type</a></dt><dd><p></p></dd><a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../../ITFs/Collections/Immutable/I_Immutable_List.html">I_Immutable_List</a></dt>
@@ -230,9 +229,9 @@ Search
  Item : ANY) : I_Immutable_List
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Item"></a><dt><code>Item</code> ANY<dd><p></p></dd></dl>
+<a name="Item"></a><dt><code>Item</code> ANY</dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="Index"></a><dt><code>Index</code> <a class="xref" href="../../../../DUTs/Aliases/T_Position.html">T_Position</a><dd><p></p></dd><a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="Index"></a><dt><code>Index</code> <a class="xref" href="../../../../DUTs/Aliases/T_Position.html">T_Position</a> <code>:= -1</code></dt><dd><p></p></dd><a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../../ITFs/Collections/Immutable/I_Immutable_List.html">I_Immutable_List</a></dt>
@@ -242,7 +241,7 @@ Search
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/c777b71de9e588c27137754a11f518dad545b25c/docs/reference/TcDynCollections/POUs/Function Blocks/Collections/Immutable/FB_Immutable_List.md/#L1" class="edit-link">Edit this page</a>
+          <a href="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/d0f9d954b5c30454964b482961250ddf5939eeab/docs/reference/TcDynCollections/POUs/Function Blocks/Collections/Immutable/FB_Immutable_List.md/#L1" class="edit-link">Edit this page</a>
         </div>
 
         <div class="next-article d-print-none border-top" id="nextArticle"></div>

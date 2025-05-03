@@ -16,7 +16,7 @@
       
       
       
-      <meta name="docfx:docurl" content="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/c777b71de9e588c27137754a11f518dad545b25c/docs/reference/TcDynCollections/POUs/Function Blocks/Collections/FB_Stack.md/#L1">
+      <meta name="docfx:docurl" content="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/d0f9d954b5c30454964b482961250ddf5939eeab/docs/reference/TcDynCollections/POUs/Function Blocks/Collections/FB_Stack.md/#L1">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -93,10 +93,7 @@
 <div>__SYSTEM.IQueryInterface</div>
 </dd></dl>
 <div class="codewrapper">
-    <pre><code class="lang-st hljs">{attribute 'enable_dynamic_creation'}
-{attribute 'no_assign'}
-{attribute 'no_explicit_call' := 'direct call for this function block is not allowed'}
-FUNCTION_BLOCK FB_Stack IMPLEMENTS TcDynCollections.I_Stack, TcDynCollections.I_Collection, __SYSTEM.IQueryInterface
+    <pre><code class="lang-st hljs">FUNCTION_BLOCK FB_Stack IMPLEMENTS TcDynCollections.I_Stack, TcDynCollections.I_Collection, __SYSTEM.IQueryInterface
 </code></pre></div>
 <h2 class="section" id="properties">Properties</h2>
 <h3 id="TcDynCollections_FB_Stack__Count" data-uid="TcDynCollections.FB_Stack._Count">
@@ -163,9 +160,9 @@ Get
  Item : ANY) : I_Stack
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Item"></a><dt><code>Item</code> ANY<dd><p></p></dd></dl>
+<a name="Item"></a><dt><code>Item</code> ANY</dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../ITFs/Collections/I_Stack.html">I_Stack</a></dt>
@@ -178,7 +175,7 @@ Get_Generic
     <pre><code class="lang-st hljs">METHOD Get_Generic () : I_Stack
 </code></pre></div>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="Item"></a><dt><code>Item</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a><dd><p></p></dd><a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="Item"></a><dt><code>Item</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a></dt><dd><p></p></dd><a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../ITFs/Collections/I_Stack.html">I_Stack</a></dt>
@@ -191,7 +188,7 @@ Pop
     <pre><code class="lang-st hljs">METHOD Pop () : I_Stack
 </code></pre></div>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../ITFs/Collections/I_Stack.html">I_Stack</a></dt>
@@ -205,9 +202,9 @@ Push
  Item : ANY) : I_Stack
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Item"></a><dt><code>Item</code> ANY<dd><p></p></dd></dl>
+<a name="Item"></a><dt><code>Item</code> ANY</dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../ITFs/Collections/I_Stack.html">I_Stack</a></dt>
@@ -221,9 +218,9 @@ Push_Generic
  Item : T_Generic) : I_Stack
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Item"></a><dt><code>Item</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a><dd><p></p></dd></dl>
+<a name="Item"></a><dt><code>Item</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a></dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../ITFs/Collections/I_Stack.html">I_Stack</a></dt>
@@ -236,7 +233,7 @@ Reverse
     <pre><code class="lang-st hljs">METHOD Reverse () : I_Stack
 </code></pre></div>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../ITFs/Collections/I_Stack.html">I_Stack</a></dt>
@@ -246,7 +243,7 @@ Reverse
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/c777b71de9e588c27137754a11f518dad545b25c/docs/reference/TcDynCollections/POUs/Function Blocks/Collections/FB_Stack.md/#L1" class="edit-link">Edit this page</a>
+          <a href="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/d0f9d954b5c30454964b482961250ddf5939eeab/docs/reference/TcDynCollections/POUs/Function Blocks/Collections/FB_Stack.md/#L1" class="edit-link">Edit this page</a>
         </div>
 
         <div class="next-article d-print-none border-top" id="nextArticle"></div>

@@ -16,7 +16,7 @@
       
       
       
-      <meta name="docfx:docurl" content="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/c777b71de9e588c27137754a11f518dad545b25c/docs/reference/TcDynCollections/POUs/Function Blocks/Collections/FB_Hash_Set.md/#L1">
+      <meta name="docfx:docurl" content="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/d0f9d954b5c30454964b482961250ddf5939eeab/docs/reference/TcDynCollections/POUs/Function Blocks/Collections/FB_Hash_Set.md/#L1">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -87,19 +87,9 @@
     <dl><dt>Namespace</dt><dd><a class="xref" href="FB_Hash_Set.html">TcDynCollections</a></dd></dl>
   
   </div>
-<dl class="typelist inheritance"><dt>Inheritance</dt><dd>
+<dl class="typelist inheritance"><dt>Extends</dt><dd>
 <div><a class="xref" href="FB_Collection.html">TcDynCollections.FB_Collection</a></div>
 <div><a class="xref" href="FB_Hash_Set.html">FB_Hash_Set</a></div>
-</dd></dl>
-<dl class="typelist implements"><dt>Inherited Properties</dt><dd>
-<div><a class="xref" href="FB_Collection.html#_Count">_Count</a></div>
-<div><a class="xref" href="FB_Collection.html#_Empty">_Empty</a></div>
-<div><a class="xref" href="FB_Collection.html#_Error_Status">_Error_Status</a></div>
-</dd></dl>
-<dl class="typelist implements"><dt>Inherited Methods</dt><dd>
-<div><a class="xref" href="FB_Collection.html#Clear_Error">Clear_Error</a></div>
-<div><a class="xref" href="FB_Collection.html#Decrement_Count">Decrement_Count</a></div>
-<div><a class="xref" href="FB_Collection.html#Increment_Count">Increment_Count</a></div>
 </dd></dl>
 <dl class="typelist implements"><dt>Implements</dt><dd>
 <div><a class="xref" href="../../../ITFs/Collections/I_Hash_Set.html">I_Hash_Set</a></div>
@@ -108,10 +98,7 @@
 <div>__SYSTEM.IQueryInterface</div>
 </dd></dl>
 <div class="codewrapper">
-    <pre><code class="lang-st hljs">{attribute 'enable_dynamic_creation'}
-{attribute 'no_assign'}
-{attribute 'no_explicit_call' := 'direct call for this function block is not allowed'}
-FUNCTION_BLOCK FB_Hash_Set EXTENDS TcDynCollections.FB_Collection IMPLEMENTS TcDynCollections.I_Hash_Set, TcDynCollections.I_Set, TcDynCollections.I_Collection, __SYSTEM.IQueryInterface
+    <pre><code class="lang-st hljs">FUNCTION_BLOCK FB_Hash_Set EXTENDS TcDynCollections.FB_Collection IMPLEMENTS TcDynCollections.I_Hash_Set, TcDynCollections.I_Set, TcDynCollections.I_Collection, __SYSTEM.IQueryInterface
 </code></pre></div>
 <h2 class="section" id="constructors">Constructor</h2>
 <h2 class="section" id="properties">Properties</h2>
@@ -146,7 +133,7 @@ Contains
  Item : ANY) : BOOL
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Item"></a><dt><code>Item</code> ANY<dd><p></p></dd></dl>
+<a name="Item"></a><dt><code>Item</code> ANY</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt>BOOL</dt>
@@ -160,9 +147,9 @@ Create_Buckets
  Count : T_Capacity) : POINTER TO POINTER TO T_Hashset_Bucket_Node
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Count"></a><dt><code>Count</code> <a class="xref" href="../../../DUTs/Aliases/T_Capacity.html">T_Capacity</a><dd><p></p></dd></dl>
+<a name="Count"></a><dt><code>Count</code> <a class="xref" href="../../../DUTs/Aliases/T_Capacity.html">T_Capacity</a></dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd><a name="Error"></a><dt><code>Error</code> <a class="xref" href="../../../DUTs/Aliases/T_Error.html">T_Error</a><dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL <code>:= TRUE</code></dt><dd><p></p></dd><a name="Error"></a><dt><code>Error</code> <a class="xref" href="../../../DUTs/Aliases/T_Error.html">T_Error</a></dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt>POINTER TO POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_Hashset_Bucket_Node.html">T_Hashset_Bucket_Node</a></dt>
@@ -176,9 +163,9 @@ Create_Node
  Item : T_Generic) : POINTER TO ST_HASHSET_BUCKET_NODE
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Item"></a><dt><code>Item</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a><dd><p></p></dd></dl>
+<a name="Item"></a><dt><code>Item</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a></dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd><a name="Error"></a><dt><code>Error</code> <a class="xref" href="../../../DUTs/Aliases/T_Error.html">T_Error</a><dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd><a name="Error"></a><dt><code>Error</code> <a class="xref" href="../../../DUTs/Aliases/T_Error.html">T_Error</a></dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt>POINTER TO <a class="xref" href="../../../DUTs/Structs/ST_HASHSET_BUCKET_NODE.html">ST_HASHSET_BUCKET_NODE</a></dt>
@@ -192,7 +179,7 @@ Delete_Node
  pNode : REFERENCE TO POINTER TO T_Hashset_Bucket_Node)
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="pNode"></a><dt><code>pNode</code> REFERENCE TO POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_Hashset_Bucket_Node.html">T_Hashset_Bucket_Node</a><dd><p></p></dd></dl>
+<a name="pNode"></a><dt><code>pNode</code> REFERENCE TO POINTER TO <a class="xref" href="../../../DUTs/Aliases/T_Hashset_Bucket_Node.html">T_Hashset_Bucket_Node</a></dt><dd><p></p></dd></dl>
 <h3 id="TcDynCollections.FB.Hash.Set_Get_Values" data-uid="TcDynCollections.FB_Hash_Set.Get_Values">
 Get_Values
 </h3><a name="Get_Values"></a>
@@ -212,7 +199,7 @@ Hash
  Data : T_Generic) : T_Capacity
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Data"></a><dt><code>Data</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a><dd><p></p></dd></dl>
+<a name="Data"></a><dt><code>Data</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a></dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../DUTs/Aliases/T_Capacity.html">T_Capacity</a></dt>
@@ -226,9 +213,9 @@ Insert
  Item : ANY) : I_Set
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Item"></a><dt><code>Item</code> ANY<dd><p></p></dd></dl>
+<a name="Item"></a><dt><code>Item</code> ANY</dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../ITFs/Collections/I_Set.html">I_Set</a></dt>
@@ -242,9 +229,9 @@ Insert_Generic
  Item : T_Generic) : I_Set
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Item"></a><dt><code>Item</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a><dd><p></p></dd></dl>
+<a name="Item"></a><dt><code>Item</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a></dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../ITFs/Collections/I_Set.html">I_Set</a></dt>
@@ -258,9 +245,9 @@ Remove
  Item : ANY) : I_Set
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Item"></a><dt><code>Item</code> ANY<dd><p></p></dd></dl>
+<a name="Item"></a><dt><code>Item</code> ANY</dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../ITFs/Collections/I_Set.html">I_Set</a></dt>
@@ -274,9 +261,9 @@ Remove_Generic
  Item : T_Generic) : I_Set
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Item"></a><dt><code>Item</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a><dd><p></p></dd></dl>
+<a name="Item"></a><dt><code>Item</code> <a class="xref" href="../../../DUTs/Aliases/T_Generic.html">T_Generic</a></dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../ITFs/Collections/I_Set.html">I_Set</a></dt>
@@ -290,9 +277,9 @@ Resize
  Count : T_Capacity) : I_Hash_Set
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Count"></a><dt><code>Count</code> <a class="xref" href="../../../DUTs/Aliases/T_Capacity.html">T_Capacity</a><dd><p></p></dd></dl>
+<a name="Count"></a><dt><code>Count</code> <a class="xref" href="../../../DUTs/Aliases/T_Capacity.html">T_Capacity</a></dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="../../../ITFs/Collections/I_Hash_Set.html">I_Hash_Set</a></dt>
@@ -302,7 +289,7 @@ Resize
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/c777b71de9e588c27137754a11f518dad545b25c/docs/reference/TcDynCollections/POUs/Function Blocks/Collections/FB_Hash_Set.md/#L1" class="edit-link">Edit this page</a>
+          <a href="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/d0f9d954b5c30454964b482961250ddf5939eeab/docs/reference/TcDynCollections/POUs/Function Blocks/Collections/FB_Hash_Set.md/#L1" class="edit-link">Edit this page</a>
         </div>
 
         <div class="next-article d-print-none border-top" id="nextArticle"></div>

@@ -16,7 +16,7 @@
       
       
       
-      <meta name="docfx:docurl" content="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/c777b71de9e588c27137754a11f518dad545b25c/docs/reference/TcDynCollections/ITFs/Collections/I_List.md/#L1">
+      <meta name="docfx:docurl" content="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/d0f9d954b5c30454964b482961250ddf5939eeab/docs/reference/TcDynCollections/ITFs/Collections/I_List.md/#L1">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -90,7 +90,7 @@
 <div class="codewrapper">
     <pre><code class="lang-st hljs">INTERFACE I_List EXTENDS TcDynCollections.I_Collection, __SYSTEM.IQueryInterface
 </code></pre></div>
-<dl class="typelist inheritance"><dt>Implements</dt><dd>
+<dl class="typelist inheritance"><dt>Extends</dt><dd>
 <div>__SYSTEM.IQueryInterface</div>
 <div><a class="xref" href="I_Collection.html">TcDynCollections.I_Collection</a></div>
 </dd></dl>
@@ -126,9 +126,9 @@ Append
  Item : ANY) : I_List
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Item"></a><dt><code>Item</code> ANY<dd><p></p></dd></dl>
+<a name="Item"></a><dt><code>Item</code> ANY</dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="I_List.html">I_List</a></dt>
@@ -153,7 +153,7 @@ Contains
  Item : ANY) : BOOL
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Item"></a><dt><code>Item</code> ANY<dd><p></p></dd></dl>
+<a name="Item"></a><dt><code>Item</code> ANY</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt>BOOL</dt>
@@ -168,9 +168,9 @@ Get
  Item : ANY) : I_List
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Index"></a><dt><code>Index</code> <a class="xref" href="../../DUTs/Aliases/T_Position.html">T_Position</a><dd><p></p></dd><a name="Item"></a><dt><code>Item</code> ANY<dd><p></p></dd></dl>
+<a name="Index"></a><dt><code>Index</code> <a class="xref" href="../../DUTs/Aliases/T_Position.html">T_Position</a></dt><dd><p></p></dd><a name="Item"></a><dt><code>Item</code> ANY</dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="I_List.html">I_List</a></dt>
@@ -185,9 +185,9 @@ Get_As_String
  sItem : REFERENCE TO STRING) : I_List
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Index"></a><dt><code>Index</code> <a class="xref" href="../../DUTs/Aliases/T_Position.html">T_Position</a><dd><p></p></dd><a name="sItem"></a><dt><code>sItem</code> REFERENCE TO STRING<dd><p></p></dd></dl>
+<a name="Index"></a><dt><code>Index</code> <a class="xref" href="../../DUTs/Aliases/T_Position.html">T_Position</a></dt><dd><p></p></dd><a name="sItem"></a><dt><code>sItem</code> REFERENCE TO STRING</dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="I_List.html">I_List</a></dt>
@@ -201,9 +201,9 @@ Get_Generic
  Index : T_Position) : I_List
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Index"></a><dt><code>Index</code> <a class="xref" href="../../DUTs/Aliases/T_Position.html">T_Position</a><dd><p></p></dd></dl>
+<a name="Index"></a><dt><code>Index</code> <a class="xref" href="../../DUTs/Aliases/T_Position.html">T_Position</a></dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="Item"></a><dt><code>Item</code> <a class="xref" href="../../DUTs/Aliases/T_Generic.html">T_Generic</a><dd><p></p></dd><a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="Item"></a><dt><code>Item</code> <a class="xref" href="../../DUTs/Aliases/T_Generic.html">T_Generic</a></dt><dd><p></p></dd><a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="I_List.html">I_List</a></dt>
@@ -217,9 +217,9 @@ Get_Type_At
  Index : T_Position) : I_List
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Index"></a><dt><code>Index</code> <a class="xref" href="../../DUTs/Aliases/T_Position.html">T_Position</a><dd><p></p></dd></dl>
+<a name="Index"></a><dt><code>Index</code> <a class="xref" href="../../DUTs/Aliases/T_Position.html">T_Position</a></dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="Item_Type"></a><dt><code>Item_Type</code> <a class="xref" href="../../DUTs/Aliases/T_Type.html">T_Type</a><dd><p></p></dd><a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="Item_Type"></a><dt><code>Item_Type</code> <a class="xref" href="../../DUTs/Aliases/T_Type.html">T_Type</a></dt><dd><p></p></dd><a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="I_List.html">I_List</a></dt>
@@ -234,9 +234,9 @@ Insert
  Item : ANY) : I_List
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Index"></a><dt><code>Index</code> <a class="xref" href="../../DUTs/Aliases/T_Position.html">T_Position</a><dd><p></p></dd><a name="Item"></a><dt><code>Item</code> ANY<dd><p></p></dd></dl>
+<a name="Index"></a><dt><code>Index</code> <a class="xref" href="../../DUTs/Aliases/T_Position.html">T_Position</a></dt><dd><p></p></dd><a name="Item"></a><dt><code>Item</code> ANY</dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="I_List.html">I_List</a></dt>
@@ -251,9 +251,9 @@ Insert_Generic
  Item : T_Generic) : I_List
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Index"></a><dt><code>Index</code> <a class="xref" href="../../DUTs/Aliases/T_Position.html">T_Position</a><dd><p></p></dd><a name="Item"></a><dt><code>Item</code> <a class="xref" href="../../DUTs/Aliases/T_Generic.html">T_Generic</a><dd><p></p></dd></dl>
+<a name="Index"></a><dt><code>Index</code> <a class="xref" href="../../DUTs/Aliases/T_Position.html">T_Position</a></dt><dd><p></p></dd><a name="Item"></a><dt><code>Item</code> <a class="xref" href="../../DUTs/Aliases/T_Generic.html">T_Generic</a></dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="I_List.html">I_List</a></dt>
@@ -267,9 +267,9 @@ Prepend
  Item : ANY) : I_List
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Item"></a><dt><code>Item</code> ANY<dd><p></p></dd></dl>
+<a name="Item"></a><dt><code>Item</code> ANY</dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="I_List.html">I_List</a></dt>
@@ -283,9 +283,9 @@ Remove
  Item : ANY) : I_List
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Item"></a><dt><code>Item</code> ANY<dd><p></p></dd></dl>
+<a name="Item"></a><dt><code>Item</code> ANY</dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="I_List.html">I_List</a></dt>
@@ -299,9 +299,9 @@ Remove_At
  Index : T_Position) : I_List
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Index"></a><dt><code>Index</code> <a class="xref" href="../../DUTs/Aliases/T_Position.html">T_Position</a><dd><p></p></dd></dl>
+<a name="Index"></a><dt><code>Index</code> <a class="xref" href="../../DUTs/Aliases/T_Position.html">T_Position</a></dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="I_List.html">I_List</a></dt>
@@ -314,7 +314,7 @@ Remove_Last
     <pre><code class="lang-st hljs">METHOD Remove_Last () : I_List
 </code></pre></div>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="I_List.html">I_List</a></dt>
@@ -328,9 +328,9 @@ Resize
  Size : T_Capacity) : I_List
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Size"></a><dt><code>Size</code> <a class="xref" href="../../DUTs/Aliases/T_Capacity.html">T_Capacity</a><dd><p></p></dd></dl>
+<a name="Size"></a><dt><code>Size</code> <a class="xref" href="../../DUTs/Aliases/T_Capacity.html">T_Capacity</a></dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="I_List.html">I_List</a></dt>
@@ -343,7 +343,7 @@ Reverse
     <pre><code class="lang-st hljs">METHOD Reverse () : I_List
 </code></pre></div>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="I_List.html">I_List</a></dt>
@@ -357,9 +357,9 @@ Search
  Item : ANY) : I_List
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Item"></a><dt><code>Item</code> ANY<dd><p></p></dd></dl>
+<a name="Item"></a><dt><code>Item</code> ANY</dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="Index"></a><dt><code>Index</code> <a class="xref" href="../../DUTs/Aliases/T_Position.html">T_Position</a><dd><p></p></dd><a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="Index"></a><dt><code>Index</code> <a class="xref" href="../../DUTs/Aliases/T_Position.html">T_Position</a></dt><dd><p></p></dd><a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="I_List.html">I_List</a></dt>
@@ -374,9 +374,9 @@ Set
  Item : ANY) : I_List
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Index"></a><dt><code>Index</code> <a class="xref" href="../../DUTs/Aliases/T_Position.html">T_Position</a><dd><p></p></dd><a name="Item"></a><dt><code>Item</code> ANY<dd><p></p></dd></dl>
+<a name="Index"></a><dt><code>Index</code> <a class="xref" href="../../DUTs/Aliases/T_Position.html">T_Position</a></dt><dd><p></p></dd><a name="Item"></a><dt><code>Item</code> ANY</dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="I_List.html">I_List</a></dt>
@@ -391,9 +391,9 @@ Set_Generic
  Item : T_Generic) : I_List
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Index"></a><dt><code>Index</code> <a class="xref" href="../../DUTs/Aliases/T_Position.html">T_Position</a><dd><p></p></dd><a name="Item"></a><dt><code>Item</code> <a class="xref" href="../../DUTs/Aliases/T_Generic.html">T_Generic</a><dd><p></p></dd></dl>
+<a name="Index"></a><dt><code>Index</code> <a class="xref" href="../../DUTs/Aliases/T_Position.html">T_Position</a></dt><dd><p></p></dd><a name="Item"></a><dt><code>Item</code> <a class="xref" href="../../DUTs/Aliases/T_Generic.html">T_Generic</a></dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="I_List.html">I_List</a></dt>
@@ -408,9 +408,9 @@ Swap
  Index_B : T_Position) : I_List
 </code></pre></div>
 <h4 class="section">Inputs</h4><dl class="parameters">
-<a name="Index_A"></a><dt><code>Index_A</code> <a class="xref" href="../../DUTs/Aliases/T_Position.html">T_Position</a><dd><p></p></dd><a name="Index_B"></a><dt><code>Index_B</code> <a class="xref" href="../../DUTs/Aliases/T_Position.html">T_Position</a><dd><p></p></dd></dl>
+<a name="Index_A"></a><dt><code>Index_A</code> <a class="xref" href="../../DUTs/Aliases/T_Position.html">T_Position</a></dt><dd><p></p></dd><a name="Index_B"></a><dt><code>Index_B</code> <a class="xref" href="../../DUTs/Aliases/T_Position.html">T_Position</a></dt><dd><p></p></dd></dl>
 <h4 class="section">Outputs</h4><dl class="parameters">
-<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL<dd><p></p></dd></dl>
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
 <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt> <a class="xref" href="I_List.html">I_List</a></dt>
@@ -420,7 +420,7 @@ Swap
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/c777b71de9e588c27137754a11f518dad545b25c/docs/reference/TcDynCollections/ITFs/Collections/I_List.md/#L1" class="edit-link">Edit this page</a>
+          <a href="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/d0f9d954b5c30454964b482961250ddf5939eeab/docs/reference/TcDynCollections/ITFs/Collections/I_List.md/#L1" class="edit-link">Edit this page</a>
         </div>
 
         <div class="next-article d-print-none border-top" id="nextArticle"></div>
