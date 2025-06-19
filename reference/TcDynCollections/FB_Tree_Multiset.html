@@ -2,21 +2,21 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>TcDynCollections </title>
+      <title>FB_Tree_Multiset </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="TcDynCollections ">
+      <meta name="title" content="FB_Tree_Multiset ">
       
       
-      <link rel="icon" href="../favicon.ico">
-      <link rel="stylesheet" href="../public/docfx.min.css">
-      <link rel="stylesheet" href="../public/main.css">
-      <meta name="docfx:navrel" content="../toc.html">
-      <meta name="docfx:tocrel" content="toc.html">
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="../../toc.html">
+      <meta name="docfx:tocrel" content="../toc.html">
       
       
       
       
-      <meta name="docfx:docurl" content="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/e6a68ed2b1ac3dff0ce6d4ff78a174cbfaff36c5/docs/reference/TcDynCollections.md/#L1">
+      <meta name="docfx:docurl" content="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/e6a68ed2b1ac3dff0ce6d4ff78a174cbfaff36c5/docs/reference/TcDynCollections/FB_Tree_Multiset.md/#L1">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -31,7 +31,7 @@
       <meta name="loc:downloadPdf" content="Download PDF">
   </head>
 
-  <script type="module" src="./../public/docfx.min.js"></script>
+  <script type="module" src="./../../public/docfx.min.js"></script>
 
   <script>
     const theme = localStorage.getItem('theme') || 'auto'
@@ -43,8 +43,8 @@
     <header class="bg-body border-bottom">
       <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
         <div class="container-xxl flex-nowrap">
-          <a class="navbar-brand" href="../index.html">
-            <img id="logo" class="svg" src="../logo.svg" alt="">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../logo.svg" alt="">
             
           </a>
           <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,22 +80,53 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="TcDynCollections">
-<h1 id="tcdyncollections">TcDynCollections</h1>
+        <article data-uid="TcDynCollections.FB_Tree_Multiset">
+<h1 id="fb_tree_multiset">FB_Tree_Multiset</h1>
 
-<div class="facts text-secondary">
-  <dl><dt>Title</dt><dd>TwinCat Dynamic Collections</dd></dl>
-  <dl><dt>Version</dt><dd>1.0.8</dd></dl>
-  <dl><dt>Company</dt><dd>FisoThemes</dd></dl>
-</div>
-<p>A library for handling collections of data dynamically in TwinCAT.</p>
-<h4 class="section">References</h4><dl class="parameters">
-<dt>Tc2_Standard <code>*</code></dt><dt>Tc2_System <code>*</code></dt><dt>Tc3_Module <code>*</code></dt><dt>Tc2_Utilities <code>newest</code></dt></dl>
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="FB_Tree_Multiset.html">TcDynCollections</a></dd></dl>
+  
+  </div>
+<dl class="typelist inheritance"><dt>Extends</dt><dd>
+<div><a class="xref" href="FB_Collection.html">TcDynCollections.FB_Collection</a></div>
+<div><a class="xref" href="FB_Tree_Set.html">TcDynCollections.FB_Tree_Set</a></div>
+<div><a class="xref" href="FB_Tree_Multiset.html">FB_Tree_Multiset</a></div>
+</dd></dl>
+<dl class="typelist implements"><dt>Inherited Methods</dt><dd>
+<div><a class="xref" href="FB_Tree_Set.html#Clear_Node">Clear_Node</a></div>
+<div><a class="xref" href="FB_Tree_Set.html#Get_Values">Get_Values</a></div>
+</dd></dl>
+<dl class="typelist implements"><dt>Implements</dt><dd>
+<div><a class="xref" href="I_Tree_Set.html">I_Tree_Set</a></div>
+<div><a class="xref" href="I_Set.html">I_Set</a></div>
+<div><a class="xref" href="I_Collection.html">I_Collection</a></div>
+<div>__SYSTEM.IQueryInterface</div>
+</dd></dl>
+<div class="codewrapper">
+    <pre><code class="lang-st hljs">FUNCTION_BLOCK FB_Tree_Multiset EXTENDS TcDynCollections.FB_Tree_Set IMPLEMENTS TcDynCollections.I_Tree_Set, TcDynCollections.I_Set, TcDynCollections.I_Collection, __SYSTEM.IQueryInterface
+</code></pre></div>
+<h2 class="section" id="methods">Methods</h2>
+<h3 id="TcDynCollections.FB.Tree.Multiset_Insert_Generic" data-uid="TcDynCollections.FB_Tree_Multiset.Insert_Generic">
+Insert_Generic
+</h3><a name="Insert_Generic"></a>
+<div class="codewrapper">
+    <pre><code class="lang-st hljs">METHOD Insert_Generic (
+ Item : T_Generic) : I_Set
+</code></pre></div>
+<h4 class="section">Inputs</h4><dl class="parameters">
+<a name="Item"></a><dt><code>Item</code> <a class="xref" href="T_Generic.html">T_Generic</a></dt><dd><p></p></dd></dl>
+<h4 class="section">Outputs</h4><dl class="parameters">
+<a name="bSuccess"></a><dt><code>bSuccess</code> BOOL</dt><dd><p></p></dd></dl>
+<h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt> <a class="xref" href="I_Set.html">I_Set</a></dt>
+    <dd></dd>
+  </dl>
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/e6a68ed2b1ac3dff0ce6d4ff78a174cbfaff36c5/docs/reference/TcDynCollections.md/#L1" class="edit-link">Edit this page</a>
+          <a href="https://github.com/fisothemes/TwinCat-Dynamic-Collections/blob/e6a68ed2b1ac3dff0ce6d4ff78a174cbfaff36c5/docs/reference/TcDynCollections/FB_Tree_Multiset.md/#L1" class="edit-link">Edit this page</a>
         </div>
 
         <div class="next-article d-print-none border-top" id="nextArticle"></div>
