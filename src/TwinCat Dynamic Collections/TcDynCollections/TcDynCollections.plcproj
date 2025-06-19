@@ -21,10 +21,20 @@
     <Title>TwinCat Dynamic Collections</Title>
     <Author>Goodwill Mzumala</Author>
     <DefaultNamespace>TcDynCollections</DefaultNamespace>
-    <ProjectVersion>1.0.7</ProjectVersion>
+    <ProjectVersion>1.0.8</ProjectVersion>
     <DocFormat>reStructuredText</DocFormat>
     <Description>A library for handling collections of data dynamically in TwinCAT.</Description>
     <CombineIds>true</CombineIds>
+    <LibraryCategories>
+      <LibraryCategory xmlns="">
+        <Id>{dd9b7bed-6894-42d1-82c5-149be3e6aacd}</Id>
+        <Version>1.0.0.0</Version>
+        <DefaultName>FisoThemes</DefaultName>
+      </LibraryCategory>
+    </LibraryCategories>
+    <SelectedLibraryCategories>
+      <Id xmlns="">{dd9b7bed-6894-42d1-82c5-149be3e6aacd}</Id>
+    </SelectedLibraryCategories>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DUTs\Aliases\T_AVL_Map_Node.TcDUT">
