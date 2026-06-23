@@ -514,7 +514,7 @@ WHILE pCurrent <> 0 DO
 		IF pCurrent = THIS^.pHead THEN 
 			IF THIS^.pHead = THIS^.pTail THEN THIS^.pTail := 0; END_IF
 			THIS^.pHead := pCurrent^.pAfter;
-			THIS^.pHead^.pBefore := 0;
+			IF THIS^.pHead <> 0 THEN THIS^.pHead^.pBefore := 0; END_IF
 		ELSIF pCurrent = THIS^.pTail THEN 
 			THIS^.pTail := pCurrent^.pBefore;
 			THIS^.pTail^.pAfter := 0;
