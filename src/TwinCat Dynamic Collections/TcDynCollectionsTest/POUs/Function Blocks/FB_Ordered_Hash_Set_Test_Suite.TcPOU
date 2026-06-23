@@ -11,6 +11,8 @@ Check_If_Contains_Returns_True_If_Item_In_Set();
 Check_If_Duplicate_Items_Cannot_Be_Inserted();
 Check_If_Get_Values_Returns_Values();
 Check_If_Insert_Adds_Items();
+Check_If_Remove_Head_Item();
+Check_If_Remove_Last_Remaining_Item();
 Check_If_Remove_Removes_Items();]]></ST>
     </Implementation>
     <Method Name="Check_If_Clear_Empties_Items" Id="{f05465ce-2c6d-09f8-104f-56eb0fdf1d8b}">
@@ -117,6 +119,58 @@ END_VAR]]></Declaration>
 		.Insert(nItem);
 		
 	THIS^.AssertEquals_DINT(2, fbSet._Count, 'Failed to insert items into set.');
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Remove_Head_Item" Id="{ab4f8e2b-5f7a-0bcd-2a82-454066579ce7}">
+      <Declaration><![CDATA[METHOD Check_If_Remove_Head_Item : REFERENCE TO FB_Test
+VAR_INST
+	fbSet 		: FB_Ordered_Hash_Set(0);
+	nFirst 		: INT := 1;
+	nSecond 	: INT := 2;
+	nThird 		: INT := 3;
+	arnReturned : ARRAY[0..1] OF INT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Remove_Head_Item');
+
+	fbSet
+		.Insert(nFirst)
+		.Insert(nSecond)
+		.Insert(nThird)
+		.Remove(nFirst);
+	
+	THIS^.AssertEquals_DINT(2, fbSet._Count, 'Count incorrect after removing head.');
+	THIS^.AssertEquals_BOOL(FALSE, fbSet.Contains(nFirst), 'Head item still in set after removal.');
+	
+	fbSet.Get_Values()
+		.Get(0, arnReturned[0])
+		.Get(1, arnReturned[1]);
+	
+	THIS^.AssertEquals_DINT(2, arnReturned[0], 'Insertion order broken after head removal.');
+	THIS^.AssertEquals_DINT(3, arnReturned[1], 'Insertion order broken after head removal.');
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Remove_Last_Remaining_Item" Id="{49006ef6-2769-0f31-1d1d-5a543574636d}">
+      <Declaration><![CDATA[METHOD Check_If_Remove_Last_Remaining_Item
+VAR_INST
+	fbSet : FB_Ordered_Hash_Set(0);
+	nItem : INT := 42;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Remove_Last_Remaining_Item');
+
+	fbSet
+		.Insert(nItem)
+		.Remove(nItem);
+	
+	THIS^.AssertEquals_DINT(0, fbSet._Count, 'Failed to remove last remaining item.');
+	THIS^.AssertEquals_BOOL(FALSE, fbSet.Contains(nItem), 'Set still contains item after removal.');
 	
 	TEST_FINISHED();]]></ST>
       </Implementation>
