@@ -10,6 +10,8 @@ END_VAR
 Check_If_Insert_Adds_Items();
 Check_If_Update_Updates_Items();
 Check_If_Upsert_Updates_Items_Or_Adds_If_They_Dont_Exist();
+Check_If_Remove_Head_Item();
+Check_If_Remove_Last_Remaining_Item();
 Check_If_Remove_Removes_Items();
 Check_If_Contains_Returns_True_If_Key_In_Map();
 Check_If_Get_Key_Values_Returns_Keys_Values();]]></ST>
@@ -111,6 +113,59 @@ END_VAR]]></Declaration>
 		.Insert(nItem, sItem);
 		
 	THIS^.AssertEquals_DINT(2, fbMap._Count, 'Failed to insert items into map.');
+	
+	TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Remove_Head_Item" Id="{6586d63d-4f86-04d8-1f15-7e0e3607f825}">
+      <Declaration><![CDATA[METHOD Check_If_Remove_Head_Item
+VAR_INST
+	fbMap 			 : FB_Ordered_Hash_Map(0);
+	nFirst 			 : UDINT := 1;
+	nSecond 		 : UDINT := 2;
+	nThird 			 : UDINT := 3;
+	arnReturned_Keys : ARRAY[0..1] OF UDINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Remove_Head_Item');
+
+	fbMap
+		.Insert(nFirst, nFirst)
+		.Insert(nSecond, nSecond)
+		.Insert(nThird, nThird)
+		.Remove(nFirst);
+
+	THIS^.AssertEquals_DINT(2, fbMap._Count, 'Count incorrect after removing head.');
+	THIS^.AssertEquals_BOOL(FALSE, fbMap.Contains(nFirst), 'Head key still in map after removal.');
+	
+	fbMap.Get_Keys()
+		.Get(0, arnReturned_Keys[0])
+		.Get(1, arnReturned_Keys[1]);
+	
+	THIS^.AssertEquals_UDINT(2, arnReturned_Keys[0], 'Insertion order broken after head removal.');
+	THIS^.AssertEquals_UDINT(3, arnReturned_Keys[1], 'Insertion order broken after head removal.');
+
+TEST_FINISHED();]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Check_If_Remove_Last_Remaining_Item" Id="{955366cc-69b0-01cf-3271-92c0264f7e68}">
+      <Declaration><![CDATA[METHOD Check_If_Remove_Last_Remaining_Item
+VAR_INST
+	fbMap 	: FB_Ordered_Hash_Map(0);
+	nKey 	: UDINT := 1;
+	nValue 	: INT := 42;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TcUnit.TEST('Check_If_Remove_Last_Remaining_Item');
+
+	fbMap
+		.Insert(nKey, nValue)
+		.Remove(nKey);
+	
+	THIS^.AssertEquals_DINT(0, fbMap._Count, 'Failed to remove last remaining item.');
+	THIS^.AssertEquals_BOOL(FALSE, fbMap.Contains(nKey), 'Map still contains key after removal.');
 	
 	TEST_FINISHED();]]></ST>
       </Implementation>
