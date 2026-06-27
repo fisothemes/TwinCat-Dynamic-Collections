@@ -1,26 +1,46 @@
 name: Documentation
+
 on:
   push:
     branches:
       - master
     paths:
-      - 'docs/**'
       - 'src/**'
+      - 'tools/build_docs.py'
+      - '.github/workflows/documentation.yaml'
   workflow_dispatch:
+
 jobs:
-  Build:
-    name: Documentation
+  build:
+    name: Build & Deploy Docs
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
     steps:
-      - name: Build
-        uses: Zeugwerk/zkdoc-action@1.0.0
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          username: ${{ secrets.ACTIONS_ZGWK_USERNAME }}
-          password: ${{ secrets.ACTIONS_ZGWK_PASSWORD }}
-          filepath: "src/TwinCat Dynamic Collections/TcDynCollections/TcDynCollections.plcproj"
-          doc-folder: "docs"
-      - name: Deploy
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r tools/requirements.txt
+
+      - name: Generate RST
+        run: |
+          python tools/build_docs.py \
+            "src/TwinCat Dynamic Collections/TcDynCollections/TcDynCollections.plcproj" \
+            --out docs
+
+      - name: Build HTML
+        run: |
+          sphinx-build -b html docs docs/build/html
+
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          publish_dir: archive/docs/html
+          publish_dir: docs/build/html
