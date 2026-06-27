@@ -19,6 +19,7 @@ Here are some of the features of Dynamic Collections:
   The library allows you to take advantage of interfaces, OOP principles, functions and internal types to allow you to create/extend/wrap functionally or even implement a data structure in your preferred algorithm. You can even optimise it for your particular use case e.g. choosing the number of buckets in a hash map/set.
 
 **[Click here for releases/prerelease!](https://github.com/fisothemes/TwinCat-Dynamic-Collections/releases/)**
+**[Click here for documentation!](https://fisothemes.github.io/TwinCat-Dynamic-Collections/)**
 
 ## Function Blocks
 
